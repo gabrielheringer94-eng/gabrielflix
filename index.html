@@ -290,14 +290,33 @@
           <span class="hero__state" id="hero-state">firme</span>
         </div>
 
-        <svg class="hero-figure" id="hero-figure" viewBox="-20 -60 40 115" aria-hidden="true">
+        <svg class="hero-figure" id="hero-figure" viewBox="-22 -66 44 118" aria-hidden="true">
           <g id="fig-body-group">
-            <circle id="fig-head" cx="0" cy="-50" r="5.5" />
-            <line  id="fig-body" x1="0" y1="-44" x2="0" y2="20" />
-            <line  id="fig-arm-l" x1="0" y1="-36" x2="-10" y2="-20" />
-            <line  id="fig-arm-r" x1="0" y1="-36" x2="10" y2="-20" />
-            <line  id="fig-leg-l" x1="0" y1="20" x2="-7" y2="48" />
-            <line  id="fig-leg-r" x1="0" y1="20" x2="7" y2="48" />
+            <!-- cabelo -->
+            <path id="fig-hair" d="M-5,-58 Q-3,-61 0,-61 Q3,-61 5,-58" />
+            <!-- cabeça -->
+            <circle id="fig-head" cx="0" cy="-50" r="7" />
+            <!-- olhos -->
+            <circle class="fig-eye" cx="-2.5" cy="-51" r="1" />
+            <circle class="fig-eye" cx="2.5" cy="-51" r="1" />
+            <!-- boca (anima com score) -->
+            <path id="fig-mouth" d="M-2.5,-47 Q0,-47 2.5,-47" />
+            <!-- pescoço -->
+            <line id="fig-neck" x1="0" y1="-43" x2="0" y2="-41" />
+            <!-- tronco (trapézio leve, ombro→quadril) -->
+            <path id="fig-body" d="M-8,-40 L8,-40 L6,-6 L-6,-6 Z" />
+            <!-- braços -->
+            <line id="fig-arm-l" x1="-7" y1="-38" x2="-14" y2="-18" />
+            <line id="fig-arm-r" x1="7"  y1="-38" x2="14"  y2="-18" />
+            <!-- mãos -->
+            <circle id="fig-hand-l" cx="-14" cy="-18" r="1.8" />
+            <circle id="fig-hand-r" cx="14"  cy="-18" r="1.8" />
+            <!-- pernas -->
+            <line id="fig-leg-l" x1="-5" y1="-6" x2="-7" y2="42" />
+            <line id="fig-leg-r" x1="5"  y1="-6" x2="7"  y2="42" />
+            <!-- pés -->
+            <ellipse id="fig-foot-l" cx="-8" cy="44" rx="3.5" ry="1.3" />
+            <ellipse id="fig-foot-r" cx="8"  cy="44" rx="3.5" ry="1.3" />
           </g>
         </svg>
       </button>
