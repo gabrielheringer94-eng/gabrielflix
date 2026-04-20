@@ -416,7 +416,22 @@
         </svg>
       </div>
 
-      <button class="btn btn--primary btn--full">continuar</button>
+      <button class="btn btn--primary btn--full" id="roda-continue">continuar</button>
+
+      <button class="card ritual-trigger" id="open-ritual">
+        <div class="ritual-trigger__icon">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/>
+            <circle cx="12" cy="12" r="3"/>
+          </svg>
+        </div>
+        <div class="ritual-trigger__text">
+          <span class="eyebrow">ritual de domingo</span>
+          <strong>fecha a semana em 30s</strong>
+          <span class="mute">reavalia as 8 áreas + 2 perguntas de reflexão</span>
+        </div>
+        <span class="ritual-trigger__arrow">→</span>
+      </button>
     </section>
 
     <!-- ───────── HUMOR (check-in) ───────── -->
@@ -764,9 +779,41 @@
           <p class="lead" id="area-last">—</p>
         </div>
 
+        <!-- histórico de 14 dias (só aparece quando é espírito) -->
+        <div class="sheet__section" id="area-history" style="display:none;">
+          <span class="eyebrow">últimos 14 dias</span>
+          <div class="history-dots" id="history-dots"></div>
+          <div class="history-legend">
+            <span><i class="h-dot h-dot--on"></i>com prática</span>
+            <span><i class="h-dot h-dot--off"></i>sem registro</span>
+          </div>
+        </div>
+
         <div class="sheet__section">
           <span class="eyebrow">sugestão do circa</span>
           <p class="lead" id="area-suggest">—</p>
+        </div>
+
+        <!-- slider pós-prática (só aparece após registrar em espírito) -->
+        <div class="sheet__section post-practice" id="post-practice" style="display:none;">
+          <span class="eyebrow">como foi?</span>
+          <p class="lead lead--sm" style="margin-bottom:16px;">opcional. só se quiser.</p>
+          <div class="slider" style="margin-bottom:8px;">
+            <div class="slider__head">
+              <span class="slider__label">qualidade</span>
+              <span class="slider__value"><b id="pp-value">3</b><i>/ 5</i></span>
+            </div>
+            <div class="slider__track">
+              <span class="slider__icon slider__icon--l">—</span>
+              <input type="range" min="0" max="5" step="1" value="3" class="slider__input" id="pp-slider" />
+              <span class="slider__icon slider__icon--r">✦</span>
+            </div>
+            <div class="slider__ticks"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:14px;">
+            <button class="btn btn--ghost" style="flex:1" id="pp-skip">pular</button>
+            <button class="btn btn--primary" style="flex:1" id="pp-save">salvar</button>
+          </div>
         </div>
 
         <button class="btn btn--primary btn--full" id="area-log-btn">
@@ -1099,6 +1146,132 @@
       </div>
     </div>
 
+    <!-- ───────── MODAL · ritual semanal ───────── -->
+    <div class="sheet" id="sheet-ritual" aria-hidden="true">
+      <div class="sheet__backdrop" data-close></div>
+      <div class="sheet__panel" role="dialog" aria-label="ritual semanal">
+        <div class="sheet__grab"></div>
+
+        <div class="sheet__head">
+          <span class="eyebrow">ritual de domingo · 30s</span>
+          <h2 class="display display--sm">fecha a<br/>semana 15.</h2>
+          <p class="lead lead--sm">reavalia as 8 áreas. isso é o que mais importa pra IA entender você.</p>
+        </div>
+
+        <div class="ritual-step" id="ritual-step-wheel">
+          <div class="ob-wheel-wrap" style="max-width:300px;">
+            <svg id="ritual-wheel" viewBox="-160 -160 320 320" class="wheel">
+              <defs>
+                <radialGradient id="ritualWheelFill" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stop-color="#D4B896" stop-opacity="0.45"/>
+                  <stop offset="100%" stop-color="#D4B896" stop-opacity="0.08"/>
+                </radialGradient>
+              </defs>
+              <circle r="130" class="wheel__ring"/>
+              <circle r="100" class="wheel__ring"/>
+              <circle r="70"  class="wheel__ring"/>
+              <circle r="40"  class="wheel__ring"/>
+              <g id="ritual-wheel-spokes"></g>
+              <polygon id="ritual-wheel-shape" class="wheel__shape" fill="url(#ritualWheelFill)"/>
+              <g id="ritual-wheel-handles"></g>
+              <g id="ritual-wheel-labels"></g>
+            </svg>
+          </div>
+          <button class="btn btn--primary btn--full" id="ritual-to-reflect">continuar</button>
+        </div>
+
+        <div class="ritual-step" id="ritual-step-reflect" style="display:none;">
+          <span class="eyebrow">reflexão da semana</span>
+
+          <div class="reflect-q">
+            <p class="reflect-label">essa semana me senti conectado comigo.</p>
+            <div class="slider">
+              <div class="slider__head">
+                <span class="slider__label">0 nada · 10 totalmente</span>
+                <span class="slider__value"><b id="reflect-v1">7</b><i>/ 10</i></span>
+              </div>
+              <div class="slider__track">
+                <input type="range" min="0" max="10" step="1" value="7" class="slider__input" id="reflect-s1" />
+              </div>
+            </div>
+          </div>
+
+          <div class="reflect-q">
+            <p class="reflect-label">teve algum momento que te moveu?</p>
+            <div class="reflect-yn">
+              <button class="yn is-on" data-yn="yes">sim</button>
+              <button class="yn" data-yn="no">não</button>
+            </div>
+            <textarea class="reflect-text" id="reflect-text" placeholder="o quê? (opcional)" rows="3"></textarea>
+          </div>
+
+          <button class="btn btn--primary btn--full" id="ritual-finish">fechar semana</button>
+        </div>
+
+        <div class="ritual-step" id="ritual-step-done" style="display:none;">
+          <div class="ritual-done">
+            <svg viewBox="0 0 80 80" width="72" height="72" fill="none" stroke="currentColor" stroke-width="1.2">
+              <circle cx="40" cy="40" r="34" opacity="0.3"/>
+              <circle cx="40" cy="40" r="26" opacity="0.55"/>
+              <circle cx="40" cy="40" r="18" opacity="0.8"/>
+              <circle cx="40" cy="40" r="6" fill="currentColor"/>
+            </svg>
+            <h2 class="display display--sm">semana<br/>arquivada.</h2>
+            <p class="lead lead--sm">a roda atualizou. amanhã começa fresco.</p>
+          </div>
+          <button class="btn btn--ghost btn--full" data-close>fechar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ───────── MODAL · pin de momento ───────── -->
+    <div class="sheet" id="sheet-moment" aria-hidden="true">
+      <div class="sheet__backdrop" data-close></div>
+      <div class="sheet__panel" role="dialog" aria-label="marcar momento">
+        <div class="sheet__grab"></div>
+
+        <div class="sheet__head">
+          <span class="eyebrow">momento que me moveu</span>
+          <h2 class="display display--sm">o que<br/>aconteceu?</h2>
+          <p class="lead lead--sm">marque rápido. pode ser algo simples — um pôr do sol, um silêncio, uma conversa.</p>
+        </div>
+
+        <div class="sheet__section">
+          <textarea class="reflect-text" id="moment-text" rows="4" placeholder="em poucas palavras…"></textarea>
+
+          <span class="eyebrow eyebrow--sub">contexto</span>
+          <div class="ob-chips">
+            <button class="ob-chip" data-ctx="sozinho">sozinho</button>
+            <button class="ob-chip" data-ctx="natureza">natureza</button>
+            <button class="ob-chip" data-ctx="social">com alguém</button>
+            <button class="ob-chip" data-ctx="trabalho">no trabalho</button>
+            <button class="ob-chip" data-ctx="movimento">em movimento</button>
+            <button class="ob-chip" data-ctx="quieto">silêncio</button>
+          </div>
+
+          <span class="eyebrow eyebrow--sub">área que tocou</span>
+          <div class="ob-chips">
+            <button class="ob-chip" data-area="espirit">espírito</button>
+            <button class="ob-chip" data-area="relac">relações</button>
+            <button class="ob-chip" data-area="lazer">lazer</button>
+            <button class="ob-chip" data-area="carreira">carreira</button>
+            <button class="ob-chip" data-area="familia">família</button>
+            <button class="ob-chip" data-area="saude">saúde</button>
+          </div>
+        </div>
+
+        <button class="btn btn--primary btn--full" id="moment-save">salvar momento</button>
+        <button class="btn btn--text btn--full" data-close>fechar</button>
+      </div>
+    </div>
+
+    <!-- ───────── BOTÃO FLUTUANTE · pin de momento ───────── -->
+    <button class="pin-fab" id="pin-fab" aria-label="marcar momento">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 2L9.5 8.5 3 9l5 4.5L6 20l6-3.5 6 3.5-2-6.5L21 9l-6.5-.5z"/>
+      </svg>
+    </button>
+
     <!-- ───────── QUICK LOG · handle + drawer ───────── -->
     <button class="qd-handle" id="qd-handle" aria-label="abrir log rápido">
       <svg viewBox="0 0 12 40" width="12" height="40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
@@ -1165,6 +1338,26 @@
               </svg>
             </span>
             <span class="qd__name">humor</span>
+            <span class="qd__plus">+</span>
+          </button></li>
+          <li><button class="qd__item" data-type="spirit">
+            <span class="qd__icon">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="3.5"/>
+                <circle cx="12" cy="12" r="8" opacity="0.4"/>
+                <path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.4 1.4M17.6 17.6L19 19M5 19l1.4-1.4M17.6 6.4L19 5"/>
+              </svg>
+            </span>
+            <span class="qd__name">espírito</span>
+            <span class="qd__plus">+</span>
+          </button></li>
+          <li><button class="qd__item" data-type="moment">
+            <span class="qd__icon">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2L9.5 8.5 3 9l5 4.5L6 20l6-3.5 6 3.5-2-6.5L21 9l-6.5-.5z"/>
+              </svg>
+            </span>
+            <span class="qd__name">momento que me moveu</span>
             <span class="qd__plus">+</span>
           </button></li>
           <li><button class="qd__item" data-type="lab">

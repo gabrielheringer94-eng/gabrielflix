@@ -242,15 +242,94 @@ function openArea(key) {
   openSheet('sheet-area');
 }
 
+// current area key (set on open)
+let currentAreaKey = null;
+
+// histórico simulado: 1 = praticou, 0 = não
+const PRACTICE_HIST = {
+  espirit:  [1,0,0,0,0,0,0,0,0,0,0,0,0,0], // última prática há 13 dias
+  saude:    [1,1,0,1,1,1,0,1,1,0,1,1,1,0],
+  carreira: [1,1,1,1,1,0,0,1,1,1,1,1,0,0],
+  familia:  [0,0,1,0,0,0,0,1,0,0,0,0,0,1],
+  relac:    [0,0,0,0,1,0,0,0,0,0,0,0,0,0],
+  lazer:    [0,0,0,0,0,0,1,0,0,0,0,0,0,0],
+  desenv:   [1,1,0,1,0,1,0,1,0,0,1,0,1,0],
+  financas: [0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+};
+
+// override openArea to also render history if applicable
+const _origOpenArea = openArea;
+openArea = function(key) {
+  currentAreaKey = key;
+  _origOpenArea(key);
+  renderHistory(key);
+  resetPostPractice();
+};
+
+function renderHistory(key) {
+  const wrap = document.getElementById('area-history');
+  const dots = document.getElementById('history-dots');
+  if (!wrap || !dots) return;
+  // só mostra pra áreas que tem prática binária (espírito como âncora)
+  if (key === 'espirit') {
+    const arr = PRACTICE_HIST[key] || [];
+    dots.innerHTML = arr.map((v, i) => {
+      const cls = v ? 'h-dot--on' : 'h-dot--off';
+      return `<i class="h-dot ${cls}" title="${i === 13 ? 'hoje' : (13 - i) + 'd atrás'}"></i>`;
+    }).join('');
+    wrap.style.display = '';
+  } else {
+    wrap.style.display = 'none';
+  }
+}
+
+function resetPostPractice() {
+  const pp = document.getElementById('post-practice');
+  if (pp) pp.style.display = 'none';
+  const btn = document.getElementById('area-log-btn');
+  if (btn) { btn.style.display = ''; btn.style.opacity = ''; btn.disabled = false; }
+}
+
 const areaLogBtn = document.getElementById('area-log-btn');
 if (areaLogBtn) {
   areaLogBtn.addEventListener('click', () => {
-    areaLogBtn.textContent = '✓ registrado';
-    areaLogBtn.style.opacity = '0.7';
     hap(15);
-    setTimeout(() => { closeSheet(); areaLogBtn.style.opacity = ''; }, 600);
+    // pra espírito, mostrar slider pós-prática em vez de fechar
+    if (currentAreaKey === 'espirit') {
+      const pp = document.getElementById('post-practice');
+      if (pp) pp.style.display = '';
+      areaLogBtn.style.display = 'none';
+      // update history instantly: last dot fica ligado
+      const arr = PRACTICE_HIST[currentAreaKey] || [];
+      if (arr.length) {
+        arr[arr.length - 1] = 1;
+        renderHistory(currentAreaKey);
+      }
+    } else {
+      areaLogBtn.textContent = '✓ registrado';
+      areaLogBtn.style.opacity = '0.7';
+      setTimeout(() => { closeSheet(); areaLogBtn.style.opacity = ''; }, 600);
+    }
   });
 }
+
+// post-practice slider
+const ppSlider = document.getElementById('pp-slider');
+const ppValue  = document.getElementById('pp-value');
+if (ppSlider && ppValue) {
+  ppSlider.addEventListener('input', () => {
+    ppValue.textContent = ppSlider.value;
+    hap(2);
+  });
+}
+const ppSkip = document.getElementById('pp-skip');
+const ppSave = document.getElementById('pp-save');
+if (ppSkip) ppSkip.addEventListener('click', () => { closeSheet(); hap(8); });
+if (ppSave) ppSave.addEventListener('click', () => {
+  ppSave.textContent = '✓';
+  hap(15);
+  setTimeout(() => { closeSheet(); ppSave.textContent = 'salvar'; }, 500);
+});
 
 // ───── roda da vida ─────
 const AREAS = [
@@ -515,15 +594,176 @@ qd && qd.querySelectorAll('.qd__item').forEach((btn) => {
     hap(12);
     closeQd();
     setTimeout(() => {
-      if (type === 'mood')   goTo('mood');
-      if (type === 'lab')    goTo('labs');
-      if (type === 'water')  { goTo('home'); const m = document.querySelector('[data-add="200"]'); if (m) m.click(); }
+      if (type === 'mood')    goTo('mood');
+      if (type === 'lab')     goTo('labs');
+      if (type === 'water')   { goTo('home'); const m = document.querySelector('[data-add="200"]'); if (m) m.click(); }
       if (type === 'workout') goTo('home');
-      if (type === 'meal')   goTo('home');
-      if (type === 'sleep')  goTo('home');
+      if (type === 'meal')    goTo('home');
+      if (type === 'sleep')   goTo('home');
+      if (type === 'spirit')  openArea('espirit');
+      if (type === 'moment')  openSheet('sheet-moment');
     }, 120);
   });
 });
+
+// ───── PIN FAB · momento ─────
+const pinFab = document.getElementById('pin-fab');
+if (pinFab) pinFab.addEventListener('click', () => openSheet('sheet-moment'));
+
+// moment modal — chip multi-select (dentro de cada grupo)
+document.querySelectorAll('#sheet-moment .ob-chips').forEach((group) => {
+  group.querySelectorAll('.ob-chip').forEach((c) => {
+    c.addEventListener('click', () => {
+      c.classList.toggle('is-on');
+      hap(4);
+    });
+  });
+});
+
+const momentSave = document.getElementById('moment-save');
+if (momentSave) {
+  momentSave.addEventListener('click', () => {
+    const orig = momentSave.textContent;
+    momentSave.textContent = '✓ marcado';
+    momentSave.style.opacity = '0.75';
+    hap(18);
+    setTimeout(() => {
+      closeSheet();
+      momentSave.textContent = orig;
+      momentSave.style.opacity = '';
+      // limpa textarea e chips
+      const ta = document.getElementById('moment-text');
+      if (ta) ta.value = '';
+      document.querySelectorAll('#sheet-moment .ob-chip.is-on').forEach((c) => c.classList.remove('is-on'));
+    }, 700);
+  });
+}
+
+// ───── RITUAL SEMANAL ─────
+const ritualOpen = document.getElementById('open-ritual');
+if (ritualOpen) ritualOpen.addEventListener('click', () => {
+  openSheet('sheet-ritual');
+  renderRitualWheel();
+  // reset steps
+  showRitualStep('wheel');
+});
+
+function showRitualStep(name) {
+  ['wheel', 'reflect', 'done'].forEach((s) => {
+    const el = document.getElementById('ritual-step-' + s);
+    if (el) el.style.display = s === name ? '' : 'none';
+  });
+}
+
+const ritualToReflect = document.getElementById('ritual-to-reflect');
+if (ritualToReflect) ritualToReflect.addEventListener('click', () => { showRitualStep('reflect'); hap(8); });
+
+const ritualFinish = document.getElementById('ritual-finish');
+if (ritualFinish) ritualFinish.addEventListener('click', () => { showRitualStep('done'); hap(15); });
+
+// reflect slider value
+const reflectS1 = document.getElementById('reflect-s1');
+const reflectV1 = document.getElementById('reflect-v1');
+if (reflectS1 && reflectV1) {
+  reflectS1.addEventListener('input', () => {
+    reflectV1.textContent = reflectS1.value;
+    hap(2);
+  });
+}
+
+// reflect yes/no toggle
+document.querySelectorAll('#ritual-step-reflect .yn').forEach((b) => {
+  b.addEventListener('click', () => {
+    const grp = b.parentElement;
+    grp.querySelectorAll('.yn').forEach((x) => x.classList.toggle('is-on', x === b));
+    hap(6);
+  });
+});
+
+// render ritual wheel (clona AREAS)
+let ritualReady = false;
+const RITUAL_AREAS = AREAS.map((a) => ({ ...a }));
+
+function renderRitualWheel() {
+  if (ritualReady) return;
+  ritualReady = true;
+
+  const rSvg     = document.getElementById('ritual-wheel');
+  const rSpokes  = document.getElementById('ritual-wheel-spokes');
+  const rHandles = document.getElementById('ritual-wheel-handles');
+  const rLabels  = document.getElementById('ritual-wheel-labels');
+  const rShape   = document.getElementById('ritual-wheel-shape');
+  if (!rSvg) return;
+
+  rSpokes.innerHTML = RITUAL_AREAS.map((_, i) => {
+    const a = angleFor(i);
+    const x2 = Math.cos(a) * R_MAX;
+    const y2 = Math.sin(a) * R_MAX;
+    return `<line class="wheel__spoke" x1="0" y1="0" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}"/>`;
+  }).join('');
+
+  rLabels.innerHTML = RITUAL_AREAS.map((area, i) => {
+    const p = labelPointFor(i);
+    return `<text class="wheel__label" x="${p.x.toFixed(1)}" y="${p.y.toFixed(1)}">${area.label}</text>`;
+  }).join('');
+
+  function updateR() {
+    const pts = RITUAL_AREAS.map((a, i) => {
+      const p = pointFor(i, a.value);
+      return `${p.x.toFixed(1)},${p.y.toFixed(1)}`;
+    }).join(' ');
+    rShape.setAttribute('points', pts);
+
+    rHandles.innerHTML = RITUAL_AREAS.map((a, i) => {
+      const p = pointFor(i, a.value);
+      return `
+        <g data-i="${i}">
+          <circle class="wheel__handle" cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="9" data-i="${i}"/>
+          <text class="wheel__val" x="${p.x.toFixed(1)}" y="${(p.y + 3).toFixed(1)}">${a.value}</text>
+        </g>
+      `;
+    }).join('');
+
+    rHandles.querySelectorAll('.wheel__handle').forEach(bindR);
+  }
+
+  function bindR(handle) {
+    let dragging = false;
+    const i = parseInt(handle.dataset.i, 10);
+    const start = (ev) => { ev.preventDefault(); dragging = true; hap(6); };
+    const move = (ev) => {
+      if (!dragging) return;
+      const t = ev.touches ? ev.touches[0] : ev;
+      const pt = rSvg.createSVGPoint();
+      pt.x = t.clientX; pt.y = t.clientY;
+      const ctm = rSvg.getScreenCTM();
+      if (!ctm) return;
+      const p = pt.matrixTransform(ctm.inverse());
+      const a = angleFor(i);
+      const proj = p.x * Math.cos(a) + p.y * Math.sin(a);
+      const r = Math.max(R_MIN, Math.min(R_MAX, proj));
+      const v = Math.round(((r - R_MIN) / (R_MAX - R_MIN)) * 10);
+      if (v !== RITUAL_AREAS[i].value) {
+        RITUAL_AREAS[i].value = v;
+        updateR();
+        hap(3);
+      }
+    };
+    const end = () => { dragging = false; };
+    handle.addEventListener('mousedown', start);
+    handle.addEventListener('touchstart', start, { passive: false });
+    window.addEventListener('mousemove', move);
+    window.addEventListener('touchmove', move, { passive: false });
+    window.addEventListener('mouseup', end);
+    window.addEventListener('touchend', end);
+  }
+
+  updateR();
+}
+
+// "continuar" na tab Roda também abre o ritual (já que é a mesma coisa no onboarding)
+const rodaContinue = document.getElementById('roda-continue');
+if (rodaContinue) rodaContinue.addEventListener('click', () => { openSheet('sheet-ritual'); renderRitualWheel(); showRitualStep('wheel'); });
 
 // swipe from left edge to open
 let touchStartX = 0;
