@@ -718,9 +718,11 @@ function moodToHumorContrib() {
   const energy = parseInt(document.querySelector('[data-metric="energy"]').value, 10);
   const humor  = parseInt(document.querySelector('[data-metric="mood"]').value, 10);
   const anx    = parseInt(document.querySelector('[data-metric="anx"]').value, 10);
-  // (energia + humor + (5 - ansiedade)) / 15 * 30
-  const raw = (energy + humor + (5 - anx)) / 15;
-  return Math.round(raw * SCORE_WEIGHTS.humor);
+  // base positiva: energia + humor (cada ponto vale 3) → até 30 pts
+  // penalidade da ansiedade (cada ponto tira 1.5) → até -7.5 pts
+  // clamp em 0 pra não ficar negativo
+  const raw = (energy + humor) * 3 - anx * 1.5;
+  return Math.max(0, Math.round(raw));
 }
 
 function computeScore() {
