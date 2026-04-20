@@ -759,11 +759,86 @@ function stateWord(score) {
 
 function narrativeLine(score, humorContrib) {
   const h = humorContrib;
-  // regras simples pra prototipo — produção isso vira call pro Claude
   if (h >= 26) return 'humor alto puxou o dia. sono curto ainda pesa.';
   if (h >= 22) return 'dia em ritmo. treino ajudou, sono puxou.';
   if (h >= 16) return 'dia truncado. amanhã começa zerado.';
   return 'humor baixo pesou. respira, amanhã refaz.';
+}
+
+// ───── afirmações por faixa de score (6 buckets × 5 variações) ─────
+const AFFIRMATIONS = [
+  // 0-44 · precisa descanso (nurturing, zero cobrança)
+  [
+    'tudo bem não estar bem.',
+    'se cuide agora — recupera depois.',
+    'corpo pede descanso. ouça.',
+    'liga pra alguém. toma água. dorme cedo.',
+    'amanhã você cuida. hoje só passa.',
+    'dia difícil, não dia ruim.',
+  ],
+  // 45-59 · atenção (acolhedor + convite à pausa)
+  [
+    'respira — amanhã refaz.',
+    'tá pedindo uma pausa. ouve.',
+    'nem todo dia é alto. faz parte do ritmo.',
+    'amanhã começa sem culpa.',
+    'reconhece o que pesou. sem drama.',
+    'desacelera. sem pressa de virar o jogo.',
+  ],
+  // 60-69 · carregando (realista, acolhedor)
+  [
+    'amanhã começa em branco.',
+    'hoje foi hoje — descansa.',
+    'dia na média também é progresso.',
+    'não tá perfeito, tá dentro.',
+    'carregando energia pra amanhã.',
+    'uma engrenagem de cada vez.',
+  ],
+  // 70-79 · em ritmo (afirmativo, sem exagero)
+  [
+    'fluindo, sem drama.',
+    'tá no caminho. mantém.',
+    'pequenos ajustes e vira ótimo.',
+    'sem grandes desvios — bom sinal.',
+    'o ritmo tá teu.',
+    'constância é o truque.',
+  ],
+  // 80-89 · firme (reconhecimento + sustentabilidade)
+  [
+    'confia no processo.',
+    'pequenos passos, grande caminho.',
+    'tá no teu jogo.',
+    'sólido — e sustentável.',
+    'dia redondo. guarda essa sensação.',
+    'o que tu faz de novo hoje, amanhã é hábito.',
+  ],
+  // 90+ · voando (celebrativo, lembra que é mérito)
+  [
+    'tu tá em casa hoje.',
+    'esse ritmo é teu. guarda.',
+    'dia de pico. aproveita o impulso.',
+    'quando funciona, funciona.',
+    'consistência premiada.',
+    'corpo e mente alinhados — saboreia.',
+  ],
+];
+
+function dayHash() {
+  const d = new Date();
+  return d.getFullYear() * 10000 + (d.getMonth() + 1) * 100 + d.getDate();
+}
+
+function affirmationFor(score) {
+  let bucket = 0;
+  if (score >= 90)      bucket = 5;
+  else if (score >= 80) bucket = 4;
+  else if (score >= 70) bucket = 3;
+  else if (score >= 60) bucket = 2;
+  else if (score >= 45) bucket = 1;
+  else                  bucket = 0;
+  const list = AFFIRMATIONS[bucket];
+  const idx = (dayHash() + bucket * 7) % list.length;
+  return list[idx];
 }
 
 function lerp(a, b, t) { return a + (b - a) * t; }
@@ -835,12 +910,12 @@ function updateHeroScore() {
   // glow dinâmico (cor + intensidade baseados no score)
   updateGlow(total);
 
-  // narrativa protagonista: "Seu dia tá X. Y."
+  // narrativa protagonista: "Seu dia tá X. [afirmação contextual]"
   const stateW = stateWord(total);
-  const detail = narrativeLine(total, humorContrib);
-  const detailCap = detail.charAt(0).toUpperCase() + detail.slice(1);
+  const affirm = affirmationFor(total);
+  const affirmCap = affirm.charAt(0).toUpperCase() + affirm.slice(1);
   const nar = document.getElementById('hero-narrative');
-  if (nar) nar.innerHTML = `Seu dia tá <em id="hero-state-inline">${stateW}</em>. ${detailCap}`;
+  if (nar) nar.innerHTML = `Seu dia tá <em id="hero-state-inline">${stateW}</em>. ${affirmCap}`;
 
   // delta (linha de texto sutil)
   const deltaEl  = document.getElementById('hero-delta-line');
