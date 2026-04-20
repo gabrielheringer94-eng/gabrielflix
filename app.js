@@ -755,6 +755,41 @@ function narrativeLine(score, humorContrib) {
 function lerp(a, b, t) { return a + (b - a) * t; }
 function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
 
+function updateFigure(score) {
+  const t = clamp(score / 100, 0, 1);
+
+  // ângulo do braço: 25° (quase pendurado, score 0) → 150° (braços em V pra cima, score 100)
+  const angleDeg = 25 + t * 125;
+  const angleRad = angleDeg * Math.PI / 180;
+  const armLen = 22;
+  const shoulderY = -36;
+
+  const handX = armLen * Math.sin(angleRad);
+  const handY = shoulderY + armLen * Math.cos(angleRad);
+
+  const armL = document.getElementById('fig-arm-l');
+  const armR = document.getElementById('fig-arm-r');
+  if (armL) { armL.setAttribute('x2', (-handX).toFixed(1)); armL.setAttribute('y2', handY.toFixed(1)); }
+  if (armR) { armR.setAttribute('x2',   handX.toFixed(1)); armR.setAttribute('y2', handY.toFixed(1)); }
+
+  // pernas abrem levemente conforme score sobe (postura confiante)
+  const legSpread = 6 + t * 4; // 6 → 10
+  const legL = document.getElementById('fig-leg-l');
+  const legR = document.getElementById('fig-leg-r');
+  if (legL) legL.setAttribute('x2', (-legSpread).toFixed(1));
+  if (legR) legR.setAttribute('x2',   legSpread.toFixed(1));
+
+  // corpo ganha postura: baixo score = inclinação pra frente; alto = ereto / leve atrás
+  const bodyGroup = document.getElementById('fig-body-group');
+  if (bodyGroup) {
+    const tilt = -8 + t * 12; // -8° (slump) → +4° (ereto)
+    const liftY = -t * 3;     // sobe levemente quando feliz
+    bodyGroup.style.transform = `translateY(${liftY.toFixed(1)}px) rotate(${tilt.toFixed(1)}deg)`;
+    bodyGroup.style.transformOrigin = '0 50px';
+    bodyGroup.style.transition = 'transform 0.7s cubic-bezier(.2,.9,.2,1)';
+  }
+}
+
 function updateGlow(score) {
   // t = 0 → bronze dim · 0.5 → champagne · 1 → amarelo quente
   const t = clamp(score / 100, 0.2, 1);
@@ -819,6 +854,9 @@ function updateHeroScore() {
 
   // glow dinâmico (cor + intensidade baseados no score)
   updateGlow(total);
+
+  // figura humana (postura muda com o score)
+  updateFigure(total);
 
   // state word
   const stateEl = document.getElementById('hero-state');
