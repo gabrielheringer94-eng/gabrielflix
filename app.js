@@ -53,6 +53,12 @@ if (hero) {
   });
 }
 
+// ───── lab card click ─────
+const labOpen = document.getElementById('lab-open');
+if (labOpen) {
+  labOpen.addEventListener('click', () => openSheet('sheet-lab'));
+}
+
 // ───── WoW chart ─────
 const WOW_DATA = [62, 64, 60, 68, 66, 70, 72, 69, 74, 71, 76, 73, 75, 78];
 

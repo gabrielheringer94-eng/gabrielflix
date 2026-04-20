@@ -520,6 +520,67 @@
       </article>
     </section>
 
+    <!-- ───────── EXAMES ───────── -->
+    <section class="screen screen--labs" data-screen="labs">
+      <header class="top">
+        <span class="top__greet">exames</span>
+        <span class="top__beta">beta · grátis</span>
+      </header>
+
+      <div class="labs-intro">
+        <span class="eyebrow">seu mapa metabólico</span>
+        <h1 class="display">exames contam<br/>uma história.</h1>
+        <p class="lead">sobe teus exames dos últimos 3 meses. o circa cruza com teu dia-a-dia e te mostra o que tá conectado.</p>
+      </div>
+
+      <button class="lab-card" id="lab-open">
+        <div class="lab-card__top">
+          <span class="eyebrow">último exame</span>
+          <span class="lab-card__date">25 mar · 2026</span>
+        </div>
+        <h2 class="card__title">hemograma +<br/>perfil metabólico</h2>
+
+        <div class="lab-card__stats">
+          <span class="stat">
+            <b>47</b>
+            <small>marcadores</small>
+          </span>
+          <span class="stat stat--warn">
+            <b>2</b>
+            <small>alertas</small>
+          </span>
+          <span class="stat stat--ok">
+            <b>45</b>
+            <small>ok</small>
+          </span>
+        </div>
+
+        <div class="lab-card__markers">
+          <span class="marker marker--warn">homocisteína <i>28 µmol/L</i></span>
+          <span class="marker marker--warn">ferritina <i>484 ng/mL</i></span>
+        </div>
+
+        <span class="lab-card__cta">ver detalhes →</span>
+      </button>
+
+      <button class="upload-card">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 4v14M5 11l7-7 7 7"/>
+        </svg>
+        <div class="upload-card__text">
+          <strong>adicionar novo exame</strong>
+          <span>PDF, foto ou manual · os dados ficam só com você</span>
+        </div>
+      </button>
+
+      <div class="labs-foot">
+        <span class="eyebrow">na fase paga</span>
+        <p class="micro-note">
+          análise automática por IA · evolução de marcadores ao longo do tempo · alertas de desvio · sugestões semanais integradas a treino, comida, sono e roda da vida.
+        </p>
+      </div>
+    </section>
+
     <!-- ───────── MODAL · score breakdown ───────── -->
     <div class="sheet" id="sheet-score" aria-hidden="true">
       <div class="sheet__backdrop" data-close></div>
@@ -584,6 +645,50 @@
           </ul>
         </div>
 
+        <div class="sheet__section">
+          <span class="eyebrow">como é calculado</span>
+
+          <p class="lead lead--sm" style="margin-bottom:14px;">
+            1 número = 4 dimensões com pesos. humor pesa mais porque é o que o circa trata diferente.
+          </p>
+
+          <ul class="formula">
+            <li class="formula-row">
+              <div class="formula-head">
+                <span class="formula-name"><i class="fd" style="--c:var(--humor)"></i>humor</span>
+                <span class="formula-w">30%</span>
+              </div>
+              <span class="formula-desc">média dos check-ins do dia: <em>energia + humor − ansiedade</em>, normalizado.</span>
+            </li>
+            <li class="formula-row">
+              <div class="formula-head">
+                <span class="formula-name"><i class="fd" style="--c:var(--sono)"></i>sono</span>
+                <span class="formula-w">25%</span>
+              </div>
+              <span class="formula-desc">duração vs meta pessoal + qualidade (fragmentação, hora de dormir).</span>
+            </li>
+            <li class="formula-row">
+              <div class="formula-head">
+                <span class="formula-name"><i class="fd" style="--c:var(--comida)"></i>comida</span>
+                <span class="formula-w">25%</span>
+              </div>
+              <span class="formula-desc">aderência aos macros do dia + timing das refeições + hidratação.</span>
+            </li>
+            <li class="formula-row">
+              <div class="formula-head">
+                <span class="formula-name"><i class="fd" style="--c:var(--treino)"></i>treino</span>
+                <span class="formula-w">20%</span>
+              </div>
+              <span class="formula-desc">executado vs previsto + intensidade adequada ao ciclo de recuperação.</span>
+            </li>
+          </ul>
+
+          <p class="micro-note">
+            ★ por que humor pesa mais? porque performance sem saúde mental não se sustenta.
+            outros apps já contam caloria bem. o circa é sobre o conjunto.
+          </p>
+        </div>
+
         <button class="btn btn--ghost btn--full" data-close>fechar</button>
       </div>
     </div>
@@ -630,8 +735,105 @@
       </div>
     </div>
 
+    <!-- ───────── MODAL · detalhe do exame ───────── -->
+    <div class="sheet" id="sheet-lab" aria-hidden="true">
+      <div class="sheet__backdrop" data-close></div>
+      <div class="sheet__panel" role="dialog" aria-label="detalhe do exame">
+        <div class="sheet__grab"></div>
+
+        <div class="sheet__head">
+          <span class="eyebrow">exame · 25 mar · 2026</span>
+          <h2 class="display display--sm">hemograma +<br/>perfil metabólico</h2>
+          <p class="lead lead--sm">47 marcadores · <strong>2 alertas</strong> · 45 no range</p>
+        </div>
+
+        <div class="sheet__section">
+          <span class="eyebrow">alertas</span>
+
+          <article class="alert">
+            <div class="alert__head">
+              <span class="alert__name">homocisteína</span>
+              <span class="alert__val">28 <i>µmol/L</i></span>
+            </div>
+            <div class="alert__bar">
+              <i class="alert__range"></i>
+              <i class="alert__pos" style="left: 92%;"></i>
+            </div>
+            <div class="alert__legend">
+              <span>ref: &lt; 15</span>
+              <span class="alert__tag">+87%</span>
+            </div>
+            <p class="alert__body">
+              associado a fadiga, risco cardiovascular e metabolismo de metilação. geralmente puxado por baixo folato, B12 ou B6.
+            </p>
+
+            <span class="eyebrow eyebrow--sub">correlação com seu dia-a-dia</span>
+            <ul class="corr">
+              <li><i class="pull-dot pull-dot--down"></i>tua comida tá com <strong>pouco folato</strong> (baixo consumo de feijão, folhas escuras)</li>
+              <li><i class="pull-dot pull-dot--down"></i>padrão: <strong>sono curto</strong> (5h30 médio) aumenta estresse oxidativo</li>
+              <li><i class="pull-dot pull-dot--up"></i>teus treinos ajudam — mantém</li>
+            </ul>
+
+            <span class="eyebrow eyebrow--sub">sugestões pras próximas 8 semanas</span>
+            <ul class="sugg">
+              <li><i class="s-dot"></i>+ folato via alimentação: feijão preto, espinafre, abacate (3x/semana mínimo)</li>
+              <li><i class="s-dot"></i>suplementação B12 + B6 por 8 semanas</li>
+              <li><i class="s-dot"></i>meta sono: 7h+ (já refletido no teu score de hoje)</li>
+              <li><i class="s-dot"></i>refazer exame em 8 semanas pra medir</li>
+            </ul>
+          </article>
+
+          <article class="alert">
+            <div class="alert__head">
+              <span class="alert__name">ferritina</span>
+              <span class="alert__val">484 <i>ng/mL</i></span>
+            </div>
+            <div class="alert__bar">
+              <i class="alert__range"></i>
+              <i class="alert__pos" style="left: 96%;"></i>
+            </div>
+            <div class="alert__legend">
+              <span>ref: 30–300</span>
+              <span class="alert__tag">+61%</span>
+            </div>
+            <p class="alert__body">
+              estoque alto de ferro. pode indicar inflamação sistêmica, sobrecarga hepática ou predisposição genética (hemocromatose).
+            </p>
+
+            <span class="eyebrow eyebrow--sub">ação prioritária</span>
+            <ul class="sugg">
+              <li><i class="s-dot"></i>conversa médica antes de qualquer ação — esse não é pra resolver sozinho.</li>
+              <li><i class="s-dot"></i>reduzir carne vermelha temporariamente até reavaliação.</li>
+              <li><i class="s-dot"></i>o circa vai monitorar o consumo e te avisar.</li>
+            </ul>
+          </article>
+        </div>
+
+        <div class="sheet__section">
+          <span class="eyebrow">marcadores em ordem</span>
+          <ul class="marker-list">
+            <li class="ok"><span>hemograma completo</span><i>✓ normal</i></li>
+            <li class="ok"><span>glicose em jejum</span><i>89 mg/dL</i></li>
+            <li class="ok"><span>HbA1c</span><i>5.2%</i></li>
+            <li class="ok"><span>colesterol total</span><i>178 mg/dL</i></li>
+            <li class="ok"><span>HDL</span><i>58 mg/dL</i></li>
+            <li class="ok"><span>LDL</span><i>104 mg/dL</i></li>
+            <li class="ok"><span>triglicérides</span><i>82 mg/dL</i></li>
+            <li class="ok"><span>vitamina D</span><i>42 ng/mL</i></li>
+            <li class="ok"><span>TSH</span><i>1.8 µUI/mL</i></li>
+            <li class="warn"><span>homocisteína</span><i>28 µmol/L</i></li>
+            <li class="warn"><span>ferritina</span><i>484 ng/mL</i></li>
+            <li class="ok"><span>PCR ultrassensível</span><i>0.4 mg/L</i></li>
+            <li class="all"><span class="mute">+ 35 marcadores no range</span><i></i></li>
+          </ul>
+        </div>
+
+        <button class="btn btn--ghost btn--full" data-close>fechar</button>
+      </div>
+    </div>
+
     <!-- ───────── BOTTOM NAV ───────── -->
-    <nav class="tabbar" role="tablist">
+    <nav class="tabbar tabbar--5" role="tablist">
       <button class="tab is-active" data-target="home" aria-label="home">
         <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5">
           <circle cx="12" cy="12" r="9"/>
@@ -654,6 +856,13 @@
           <circle cx="15" cy="10" r=".8" fill="currentColor"/>
         </svg>
         <span>humor</span>
+      </button>
+      <button class="tab" data-target="labs" aria-label="exames">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 3h6v4l5 10a3 3 0 0 1-2.7 4.3H10.7A3 3 0 0 1 8 17l5-10V3"/>
+          <path d="M9.5 13h5"/>
+        </svg>
+        <span>exames</span>
       </button>
       <button class="tab" data-target="insight" aria-label="insights">
         <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5">
