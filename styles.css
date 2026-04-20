@@ -1287,6 +1287,41 @@ button.hero:active { transform: scale(0.985); }
 .ob-progress i.is-done { background: var(--accent); }
 .ob-progress i.is-on { background: var(--fg); }
 
+/* progress bar cont\u00ednua (para onboarding com muitos passos) */
+.ob-progress--bar {
+  position: relative;
+  align-items: center;
+  gap: 10px;
+}
+.ob-progress--bar::before {
+  content: '';
+  flex: 1;
+  height: 2px;
+  background: var(--fg-faint);
+  border-radius: 1px;
+  position: relative;
+}
+.ob-progress--bar .ob-progress__fill {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 2px;
+  background: var(--accent);
+  border-radius: 1px;
+  box-shadow: 0 0 6px rgba(212,184,150,0.4);
+  transition: width .5s cubic-bezier(.2,.9,.2,1);
+  width: 0%;
+  max-width: calc(100% - 52px);
+}
+.ob-progress--bar .ob-progress__label {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--fg-muted);
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+}
+
 .ob-slides {
   flex: 1;
   overflow: hidden;
@@ -1559,6 +1594,164 @@ button.hero:active { transform: scale(0.985); }
 .btn:disabled {
   opacity: 0.35;
   pointer-events: none;
+}
+
+/* ═════════════════════════════════════════
+   QUIZ DE PERFIL (onboarding steps 1-10)
+   ═════════════════════════════════════════ */
+
+/* intro do quiz */
+.quiz-intro .display { margin-bottom: 16px; }
+.quiz-intro .lead { margin-bottom: 32px; }
+.quiz-meta {
+  text-align: center;
+  margin-top: 14px;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--fg-dim);
+}
+
+/* slides de perguntas */
+.quiz-question .eyebrow {
+  margin-bottom: 14px;
+  color: var(--accent);
+}
+.quiz-text {
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: clamp(22px, 5.2vw, 30px);
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  color: var(--fg);
+  margin-bottom: 28px;
+}
+.quiz-options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+.quiz-opt {
+  width: 100%;
+  text-align: left;
+  padding: 16px 18px;
+  border-radius: var(--r-md);
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--divider);
+  color: var(--fg-muted);
+  font-family: var(--sans);
+  font-size: 13.5px;
+  font-weight: 300;
+  line-height: 1.45;
+  cursor: pointer;
+  transition: all .2s ease;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+.quiz-opt:hover {
+  border-color: rgba(212,184,150,0.35);
+  background: rgba(212,184,150,0.04);
+  color: var(--fg);
+}
+.quiz-opt:active { transform: scale(0.99); }
+.quiz-opt.is-on {
+  border-color: var(--accent);
+  background: rgba(212,184,150,0.08);
+  color: var(--accent);
+}
+.quiz-letter {
+  display: inline-block;
+  min-width: 14px;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 13px;
+  color: var(--fg-dim);
+  flex-shrink: 0;
+}
+.quiz-opt.is-on .quiz-letter { color: var(--accent); }
+.quiz-opt__text { flex: 1; }
+
+/* resultado do perfil */
+.quiz-result .eyebrow {
+  color: var(--accent);
+  text-align: left;
+  margin-bottom: 6px;
+}
+.quiz-result__name {
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: clamp(36px, 9vw, 52px);
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+  color: var(--fg);
+  margin-bottom: 14px;
+  text-shadow: 0 0 16px rgba(212,184,150,0.3);
+}
+.quiz-result .lead {
+  margin-bottom: 24px;
+  max-width: none;
+}
+
+.profile-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.profile-card {
+  padding: 14px 16px;
+  border-radius: var(--r-md);
+  background: rgba(255,255,255,0.015);
+  border: 1px solid var(--divider);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.profile-card .eyebrow {
+  margin-bottom: 0;
+  font-size: 9.5px;
+  color: var(--fg-muted);
+}
+.profile-card strong {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 15px;
+  letter-spacing: -0.005em;
+  color: var(--fg);
+}
+
+.profile-plan {
+  padding: 18px;
+  border-radius: var(--r-md);
+  background: rgba(212,184,150,0.05);
+  border: 1px solid var(--accent-dim);
+  margin-bottom: 16px;
+}
+.profile-plan .eyebrow {
+  margin-bottom: 8px;
+  color: var(--accent);
+}
+.profile-plan p {
+  font-size: 13px;
+  color: var(--fg-muted);
+  line-height: 1.55;
+}
+
+.profile-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 24px;
+}
+.profile-tag {
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 5px 12px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--divider);
+  color: var(--fg-muted);
 }
 
 /* ───── tab bar 5 colunas ───── */

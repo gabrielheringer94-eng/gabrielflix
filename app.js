@@ -1412,16 +1412,227 @@ if (qdPanel) {
 }
 
 // ───── ONBOARDING ─────
-const TOTAL_STEPS = 8;
+const TOTAL_STEPS = 18;
 let obStep = 1;
-const onboard      = document.getElementById('onboard');
-const obSlides     = document.querySelectorAll('.ob-slide');
-const obProgress   = document.getElementById('ob-progress');
-const obBackBtn    = document.getElementById('ob-back');
-const obCloseBtn   = document.getElementById('ob-close');
+const onboard       = document.getElementById('onboard');
+const obSlides      = document.querySelectorAll('.ob-slide');
+const obProgress    = document.getElementById('ob-progress');
+const obProgressFill= document.getElementById('ob-progress-fill');
+const obProgressLbl = document.getElementById('ob-progress-label');
+const obBackBtn     = document.getElementById('ob-back');
+const obCloseBtn    = document.getElementById('ob-close');
+
+// ───── PERFIL QUIZ · dados ─────
+const QUIZ_QUESTIONS = [
+  {
+    texto: 'Você decide mudar sua alimentação. O que acontece na primeira semana?',
+    opcoes: [
+      { texto: 'Sigo à risca — pesquiso tudo, monto planilha, zero desvio.', perfis: ['arquiteto', 'inabalavel'] },
+      { texto: 'Começo intenso, mas no quarto dia já escapei duas vezes.', perfis: ['ignitor', 'relampago'] },
+      { texto: 'Vai bem se meu humor estiver em dia. Se não, ignoro tudo.', perfis: ['flutuante'] },
+      { texto: 'Adapto conforme a semana — não sigo rígido, mas não abandono.', perfis: ['navegador'] }
+    ]
+  },
+  {
+    texto: 'Você treinou pesado três dias seguidos. Corpo pede descanso. O que faz?',
+    opcoes: [
+      { texto: 'Descanso — o dado manda. Corpo falou, eu ouço.', perfis: ['arquiteto', 'navegador'] },
+      { texto: 'Treino mesmo assim. Descanso parece preguiça.', perfis: ['inabalavel'] },
+      { texto: 'Depende de como estou me sentindo emocionalmente.', perfis: ['flutuante'] },
+      { texto: 'Faço um treino leve — não consigo parar completamente.', perfis: ['ignitor', 'relampago'] }
+    ]
+  },
+  {
+    texto: 'Você errou a dieta num fim de semana. Na segunda-feira, como está?',
+    opcoes: [
+      { texto: 'Retomo como se nada tivesse acontecido. Erro faz parte.', perfis: ['navegador', 'inabalavel'] },
+      { texto: 'Me culpo muito e compenso exagerando nos treinos.', perfis: ['ignitor'] },
+      { texto: 'Fico desmotivado por dias. Preciso de tempo pra voltar.', perfis: ['flutuante'] },
+      { texto: 'Analiso o que errei e ajusto o plano.', perfis: ['arquiteto'] }
+    ]
+  },
+  {
+    texto: 'Como você reage quando os resultados demoram a aparecer?',
+    opcoes: [
+      { texto: 'Perco o interesse. Preciso ver resultado rápido.', perfis: ['relampago', 'ignitor'] },
+      { texto: 'Reviso o método — talvez esteja fazendo errado.', perfis: ['arquiteto'] },
+      { texto: 'Continuo. Confio que tá funcionando mesmo sem ver.', perfis: ['navegador', 'inabalavel'] },
+      { texto: 'Depende do meu estado emocional — se não tô bem, abandono.', perfis: ['flutuante'] }
+    ]
+  },
+  {
+    texto: 'Você descobre um novo protocolo de treino. O que acontece?',
+    opcoes: [
+      { texto: 'Pesquiso tudo antes de começar. Só começo quando entender 100%.', perfis: ['arquiteto'] },
+      { texto: 'Começo amanhã mesmo. Parece incrível.', perfis: ['ignitor', 'relampago'] },
+      { texto: 'Vejo se faz sentido agora. Talvez em outro momento.', perfis: ['flutuante', 'navegador'] },
+      { texto: 'Avalio se encaixa na rotina atual. Se sim, incluo com ajuste.', perfis: ['inabalavel'] }
+    ]
+  },
+  {
+    texto: 'O que mais te tira de uma rotina de saúde?',
+    opcoes: [
+      { texto: 'Estresse emocional ou relacionamentos em crise.', perfis: ['flutuante'] },
+      { texto: 'Falta de resultado visível rápido.', perfis: ['relampago', 'ignitor'] },
+      { texto: 'Mudança de rotina — viagem, evento, imprevisto.', perfis: ['arquiteto'] },
+      { texto: 'Quase nada. Sigo mesmo quando tá difícil.', perfis: ['inabalavel', 'navegador'] }
+    ]
+  },
+  {
+    texto: 'Como você prefere acompanhar tua evolução?',
+    opcoes: [
+      { texto: 'Números detalhados — peso, medidas, percentual de gordura.', perfis: ['arquiteto'] },
+      { texto: 'Como estou me sentindo no dia a dia.', perfis: ['flutuante', 'navegador'] },
+      { texto: 'Comparando fotos e resultados a cada 30 dias.', perfis: ['relampago', 'ignitor'] },
+      { texto: 'Sequências e streaks — consistência no calendário.', perfis: ['inabalavel'] }
+    ]
+  },
+  {
+    texto: 'Tu tá no melhor momento da tua rotina. O que provavelmente acontece em 60 dias?',
+    opcoes: [
+      { texto: 'Vou estar ainda melhor — mantenho e evoluo devagar.', perfis: ['navegador', 'inabalavel'] },
+      { texto: 'Provavelmente terá oscilado bastante — altos e baixos.', perfis: ['flutuante'] },
+      { texto: 'Já terá passado — durto intenso, depois pausa.', perfis: ['ignitor'] },
+      { texto: 'Estarei num novo protocolo mais otimizado.', perfis: ['arquiteto', 'relampago'] }
+    ]
+  }
+];
+
+const PROFILES_DATA = {
+  ignitor: {
+    nome: 'O Ignitor',
+    label: 'perfil 01',
+    desc: 'Você começa com intensidade máxima e vive de picos. Quando está on, está completamente on. O desafio é criar estruturas que sustentam o movimento quando a chama diminui.',
+    forca: 'Motivação explosiva',
+    cego: 'Consistência zero',
+    plano: 'Metas de 7 dias, não de meses. Ritmo curto com recompensa imediata. Evite ciclos longos sem feedback visível — eles apagam sua chama.',
+    tags: ['alto começo', 'recaída rápida', 'precisa de âncora']
+  },
+  arquiteto: {
+    nome: 'O Arquiteto',
+    label: 'perfil 02',
+    desc: 'Você precisa entender o porquê antes de agir — e quando age, age com precisão. Seu maior inimigo é a paralisia: a análise infinita que atrasa a execução. O plano perfeito que nunca começa.',
+    forca: 'Disciplina estruturada',
+    cego: 'Paralisia por análise',
+    plano: 'Dashboard com métricas claras, mas prazo pra agir mesmo sem certeza total. O dado bom o suficiente vale mais que o perfeito que demora.',
+    tags: ['orientado a dados', 'sobre planeja', 'execução tardia']
+  },
+  flutuante: {
+    nome: 'O Flutuante',
+    label: 'perfil 03',
+    desc: 'Você é intuitivo e profundamente conectado com seu estado interno. Vai extraordinariamente bem quando está bem — e isso é raro. O trabalho é criar âncoras mínimas que funcionem mesmo nos dias difíceis.',
+    forca: 'Autoconhecimento alto',
+    cego: 'Abandona em crises',
+    plano: 'Rotinas mínimas de 5 min que existem mesmo nos piores dias. O objetivo não é o ótimo — é o mínimo que mantém o fio.',
+    tags: ['humor como motor', 'volátil', 'autoconsciente']
+  },
+  relampago: {
+    nome: 'O Relâmpago',
+    label: 'perfil 04',
+    desc: 'Você produz resultados expressivos em ciclos curtos e tem capacidade de foco intenso quando motivado. Sem retorno visível rápido, o interesse some. Não é inconstância — é sprint, não maratona.',
+    forca: 'Resultados imediatos',
+    cego: 'Perde o fôlego',
+    plano: 'Sprints mensais com marcos claros. Conectar cada ação de hoje com impacto futuro visível — transformar o longo prazo em vários curtos prazos.',
+    tags: ['sprint mentalidade', 'foco intenso', 'precisa de marco']
+  },
+  navegador: {
+    nome: 'O Navegador',
+    label: 'perfil 05',
+    desc: 'Você é o mais resiliente dos seis. Adaptável, consistente, raramente para completamente. A evolução é lenta mas real — o problema é que pode ficar tanto tempo na zona de conforto que para de crescer.',
+    forca: 'Consistência total',
+    cego: 'Zona de conforto crônica',
+    plano: 'Desafios progressivos inseridos na rotina pra quebrar platô. Comparativos históricos pra tornar a evolução invisível visível.',
+    tags: ['longo prazo', 'resiliente', 'estagna sem estímulo']
+  },
+  inabalavel: {
+    nome: 'O Inabalável',
+    label: 'perfil 06',
+    desc: 'Disciplina de ferro. Você segue a rotina independente de como está — e isso é uma força que poucos têm. O perigo é não saber quando parar: ignorar sinais do corpo até que eles gritem.',
+    forca: 'Consistência máxima',
+    cego: 'Ignora sinais do corpo',
+    plano: 'Aprender a ler o cansaço como dado, não como fraqueza. Descanso ativo é parte da performance — não o oposto dela.',
+    tags: ['ferro na rotina', 'risco de burnout', 'alta disciplina']
+  }
+};
+
+let quizVotes = {};
+window.CIRCA_PROFILE = null;
+try {
+  const saved = localStorage.getItem('circa_profile');
+  if (saved && typeof saved === 'string') window.CIRCA_PROFILE = saved;
+} catch (e) {}
+
+function renderQuizQuestion(slideEl) {
+  const qindex = parseInt(slideEl.dataset.qindex, 10);
+  const q = QUIZ_QUESTIONS[qindex];
+  const letras = ['a', 'b', 'c', 'd'];
+  slideEl.innerHTML = `
+    <span class="eyebrow">pergunta ${String(qindex + 1).padStart(2, '0')} · perfil</span>
+    <h1 class="display quiz-text">${q.texto}</h1>
+    <div class="quiz-options">
+      ${q.opcoes.map((op, i) => `
+        <button class="quiz-opt" data-profiles='${JSON.stringify(op.perfis)}'>
+          <span class="quiz-letter">${letras[i]}.</span>
+          <span class="quiz-opt__text">${op.texto}</span>
+        </button>
+      `).join('')}
+    </div>
+  `;
+  slideEl.querySelectorAll('.quiz-opt').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const perfis = JSON.parse(btn.dataset.profiles);
+      perfis.forEach((p) => { quizVotes[p] = (quizVotes[p] || 0) + 1; });
+      slideEl.querySelectorAll('.quiz-opt').forEach((b) => b.classList.remove('is-on'));
+      btn.classList.add('is-on');
+      hap(10);
+      setTimeout(() => nextStep(), 380);
+    });
+  });
+}
+
+function renderQuizResult(slideEl) {
+  const keys = Object.keys(quizVotes);
+  const winner = keys.length
+    ? keys.reduce((a, b) => (quizVotes[a] > quizVotes[b] ? a : b))
+    : 'navegador';
+  const p = PROFILES_DATA[winner];
+  window.CIRCA_PROFILE = winner;
+  try { localStorage.setItem('circa_profile', winner); } catch (e) {}
+
+  slideEl.innerHTML = `
+    <span class="eyebrow">${p.label} · seu perfil circa</span>
+    <h1 class="display quiz-result__name">${p.nome}</h1>
+    <p class="lead">${p.desc}</p>
+
+    <div class="profile-cards">
+      <div class="profile-card">
+        <span class="eyebrow">força</span>
+        <strong>${p.forca}</strong>
+      </div>
+      <div class="profile-card">
+        <span class="eyebrow">ponto cego</span>
+        <strong>${p.cego}</strong>
+      </div>
+    </div>
+
+    <div class="profile-plan">
+      <span class="eyebrow">plano de ação</span>
+      <p>${p.plano}</p>
+    </div>
+
+    <div class="profile-tags">
+      ${p.tags.map((t) => `<span class="profile-tag">${t}</span>`).join('')}
+    </div>
+
+    <button class="btn btn--primary btn--full ob-next">continuar setup</button>
+  `;
+  // o novo botão precisa re-hookar o ob-next (listeners não migram com innerHTML)
+  slideEl.querySelector('.ob-next').addEventListener('click', () => nextStep());
+}
 
 function openOnboard() {
   obStep = 1;
+  quizVotes = {};
   renderObStep();
   onboard.classList.add('is-open');
   onboard.setAttribute('aria-hidden', 'false');
@@ -1439,16 +1650,24 @@ function renderObStep() {
   obSlides.forEach((s) => {
     s.classList.toggle('is-active', parseInt(s.dataset.step, 10) === obStep);
   });
-  obProgress.querySelectorAll('i').forEach((d, i) => {
-    d.classList.toggle('is-done', i + 1 < obStep);
-    d.classList.toggle('is-on',   i + 1 === obStep);
-  });
+  // progress bar contínua
+  if (obProgressFill) obProgressFill.style.width = ((obStep - 1) / (TOTAL_STEPS - 1) * 100).toFixed(1) + '%';
+  if (obProgressLbl)  obProgressLbl.textContent = obStep + ' / ' + TOTAL_STEPS;
   obBackBtn.disabled = obStep === 1;
 
-  // initialize wheel on step 2
-  if (obStep === 2) renderObWheel();
-  // initialize goal wheel on step 3
-  if (obStep === 3) renderObGoalWheel();
+  // quiz questions: steps 2-9
+  if (obStep >= 2 && obStep <= 9) {
+    const slide = document.querySelector('.ob-slide[data-step="' + obStep + '"]');
+    if (slide) renderQuizQuestion(slide);
+  }
+  // quiz result: step 10
+  if (obStep === 10) {
+    const slide = document.querySelector('.ob-slide[data-step="10"]');
+    if (slide) renderQuizResult(slide);
+  }
+  // rodas do onboarding agora em steps 12 e 13
+  if (obStep === 12) renderObWheel();
+  if (obStep === 13) renderObGoalWheel();
 }
 
 function nextStep() {
@@ -1477,12 +1696,12 @@ document.querySelectorAll('.ob-next').forEach((btn) => {
   });
 });
 
-// step 1 · motivação (single select)
-document.querySelectorAll('.ob-slide[data-step="1"] .ob-card').forEach((card) => {
+// step 11 · motivação (single select)
+document.querySelectorAll('.ob-slide[data-step="11"] .ob-card').forEach((card) => {
   card.addEventListener('click', () => {
-    document.querySelectorAll('.ob-slide[data-step="1"] .ob-card').forEach((c) => c.classList.remove('is-on'));
+    document.querySelectorAll('.ob-slide[data-step="11"] .ob-card').forEach((c) => c.classList.remove('is-on'));
     card.classList.add('is-on');
-    document.querySelector('.ob-slide[data-step="1"] .ob-next').disabled = false;
+    document.querySelector('.ob-slide[data-step="11"] .ob-next').disabled = false;
     hap(8);
   });
 });
@@ -1506,12 +1725,12 @@ document.querySelectorAll('.ob-chip').forEach((chip) => {
   });
 });
 
-// step 6 · sentido (single)
-document.querySelectorAll('.ob-slide[data-step="6"] .ob-card').forEach((card) => {
+// step 16 · sentido (single)
+document.querySelectorAll('.ob-slide[data-step="16"] .ob-card').forEach((card) => {
   card.addEventListener('click', () => {
-    document.querySelectorAll('.ob-slide[data-step="6"] .ob-card').forEach((c) => c.classList.remove('is-on'));
+    document.querySelectorAll('.ob-slide[data-step="16"] .ob-card').forEach((c) => c.classList.remove('is-on'));
     card.classList.add('is-on');
-    document.querySelector('.ob-slide[data-step="6"] .ob-next').disabled = false;
+    document.querySelector('.ob-slide[data-step="16"] .ob-next').disabled = false;
     hap(8);
   });
 });
