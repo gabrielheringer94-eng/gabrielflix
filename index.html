@@ -1048,6 +1048,27 @@
       </div>
     </div>
 
+    <!-- ───────── MODAL · significado do status (energia/humor/ansiedade) ───────── -->
+    <div class="sheet" id="sheet-status" aria-hidden="true">
+      <div class="sheet__backdrop" data-close></div>
+      <div class="sheet__panel" role="dialog" aria-label="significado do status">
+        <div class="sheet__grab"></div>
+
+        <div class="sheet__head">
+          <span class="eyebrow" id="status-eyebrow">indicador</span>
+          <h2 class="display display--sm" id="status-title">—</h2>
+          <p class="lead lead--sm" id="status-hint">no momento você escolheu este nível.</p>
+        </div>
+
+        <div class="sheet__section">
+          <span class="eyebrow">todos os níveis</span>
+          <ul class="level-list" id="status-levels"></ul>
+        </div>
+
+        <button class="btn btn--ghost btn--full" data-close>fechar</button>
+      </div>
+    </div>
+
     <!-- ───────── MODAL · detalhe do dia de treino ───────── -->
     <div class="sheet" id="sheet-day" aria-hidden="true">
       <div class="sheet__backdrop" data-close></div>

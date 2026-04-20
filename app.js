@@ -881,6 +881,85 @@ const MOOD_WORDS = {
   anx:    ['calma', 'leve', 'controlada', 'alta', 'tensa', 'em crise'],
 };
 
+// definições detalhadas pra sheet de status (abre ao tapar na palavra)
+const STATUS_DEFS = {
+  energy: {
+    title: 'energia',
+    hint:  'quanto teu corpo tem de bateria disponível pro dia.',
+    levels: [
+      { desc: 'exausto. corpo pedindo pra parar. comum após madrugada, doença ou semanas seguidas de déficit.' },
+      { desc: 'bateria no fim. consegue funcionar, mas cada tarefa pesa. treino pesado hoje vai custar.' },
+      { desc: 'engrenando devagar. faz o essencial sem brilho extra. ritmo mínimo sustentável.' },
+      { desc: 'operando bem. dá conta do dia normal sem tropeço. treino moderado tranquilo.' },
+      { desc: 'disposto. sobra pra fazer o extra — treino sério, foco prolongado, decisões difíceis.' },
+      { desc: 'transbordando. dia com capacidade de alto rendimento em qualquer coisa que escolher.' },
+    ]
+  },
+  mood: {
+    title: 'humor',
+    hint:  'como você tá se sentindo emocionalmente agora.',
+    levels: [
+      { desc: 'tristeza forte ou irritação difícil de controlar. dia pedindo cuidado extra — conversa, descanso, apoio.' },
+      { desc: 'pra baixo, apagado. nada empolga muito. dia tá pesando.' },
+      { desc: 'oscilando. alguns momentos bons, outros pesam. sensível a gatilho.' },
+      { desc: 'estável. nem pra cima nem pra baixo. neutro funcional.' },
+      { desc: 'satisfeito. dia com mais momentos bons que ruins. sensação de tá no lugar certo.' },
+      { desc: 'animado, leve, conectado. dia redondo emocionalmente — aproveita.' },
+    ]
+  },
+  anx: {
+    title: 'ansiedade',
+    hint:  'quanto ruído mental tá atrapalhando o presente. aqui, menos é melhor.',
+    levels: [
+      { desc: 'presente, relaxado. mente sem ruído de fundo. estado ideal.' },
+      { desc: 'um alerta de fundo, mas sob controle. normal em dia de tarefa importante.' },
+      { desc: 'preocupação existe mas não atrapalha o que precisa ser feito.' },
+      { desc: 'começa a interferir — em decisões, sono, foco. atenção aqui.' },
+      { desc: 'corpo tenso, ruminação constante. custa executar tarefa básica. dia pesado.' },
+      { desc: 'sintomas físicos, pensamento acelerado, paralisia. procure apoio — não tem que passar sozinho.' },
+    ]
+  },
+};
+
+function openStatus(metric, value) {
+  const def = STATUS_DEFS[metric];
+  const words = MOOD_WORDS[metric];
+  if (!def || !words) return;
+
+  document.getElementById('status-eyebrow').textContent = def.title + ' · nível ' + value + '/5';
+  document.getElementById('status-title').textContent = words[value];
+  document.getElementById('status-hint').textContent = def.hint;
+
+  const ul = document.getElementById('status-levels');
+  ul.innerHTML = def.levels.map((lv, i) => `
+    <li class="level-item ${i === value ? 'is-current' : ''}">
+      <span class="level-num">${i}</span>
+      <span class="level-name">${words[i]}</span>
+      <span class="level-desc">${lv.desc}</span>
+    </li>
+  `).join('');
+
+  openSheet('sheet-status');
+}
+
+// tornar a palavra clicável pra abrir explicação
+document.querySelectorAll('.slider__word').forEach((el) => {
+  el.setAttribute('role', 'button');
+  el.setAttribute('tabindex', '0');
+  const handler = (e) => {
+    e.stopPropagation();
+    const metric = el.dataset.word;
+    const input = document.querySelector(`[data-metric="${metric}"]`);
+    if (!input) return;
+    openStatus(metric, parseInt(input.value, 10));
+    hap(8);
+  };
+  el.addEventListener('click', handler);
+  el.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handler(e); }
+  });
+});
+
 // para ansiedade, valores altos = ruim (semântica invertida)
 const MOOD_WARN_AT = {
   energy: (v) => v <= 1,      // energia baixa = warn

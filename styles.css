@@ -671,9 +671,91 @@ strong { color: var(--fg); font-weight: 500; }
   margin-right: 12px;
   letter-spacing: -0.005em;
   opacity: 0.9;
+  cursor: pointer;
+  border-bottom: 1px dotted rgba(212,184,150,0.4);
+  padding-bottom: 1px;
+  transition: color .15s ease, border-color .15s ease;
+  -webkit-tap-highlight-color: transparent;
 }
-.slider__word--warn { color: #E8A87C; }
+.slider__word:hover {
+  color: var(--accent-hi);
+  border-bottom-color: var(--accent);
+}
+.slider__word--warn {
+  color: #E8A87C;
+  border-bottom-color: rgba(232,168,124,0.4);
+}
+.slider__word--warn:hover { border-bottom-color: #E8A87C; }
 .slider__word--low  { color: var(--fg-muted); }
+
+/* ───── sheet de status · lista de níveis ───── */
+.level-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 8px;
+}
+.level-item {
+  display: grid;
+  grid-template-columns: 22px auto 1fr;
+  column-gap: 14px;
+  row-gap: 2px;
+  padding: 14px 10px;
+  border-radius: var(--r-md);
+  align-items: baseline;
+  border: 1px solid transparent;
+  transition: background .2s ease, border-color .2s ease;
+}
+.level-num {
+  font-family: var(--serif);
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--fg-dim);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+.level-name {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 15px;
+  color: var(--fg-muted);
+  letter-spacing: -0.005em;
+}
+.level-desc {
+  grid-column: 2 / span 2;
+  font-size: 12.5px;
+  color: var(--fg-muted);
+  line-height: 1.5;
+  margin-top: 2px;
+}
+.level-item.is-current {
+  background: rgba(212,184,150,0.08);
+  border-color: var(--accent-dim);
+}
+.level-item.is-current .level-num {
+  color: var(--accent);
+}
+.level-item.is-current .level-name {
+  color: var(--accent);
+  opacity: 1;
+}
+.level-item.is-current .level-desc {
+  color: var(--fg);
+}
+.level-item.is-current::after {
+  content: 'você aqui';
+  grid-column: 3;
+  justify-self: end;
+  align-self: start;
+  font-size: 9.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  padding: 3px 8px;
+  border: 1px solid var(--accent-dim);
+  border-radius: var(--r-pill);
+}
 
 .slider__ticks {
   display: flex;
