@@ -468,6 +468,26 @@ strong { color: var(--fg); font-weight: 500; }
   font-style: italic;
   color: var(--accent);
 }
+
+/* header do card de próxima refeição (ícone + eyebrow) */
+.action-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.action-head .eyebrow { margin-bottom: 0; }
+.action-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: rgba(212,184,150,0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  flex-shrink: 0;
+}
 .card__footer {
   display: flex;
   justify-content: space-between;
