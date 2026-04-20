@@ -485,6 +485,29 @@ function computeScore() {
   return moodToHumorContrib() + SCORE_BASE.sono + SCORE_BASE.comida + SCORE_BASE.treino;
 }
 
+// yesterday's score (static for prototype demo)
+const YESTERDAY_SCORE = 66;
+const META_3M = 82;
+const PATTERN_RANGE = [65, 78]; // "homens ativos aos sábados"
+
+function stateWord(score) {
+  if (score >= 90) return 'voando';
+  if (score >= 80) return 'firme';
+  if (score >= 70) return 'em ritmo';
+  if (score >= 60) return 'carregando';
+  if (score >= 45) return 'atenção';
+  return 'precisa descanso';
+}
+
+function narrativeLine(score, humorContrib) {
+  const h = humorContrib;
+  // regras simples pra prototipo — produção isso vira call pro Claude
+  if (h >= 26) return 'humor alto puxou o dia. sono curto ainda pesa.';
+  if (h >= 22) return 'dia em ritmo. treino ajudou, sono puxou.';
+  if (h >= 16) return 'dia truncado. amanhã começa zerado.';
+  return 'humor baixo pesou. respira, amanhã refaz.';
+}
+
 function updateHeroScore() {
   const total = computeScore();
   const humorContrib = moodToHumorContrib();
@@ -493,11 +516,50 @@ function updateHeroScore() {
   const heroVal = document.querySelector('.hero__value');
   if (heroVal) heroVal.textContent = total;
 
-  // ring fill (stroke-dasharray "N 100" where N = score if 0-100)
+  // ring fill
   const ringFill = document.querySelector('.ring__fill');
   if (ringFill) ringFill.setAttribute('stroke-dasharray', `${total} 100`);
 
-  // humor row in sheet-score breakdown
+  // state word
+  const stateEl = document.getElementById('hero-state');
+  if (stateEl) stateEl.textContent = stateWord(total);
+
+  // delta chip
+  const deltaEl  = document.getElementById('hero-delta');
+  const deltaVal = document.getElementById('delta-val');
+  const deltaArr = deltaEl && deltaEl.querySelector('.delta-arrow');
+  const diff = total - YESTERDAY_SCORE;
+  if (deltaEl && deltaVal && deltaArr) {
+    deltaEl.classList.remove('is-down', 'is-flat');
+    if (diff > 0)      { deltaArr.textContent = '▲'; deltaVal.textContent = diff; }
+    else if (diff < 0) { deltaArr.textContent = '▼'; deltaVal.textContent = Math.abs(diff); deltaEl.classList.add('is-down'); }
+    else               { deltaArr.textContent = '─'; deltaVal.textContent = 0; deltaEl.classList.add('is-flat'); }
+  }
+
+  // narrative
+  const nar = document.getElementById('hero-narrative');
+  if (nar) nar.textContent = narrativeLine(total, humorContrib);
+
+  // meta 3m
+  const goalGap = document.getElementById('hc-goal-gap');
+  const goalBar = document.getElementById('hc-goal-bar');
+  if (goalGap) {
+    const gap = META_3M - total;
+    goalGap.textContent = gap > 0 ? `caminho +${gap}` : gap < 0 ? `superou ${Math.abs(gap)}` : 'na meta';
+  }
+  if (goalBar) goalBar.style.width = Math.min(100, (total / META_3M) * 100) + '%';
+
+  // pattern pin position (where you sit in the demographic range)
+  const pin = document.getElementById('hc-range-pin');
+  if (pin) {
+    // range vai de 50 a 90 pra visualização (contexto amplo); faixa é 65-78 dentro disso
+    const min = 50, max = 90;
+    const clamped = Math.max(min, Math.min(max, total));
+    const left = ((clamped - min) / (max - min)) * 100;
+    pin.style.left = left + '%';
+  }
+
+  // humor row no sheet-score breakdown
   const humorRow = document.querySelector('.breakdown .bd-row:nth-child(1)');
   if (humorRow) {
     const pct = Math.round((humorContrib / SCORE_WEIGHTS.humor) * 100);
