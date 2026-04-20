@@ -705,24 +705,64 @@ strong { color: var(--fg); font-weight: 500; }
   stroke-linejoin: round;
   transition: d 0.15s ease;
 }
+/* área invisível de toque (~40px) — expande o hit target */
+.wheel__hit {
+  fill: transparent;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
 .wheel__handle {
   fill: var(--bg);
   stroke: var(--accent);
   stroke-width: 1.5;
-  cursor: grab;
-  transition: r 0.2s ease;
+  cursor: pointer;
+  transition: r 0.2s ease, stroke-width 0.2s ease;
+  pointer-events: none;
 }
-.wheel__handle:hover { r: 11; }
-.wheel__handle:active { cursor: grabbing; }
 .wheel__val {
   font-family: var(--sans);
-  font-size: 9px;
+  font-size: 10px;
   font-weight: 600;
   fill: var(--accent);
   text-anchor: middle;
   dominant-baseline: middle;
   pointer-events: none;
   user-select: none;
+}
+
+/* estado travado (padrão da aba Roda) */
+.wheel.is-locked .wheel__handle {
+  stroke-width: 1.2;
+  opacity: 0.85;
+}
+.wheel.is-locked .wheel__shape {
+  stroke-dasharray: none;
+  opacity: 0.9;
+}
+
+/* estado editando — handles pulsam sutilmente, cursor muda */
+.wheel:not(.is-locked) .wheel__hit { cursor: grab; }
+.wheel:not(.is-locked) .wheel__hit:active { cursor: grabbing; }
+.wheel:not(.is-locked) .wheel__handle {
+  stroke-width: 2;
+  animation: handlePulse 2.4s ease-in-out infinite;
+}
+.wheel:not(.is-locked) .wheel__grp:hover .wheel__handle {
+  r: 13;
+}
+@keyframes handlePulse {
+  0%, 100% { filter: drop-shadow(0 0 2px rgba(212,184,150,0.3)); }
+  50%      { filter: drop-shadow(0 0 8px rgba(212,184,150,0.7)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .wheel__handle { animation: none !important; }
+}
+
+/* botão superior de editar quando ativo */
+#wheel-edit-toggle.is-active {
+  color: var(--accent);
+  background: rgba(212, 184, 150, 0.08);
+  border-radius: 8px;
 }
 .wheel__label {
   font-family: var(--sans);

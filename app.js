@@ -645,23 +645,27 @@ function updateShape() {
     const p = pointFor(i, a.value);
     return `
       <g class="wheel__grp" data-i="${i}">
-        <circle class="wheel__handle" cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="9" data-i="${i}"/>
+        <circle class="wheel__hit" cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="20" data-i="${i}"/>
+        <circle class="wheel__handle" cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="11" data-i="${i}"/>
         <text class="wheel__val" x="${p.x.toFixed(1)}" y="${(p.y + 3).toFixed(1)}">${a.value}</text>
       </g>
     `;
   }).join('');
 
-  handlesEl.querySelectorAll('.wheel__handle').forEach(attachHandle);
+  handlesEl.querySelectorAll('.wheel__grp').forEach(attachHandle);
 }
 
-function attachHandle(handle) {
+let wheelEditing = false;
+
+function attachHandle(grp) {
   let dragging = false;
   let moved = false;
   let startPt = null;
-  const i = parseInt(handle.dataset.i, 10);
+  const i = parseInt(grp.dataset.i, 10);
 
   const start = (ev) => {
     ev.preventDefault();
+    ev.stopPropagation();
     dragging = true;
     moved = false;
     startPt = getSvgPoint(ev);
@@ -675,8 +679,10 @@ function attachHandle(handle) {
     if (startPt) {
       const dx = pt.x - startPt.x;
       const dy = pt.y - startPt.y;
-      if (Math.hypot(dx, dy) > 4) moved = true;
+      if (Math.hypot(dx, dy) > 8) moved = true;
     }
+    // LOCKED: só detecta se moveu (pra distinguir tap de drag), mas não altera valor
+    if (!wheelEditing) return;
     const a = angleFor(i);
     const projX = Math.cos(a);
     const projY = Math.sin(a);
@@ -698,8 +704,8 @@ function attachHandle(handle) {
     moved = false;
   };
 
-  handle.addEventListener('mousedown', start);
-  handle.addEventListener('touchstart', start, { passive: false });
+  grp.addEventListener('mousedown', start);
+  grp.addEventListener('touchstart', start, { passive: false });
   window.addEventListener('mousemove', move);
   window.addEventListener('touchmove', move, { passive: false });
   window.addEventListener('mouseup', end);
@@ -1240,9 +1246,29 @@ function renderRitualWheel() {
   updateR();
 }
 
-// "continuar" na tab Roda também abre o ritual (já que é a mesma coisa no onboarding)
-const rodaContinue = document.getElementById('roda-continue');
-if (rodaContinue) rodaContinue.addEventListener('click', () => { openSheet('sheet-ritual'); renderRitualWheel(); showRitualStep('wheel'); });
+// ───── Roda · toggle lock/edit mode ─────
+const wheelEl        = document.getElementById('wheel');
+const wheelEditBtn   = document.getElementById('wheel-edit-btn');
+const wheelEditTop   = document.getElementById('wheel-edit-toggle');
+const wheelModeLabel = document.getElementById('wheel-mode-label');
+
+function setWheelEditMode(editing) {
+  wheelEditing = editing;
+  if (wheelEl) wheelEl.classList.toggle('is-locked', !editing);
+  if (wheelEditBtn) {
+    wheelEditBtn.textContent = editing ? 'concluir edição' : 'editar roda';
+    wheelEditBtn.classList.toggle('btn--ghost', editing);
+    wheelEditBtn.classList.toggle('btn--primary', !editing);
+  }
+  if (wheelEditTop) wheelEditTop.classList.toggle('is-active', editing);
+  if (wheelModeLabel) wheelModeLabel.textContent = editing
+    ? 'arraste cada área pra ajustar · toque pra detalhes'
+    : 'toque nas áreas pra ver detalhes';
+  hap(10);
+}
+
+if (wheelEditBtn) wheelEditBtn.addEventListener('click', () => setWheelEditMode(!wheelEditing));
+if (wheelEditTop) wheelEditTop.addEventListener('click', () => setWheelEditMode(!wheelEditing));
 
 // swipe from left edge to open
 let touchStartX = 0;
