@@ -101,11 +101,39 @@ strong { color: var(--fg); font-weight: 500; }
   justify-content: space-between;
   padding-top: env(safe-area-inset-top);
   margin-bottom: 8px;
+  gap: 10px;
 }
 .top__greet {
   font-size: 13px;
   color: var(--fg-muted);
   letter-spacing: 0.01em;
+  flex: 1;
+  text-align: right;
+  margin-right: 8px;
+}
+
+/* marca circa no canto superior esquerdo */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--accent);
+  text-decoration: none;
+}
+.brand__mark {
+  width: 32px;
+  height: 32px;
+  display: block;
+  border-radius: 8px;
+  flex-shrink: 0;
+  filter: drop-shadow(0 0 10px rgba(212, 184, 150, 0.25));
+}
+.brand__name {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 16px;
+  letter-spacing: -0.01em;
+  color: var(--fg);
 }
 .top__step {
   font-size: 11px;

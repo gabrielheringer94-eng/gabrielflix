@@ -1,0 +1,25 @@
+{
+  "name": "Circa",
+  "short_name": "Circa",
+  "description": "Companheiro diário de saúde e ritmo.",
+  "start_url": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "theme_color": "#0F0E0D",
+  "background_color": "#0F0E0D",
+  "lang": "pt-BR",
+  "icons": [
+    {
+      "src": "circa-logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "circa-logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
