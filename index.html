@@ -391,7 +391,10 @@
 
       <div class="sliders">
         <div class="slider">
-          <span class="slider__label">energia</span>
+          <div class="slider__head">
+            <span class="slider__label">energia</span>
+            <span class="slider__value"><b data-value="energy">3</b><i>/ 5</i></span>
+          </div>
           <div class="slider__track">
             <span class="slider__icon slider__icon--l" aria-hidden="true">
               <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
@@ -400,7 +403,7 @@
                 <line x1="18" y1="17" x2="18" y2="14" opacity="0.35"/>
               </svg>
             </span>
-            <input type="range" min="0" max="100" value="55" class="slider__input" data-metric="energy" />
+            <input type="range" min="0" max="5" step="1" value="3" class="slider__input" data-metric="energy" />
             <span class="slider__icon slider__icon--r" aria-hidden="true">
               <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
                 <line x1="6" y1="17" x2="6" y2="12"/>
@@ -409,39 +412,54 @@
               </svg>
             </span>
           </div>
+          <div class="slider__ticks" aria-hidden="true">
+            <span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
+          </div>
         </div>
 
         <div class="slider">
-          <span class="slider__label">humor</span>
+          <div class="slider__head">
+            <span class="slider__label">humor</span>
+            <span class="slider__value"><b data-value="mood">4</b><i>/ 5</i></span>
+          </div>
           <div class="slider__track">
             <span class="slider__icon slider__icon--l" aria-hidden="true">
               <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
                 <path d="M5 14c3 3 11 3 14 0"/>
               </svg>
             </span>
-            <input type="range" min="0" max="100" value="72" class="slider__input" data-metric="mood" />
+            <input type="range" min="0" max="5" step="1" value="4" class="slider__input" data-metric="mood" />
             <span class="slider__icon slider__icon--r" aria-hidden="true">
               <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
                 <path d="M5 10c3-3 11-3 14 0"/>
               </svg>
             </span>
           </div>
+          <div class="slider__ticks" aria-hidden="true">
+            <span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
+          </div>
         </div>
 
         <div class="slider">
-          <span class="slider__label">ansiedade</span>
+          <div class="slider__head">
+            <span class="slider__label">ansiedade</span>
+            <span class="slider__value"><b data-value="anx">1</b><i>/ 5</i></span>
+          </div>
           <div class="slider__track">
             <span class="slider__icon slider__icon--l" aria-hidden="true">
               <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
                 <line x1="4" y1="12" x2="20" y2="12"/>
               </svg>
             </span>
-            <input type="range" min="0" max="100" value="28" class="slider__input" data-metric="anx" />
+            <input type="range" min="0" max="5" step="1" value="1" class="slider__input" data-metric="anx" />
             <span class="slider__icon slider__icon--r" aria-hidden="true">
               <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
                 <path d="M4 12q2-4 4 0t4 0t4 0t4 0"/>
               </svg>
             </span>
+          </div>
+          <div class="slider__ticks" aria-hidden="true">
+            <span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
           </div>
         </div>
       </div>

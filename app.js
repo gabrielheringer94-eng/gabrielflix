@@ -284,7 +284,11 @@ if (svg) renderWheel();
 
 // ───── mood sliders ─────
 document.querySelectorAll('.slider__input').forEach((input) => {
-  input.addEventListener('input', () => hap(2));
+  const metric = input.dataset.metric;
+  const valEl = document.querySelector(`[data-value="${metric}"]`);
+  const sync = () => { if (valEl) valEl.textContent = input.value; };
+  sync();
+  input.addEventListener('input', () => { sync(); hap(2); });
   input.addEventListener('change', () => hap(10));
 });
 
@@ -299,14 +303,18 @@ document.querySelectorAll('.screen--mood .btn--primary').forEach((btn) => {
   });
 });
 
-// ───── "comi" colapsa o card ─────
+// ───── "comi" <-> "desfazer" (reversível) ─────
 document.querySelectorAll('.card--action .btn--primary').forEach((btn) => {
+  const originalLabel = btn.textContent;
+  const card = btn.closest('.card--action');
+  const trocaBtn = card && card.querySelector('.btn--ghost');
   btn.addEventListener('click', () => {
-    const card = btn.closest('.card--action');
     if (!card) return;
-    card.classList.add('is-done');
-    btn.disabled = true;
-    hap(15);
+    const done = card.classList.toggle('is-done');
+    btn.textContent = done ? 'desfazer' : originalLabel;
+    btn.classList.toggle('btn--undo', done);
+    if (trocaBtn) trocaBtn.disabled = done;
+    hap(done ? 15 : 8);
   });
 });
 

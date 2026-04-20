@@ -426,13 +426,46 @@ strong { color: var(--fg); font-weight: 500; }
   gap: 40px;
   margin-bottom: 48px;
 }
+.slider__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
 .slider__label {
-  display: block;
   font-size: 10px;
   letter-spacing: 0.24em;
   text-transform: uppercase;
   color: var(--accent);
-  margin-bottom: 16px;
+}
+.slider__value {
+  font-family: var(--serif);
+  font-size: 22px;
+  color: var(--fg);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+.slider__value b {
+  font-weight: 400;
+  color: var(--fg);
+}
+.slider__value i {
+  font-style: normal;
+  font-size: 12px;
+  color: var(--fg-dim);
+  margin-left: 4px;
+  font-family: var(--sans);
+  letter-spacing: 0;
+}
+
+.slider__ticks {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 36px 0;
+  font-size: 9.5px;
+  font-variant-numeric: tabular-nums;
+  color: var(--fg-dim);
+  letter-spacing: 0.05em;
 }
 .slider__track {
   display: flex;
@@ -715,13 +748,26 @@ button.hero:active { transform: scale(0.985); }
 
 /* ───── card collapse anim (comi) ───── */
 .card.is-done {
-  opacity: 0.5;
-  transform: scale(0.97);
-  transition: all .4s ease;
+  opacity: 0.55;
+  transform: scale(0.98);
+  transition: all .35s ease;
 }
 .card.is-done .card__title::after {
   content: ' ✓';
   color: var(--accent);
+}
+.card.is-done .card__cta { opacity: 1; }
+
+/* botão em modo "desfazer" — mais discreto */
+.btn--undo {
+  background: transparent !important;
+  color: var(--fg-muted) !important;
+  border: 1px solid var(--divider) !important;
+  font-weight: 500 !important;
+}
+.btn--undo:hover {
+  color: var(--fg) !important;
+  border-color: rgba(212,184,150,0.35) !important;
 }
 
 /* ───── ONBOARDING overlay ───── */
