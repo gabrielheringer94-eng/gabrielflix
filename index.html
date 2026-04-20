@@ -699,6 +699,48 @@
         </div>
       </button>
 
+      <div class="labs-divider">
+        <span>composição corporal</span>
+      </div>
+
+      <button class="lab-card lab-card--body" id="body-open">
+        <div class="lab-card__top">
+          <span class="eyebrow">última biompedância</span>
+          <span class="lab-card__date">20 abr · 2026</span>
+        </div>
+        <h2 class="card__title">
+          idade metabólica <em>31</em><br/>
+          <span class="mute small">1 ano mais jovem que a real</span>
+        </h2>
+
+        <div class="lab-card__stats">
+          <span class="stat">
+            <b>72.4</b>
+            <small>kg</small>
+          </span>
+          <span class="stat stat--ok">
+            <b>41.9</b>
+            <small>músculo %</small>
+          </span>
+          <span class="stat stat--warn">
+            <b>20.8</b>
+            <small>gordura %</small>
+          </span>
+        </div>
+
+        <span class="lab-card__cta">ver composição →</span>
+      </button>
+
+      <button class="upload-card" id="body-add-btn-top">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 4v14M5 11l7-7 7 7"/>
+        </svg>
+        <div class="upload-card__text">
+          <strong>nova medição</strong>
+          <span>manual agora · foto da balança depois (v2)</span>
+        </div>
+      </button>
+
       <div class="labs-foot">
         <span class="eyebrow">na fase paga</span>
         <p class="micro-note">
@@ -1094,6 +1136,172 @@
         </div>
 
         <button class="btn btn--ghost btn--full" data-close>fechar</button>
+      </div>
+    </div>
+
+    <!-- ───────── MODAL · composição corporal ───────── -->
+    <div class="sheet" id="sheet-body" aria-hidden="true">
+      <div class="sheet__backdrop" data-close></div>
+      <div class="sheet__panel" role="dialog" aria-label="composição corporal">
+        <div class="sheet__grab"></div>
+
+        <div class="sheet__head">
+          <span class="eyebrow">biompedância · 20 abr 2026</span>
+        </div>
+
+        <div class="body-hero">
+          <span class="body-hero__age">31</span>
+          <p class="body-hero__caption">
+            teu corpo tá <em>1 ano mais jovem</em><br/>
+            que tua idade real.
+          </p>
+        </div>
+
+        <div class="sheet__section">
+          <div class="body-weight">
+            <div class="body-weight__row">
+              <span class="eyebrow">peso</span>
+              <strong>72.4 <i>kg</i></strong>
+            </div>
+            <div class="body-weight__scale">
+              <div class="bw-zones">
+                <i class="bw-zone bw-zone--low"></i>
+                <i class="bw-zone bw-zone--ok"></i>
+                <i class="bw-zone bw-zone--high"></i>
+                <i class="bw-zone bw-zone--obese"></i>
+              </div>
+              <i class="bw-pin" style="left: 52%"></i>
+              <div class="bw-labels">
+                <span>baixo</span>
+                <span>saudável</span>
+                <span>alto</span>
+                <span>obeso</span>
+              </div>
+            </div>
+          </div>
+          <p class="body-delta"><span class="delta-arrow">▼</span> <b>0.3 kg</b> vs última medição</p>
+        </div>
+
+        <div class="sheet__section">
+          <span class="eyebrow">composição</span>
+          <ul class="body-metrics">
+            <li class="bm-row bm-ok">
+              <span class="bm-name">IMC</span>
+              <span class="bm-val">24.2</span>
+              <span class="bm-tag">saudável</span>
+            </li>
+            <li class="bm-row bm-warn">
+              <span class="bm-name">gordura</span>
+              <span class="bm-val">20.8%</span>
+              <span class="bm-tag">alerta suave</span>
+            </li>
+            <li class="bm-row bm-great">
+              <span class="bm-name">músculo</span>
+              <span class="bm-val">41.9%</span>
+              <span class="bm-tag">excelente</span>
+            </li>
+            <li class="bm-row bm-ok">
+              <span class="bm-name">água</span>
+              <span class="bm-val">55.2%</span>
+              <span class="bm-tag">saudável</span>
+            </li>
+            <li class="bm-row bm-ok">
+              <span class="bm-name">metabolismo basal</span>
+              <span class="bm-val">1625 <i>kcal/dia</i></span>
+              <span class="bm-tag">teu chão</span>
+            </li>
+            <li class="bm-row bm-ok">
+              <span class="bm-name">gordura visceral</span>
+              <span class="bm-val">8.5</span>
+              <span class="bm-tag">saudável</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="sheet__section">
+          <span class="eyebrow">correlação com teu dia-a-dia</span>
+          <ul class="corr">
+            <li><i class="pull-dot pull-dot--up"></i>tua <strong>massa muscular</strong> tá acima da média pra tua idade — treino tá pagando</li>
+            <li><i class="pull-dot pull-dot--up"></i>hidratação corporal bate com tua meta diária de <strong>2.8L</strong></li>
+            <li><i class="s-dot"></i>BMR <strong>1625</strong> + tua atividade → meta calórica diária <strong>2200–2500</strong></li>
+            <li><i class="pull-dot pull-dot--down"></i>gordura visceral pede atenção junto com <strong>homocisteína</strong> (exame 25 mar)</li>
+          </ul>
+        </div>
+
+        <div class="sheet__section">
+          <span class="eyebrow">evolução do peso · 12 semanas</span>
+          <svg class="wow" viewBox="0 0 320 100" preserveAspectRatio="none" aria-hidden="true">
+            <defs>
+              <linearGradient id="bodyFill" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#D4B896" stop-opacity="0.32"/>
+                <stop offset="100%" stop-color="#D4B896" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+            <path id="body-area" d="" fill="url(#bodyFill)"/>
+            <path id="body-line" d="" fill="none" stroke="#D4B896" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle id="body-dot" r="3.5" fill="#E8C9A0"/>
+          </svg>
+          <div class="wow-legend">
+            <span><i class="lg-dot" style="background:var(--accent)"></i>peso semanal · kg</span>
+          </div>
+        </div>
+
+        <button class="btn btn--primary btn--full" id="body-add-btn">+ nova medição</button>
+        <button class="btn btn--ghost btn--full" data-close>fechar</button>
+      </div>
+    </div>
+
+    <!-- ───────── MODAL · entrada de nova medição ───────── -->
+    <div class="sheet" id="sheet-body-input" aria-hidden="true">
+      <div class="sheet__backdrop" data-close></div>
+      <div class="sheet__panel" role="dialog" aria-label="nova medição">
+        <div class="sheet__grab"></div>
+
+        <div class="sheet__head">
+          <span class="eyebrow">nova medição</span>
+          <h2 class="display display--sm">composição<br/>corporal</h2>
+          <p class="lead lead--sm">digita os números da tua balança · só os essenciais.</p>
+        </div>
+
+        <div class="sheet__section">
+          <div class="ob-grid-2">
+            <label class="ob-field">
+              <span>peso (kg)</span>
+              <input type="number" step="0.1" value="72.4" />
+            </label>
+            <label class="ob-field">
+              <span>gordura %</span>
+              <input type="number" step="0.1" value="20.8" />
+            </label>
+            <label class="ob-field">
+              <span>músculo %</span>
+              <input type="number" step="0.1" value="41.9" />
+            </label>
+            <label class="ob-field">
+              <span>água %</span>
+              <input type="number" step="0.1" value="55.2" />
+            </label>
+            <label class="ob-field">
+              <span>BMR (kcal)</span>
+              <input type="number" step="1" value="1625" />
+            </label>
+            <label class="ob-field">
+              <span>visceral</span>
+              <input type="number" step="0.1" value="8.5" />
+            </label>
+            <label class="ob-field">
+              <span>idade metab.</span>
+              <input type="number" step="1" value="31" />
+            </label>
+            <label class="ob-field">
+              <span>data</span>
+              <input type="date" value="2026-04-20" />
+            </label>
+          </div>
+        </div>
+
+        <button class="btn btn--primary btn--full" id="body-input-save">salvar medição</button>
+        <button class="btn btn--text btn--full" data-close>cancelar</button>
       </div>
     </div>
 
