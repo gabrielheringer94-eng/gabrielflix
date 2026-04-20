@@ -508,6 +508,55 @@ function narrativeLine(score, humorContrib) {
   return 'humor baixo pesou. respira, amanhã refaz.';
 }
 
+function lerp(a, b, t) { return a + (b - a) * t; }
+function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+
+function updateGlow(score) {
+  // t = 0 → bronze dim · 0.5 → champagne · 1 → amarelo quente
+  const t = clamp(score / 100, 0.2, 1);
+
+  // cor do stop "alto" do gradiente (mais claro/amarelo em scores altos)
+  const r = Math.round(lerp(150, 255, t));
+  const g = Math.round(lerp(118, 224, t));
+  const b = Math.round(lerp(80, 130, t));
+
+  // cor do stop "baixo" do gradiente (um tom abaixo pro contraste interno)
+  const rLo = Math.round(lerp(125, 235, t));
+  const gLo = Math.round(lerp(95, 185, t));
+  const bLo = Math.round(lerp(65, 95, t));
+
+  const strength = lerp(0.35, 1.15, t); // intensidade do glow
+
+  // set CSS vars no root pra halo + anel
+  const root = document.documentElement;
+  root.style.setProperty('--glow-rgb', `${r}, ${g}, ${b}`);
+  root.style.setProperty('--glow-strength', strength);
+
+  // drop-shadow multi-camada no anel (mais amarelo + mais forte conforme sobe)
+  root.style.setProperty('--ring-shadow', `
+    drop-shadow(0 0 4px rgba(${r},${g},${b},${(strength * 1.0).toFixed(2)}))
+    drop-shadow(0 0 14px rgba(${r},${g},${b},${(strength * 0.65).toFixed(2)}))
+    drop-shadow(0 0 34px rgba(${r},${g},${b},${(strength * 0.4).toFixed(2)}))
+    drop-shadow(0 0 70px rgba(${r},${g},${b},${(strength * 0.22).toFixed(2)}))
+  `);
+
+  // gradient stops do anel
+  const stopLo = document.querySelector('#ringGrad stop:first-child');
+  const stopHi = document.querySelector('#ringGrad stop:last-child');
+  if (stopLo) stopLo.setAttribute('stop-color', `rgb(${r},${g},${b})`);
+  if (stopHi) stopHi.setAttribute('stop-color', `rgb(${rLo},${gLo},${bLo})`);
+
+  // glow também no número e na palavra de estado
+  const heroVal = document.querySelector('.hero__value');
+  if (heroVal) {
+    heroVal.style.textShadow = `0 0 ${(12 + t * 24).toFixed(0)}px rgba(${r},${g},${b},${(strength * 0.35).toFixed(2)})`;
+  }
+  const stateEl = document.getElementById('hero-state');
+  if (stateEl) {
+    stateEl.style.textShadow = `0 0 ${(10 + t * 18).toFixed(0)}px rgba(${r},${g},${b},${(strength * 0.5).toFixed(2)})`;
+  }
+}
+
 function updateHeroScore() {
   const total = computeScore();
   const humorContrib = moodToHumorContrib();
@@ -519,6 +568,9 @@ function updateHeroScore() {
   // ring fill
   const ringFill = document.querySelector('.ring__fill');
   if (ringFill) ringFill.setAttribute('stroke-dasharray', `${total} 100`);
+
+  // glow dinâmico (cor + intensidade baseados no score)
+  updateGlow(total);
 
   // state word
   const stateEl = document.getElementById('hero-state');
