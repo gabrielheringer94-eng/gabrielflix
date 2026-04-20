@@ -357,19 +357,12 @@
           </div>
         </button>
         <div class="water-cta">
+          <button class="water-add water-sub" data-add="-200"><span>−</span> 200</button>
           <button class="water-add" data-add="200"><span>+</span> 200 ml</button>
           <button class="water-add" data-add="500"><span>+</span> 500 ml</button>
         </div>
       </div>
 
-      <div class="card card--quick">
-        <span class="eyebrow">log rápido</span>
-        <div class="quick">
-          <button class="quick__item"><span>+ </span>refeição</button>
-          <button class="quick__item"><span>+ </span>treino</button>
-          <button class="quick__item"><span>+ </span>sono</button>
-        </div>
-      </div>
     </section>
 
     <!-- ───────── RODA DA VIDA ───────── -->
@@ -441,7 +434,7 @@
         <div class="slider">
           <div class="slider__head">
             <span class="slider__label">energia</span>
-            <span class="slider__value"><b data-value="energy">3</b><i>/ 5</i></span>
+            <span class="slider__value"><b data-value="energy">4</b><i>/ 5</i></span>
           </div>
           <div class="slider__track">
             <span class="slider__icon slider__icon--l" aria-hidden="true">
@@ -451,7 +444,7 @@
                 <line x1="18" y1="17" x2="18" y2="14" opacity="0.35"/>
               </svg>
             </span>
-            <input type="range" min="0" max="5" step="1" value="3" class="slider__input" data-metric="energy" />
+            <input type="range" min="0" max="5" step="1" value="4" class="slider__input" data-metric="energy" />
             <span class="slider__icon slider__icon--r" aria-hidden="true">
               <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
                 <line x1="6" y1="17" x2="6" y2="12"/>
@@ -468,7 +461,7 @@
         <div class="slider">
           <div class="slider__head">
             <span class="slider__label">humor</span>
-            <span class="slider__value"><b data-value="mood">4</b><i>/ 5</i></span>
+            <span class="slider__value"><b data-value="mood">5</b><i>/ 5</i></span>
           </div>
           <div class="slider__track">
             <span class="slider__icon slider__icon--l" aria-hidden="true">
@@ -476,7 +469,7 @@
                 <path d="M5 14c3 3 11 3 14 0"/>
               </svg>
             </span>
-            <input type="range" min="0" max="5" step="1" value="4" class="slider__input" data-metric="mood" />
+            <input type="range" min="0" max="5" step="1" value="5" class="slider__input" data-metric="mood" />
             <span class="slider__icon slider__icon--r" aria-hidden="true">
               <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
                 <path d="M5 10c3-3 11-3 14 0"/>
@@ -978,6 +971,22 @@
           <p class="lead lead--sm">cruzando treino, sono, comida, água e exame de 25 mar.</p>
         </div>
 
+        <div class="review-tldr">
+          <span class="eyebrow">resumo</span>
+          <p class="review-tldr__body">
+            você treinou bem, mas a <strong>recuperação tá limitada por sono e hidratação</strong>.
+            semana que vem: dormir mais nas noites pré-treino, beber +1L nos dias de atividade,
+            e começar suplementação pra homocisteína.
+          </p>
+
+          <span class="eyebrow eyebrow--sub">3 ações prioritárias</span>
+          <ul class="sugg">
+            <li><i class="s-dot"></i><strong>7h de sono</strong> nas 3 noites antes da bola</li>
+            <li><i class="s-dot"></i><strong>+1L de água</strong> nos dias de atividade</li>
+            <li><i class="s-dot"></i><strong>folato + B12</strong> começando hoje</li>
+          </ul>
+        </div>
+
         <div class="sheet__section">
           <span class="eyebrow">volume do treino</span>
           <ul class="corr">
@@ -1088,6 +1097,89 @@
 
         <button class="btn btn--ghost btn--full" data-close>fechar</button>
       </div>
+    </div>
+
+    <!-- ───────── QUICK LOG · handle + drawer ───────── -->
+    <button class="qd-handle" id="qd-handle" aria-label="abrir log rápido">
+      <svg viewBox="0 0 12 40" width="12" height="40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+        <path d="M3 14l4 6-4 6"/>
+      </svg>
+      <span class="qd-handle__label">log</span>
+    </button>
+
+    <div class="qd" id="qd" aria-hidden="true">
+      <div class="qd__backdrop" data-close-qd></div>
+      <aside class="qd__panel" role="dialog" aria-label="log rápido">
+        <div class="qd__top">
+          <span class="eyebrow">log rápido</span>
+          <button class="qd__close" data-close-qd aria-label="fechar">✕</button>
+        </div>
+        <h2 class="display display--sm">o que<br/>aconteceu?</h2>
+        <p class="lead lead--sm">registra em 1 toque. detalhe depois se quiser.</p>
+
+        <ul class="qd__list">
+          <li><button class="qd__item" data-type="meal">
+            <span class="qd__icon">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+                <circle cx="12" cy="12" r="8"/>
+                <path d="M12 8v4l3 2"/>
+              </svg>
+            </span>
+            <span class="qd__name">refeição</span>
+            <span class="qd__plus">+</span>
+          </button></li>
+          <li><button class="qd__item" data-type="workout">
+            <span class="qd__icon">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+                <path d="M7 7h10M7 17h10M7 7v10M17 7v10M3 10v4M21 10v4"/>
+              </svg>
+            </span>
+            <span class="qd__name">treino</span>
+            <span class="qd__plus">+</span>
+          </button></li>
+          <li><button class="qd__item" data-type="sleep">
+            <span class="qd__icon">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 14A8 8 0 0 1 10 4c-.3 0-.6 0-.9.1A8 8 0 1 0 20 14z"/>
+              </svg>
+            </span>
+            <span class="qd__name">sono</span>
+            <span class="qd__plus">+</span>
+          </button></li>
+          <li><button class="qd__item" data-type="water">
+            <span class="qd__icon">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 3s-6 7-6 12a6 6 0 0 0 12 0c0-5-6-12-6-12z"/>
+              </svg>
+            </span>
+            <span class="qd__name">água</span>
+            <span class="qd__plus">+</span>
+          </button></li>
+          <li><button class="qd__item" data-type="mood">
+            <span class="qd__icon">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5">
+                <circle cx="12" cy="12" r="9"/>
+                <path d="M8 14c1 1.5 2.4 2.2 4 2.2s3-.7 4-2.2" stroke-linecap="round"/>
+                <circle cx="9" cy="10" r=".8" fill="currentColor"/>
+                <circle cx="15" cy="10" r=".8" fill="currentColor"/>
+              </svg>
+            </span>
+            <span class="qd__name">humor</span>
+            <span class="qd__plus">+</span>
+          </button></li>
+          <li><button class="qd__item" data-type="lab">
+            <span class="qd__icon">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 3h6v4l5 10a3 3 0 0 1-2.7 4.3H10.7A3 3 0 0 1 8 17l5-10V3"/>
+              </svg>
+            </span>
+            <span class="qd__name">exame</span>
+            <span class="qd__plus">+</span>
+          </button></li>
+        </ul>
+
+        <span class="qd__hint">puxa da esquerda pra abrir · toque na borda</span>
+      </aside>
     </div>
 
     <!-- ───────── BOTTOM NAV ───────── -->

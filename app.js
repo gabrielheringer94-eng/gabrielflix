@@ -125,7 +125,7 @@ document.querySelectorAll('.water-add').forEach((b) => {
   b.addEventListener('click', (e) => {
     e.stopPropagation();
     const add = parseInt(b.dataset.add, 10);
-    waterMl = Math.min(waterGoal + 500, waterMl + add);
+    waterMl = Math.max(0, Math.min(waterGoal + 500, waterMl + add));
     updateWater();
     hap(12);
   });
@@ -389,15 +389,64 @@ function getSvgPoint(ev) {
 
 if (svg) renderWheel();
 
-// ───── mood sliders ─────
+// ───── mood sliders → score reativo ─────
+const SCORE_BASE = { sono: 16, comida: 18, treino: 18 }; // static for prototype
+const SCORE_WEIGHTS = { humor: 30, sono: 25, comida: 25, treino: 20 };
+
+function moodToHumorContrib() {
+  const energy = parseInt(document.querySelector('[data-metric="energy"]').value, 10);
+  const humor  = parseInt(document.querySelector('[data-metric="mood"]').value, 10);
+  const anx    = parseInt(document.querySelector('[data-metric="anx"]').value, 10);
+  // (energia + humor + (5 - ansiedade)) / 15 * 30
+  const raw = (energy + humor + (5 - anx)) / 15;
+  return Math.round(raw * SCORE_WEIGHTS.humor);
+}
+
+function computeScore() {
+  return moodToHumorContrib() + SCORE_BASE.sono + SCORE_BASE.comida + SCORE_BASE.treino;
+}
+
+function updateHeroScore() {
+  const total = computeScore();
+  const humorContrib = moodToHumorContrib();
+
+  // hero number
+  const heroVal = document.querySelector('.hero__value');
+  if (heroVal) heroVal.textContent = total;
+
+  // ring fill (stroke-dasharray "N 100" where N = score if 0-100)
+  const ringFill = document.querySelector('.ring__fill');
+  if (ringFill) ringFill.setAttribute('stroke-dasharray', `${total} 100`);
+
+  // humor row in sheet-score breakdown
+  const humorRow = document.querySelector('.breakdown .bd-row:nth-child(1)');
+  if (humorRow) {
+    const pct = Math.round((humorContrib / SCORE_WEIGHTS.humor) * 100);
+    humorRow.style.setProperty('--w', pct + '%');
+    const bar = humorRow.querySelector('.bd-bar i');
+    if (bar) bar.style.width = pct + '%';
+    const val = humorRow.querySelector('.bd-val');
+    if (val) {
+      const first = val.firstChild;
+      if (first) first.textContent = '+' + humorContrib + ' ';
+    }
+  }
+}
+
 document.querySelectorAll('.slider__input').forEach((input) => {
   const metric = input.dataset.metric;
   const valEl = document.querySelector(`[data-value="${metric}"]`);
-  const sync = () => { if (valEl) valEl.textContent = input.value; };
+  const sync = () => {
+    if (valEl) valEl.textContent = input.value;
+    updateHeroScore();
+  };
   sync();
   input.addEventListener('input', () => { sync(); hap(2); });
   input.addEventListener('change', () => hap(10));
 });
+
+// primeiro render sincroniza com defaults
+updateHeroScore();
 
 // ───── "pronto" no humor volta pra home ─────
 document.querySelectorAll('.screen--mood .btn--primary').forEach((btn) => {
@@ -434,6 +483,90 @@ document.querySelectorAll('.top__close').forEach((b) => {
 document.querySelectorAll('.btn, .quick__item').forEach((b) => {
   b.addEventListener('click', () => hap(8));
 });
+
+// ───── QUICK LOG drawer ─────
+const qd         = document.getElementById('qd');
+const qdHandle   = document.getElementById('qd-handle');
+
+function openQd() {
+  if (!qd) return;
+  qd.classList.add('is-open');
+  qd.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+  hap(10);
+}
+function closeQd() {
+  if (!qd) return;
+  qd.classList.remove('is-open');
+  qd.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
+}
+
+qdHandle && qdHandle.addEventListener('click', openQd);
+qd && qd.querySelectorAll('[data-close-qd]').forEach((el) => el.addEventListener('click', closeQd));
+
+// ESC also closes qd (piggyback on existing handler pattern)
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeQd(); });
+
+// qd items routing
+qd && qd.querySelectorAll('.qd__item').forEach((btn) => {
+  btn.addEventListener('click', () => {
+    const type = btn.dataset.type;
+    hap(12);
+    closeQd();
+    setTimeout(() => {
+      if (type === 'mood')   goTo('mood');
+      if (type === 'lab')    goTo('labs');
+      if (type === 'water')  { goTo('home'); const m = document.querySelector('[data-add="200"]'); if (m) m.click(); }
+      if (type === 'workout') goTo('home');
+      if (type === 'meal')   goTo('home');
+      if (type === 'sleep')  goTo('home');
+    }, 120);
+  });
+});
+
+// swipe from left edge to open
+let touchStartX = 0;
+let touchStartY = 0;
+let touchTracking = false;
+window.addEventListener('touchstart', (e) => {
+  if (!e.touches[0]) return;
+  touchStartX = e.touches[0].clientX;
+  touchStartY = e.touches[0].clientY;
+  touchTracking = touchStartX < 24 && !qd.classList.contains('is-open');
+}, { passive: true });
+window.addEventListener('touchmove', (e) => {
+  if (!touchTracking || !e.touches[0]) return;
+  const dx = e.touches[0].clientX - touchStartX;
+  const dy = Math.abs(e.touches[0].clientY - touchStartY);
+  if (dx > 40 && dy < 40) {
+    touchTracking = false;
+    openQd();
+  }
+}, { passive: true });
+window.addEventListener('touchend', () => { touchTracking = false; }, { passive: true });
+
+// swipe left on qd panel to close
+const qdPanel = qd && qd.querySelector('.qd__panel');
+if (qdPanel) {
+  let sx = 0, sy = 0, tracking = false;
+  qdPanel.addEventListener('touchstart', (e) => {
+    if (!e.touches[0]) return;
+    sx = e.touches[0].clientX;
+    sy = e.touches[0].clientY;
+    tracking = true;
+  }, { passive: true });
+  qdPanel.addEventListener('touchmove', (e) => {
+    if (!tracking || !e.touches[0]) return;
+    const dx = e.touches[0].clientX - sx;
+    const dy = Math.abs(e.touches[0].clientY - sy);
+    if (dx < -60 && dy < 40) {
+      tracking = false;
+      closeQd();
+    }
+  }, { passive: true });
+  qdPanel.addEventListener('touchend', () => { tracking = false; }, { passive: true });
+}
 
 // ───── ONBOARDING ─────
 const TOTAL_STEPS = 8;
