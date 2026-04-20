@@ -44,7 +44,16 @@ html, body {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   overscroll-behavior: none;
+  overflow-x: hidden;
+  -webkit-text-size-adjust: 100%;
+  touch-action: pan-y;           /* só scroll vertical · sem pinch, sem double-tap-zoom */
 }
+
+/* preserva intera\u00e7\u00e3o horizontal nos elementos que precisam */
+.slider__input { touch-action: pan-x; }
+.wheel-wrap, .ob-wheel-wrap { touch-action: none; }
+.sheet__panel { touch-action: pan-y; }
+.qd__panel { touch-action: pan-y; }
 
 body {
   min-height: 100dvh;
