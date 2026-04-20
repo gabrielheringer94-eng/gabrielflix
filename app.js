@@ -52,6 +52,14 @@ if (hero) {
     renderWow();
   });
 }
+const heroLink = document.getElementById('hero-link-more');
+if (heroLink) {
+  heroLink.addEventListener('click', () => {
+    openSheet('sheet-score');
+    renderWow();
+    hap(8);
+  });
+}
 
 // ───── lab card click ─────
 const labOpen = document.getElementById('lab-open');
@@ -794,14 +802,15 @@ function updateGlow(score) {
   if (stopLo) stopLo.setAttribute('stop-color', `rgb(${r},${g},${b})`);
   if (stopHi) stopHi.setAttribute('stop-color', `rgb(${rLo},${gLo},${bLo})`);
 
-  // glow também no número e na palavra de estado
+  // glow também no número
   const heroVal = document.querySelector('.hero__value');
   if (heroVal) {
-    heroVal.style.textShadow = `0 0 ${(12 + t * 24).toFixed(0)}px rgba(${r},${g},${b},${(strength * 0.35).toFixed(2)})`;
+    heroVal.style.textShadow = `0 0 ${(14 + t * 30).toFixed(0)}px rgba(${r},${g},${b},${(strength * 0.4).toFixed(2)})`;
   }
-  const stateEl = document.getElementById('hero-state');
-  if (stateEl) {
-    stateEl.style.textShadow = `0 0 ${(10 + t * 18).toFixed(0)}px rgba(${r},${g},${b},${(strength * 0.5).toFixed(2)})`;
+  // glow na palavra de estado dentro da narrativa
+  const stateInline = document.getElementById('hero-state-inline');
+  if (stateInline) {
+    stateInline.style.textShadow = `0 0 ${(10 + t * 18).toFixed(0)}px rgba(${r},${g},${b},${(strength * 0.5).toFixed(2)})`;
   }
 }
 
@@ -820,25 +829,34 @@ function updateHeroScore() {
   // glow dinâmico (cor + intensidade baseados no score)
   updateGlow(total);
 
-  // state word
-  const stateEl = document.getElementById('hero-state');
-  if (stateEl) stateEl.textContent = stateWord(total);
+  // narrativa protagonista: "Seu dia tá X. Y."
+  const stateW = stateWord(total);
+  const detail = narrativeLine(total, humorContrib);
+  const detailCap = detail.charAt(0).toUpperCase() + detail.slice(1);
+  const nar = document.getElementById('hero-narrative');
+  if (nar) nar.innerHTML = `Seu dia tá <em id="hero-state-inline">${stateW}</em>. ${detailCap}`;
 
-  // delta chip
-  const deltaEl  = document.getElementById('hero-delta');
+  // delta (linha de texto sutil)
+  const deltaEl  = document.getElementById('hero-delta-line');
   const deltaVal = document.getElementById('delta-val');
   const deltaArr = deltaEl && deltaEl.querySelector('.delta-arrow');
+  const deltaText= deltaEl && deltaEl.querySelector('span:last-child');
   const diff = total - YESTERDAY_SCORE;
   if (deltaEl && deltaVal && deltaArr) {
     deltaEl.classList.remove('is-down', 'is-flat');
-    if (diff > 0)      { deltaArr.textContent = '▲'; deltaVal.textContent = diff; }
-    else if (diff < 0) { deltaArr.textContent = '▼'; deltaVal.textContent = Math.abs(diff); deltaEl.classList.add('is-down'); }
-    else               { deltaArr.textContent = '─'; deltaVal.textContent = 0; deltaEl.classList.add('is-flat'); }
+    if (diff > 0) {
+      deltaArr.textContent = '▲'; deltaVal.textContent = diff;
+      if (deltaText) deltaText.textContent = ' pontos acima de ontem';
+    } else if (diff < 0) {
+      deltaArr.textContent = '▼'; deltaVal.textContent = Math.abs(diff);
+      if (deltaText) deltaText.textContent = ' pontos abaixo de ontem';
+      deltaEl.classList.add('is-down');
+    } else {
+      deltaArr.textContent = '─'; deltaVal.textContent = 0;
+      if (deltaText) deltaText.textContent = ' igual a ontem';
+      deltaEl.classList.add('is-flat');
+    }
   }
-
-  // narrative
-  const nar = document.getElementById('hero-narrative');
-  if (nar) nar.textContent = narrativeLine(total, humorContrib);
 
   // meta 3m
   const goalGap = document.getElementById('hc-goal-gap');

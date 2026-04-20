@@ -272,34 +272,42 @@
         </button>
       </header>
 
-      <button class="hero" id="hero-btn" aria-label="ver detalhes do score">
-        <svg class="ring" viewBox="0 0 240 240" aria-hidden="true">
-          <defs>
-            <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#E8C9A0"/>
-              <stop offset="100%" stop-color="#B89572"/>
-            </linearGradient>
-          </defs>
-          <circle cx="120" cy="120" r="118" class="ring__crown" stroke="url(#ringGrad)" />
-          <circle cx="120" cy="120" r="108" class="ring__track" />
-          <circle cx="120" cy="120" r="108" class="ring__fill" stroke="url(#ringGrad)"
-                  pathLength="100" stroke-dasharray="78 100" />
-        </svg>
-        <div class="hero__num">
-          <span class="hero__value">78</span>
-          <span class="hero__state" id="hero-state">firme</span>
+      <section class="hero-stage">
+        <button class="hero" id="hero-btn" aria-label="ver detalhes do score">
+          <svg class="ring" viewBox="0 0 240 240" aria-hidden="true">
+            <defs>
+              <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#E8C9A0"/>
+                <stop offset="100%" stop-color="#B89572"/>
+              </linearGradient>
+            </defs>
+            <circle cx="120" cy="120" r="118" class="ring__crown" stroke="url(#ringGrad)" />
+            <circle cx="120" cy="120" r="108" class="ring__fill" stroke="url(#ringGrad)"
+                    pathLength="100" stroke-dasharray="78 100" />
+          </svg>
+          <div class="hero__num">
+            <span class="hero__value">78</span>
+          </div>
+        </button>
+
+        <p class="hero-narrative" id="hero-narrative">
+          Seu dia tá <em id="hero-state-inline">em ritmo</em>. Humor alto puxou o dia, sono curto ainda pesa.
+        </p>
+
+        <div class="hero-delta-line" id="hero-delta-line">
+          <span class="delta-arrow">▲</span>
+          <b id="delta-val">6</b>
+          <span> pontos acima de ontem</span>
         </div>
-      </button>
 
-      <div class="hero-delta" id="hero-delta">
-        <span class="delta-arrow">▲</span>
-        <b id="delta-val">6</b>
-        <span class="delta-label">vs ontem</span>
-      </div>
+        <button class="hero-link" id="hero-link-more">Saber mais</button>
 
-      <p class="hero-narrative" id="hero-narrative">
-        humor alto puxou o dia. sono curto ainda pesa.
-      </p>
+        <div class="hero-scroll-hint" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M7 10l5 5 5-5"/>
+          </svg>
+        </div>
+      </section>
 
       <ul class="dims">
         <li><span class="dot" style="--c:#7B8BB8"></span>sono</li>

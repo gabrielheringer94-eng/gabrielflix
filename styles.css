@@ -132,11 +132,25 @@ strong { color: var(--fg); font-weight: 500; }
 .dot-p.is-on { background: var(--accent); }
 
 /* ───── HERO (home) ───── */
+/* palco hero · ocupa quase toda a primeira dobra */
+.hero-stage {
+  min-height: calc(100dvh - 96px); /* tabbar */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 4px 48px;
+  position: relative;
+  text-align: center;
+}
+
 .hero {
   position: relative;
-  width: 280px;
-  height: 280px;
-  margin: 24px auto 12px;
+  width: 320px;
+  height: 320px;
+  max-width: 75vw;
+  max-height: 75vw;
+  margin: 0 auto 8px;
   display: grid;
   place-items: center;
   isolation: isolate;
@@ -188,18 +202,14 @@ strong { color: var(--fg); font-weight: 500; }
 @media (prefers-reduced-motion: reduce) {
   .ring__crown { animation: none; }
 }
-.ring__track {
-  fill: none;
-  stroke: var(--fg-faint);
-  stroke-width: 2;
-}
 .ring__fill {
   fill: none;
-  stroke-width: 3;
+  stroke-width: 1.5;
   stroke-linecap: round;
   filter: var(--ring-shadow, drop-shadow(0 0 12px rgba(212, 184, 150, 0.4)));
   animation: ringIn 1.6s cubic-bezier(.2,.8,.2,1) both;
   transition: filter 0.9s ease;
+  opacity: 0.85;
 }
 @keyframes ringIn {
   from { stroke-dasharray: 0 100; }
@@ -212,9 +222,9 @@ strong { color: var(--fg); font-weight: 500; }
   display: block;
   font-family: var(--serif);
   font-weight: 300;
-  font-size: 112px;
-  line-height: 1;
-  letter-spacing: -0.04em;
+  font-size: clamp(140px, 32vw, 180px);
+  line-height: 0.95;
+  letter-spacing: -0.045em;
   color: var(--fg);
   animation: rise .9s cubic-bezier(.2,.8,.2,1) both;
 }
@@ -226,17 +236,7 @@ strong { color: var(--fg); font-weight: 500; }
   color: var(--fg-dim);
   margin-top: 6px;
 }
-.hero__state {
-  display: block;
-  font-family: var(--serif);
-  font-style: italic;
-  font-weight: 400;
-  font-size: 16px;
-  letter-spacing: -0.005em;
-  color: var(--accent);
-  margin-top: 2px;
-  text-shadow: 0 0 14px rgba(212,184,150,0.35);
-}
+.hero__state { display: none; }
 @keyframes rise {
   from { opacity: 0; transform: translateY(12px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -295,17 +295,83 @@ strong { color: var(--fg); font-weight: 500; }
   letter-spacing: 0.04em;
 }
 
-/* narrative copy */
+/* frase protagonista (estilo Centeni) */
 .hero-narrative {
   text-align: center;
   font-family: var(--serif);
+  font-style: normal;
+  font-weight: 300;
+  font-size: clamp(22px, 5.5vw, 28px);
+  color: var(--fg);
+  margin: 18px auto 14px;
+  max-width: 22ch;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  padding: 0 14px;
+}
+.hero-narrative em {
   font-style: italic;
-  font-size: 14px;
+  color: var(--accent);
+  font-weight: 400;
+  text-shadow: 0 0 12px rgba(var(--glow-rgb, 212, 184, 150), 0.3);
+}
+
+/* linha de delta (texto sutil, sem chip) */
+.hero-delta-line {
+  font-size: 13px;
+  letter-spacing: 0.02em;
   color: var(--fg-muted);
-  margin: 16px auto 24px;
-  max-width: 32ch;
-  line-height: 1.5;
-  padding: 0 10px;
+  margin-bottom: 18px;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 4px;
+}
+.hero-delta-line .delta-arrow {
+  font-size: 10px;
+  color: #A8C79A;
+  margin-right: 2px;
+}
+.hero-delta-line.is-down .delta-arrow { color: #E8A87C; }
+.hero-delta-line.is-flat .delta-arrow { color: var(--fg-muted); }
+.hero-delta-line b {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 14px;
+  color: var(--fg);
+  letter-spacing: -0.01em;
+}
+
+/* link "saber mais" */
+.hero-link {
+  background: none;
+  border: none;
+  padding: 6px 2px;
+  font-family: var(--sans);
+  font-size: 14px;
+  color: var(--fg);
+  cursor: pointer;
+  letter-spacing: 0.01em;
+  border-bottom: 1px solid var(--fg-muted);
+  transition: color .15s ease, border-color .15s ease;
+  margin-bottom: 24px;
+}
+.hero-link:hover {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+/* scroll hint */
+.hero-scroll-hint {
+  margin-top: auto;
+  color: var(--fg-dim);
+  animation: scrollBob 2.4s ease-in-out infinite;
+}
+@keyframes scrollBob {
+  0%, 100% { transform: translateY(0); opacity: 0.4; }
+  50%      { transform: translateY(6px); opacity: 0.8; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-scroll-hint { animation: none; }
 }
 
 /* contexto: meta + perfil */
