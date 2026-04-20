@@ -67,15 +67,16 @@ if (labOpen) {
   labOpen.addEventListener('click', () => openSheet('sheet-lab'));
 }
 
-// ───── composição corporal ─────
-const BODY_WEIGHT_HISTORY = [74.2, 73.9, 74.1, 73.5, 73.7, 73.1, 72.9, 72.8, 72.6, 72.7, 72.5, 72.4];
+// ───── idade biológica (estilo Centeni) ─────
+// série: idade biológica ao longo dos últimos 12 meses (por exame)
+const BIOAGE_HISTORY = [34.2, 34.0, 33.5, 33.1, 32.8, 32.5, 32.9, 32.5, 31.8, 31.4, 31.0, 30.8];
 
-function renderBodyChart() {
+function renderBioAgeChart() {
   const line = document.getElementById('body-line');
   const area = document.getElementById('body-area');
   const dot  = document.getElementById('body-dot');
   if (!line) return;
-  const p = pathFromSeries(BODY_WEIGHT_HISTORY);
+  const p = pathFromSeries(BIOAGE_HISTORY);
   line.setAttribute('d', p.line);
   area.setAttribute('d', p.area);
   if (dot) { dot.setAttribute('cx', p.lastPt[0]); dot.setAttribute('cy', p.lastPt[1]); }
@@ -85,38 +86,7 @@ const bodyOpen = document.getElementById('body-open');
 if (bodyOpen) {
   bodyOpen.addEventListener('click', () => {
     openSheet('sheet-body');
-    renderBodyChart();
-  });
-}
-
-const bodyAddBtn    = document.getElementById('body-add-btn');
-const bodyAddTop    = document.getElementById('body-add-btn-top');
-const bodyInputSave = document.getElementById('body-input-save');
-
-function openBodyInput() {
-  closeSheet();
-  setTimeout(() => openSheet('sheet-body-input'), 260);
-  hap(10);
-}
-if (bodyAddBtn) bodyAddBtn.addEventListener('click', openBodyInput);
-if (bodyAddTop) bodyAddTop.addEventListener('click', openBodyInput);
-
-if (bodyInputSave) {
-  bodyInputSave.addEventListener('click', () => {
-    const orig = bodyInputSave.textContent;
-    bodyInputSave.textContent = '✓ medição salva';
-    bodyInputSave.style.opacity = '0.75';
-    hap(18);
-    setTimeout(() => {
-      closeSheet();
-      bodyInputSave.textContent = orig;
-      bodyInputSave.style.opacity = '';
-      // re-abrir a tela de composição com a "nova" medição
-      setTimeout(() => {
-        openSheet('sheet-body');
-        renderBodyChart();
-      }, 260);
-    }, 700);
+    renderBioAgeChart();
   });
 }
 
