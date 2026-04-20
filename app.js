@@ -59,6 +59,107 @@ if (labOpen) {
   labOpen.addEventListener('click', () => openSheet('sheet-lab'));
 }
 
+// ───── training card click ─────
+const trainingOpen = document.getElementById('training-open');
+if (trainingOpen) {
+  trainingOpen.addEventListener('click', () => openSheet('sheet-training'));
+}
+
+// ───── "que a circa revise" ─────
+const openReview = document.getElementById('open-review');
+if (openReview) {
+  openReview.addEventListener('click', () => {
+    // fake thinking delay
+    openReview.disabled = true;
+    const orig = openReview.innerHTML;
+    openReview.innerHTML = '<span class="ob-thinking">analisando teus últimos 21 dias…</span>';
+    hap(15);
+    setTimeout(() => {
+      closeSheet();
+      setTimeout(() => {
+        openSheet('sheet-review');
+        openReview.disabled = false;
+        openReview.innerHTML = orig;
+      }, 260);
+    }, 1800);
+  });
+}
+
+// ───── water ─────
+let waterMl = 1800;
+const waterGoal = 2800;
+const waterMlEl    = document.getElementById('water-ml');
+const waterBigEl   = document.getElementById('water-big');
+const waterBarEl   = document.getElementById('water-bar-fill');
+const waterStatus  = document.getElementById('water-status');
+const waterLevel   = document.getElementById('waterLevel');
+
+function updateWater() {
+  const L = (waterMl / 1000).toFixed(1);
+  if (waterMlEl)  waterMlEl.textContent  = L;
+  if (waterBigEl) waterBigEl.textContent = L;
+  const pct = Math.min(100, (waterMl / waterGoal) * 100);
+  if (waterBarEl) waterBarEl.style.width = pct + '%';
+  if (waterStatus) {
+    const delta = Math.round(((waterMl - waterGoal) / waterGoal) * 100);
+    if (pct >= 95) {
+      waterStatus.textContent = 'meta batida · ✓';
+      waterStatus.className = 'water-status is-on';
+    } else {
+      waterStatus.textContent = Math.abs(delta) + '% abaixo da meta';
+      waterStatus.className = 'water-status is-low';
+    }
+  }
+  // bottle visual fill
+  if (waterLevel) {
+    const full = 56; // viewBox height
+    const fillPct = Math.min(1, waterMl / waterGoal);
+    const y = full - fillPct * full;
+    waterLevel.setAttribute('y', y.toFixed(1));
+    waterLevel.setAttribute('height', (fillPct * full).toFixed(1));
+  }
+}
+updateWater();
+
+document.querySelectorAll('.water-add').forEach((b) => {
+  b.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const add = parseInt(b.dataset.add, 10);
+    waterMl = Math.min(waterGoal + 500, waterMl + add);
+    updateWater();
+    hap(12);
+  });
+});
+
+const waterOpen = document.getElementById('water-open');
+if (waterOpen) {
+  waterOpen.addEventListener('click', (e) => {
+    // avoid firing when the +button bubbles (stopPropagation on button)
+    openSheet('sheet-water');
+    buildMonthGrid();
+  });
+}
+
+// water sheet tabs
+const wtTabs = document.querySelectorAll('.wt-tab');
+wtTabs.forEach((t) => {
+  t.addEventListener('click', () => {
+    wtTabs.forEach((x) => x.classList.toggle('is-on', x === t));
+    const range = t.dataset.range;
+    document.getElementById('water-range-week').style.display  = range === 'week' ? '' : 'none';
+    document.getElementById('water-range-month').style.display = range === 'month' ? '' : 'none';
+    hap(6);
+  });
+});
+
+function buildMonthGrid() {
+  const grid = document.getElementById('water-month-grid');
+  if (!grid || grid.children.length) return;
+  // 30 days, simulated pct buckets
+  const sample = [3,4,3,2,1,3,4,3,3,2,1,4,3,3,2,3,4,4,2,1,3,3,4,2,1,3,3,4,3,2];
+  grid.innerHTML = sample.map((p) => `<div class="wm-cell" data-pct="${p}"></div>`).join('');
+}
+
 // ───── WoW chart ─────
 const WOW_DATA = [62, 64, 60, 68, 66, 70, 72, 69, 74, 71, 76, 73, 75, 78];
 

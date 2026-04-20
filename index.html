@@ -314,6 +314,54 @@
         </div>
       </div>
 
+      <!-- treino de hoje -->
+      <button class="card card--training" id="training-open">
+        <div class="training-head">
+          <span class="eyebrow">treino de hoje</span>
+          <span class="training-day">sáb · dia 7</span>
+        </div>
+        <h2 class="card__title">bola · 2h<br/><span class="mute small">+ corrida leve 20min</span></h2>
+        <div class="training-meta">
+          <span><i class="dot" style="--c:var(--treino)"></i>alta intensidade</span>
+          <span class="mute">17:00 – 19:00</span>
+        </div>
+        <div class="training-cta">
+          <span>ver semana →</span>
+        </div>
+      </button>
+
+      <!-- água -->
+      <div class="card card--water">
+        <button class="water-main" id="water-open">
+          <div class="water-vis" aria-hidden="true">
+            <svg viewBox="0 0 40 56" width="44" height="60">
+              <defs>
+                <clipPath id="bottleClip">
+                  <path d="M13 4h14v3c0 1 .7 2 1.5 2.8c3 3 5.5 6 5.5 12v28a6 6 0 0 1-6 6H12a6 6 0 0 1-6-6V21.8c0-6 2.5-9 5.5-12C12.3 9 13 8 13 7V4z"/>
+                </clipPath>
+                <linearGradient id="waterFill" x1="0" y1="1" x2="0" y2="0">
+                  <stop offset="0%" stop-color="#7B8BB8"/>
+                  <stop offset="100%" stop-color="#9FAECE"/>
+                </linearGradient>
+              </defs>
+              <path d="M13 4h14v3c0 1 .7 2 1.5 2.8c3 3 5.5 6 5.5 12v28a6 6 0 0 1-6 6H12a6 6 0 0 1-6-6V21.8c0-6 2.5-9 5.5-12C12.3 9 13 8 13 7V4z"
+                    fill="none" stroke="rgba(245,238,230,0.35)" stroke-width="1.3" stroke-linejoin="round"/>
+              <rect id="waterLevel" x="0" y="22" width="40" height="34" fill="url(#waterFill)" clip-path="url(#bottleClip)" opacity="0.85"/>
+            </svg>
+          </div>
+          <div class="water-info">
+            <span class="eyebrow">água · hoje</span>
+            <h3 class="water-value"><b id="water-ml">1.8</b><i>/ 2.8 L</i></h3>
+            <div class="water-bar"><i id="water-bar-fill" style="width: 64%"></i></div>
+            <span class="water-status is-low" id="water-status">35% abaixo da meta</span>
+          </div>
+        </button>
+        <div class="water-cta">
+          <button class="water-add" data-add="200"><span>+</span> 200 ml</button>
+          <button class="water-add" data-add="500"><span>+</span> 500 ml</button>
+        </div>
+      </div>
+
       <div class="card card--quick">
         <span class="eyebrow">log rápido</span>
         <div class="quick">
@@ -825,6 +873,216 @@
             <li class="warn"><span>ferritina</span><i>484 ng/mL</i></li>
             <li class="ok"><span>PCR ultrassensível</span><i>0.4 mg/L</i></li>
             <li class="all"><span class="mute">+ 35 marcadores no range</span><i></i></li>
+          </ul>
+        </div>
+
+        <button class="btn btn--ghost btn--full" data-close>fechar</button>
+      </div>
+    </div>
+
+    <!-- ───────── MODAL · treino semanal ───────── -->
+    <div class="sheet" id="sheet-training" aria-hidden="true">
+      <div class="sheet__backdrop" data-close></div>
+      <div class="sheet__panel" role="dialog" aria-label="plano semanal de treino">
+        <div class="sheet__grab"></div>
+
+        <div class="sheet__head">
+          <span class="eyebrow">plano semanal</span>
+          <h2 class="display display--sm">semana 15</h2>
+          <p class="lead lead--sm">4 sessões · ~5h · força + bola</p>
+        </div>
+
+        <div class="sheet__section">
+          <ul class="week-plan">
+            <li class="wp-day wp-done">
+              <span class="wp-label">seg</span>
+              <div class="wp-content">
+                <strong>musculação</strong>
+                <span>peito & tríceps · 60min</span>
+              </div>
+              <i class="wp-check">✓</i>
+            </li>
+            <li class="wp-day wp-done">
+              <span class="wp-label">ter</span>
+              <div class="wp-content">
+                <strong>bola</strong>
+                <span>2h · alta intensidade</span>
+              </div>
+              <i class="wp-check">✓</i>
+            </li>
+            <li class="wp-day wp-done">
+              <span class="wp-label">qua</span>
+              <div class="wp-content">
+                <strong>musculação</strong>
+                <span>costas & bíceps · 60min</span>
+              </div>
+              <i class="wp-check">✓</i>
+            </li>
+            <li class="wp-day wp-rest">
+              <span class="wp-label">qui</span>
+              <div class="wp-content">
+                <strong>descanso ativo</strong>
+                <span>mobilidade · 30min</span>
+              </div>
+            </li>
+            <li class="wp-day wp-done">
+              <span class="wp-label">sex</span>
+              <div class="wp-content">
+                <strong>musculação</strong>
+                <span>pernas · 75min</span>
+              </div>
+              <i class="wp-check">✓</i>
+            </li>
+            <li class="wp-day wp-today">
+              <span class="wp-label">sáb</span>
+              <div class="wp-content">
+                <strong>bola + corrida leve</strong>
+                <span>17:00 – 19:00 · hoje</span>
+              </div>
+              <i class="wp-now">hoje</i>
+            </li>
+            <li class="wp-day wp-rest">
+              <span class="wp-label">dom</span>
+              <div class="wp-content">
+                <strong>descanso</strong>
+                <span>sem treino programado</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <!-- BOTÃO REVISÃO IA -->
+        <button class="btn btn--primary btn--full btn--review" id="open-review">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2l2.4 5.5L20 8l-4.5 4 1.3 6L12 15l-4.8 3 1.3-6L4 8l5.6-.5L12 2z"/>
+          </svg>
+          que a Circa revise
+        </button>
+        <p class="micro-note" style="margin-top:10px;">
+          cruza tuas últimas 3 semanas de sono, alimentação, água, e o exame de 25 mar, e te entrega um relatório em ~20 segundos.
+        </p>
+
+        <button class="btn btn--text btn--full" data-close>fechar</button>
+      </div>
+    </div>
+
+    <!-- ───────── MODAL · revisão da IA ───────── -->
+    <div class="sheet" id="sheet-review" aria-hidden="true">
+      <div class="sheet__backdrop" data-close></div>
+      <div class="sheet__panel" role="dialog" aria-label="revisão da circa">
+        <div class="sheet__grab"></div>
+
+        <div class="sheet__head">
+          <span class="eyebrow">relatório · circa</span>
+          <h2 class="display display--sm">revisão da<br/>semana 15</h2>
+          <p class="lead lead--sm">cruzando treino, sono, comida, água e exame de 25 mar.</p>
+        </div>
+
+        <div class="sheet__section">
+          <span class="eyebrow">volume do treino</span>
+          <ul class="corr">
+            <li><i class="pull-dot pull-dot--up"></i>3 sessões de força + 1 jogo de bola · total <strong>~5h</strong></li>
+            <li><i class="pull-dot pull-dot--up"></i>dentro do range de recuperação pra teu perfil</li>
+          </ul>
+        </div>
+
+        <div class="sheet__section">
+          <span class="eyebrow">sono · últimas 3 semanas</span>
+          <ul class="corr">
+            <li><i class="pull-dot pull-dot--down"></i>média <strong>5h42</strong> — abaixo do ideal (7h) pra esse volume</li>
+            <li><i class="pull-dot pull-dot--down"></i>padrão: noites curtas antes de treino matinal reduzem adaptação muscular em <strong>~20%</strong></li>
+            <li><i class="pull-dot pull-dot--up"></i>sugestão: meta 7h nas noites pré-treino</li>
+          </ul>
+        </div>
+
+        <div class="sheet__section">
+          <span class="eyebrow">alimentação</span>
+          <ul class="corr">
+            <li><i class="pull-dot pull-dot--up"></i>proteína <strong>~1.8g/kg</strong> — adequada, mantém</li>
+            <li><i class="pull-dot pull-dot--down"></i>carboidrato pós-treino: 2 dias sem refeição nas 2h seguintes (seg e sex)</li>
+            <li><i class="pull-dot pull-dot--up"></i>sugestão: automatizar refeição pós-treino</li>
+          </ul>
+        </div>
+
+        <div class="sheet__section">
+          <span class="eyebrow">água</span>
+          <ul class="corr">
+            <li><i class="pull-dot pull-dot--down"></i>média <strong>1.8L/dia</strong> (meta 2.8L) — 35% abaixo</li>
+            <li><i class="pull-dot pull-dot--down"></i>dias de bola (sáb): média <strong>1.2L</strong> apenas</li>
+            <li><i class="pull-dot pull-dot--down"></i>impacto: performance aeróbica cai ~10% com 2% desidratação</li>
+          </ul>
+        </div>
+
+        <div class="sheet__section">
+          <span class="eyebrow">exame · 25 mar</span>
+          <ul class="corr">
+            <li><i class="pull-dot pull-dot--down"></i><strong>homocisteína 28 µmol/L</strong> — prioridade</li>
+            <li><i class="pull-dot pull-dot--up"></i>treino não piora o quadro, mas precisa folato + B12</li>
+            <li><i class="pull-dot pull-dot--up"></i>não suspender o treino, só ajustar ao redor</li>
+          </ul>
+        </div>
+
+        <div class="sheet__section">
+          <span class="eyebrow">recomendação · próxima semana</span>
+          <ul class="sugg">
+            <li><i class="s-dot"></i>meta sono: <strong>7h</strong> nas 3 noites antes da bola</li>
+            <li><i class="s-dot"></i>pós-treino em até <strong>90min</strong> (refeição programada)</li>
+            <li><i class="s-dot"></i>água: <strong>+1L</strong> nos dias de atividade</li>
+            <li><i class="s-dot"></i>suplementar <strong>folato + B12</strong> começando hoje</li>
+            <li><i class="s-dot"></i>refazer exame em <strong>8 semanas</strong> pra medir</li>
+          </ul>
+        </div>
+
+        <button class="btn btn--primary btn--full">aplicar no plano</button>
+        <button class="btn btn--text btn--full" data-close>fechar</button>
+      </div>
+    </div>
+
+    <!-- ───────── MODAL · água ───────── -->
+    <div class="sheet" id="sheet-water" aria-hidden="true">
+      <div class="sheet__backdrop" data-close></div>
+      <div class="sheet__panel" role="dialog" aria-label="histórico de água">
+        <div class="sheet__grab"></div>
+
+        <div class="sheet__head">
+          <span class="eyebrow">hidratação</span>
+          <h2 class="display display--sm"><span id="water-big">1.8</span> <i class="mute" style="font-family:var(--sans);font-size:14px;font-style:normal;">/ 2.8 L hoje</i></h2>
+          <p class="lead lead--sm">meta diária calculada pelo teu peso (78kg · 35ml/kg).</p>
+        </div>
+
+        <div class="sheet__tabs">
+          <button class="wt-tab is-on" data-range="week">semana</button>
+          <button class="wt-tab" data-range="month">mês</button>
+        </div>
+
+        <div class="sheet__section" id="water-range-week">
+          <div class="water-week">
+            <div class="ww-day"><i style="--h:70%"></i><span>seg</span><b>2.0</b></div>
+            <div class="ww-day"><i style="--h:85%"></i><span>ter</span><b>2.4</b></div>
+            <div class="ww-day"><i style="--h:60%"></i><span>qua</span><b>1.7</b></div>
+            <div class="ww-day"><i style="--h:90%"></i><span>qui</span><b>2.5</b></div>
+            <div class="ww-day is-low"><i style="--h:42%"></i><span>sex</span><b>1.2</b></div>
+            <div class="ww-day is-today is-low"><i style="--h:64%"></i><span>sáb</span><b>1.8</b></div>
+            <div class="ww-day is-future"><i style="--h:0%"></i><span>dom</span><b>—</b></div>
+          </div>
+          <div class="water-legend">
+            <span><strong>média 13.6L</strong> · meta 19.6L · <em>69%</em></span>
+          </div>
+        </div>
+
+        <div class="sheet__section" id="water-range-month" style="display:none;">
+          <div class="water-month" id="water-month-grid"></div>
+          <div class="water-legend">
+            <span><strong>média 1.9L/dia</strong> · 18 dias acima da meta</span>
+          </div>
+        </div>
+
+        <div class="sheet__section">
+          <span class="eyebrow">observação da circa</span>
+          <ul class="corr">
+            <li><i class="pull-dot pull-dot--down"></i>sexta e sábado (treino/bola) ficaram abaixo de <strong>1.5L</strong></li>
+            <li><i class="pull-dot pull-dot--up"></i>terça e quinta bateram a meta — foram dias de deep work</li>
+            <li><i class="s-dot"></i>hipótese: você hidrata melhor sentado que em movimento. considere garrafa visível no treino.</li>
           </ul>
         </div>
 

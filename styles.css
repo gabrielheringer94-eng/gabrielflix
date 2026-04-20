@@ -728,12 +728,15 @@ button.hero:active { transform: scale(0.985); }
   margin-top: 4px;
 }
 .pull-list li {
-  display: flex;
-  align-items: center;
+  display: grid;
+  grid-template-columns: 12px 1fr;
+  align-items: baseline;
   gap: 10px;
   font-size: 13px;
   color: var(--fg-muted);
+  line-height: 1.5;
 }
+.pull-list li .pull-dot { margin-top: 6px; }
 .pull-list strong { color: var(--fg); font-weight: 500; }
 .pull-dot {
   width: 6px; height: 6px;
@@ -1418,17 +1421,22 @@ button.hero:active { transform: scale(0.985); }
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
   margin-bottom: 8px;
 }
 .corr li, .sugg li {
-  display: flex;
-  align-items: flex-start;
+  display: grid;
+  grid-template-columns: 12px 1fr;
+  align-items: start;
   gap: 10px;
   font-size: 13px;
   color: var(--fg-muted);
-  line-height: 1.5;
+  line-height: 1.55;
 }
+.corr li > .pull-dot,
+.corr li > .s-dot,
+.sugg li > .pull-dot,
+.sugg li > .s-dot { margin-top: 7px; }
 .corr li strong, .sugg li strong { color: var(--fg); font-weight: 500; }
 .s-dot {
   width: 5px; height: 5px;
@@ -1470,6 +1478,340 @@ button.hero:active { transform: scale(0.985); }
   color: #E8A87C;
 }
 .marker-list li.all span { color: var(--fg-dim); font-size: 12px; }
+
+/* ───── TRAINING card (home) ───── */
+.card--training {
+  width: 100%;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  cursor: pointer;
+  transition: border-color .2s ease, transform .15s ease;
+}
+.card--training:hover { border-color: rgba(212,184,150,0.3); }
+.card--training:active { transform: scale(0.995); }
+
+.training-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+.training-head .eyebrow { margin-bottom: 0; }
+.training-day {
+  font-family: var(--serif);
+  font-size: 12px;
+  color: var(--fg-muted);
+  letter-spacing: 0.02em;
+}
+.card--training .card__title {
+  margin-bottom: 0;
+  font-size: 24px;
+}
+.card--training .card__title .mute {
+  color: var(--fg-muted);
+}
+.card--training .card__title .small {
+  font-size: 14px;
+}
+
+.training-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--fg-muted);
+}
+.training-meta > span {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.training-meta .mute { color: var(--fg-dim); }
+.training-cta {
+  font-size: 12px;
+  color: var(--accent);
+  letter-spacing: 0.04em;
+  padding-top: 4px;
+}
+
+/* ───── WATER card (home) ───── */
+.card--water {
+  padding: 20px 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.water-main {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  text-align: left;
+  color: inherit;
+}
+.water-vis {
+  flex-shrink: 0;
+  filter: drop-shadow(0 0 12px rgba(123, 139, 184, 0.25));
+}
+.water-info { flex: 1; min-width: 0; }
+.water-info .eyebrow { margin-bottom: 6px; }
+.water-value {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 28px;
+  color: var(--fg);
+  letter-spacing: -0.02em;
+  margin-bottom: 10px;
+  font-variant-numeric: tabular-nums;
+}
+.water-value b { font-weight: 400; color: var(--fg); }
+.water-value i {
+  font-style: normal;
+  font-size: 12px;
+  color: var(--fg-dim);
+  margin-left: 4px;
+  font-family: var(--sans);
+  letter-spacing: 0;
+}
+.water-bar {
+  height: 4px;
+  border-radius: 2px;
+  background: var(--fg-faint);
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+.water-bar > i {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, #7B8BB8, #9FAECE);
+  border-radius: 2px;
+  box-shadow: 0 0 12px rgba(123,139,184,0.5);
+  transition: width .5s cubic-bezier(.2,.9,.2,1);
+}
+.water-status {
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--fg-dim);
+}
+.water-status.is-low    { color: #E8A87C; }
+.water-status.is-on     { color: #8FA87C; }
+.water-cta {
+  display: flex;
+  gap: 8px;
+}
+.water-add {
+  flex: 1;
+  padding: 12px;
+  border-radius: var(--r-md);
+  background: rgba(123,139,184,0.08);
+  border: 1px solid rgba(123,139,184,0.2);
+  color: var(--fg);
+  font-size: 13px;
+  cursor: pointer;
+  transition: all .2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+.water-add:hover {
+  background: rgba(123,139,184,0.16);
+  border-color: rgba(123,139,184,0.4);
+}
+.water-add:active { transform: scale(0.97); }
+.water-add span { color: #9FAECE; font-weight: 500; }
+
+/* ───── SHEET · plano semanal ───── */
+.week-plan {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.wp-day {
+  display: grid;
+  grid-template-columns: 42px 1fr auto;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 4px;
+  border-bottom: 1px solid var(--divider);
+}
+.wp-day:last-child { border-bottom: none; }
+.wp-label {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+  font-weight: 500;
+}
+.wp-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.wp-content strong {
+  font-family: var(--serif);
+  font-size: 17px;
+  font-weight: 400;
+  color: var(--fg);
+  letter-spacing: -0.01em;
+}
+.wp-content span {
+  font-size: 12px;
+  color: var(--fg-muted);
+}
+.wp-check {
+  font-style: normal;
+  font-size: 12px;
+  color: #8FA87C;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(143,168,124,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.wp-now {
+  font-style: normal;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #1A1410;
+  background: var(--accent);
+  padding: 4px 10px;
+  border-radius: var(--r-pill);
+  font-weight: 600;
+}
+.wp-rest .wp-content strong { color: var(--fg-muted); }
+.wp-today { background: rgba(212,184,150,0.04); border-radius: var(--r-md); }
+.wp-today .wp-label { color: var(--accent); }
+
+.btn--review {
+  gap: 10px;
+  background: linear-gradient(135deg, var(--accent-hi), var(--accent-lo));
+}
+.btn--review svg {
+  filter: drop-shadow(0 0 4px rgba(255,255,255,0.3));
+}
+.btn--review:disabled { opacity: 0.9; }
+.ob-thinking {
+  animation: pulse-text 1.4s ease-in-out infinite;
+  letter-spacing: 0.02em;
+}
+@keyframes pulse-text {
+  0%, 100% { opacity: 0.75; }
+  50%      { opacity: 1; }
+}
+
+/* ───── SHEET · água ───── */
+.sheet__tabs {
+  display: flex;
+  gap: 6px;
+  padding: 4px;
+  background: rgba(255,255,255,0.025);
+  border: 1px solid var(--divider);
+  border-radius: var(--r-md);
+  margin-bottom: 20px;
+}
+.wt-tab {
+  flex: 1;
+  padding: 10px 0;
+  border-radius: calc(var(--r-md) - 4px);
+  background: transparent;
+  border: none;
+  color: var(--fg-muted);
+  font-size: 12.5px;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: all .2s ease;
+}
+.wt-tab.is-on {
+  background: var(--accent);
+  color: #1A1410;
+  font-weight: 600;
+}
+
+.water-week {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+  align-items: end;
+  height: 160px;
+  margin-bottom: 16px;
+}
+.ww-day {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  height: 100%;
+  justify-content: flex-end;
+}
+.ww-day i {
+  display: block;
+  width: 100%;
+  height: var(--h, 0%);
+  background: linear-gradient(180deg, #9FAECE, #7B8BB8);
+  border-radius: 6px 6px 2px 2px;
+  min-height: 4px;
+  box-shadow: 0 0 8px rgba(123,139,184,0.3);
+  transition: height .4s cubic-bezier(.2,.9,.2,1);
+}
+.ww-day span {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+.ww-day b {
+  font-family: var(--serif);
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--fg);
+  letter-spacing: -0.01em;
+}
+.ww-day.is-low i { background: linear-gradient(180deg, #E8A87C, #D99D85); }
+.ww-day.is-low b { color: #E8A87C; }
+.ww-day.is-today i {
+  box-shadow: 0 0 16px rgba(212,184,150,0.4);
+  outline: 1.5px solid var(--accent);
+  outline-offset: 1px;
+}
+.ww-day.is-future i { opacity: 0.25; }
+.ww-day.is-future b { color: var(--fg-dim); }
+
+.water-legend {
+  font-size: 12px;
+  color: var(--fg-muted);
+  text-align: center;
+  padding-top: 10px;
+}
+.water-legend em { color: var(--accent); font-style: normal; }
+.water-legend strong { color: var(--fg); font-weight: 500; }
+
+.water-month {
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  gap: 4px;
+  margin-bottom: 16px;
+}
+.wm-cell {
+  aspect-ratio: 1;
+  border-radius: 3px;
+  background: rgba(123,139,184,0.15);
+  position: relative;
+}
+.wm-cell[data-pct="0"]  { background: rgba(255,255,255,0.03); }
+.wm-cell[data-pct="1"]  { background: rgba(232,168,124,0.35); }
+.wm-cell[data-pct="2"]  { background: rgba(123,139,184,0.45); }
+.wm-cell[data-pct="3"]  { background: rgba(123,139,184,0.7); }
+.wm-cell[data-pct="4"]  { background: rgba(159,174,206,0.9); }
 
 /* ───── responsive polish ───── */
 @media (min-width: 480px) {
