@@ -12,6 +12,253 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <!-- ───────── ONBOARDING OVERLAY ───────── -->
+  <div class="onboard" id="onboard" aria-hidden="true">
+    <header class="ob-top">
+      <button class="ob-back" id="ob-back" aria-label="voltar">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M15 5l-7 7 7 7"/>
+        </svg>
+      </button>
+      <span class="ob-progress" id="ob-progress">
+        <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+      </span>
+      <button class="ob-close" id="ob-close" aria-label="fechar">✕</button>
+    </header>
+
+    <div class="ob-slides" id="ob-slides">
+
+      <!-- 1 · boas-vindas -->
+      <div class="ob-slide is-active" data-step="1">
+        <div class="ob-logo">
+          <svg viewBox="0 0 40 40" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="20" cy="20" r="14"/>
+            <circle cx="20" cy="20" r="5" fill="currentColor"/>
+          </svg>
+          <span>circa</span>
+        </div>
+        <h1 class="display">oi.<br/>o que te<br/>traz aqui?</h1>
+        <p class="lead">a gente vai adaptar o circa ao teu motor principal.</p>
+
+        <div class="ob-cards">
+          <button class="ob-card" data-val="energia">
+            <span class="ob-card__title">energia diária</span>
+            <span class="ob-card__body">acordar disposto, render o dia inteiro.</span>
+          </button>
+          <button class="ob-card" data-val="performance">
+            <span class="ob-card__title">performance</span>
+            <span class="ob-card__body">treinar mais forte, recuperar melhor.</span>
+          </button>
+          <button class="ob-card" data-val="longevidade">
+            <span class="ob-card__title">longevidade</span>
+            <span class="ob-card__body">viver bem por muito tempo.</span>
+          </button>
+          <button class="ob-card" data-val="composicao">
+            <span class="ob-card__title">composição corporal</span>
+            <span class="ob-card__body">perder gordura, manter músculo.</span>
+          </button>
+        </div>
+
+        <button class="btn btn--primary btn--full ob-next" disabled>continuar</button>
+      </div>
+
+      <!-- 2 · roda hoje -->
+      <div class="ob-slide" data-step="2">
+        <h1 class="display">como tá<br/>tua vida<br/>hoje?</h1>
+        <p class="lead">arrasta cada área. sem julgamento, só um mapa.</p>
+
+        <div class="ob-wheel-wrap">
+          <svg id="ob-wheel" viewBox="-160 -160 320 320" class="wheel">
+            <defs>
+              <radialGradient id="obWheelFill" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#D4B896" stop-opacity="0.45"/>
+                <stop offset="100%" stop-color="#D4B896" stop-opacity="0.08"/>
+              </radialGradient>
+            </defs>
+            <circle r="130" class="wheel__ring"/>
+            <circle r="100" class="wheel__ring"/>
+            <circle r="70"  class="wheel__ring"/>
+            <circle r="40"  class="wheel__ring"/>
+            <g id="ob-wheel-spokes"></g>
+            <polygon id="ob-wheel-shape" class="wheel__shape" fill="url(#obWheelFill)"/>
+            <g id="ob-wheel-handles"></g>
+            <g id="ob-wheel-labels"></g>
+          </svg>
+        </div>
+
+        <button class="btn btn--primary btn--full ob-next">continuar</button>
+      </div>
+
+      <!-- 3 · roda meta -->
+      <div class="ob-slide" data-step="3">
+        <h1 class="display">e daqui a<br/>3 meses?</h1>
+        <p class="lead">arrasta pra onde quer chegar. a linha clara é onde você tá hoje.</p>
+
+        <div class="ob-wheel-wrap">
+          <svg id="ob-wheel-goal" viewBox="-160 -160 320 320" class="wheel">
+            <defs>
+              <radialGradient id="obWheelGoalFill" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#E8C9A0" stop-opacity="0.55"/>
+                <stop offset="100%" stop-color="#E8C9A0" stop-opacity="0.1"/>
+              </radialGradient>
+            </defs>
+            <circle r="130" class="wheel__ring"/>
+            <circle r="100" class="wheel__ring"/>
+            <circle r="70"  class="wheel__ring"/>
+            <circle r="40"  class="wheel__ring"/>
+            <g id="ob-wheel-goal-spokes"></g>
+            <polygon id="ob-wheel-ghost" class="wheel__ghost"/>
+            <polygon id="ob-wheel-goal-shape" class="wheel__shape wheel__shape--goal" fill="url(#obWheelGoalFill)"/>
+            <g id="ob-wheel-goal-handles"></g>
+            <g id="ob-wheel-goal-labels"></g>
+          </svg>
+        </div>
+
+        <button class="btn btn--primary btn--full ob-next">continuar</button>
+      </div>
+
+      <!-- 4 · corpo + rotina -->
+      <div class="ob-slide" data-step="4">
+        <h1 class="display">sobre<br/>você.</h1>
+        <p class="lead">dados básicos pra calibrar tudo.</p>
+
+        <div class="ob-grid-2">
+          <label class="ob-field">
+            <span>peso</span>
+            <input type="number" placeholder="kg" value="78" />
+          </label>
+          <label class="ob-field">
+            <span>altura</span>
+            <input type="number" placeholder="cm" value="180" />
+          </label>
+          <label class="ob-field">
+            <span>idade</span>
+            <input type="number" placeholder="anos" value="31" />
+          </label>
+          <label class="ob-field">
+            <span>sexo biol.</span>
+            <div class="ob-toggle" data-name="sex">
+              <button data-val="h" class="is-on">H</button>
+              <button data-val="m">M</button>
+            </div>
+          </label>
+        </div>
+
+        <div class="ob-section">
+          <span class="eyebrow">rotina</span>
+          <div class="ob-time">
+            <label>
+              <span>acorda</span>
+              <input type="time" value="06:30" />
+            </label>
+            <label>
+              <span>dorme</span>
+              <input type="time" value="23:00" />
+            </label>
+            <label>
+              <span>treina</span>
+              <input type="time" value="07:30" />
+            </label>
+          </div>
+        </div>
+
+        <button class="btn btn--primary btn--full ob-next">continuar</button>
+      </div>
+
+      <!-- 5 · comida -->
+      <div class="ob-slide" data-step="5">
+        <h1 class="display">e como<br/>você come?</h1>
+        <p class="lead">o que você nunca comeria, e o que te dá tesão de comer.</p>
+
+        <div class="ob-section">
+          <span class="eyebrow">restrições</span>
+          <div class="ob-chips">
+            <button class="ob-chip">sem lactose</button>
+            <button class="ob-chip">vegetariano</button>
+            <button class="ob-chip">vegano</button>
+            <button class="ob-chip">low carb</button>
+            <button class="ob-chip">sem glúten</button>
+            <button class="ob-chip">jejum intermitente</button>
+            <button class="ob-chip">nenhuma</button>
+          </div>
+        </div>
+
+        <div class="ob-section">
+          <span class="eyebrow">3 pratos que você ama</span>
+          <div class="ob-inputs">
+            <input type="text" placeholder="ex: arroz com feijão e bife" />
+            <input type="text" placeholder="ex: salmão com legumes" />
+            <input type="text" placeholder="ex: lasanha da minha mãe" />
+          </div>
+        </div>
+
+        <button class="btn btn--primary btn--full ob-next">continuar</button>
+      </div>
+
+      <!-- 6 · sentido -->
+      <div class="ob-slide" data-step="6">
+        <h1 class="display">quando você<br/>pensa em<br/>sentido...</h1>
+        <p class="lead">o que faz mais sentido pra <em>você</em>? isso molda como o circa vai falar contigo sobre essa área.</p>
+
+        <div class="ob-cards ob-cards--compact">
+          <button class="ob-card" data-val="fe">
+            <span class="ob-card__title">fé / religião</span>
+          </button>
+          <button class="ob-card" data-val="meditacao">
+            <span class="ob-card__title">meditação</span>
+          </button>
+          <button class="ob-card" data-val="natureza">
+            <span class="ob-card__title">natureza</span>
+          </button>
+          <button class="ob-card" data-val="filosofia">
+            <span class="ob-card__title">filosofia / propósito</span>
+          </button>
+          <button class="ob-card" data-val="nenhuma">
+            <span class="ob-card__title">ainda não sei</span>
+            <span class="ob-card__body">modo explorar: te mostramos experiências, sem cobrar.</span>
+          </button>
+          <button class="ob-card" data-val="outra">
+            <span class="ob-card__title">outra coisa</span>
+          </button>
+        </div>
+
+        <button class="btn btn--primary btn--full ob-next" disabled>continuar</button>
+      </div>
+
+      <!-- 7 · apple health -->
+      <div class="ob-slide" data-step="7">
+        <h1 class="display">conecta o<br/>Apple Health?</h1>
+        <p class="lead">sono, passos, frequência cardíaca e treinos entram sozinhos. menos coisa pra você logar à mão.</p>
+
+        <ul class="ob-bullets">
+          <li><span class="b-dot"></span>só lê — circa nunca escreve lá.</li>
+          <li><span class="b-dot"></span>você desliga a qualquer momento.</li>
+          <li><span class="b-dot"></span>sem conexão não tem problema — dá pra logar à mão.</li>
+        </ul>
+
+        <button class="btn btn--primary btn--full ob-next" id="ob-hk-yes">conectar Apple Health</button>
+        <button class="btn btn--text ob-next" id="ob-hk-no">depois</button>
+      </div>
+
+      <!-- 8 · bora -->
+      <div class="ob-slide" data-step="8">
+        <div class="ob-final">
+          <svg viewBox="0 0 80 80" width="72" height="72" fill="none" stroke="currentColor" stroke-width="1.2">
+            <circle cx="40" cy="40" r="34" opacity="0.3"/>
+            <circle cx="40" cy="40" r="26" opacity="0.55"/>
+            <circle cx="40" cy="40" r="18" opacity="0.8"/>
+            <circle cx="40" cy="40" r="6" fill="currentColor"/>
+          </svg>
+          <h1 class="display">pronto,<br/>Gabriel.</h1>
+          <p class="lead">teu primeiro check-in tá valendo. o mapa começa a se desenhar a partir de agora.</p>
+        </div>
+
+        <button class="btn btn--primary btn--full" id="ob-finish">começar</button>
+      </div>
+
+    </div>
+  </div>
+
   <div class="app">
 
     <!-- ───────── HOME ───────── -->
@@ -25,7 +272,7 @@
         </button>
       </header>
 
-      <div class="hero">
+      <button class="hero" id="hero-btn" aria-label="ver detalhes do score">
         <svg class="ring" viewBox="0 0 240 240" aria-hidden="true">
           <defs>
             <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -39,9 +286,9 @@
         </svg>
         <div class="hero__num">
           <span class="hero__value">78</span>
-          <span class="hero__label">hoje</span>
+          <span class="hero__label">circa score · toque</span>
         </div>
-      </div>
+      </button>
 
       <ul class="dims">
         <li><span class="dot" style="--c:#7B8BB8"></span>sono</li>
@@ -146,27 +393,55 @@
         <div class="slider">
           <span class="slider__label">energia</span>
           <div class="slider__track">
-            <span class="slider__emoji slider__emoji--l">🔋</span>
+            <span class="slider__icon slider__icon--l" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+                <line x1="6" y1="17" x2="6" y2="14"/>
+                <line x1="12" y1="17" x2="12" y2="14" opacity="0.35"/>
+                <line x1="18" y1="17" x2="18" y2="14" opacity="0.35"/>
+              </svg>
+            </span>
             <input type="range" min="0" max="100" value="55" class="slider__input" data-metric="energy" />
-            <span class="slider__emoji slider__emoji--r">🔋🔋</span>
+            <span class="slider__icon slider__icon--r" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+                <line x1="6" y1="17" x2="6" y2="12"/>
+                <line x1="12" y1="17" x2="12" y2="9"/>
+                <line x1="18" y1="17" x2="18" y2="6"/>
+              </svg>
+            </span>
           </div>
         </div>
 
         <div class="slider">
           <span class="slider__label">humor</span>
           <div class="slider__track">
-            <span class="slider__emoji slider__emoji--l">😔</span>
+            <span class="slider__icon slider__icon--l" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+                <path d="M5 14c3 3 11 3 14 0"/>
+              </svg>
+            </span>
             <input type="range" min="0" max="100" value="72" class="slider__input" data-metric="mood" />
-            <span class="slider__emoji slider__emoji--r">😄</span>
+            <span class="slider__icon slider__icon--r" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+                <path d="M5 10c3-3 11-3 14 0"/>
+              </svg>
+            </span>
           </div>
         </div>
 
         <div class="slider">
           <span class="slider__label">ansiedade</span>
           <div class="slider__track">
-            <span class="slider__emoji slider__emoji--l">🌊</span>
+            <span class="slider__icon slider__icon--l" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+                <line x1="4" y1="12" x2="20" y2="12"/>
+              </svg>
+            </span>
             <input type="range" min="0" max="100" value="28" class="slider__input" data-metric="anx" />
-            <span class="slider__emoji slider__emoji--r">🌪</span>
+            <span class="slider__icon slider__icon--r" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+                <path d="M4 12q2-4 4 0t4 0t4 0t4 0"/>
+              </svg>
+            </span>
           </div>
         </div>
       </div>
@@ -226,6 +501,116 @@
         </p>
       </article>
     </section>
+
+    <!-- ───────── MODAL · score breakdown ───────── -->
+    <div class="sheet" id="sheet-score" aria-hidden="true">
+      <div class="sheet__backdrop" data-close></div>
+      <div class="sheet__panel" role="dialog" aria-label="detalhe do score">
+        <div class="sheet__grab"></div>
+
+        <div class="sheet__head">
+          <span class="eyebrow">circa score</span>
+          <h2 class="display display--sm">78 · hoje</h2>
+          <p class="lead lead--sm">média 7d <strong>72</strong> · média 30d <strong>70</strong></p>
+        </div>
+
+        <div class="breakdown">
+          <div class="bd-row" style="--c:var(--humor); --w:88%;">
+            <span class="bd-label">humor</span>
+            <div class="bd-bar"><i style="width:var(--w)"></i></div>
+            <span class="bd-val">+26 <i class="bd-delta up">▲ 2.1</i></span>
+          </div>
+          <div class="bd-row" style="--c:var(--sono); --w:65%;">
+            <span class="bd-label">sono</span>
+            <div class="bd-bar"><i style="width:var(--w)"></i></div>
+            <span class="bd-val">+16 <i class="bd-delta down">▼ 1.4</i></span>
+          </div>
+          <div class="bd-row" style="--c:var(--comida); --w:72%;">
+            <span class="bd-label">comida</span>
+            <div class="bd-bar"><i style="width:var(--w)"></i></div>
+            <span class="bd-val">+18 <i class="bd-delta up">▲ 0.8</i></span>
+          </div>
+          <div class="bd-row" style="--c:var(--treino); --w:90%;">
+            <span class="bd-label">treino</span>
+            <div class="bd-bar"><i style="width:var(--w)"></i></div>
+            <span class="bd-val">+18 <i class="bd-delta up">▲ 1.5</i></span>
+          </div>
+        </div>
+
+        <div class="sheet__section">
+          <span class="eyebrow">últimos 14 dias</span>
+          <svg class="wow" viewBox="0 0 320 100" preserveAspectRatio="none" aria-hidden="true">
+            <defs>
+              <linearGradient id="wowFill" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#D4B896" stop-opacity="0.32"/>
+                <stop offset="100%" stop-color="#D4B896" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+            <path id="wow-area" d="" fill="url(#wowFill)"/>
+            <path id="wow-line" d="" fill="none" stroke="#D4B896" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+            <path id="wow-avg"  d="" fill="none" stroke="rgba(245,238,230,0.25)" stroke-width="1" stroke-dasharray="2 3"/>
+            <circle id="wow-dot" r="3.5" fill="#E8C9A0"/>
+          </svg>
+          <div class="wow-legend">
+            <span><i class="lg-dot" style="background:var(--accent)"></i>score diário</span>
+            <span><i class="lg-dot lg-dot--dash"></i>média 7d</span>
+          </div>
+        </div>
+
+        <div class="sheet__section">
+          <span class="eyebrow">o que puxou</span>
+          <ul class="pull-list">
+            <li><i class="pull-dot pull-dot--up"></i><strong>humor +2.1</strong> · check-ins acima da média</li>
+            <li><i class="pull-dot pull-dot--up"></i><strong>treino +1.5</strong> · 2h de bola hoje</li>
+            <li><i class="pull-dot pull-dot--down"></i><strong>sono -1.4</strong> · 5h42, abaixo da meta</li>
+          </ul>
+        </div>
+
+        <button class="btn btn--ghost btn--full" data-close>fechar</button>
+      </div>
+    </div>
+
+    <!-- ───────── MODAL · detalhe da área (roda) ───────── -->
+    <div class="sheet" id="sheet-area" aria-hidden="true">
+      <div class="sheet__backdrop" data-close></div>
+      <div class="sheet__panel" role="dialog" aria-label="detalhe da área">
+        <div class="sheet__grab"></div>
+
+        <div class="sheet__head">
+          <span class="eyebrow" id="area-eyebrow">área</span>
+          <h2 class="display display--sm" id="area-title">—</h2>
+          <p class="lead lead--sm">
+            <span id="area-now">7</span><span class="mute">/10 hoje</span>
+            &nbsp;·&nbsp;
+            meta 3m <strong id="area-goal">9</strong>
+          </p>
+        </div>
+
+        <div class="area-chart-wrap">
+          <svg class="wow" viewBox="0 0 320 100" preserveAspectRatio="none" aria-hidden="true">
+            <path id="area-line" d="" fill="none" stroke="#D4B896" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <div class="wow-legend">
+            <span><i class="lg-dot" style="background:var(--accent)"></i>últimas 8 semanas</span>
+          </div>
+        </div>
+
+        <div class="sheet__section">
+          <span class="eyebrow">última prática</span>
+          <p class="lead" id="area-last">—</p>
+        </div>
+
+        <div class="sheet__section">
+          <span class="eyebrow">sugestão do circa</span>
+          <p class="lead" id="area-suggest">—</p>
+        </div>
+
+        <button class="btn btn--primary btn--full" id="area-log-btn">
+          <span id="area-log-label">registrar ação</span>
+        </button>
+        <button class="btn btn--text" data-close>fechar</button>
+      </div>
+    </div>
 
     <!-- ───────── BOTTOM NAV ───────── -->
     <nav class="tabbar" role="tablist">
