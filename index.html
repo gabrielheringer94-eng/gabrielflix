@@ -280,6 +280,7 @@
               <stop offset="100%" stop-color="#B89572"/>
             </linearGradient>
           </defs>
+          <circle cx="120" cy="120" r="118" class="ring__crown" stroke="url(#ringGrad)" />
           <circle cx="120" cy="120" r="108" class="ring__track" />
           <circle cx="120" cy="120" r="108" class="ring__fill" stroke="url(#ringGrad)"
                   pathLength="100" stroke-dasharray="78 100" />
@@ -481,7 +482,10 @@
         <div class="slider">
           <div class="slider__head">
             <span class="slider__label">energia</span>
-            <span class="slider__value"><b data-value="energy">4</b><i>/ 5</i></span>
+            <span class="slider__value">
+              <em class="slider__word" data-word="energy">boa</em>
+              <b data-value="energy">4</b><i>/ 5</i>
+            </span>
           </div>
           <div class="slider__track">
             <span class="slider__icon slider__icon--l" aria-hidden="true">
@@ -508,7 +512,10 @@
         <div class="slider">
           <div class="slider__head">
             <span class="slider__label">humor</span>
-            <span class="slider__value"><b data-value="mood">5</b><i>/ 5</i></span>
+            <span class="slider__value">
+              <em class="slider__word" data-word="mood">ótimo</em>
+              <b data-value="mood">5</b><i>/ 5</i>
+            </span>
           </div>
           <div class="slider__track">
             <span class="slider__icon slider__icon--l" aria-hidden="true">
@@ -531,7 +538,10 @@
         <div class="slider">
           <div class="slider__head">
             <span class="slider__label">ansiedade</span>
-            <span class="slider__value"><b data-value="anx">1</b><i>/ 5</i></span>
+            <span class="slider__value">
+              <em class="slider__word" data-word="anx">leve</em>
+              <b data-value="anx">1</b><i>/ 5</i>
+            </span>
           </div>
           <div class="slider__track">
             <span class="slider__icon slider__icon--l" aria-hidden="true">
@@ -966,7 +976,7 @@
 
         <div class="sheet__section">
           <ul class="week-plan">
-            <li class="wp-day wp-done">
+            <li class="wp-day wp-done" data-day="seg">
               <span class="wp-label">seg</span>
               <div class="wp-content">
                 <strong>musculação</strong>
@@ -974,7 +984,7 @@
               </div>
               <i class="wp-check">✓</i>
             </li>
-            <li class="wp-day wp-done">
+            <li class="wp-day wp-done" data-day="ter">
               <span class="wp-label">ter</span>
               <div class="wp-content">
                 <strong>bola</strong>
@@ -982,7 +992,7 @@
               </div>
               <i class="wp-check">✓</i>
             </li>
-            <li class="wp-day wp-done">
+            <li class="wp-day wp-done" data-day="qua">
               <span class="wp-label">qua</span>
               <div class="wp-content">
                 <strong>musculação</strong>
@@ -990,14 +1000,14 @@
               </div>
               <i class="wp-check">✓</i>
             </li>
-            <li class="wp-day wp-rest">
+            <li class="wp-day wp-rest" data-day="qui">
               <span class="wp-label">qui</span>
               <div class="wp-content">
                 <strong>descanso ativo</strong>
                 <span>mobilidade · 30min</span>
               </div>
             </li>
-            <li class="wp-day wp-done">
+            <li class="wp-day wp-done" data-day="sex">
               <span class="wp-label">sex</span>
               <div class="wp-content">
                 <strong>musculação</strong>
@@ -1005,7 +1015,7 @@
               </div>
               <i class="wp-check">✓</i>
             </li>
-            <li class="wp-day wp-today">
+            <li class="wp-day wp-today" data-day="sab">
               <span class="wp-label">sáb</span>
               <div class="wp-content">
                 <strong>bola + corrida leve</strong>
@@ -1013,7 +1023,7 @@
               </div>
               <i class="wp-now">hoje</i>
             </li>
-            <li class="wp-day wp-rest">
+            <li class="wp-day wp-rest" data-day="dom">
               <span class="wp-label">dom</span>
               <div class="wp-content">
                 <strong>descanso</strong>
@@ -1035,6 +1045,91 @@
         </p>
 
         <button class="btn btn--text btn--full" data-close>fechar</button>
+      </div>
+    </div>
+
+    <!-- ───────── MODAL · detalhe do dia de treino ───────── -->
+    <div class="sheet" id="sheet-day" aria-hidden="true">
+      <div class="sheet__backdrop" data-close></div>
+      <div class="sheet__panel" role="dialog" aria-label="detalhe do dia">
+        <div class="sheet__grab"></div>
+
+        <div class="sheet__head">
+          <span class="eyebrow" id="day-eyebrow">dia · —</span>
+          <h2 class="display display--sm" id="day-title">—</h2>
+          <p class="lead lead--sm" id="day-subtitle">—</p>
+          <span class="day-status" id="day-status"></span>
+        </div>
+
+        <div class="sheet__section" id="day-exercises-wrap">
+          <div class="day-head-row">
+            <span class="eyebrow">exercícios</span>
+            <button class="day-add-btn" id="day-add-ex" aria-label="adicionar exercício">+ adicionar</button>
+          </div>
+          <ul class="day-exercises" id="day-exercises"></ul>
+        </div>
+
+        <!-- trocar treino: lista de templates -->
+        <div class="sheet__section day-swap" id="day-swap" style="display:none;">
+          <span class="eyebrow">trocar por</span>
+          <div class="swap-options">
+            <button class="swap-opt" data-swap="strength-upper">
+              <strong>força · superior</strong>
+              <span>peito, ombro, tríceps · 60min</span>
+            </button>
+            <button class="swap-opt" data-swap="strength-lower">
+              <strong>força · inferior</strong>
+              <span>pernas, glúteo · 75min</span>
+            </button>
+            <button class="swap-opt" data-swap="cardio">
+              <strong>cardio</strong>
+              <span>corrida ou bike · 45min</span>
+            </button>
+            <button class="swap-opt" data-swap="mobility">
+              <strong>mobilidade</strong>
+              <span>alongamento + core · 30min</span>
+            </button>
+            <button class="swap-opt" data-swap="rest">
+              <strong>descanso</strong>
+              <span>recovery passivo</span>
+            </button>
+          </div>
+          <button class="btn btn--text" id="day-swap-cancel">cancelar</button>
+        </div>
+
+        <!-- botões de ação -->
+        <div class="day-actions" id="day-actions">
+          <button class="day-act" id="day-toggle-done">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="5 12 10 17 19 8"/>
+            </svg>
+            <span id="day-toggle-label">marcar feito</span>
+          </button>
+          <button class="day-act" id="day-edit">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 20h9"/>
+              <path d="M16.5 3.5a2.12 2.12 0 1 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+            </svg>
+            <span>editar</span>
+          </button>
+          <button class="day-act" id="day-swap-btn">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M7 4L3 8l4 4"/>
+              <path d="M3 8h13a5 5 0 0 1 5 5"/>
+              <path d="M17 20l4-4-4-4"/>
+              <path d="M21 16H8a5 5 0 0 1-5-5"/>
+            </svg>
+            <span>trocar</span>
+          </button>
+          <button class="day-act day-act--danger" id="day-remove">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+            </svg>
+            <span>remover</span>
+          </button>
+        </div>
+
+        <button class="btn btn--ghost btn--full" data-close>fechar</button>
       </div>
     </div>
 

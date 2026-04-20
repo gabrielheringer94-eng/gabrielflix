@@ -65,6 +65,248 @@ if (trainingOpen) {
   trainingOpen.addEventListener('click', () => openSheet('sheet-training'));
 }
 
+// ───── treino por dia ─────
+const WEEK_WORKOUTS = {
+  seg: { day: 'seg', label: 'segunda', type: 'musculação', subtitle: 'peito & tríceps · 60min', status: 'done',
+         exercises: [
+           { name: 'supino reto',        meta: '4 × 8 · 80kg' },
+           { name: 'supino inclinado',   meta: '3 × 10 · 60kg' },
+           { name: 'crucifixo',          meta: '3 × 12 · 14kg' },
+           { name: 'tríceps corda',      meta: '4 × 12 · 22kg' },
+           { name: 'tríceps francês',    meta: '3 × 10 · 18kg' },
+         ]},
+  ter: { day: 'ter', label: 'terça', type: 'bola', subtitle: '2h · alta intensidade', status: 'done',
+         exercises: [
+           { name: 'aquecimento',        meta: '10 min' },
+           { name: 'jogo recreativo',    meta: '90 min' },
+           { name: 'alongamento',        meta: '15 min' },
+         ]},
+  qua: { day: 'qua', label: 'quarta', type: 'musculação', subtitle: 'costas & bíceps · 60min', status: 'done',
+         exercises: [
+           { name: 'puxada frontal',     meta: '4 × 10 · 55kg' },
+           { name: 'remada curvada',     meta: '4 × 8 · 60kg' },
+           { name: 'remada baixa',       meta: '3 × 10 · 50kg' },
+           { name: 'rosca direta',       meta: '4 × 10 · 16kg' },
+           { name: 'rosca martelo',      meta: '3 × 12 · 14kg' },
+         ]},
+  qui: { day: 'qui', label: 'quinta', type: 'descanso ativo', subtitle: 'mobilidade · 30min', status: 'rest',
+         exercises: [
+           { name: 'cervical',           meta: '5 min' },
+           { name: 'lombar',             meta: '10 min' },
+           { name: 'quadril',            meta: '10 min' },
+           { name: 'respiração',         meta: '5 min' },
+         ]},
+  sex: { day: 'sex', label: 'sexta', type: 'musculação', subtitle: 'pernas · 75min', status: 'done',
+         exercises: [
+           { name: 'agachamento livre',  meta: '5 × 6 · 100kg' },
+           { name: 'leg press',          meta: '4 × 10 · 180kg' },
+           { name: 'extensora',          meta: '3 × 12 · 45kg' },
+           { name: 'stiff',              meta: '4 × 10 · 70kg' },
+           { name: 'panturrilha',        meta: '4 × 15 · 100kg' },
+         ]},
+  sab: { day: 'sab', label: 'sábado', type: 'bola + corrida leve', subtitle: '17:00 – 19:00 · hoje', status: 'today',
+         exercises: [
+           { name: 'corrida leve',       meta: '20 min · pace 6:30' },
+           { name: 'aquecimento c/ bola',meta: '10 min' },
+           { name: 'jogo',               meta: '90 min' },
+           { name: 'desaquecimento',     meta: '10 min' },
+         ]},
+  dom: { day: 'dom', label: 'domingo', type: 'descanso', subtitle: 'sem treino programado', status: 'rest',
+         exercises: []},
+};
+
+let currentDayKey = null;
+let dayEditing = false;
+
+function openDay(key) {
+  const d = WEEK_WORKOUTS[key];
+  if (!d) return;
+  currentDayKey = key;
+  dayEditing = false;
+
+  document.getElementById('day-eyebrow').textContent = 'dia · ' + d.label;
+  document.getElementById('day-title').textContent = d.type;
+  document.getElementById('day-subtitle').textContent = d.subtitle;
+
+  const statusEl = document.getElementById('day-status');
+  statusEl.className = 'day-status';
+  if (d.status === 'done')  { statusEl.textContent = 'feito'; statusEl.classList.add('is-done'); }
+  if (d.status === 'today') { statusEl.textContent = 'hoje · em aberto'; statusEl.classList.add('is-today'); }
+  if (d.status === 'plan')  { statusEl.textContent = 'planejado'; statusEl.classList.add('is-plan'); }
+  if (d.status === 'rest')  { statusEl.textContent = 'descanso'; statusEl.classList.add('is-rest'); }
+
+  renderDayExercises();
+
+  // estado do botão "marcar feito"
+  const tgl = document.getElementById('day-toggle-done');
+  const tglLabel = document.getElementById('day-toggle-label');
+  if (tgl && tglLabel) {
+    tgl.classList.toggle('is-active', d.status === 'done');
+    tglLabel.textContent = d.status === 'done' ? '✓ feito — desfazer' : 'marcar feito';
+  }
+
+  // reset edit mode & swap panel
+  document.getElementById('day-exercises').classList.remove('is-editing');
+  document.getElementById('day-swap').style.display = 'none';
+  document.getElementById('day-exercises-wrap').style.display = '';
+  document.getElementById('day-actions').style.display = '';
+
+  openSheet('sheet-day');
+}
+
+function renderDayExercises() {
+  const d = WEEK_WORKOUTS[currentDayKey];
+  const ul = document.getElementById('day-exercises');
+  if (!d || !ul) return;
+  if (!d.exercises.length) {
+    ul.innerHTML = '<li class="day-ex"><span class="day-ex__name" style="color:var(--fg-muted)">sem exercícios nesse dia.</span></li>';
+    return;
+  }
+  ul.innerHTML = d.exercises.map((ex, i) => `
+    <li class="day-ex" data-i="${i}">
+      <span class="day-ex__name">${ex.name}</span>
+      <span class="day-ex__meta">${ex.meta}</span>
+      <button class="day-ex__rm" data-rm="${i}" aria-label="remover">✕</button>
+    </li>
+  `).join('');
+  ul.querySelectorAll('[data-rm]').forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const i = parseInt(btn.dataset.rm, 10);
+      d.exercises.splice(i, 1);
+      renderDayExercises();
+      hap(8);
+    });
+  });
+}
+
+// clique em qualquer dia da semana
+document.querySelectorAll('.wp-day').forEach((el) => {
+  el.addEventListener('click', () => {
+    const key = el.dataset.day;
+    if (key) openDay(key);
+  });
+});
+
+// toggle feito
+const dayToggle = document.getElementById('day-toggle-done');
+if (dayToggle) {
+  dayToggle.addEventListener('click', () => {
+    const d = WEEK_WORKOUTS[currentDayKey];
+    if (!d) return;
+    d.status = d.status === 'done' ? (currentDayKey === 'sab' ? 'today' : 'plan') : 'done';
+    hap(12);
+    openDay(currentDayKey); // re-render
+  });
+}
+
+// editar
+const dayEdit = document.getElementById('day-edit');
+if (dayEdit) {
+  dayEdit.addEventListener('click', () => {
+    dayEditing = !dayEditing;
+    document.getElementById('day-exercises').classList.toggle('is-editing', dayEditing);
+    dayEdit.classList.toggle('is-active', dayEditing);
+    dayEdit.querySelector('span').textContent = dayEditing ? 'concluir' : 'editar';
+    hap(8);
+  });
+}
+
+// adicionar exercício
+const dayAddEx = document.getElementById('day-add-ex');
+if (dayAddEx) {
+  dayAddEx.addEventListener('click', () => {
+    const d = WEEK_WORKOUTS[currentDayKey];
+    if (!d) return;
+    d.exercises.push({ name: 'novo exercício', meta: '3 × 10' });
+    renderDayExercises();
+    if (!dayEditing) dayEdit.click();
+    hap(8);
+  });
+}
+
+// trocar treino
+const daySwapBtn = document.getElementById('day-swap-btn');
+const daySwap = document.getElementById('day-swap');
+if (daySwapBtn && daySwap) {
+  daySwapBtn.addEventListener('click', () => {
+    const show = daySwap.style.display === 'none';
+    daySwap.style.display = show ? '' : 'none';
+    document.getElementById('day-exercises-wrap').style.display = show ? 'none' : '';
+    document.getElementById('day-actions').style.display = show ? 'none' : '';
+    hap(8);
+  });
+  const cancel = document.getElementById('day-swap-cancel');
+  if (cancel) cancel.addEventListener('click', () => {
+    daySwap.style.display = 'none';
+    document.getElementById('day-exercises-wrap').style.display = '';
+    document.getElementById('day-actions').style.display = '';
+    hap(6);
+  });
+}
+
+// apply swap
+const SWAP_TEMPLATES = {
+  'strength-upper': { type: 'força · superior', subtitle: 'peito, ombro, tríceps · 60min', status: 'plan',
+    exercises: [
+      { name: 'supino reto',       meta: '4 × 8 · 80kg' },
+      { name: 'desenvolvimento',   meta: '4 × 10 · 22kg' },
+      { name: 'elevação lateral',  meta: '3 × 12 · 10kg' },
+      { name: 'tríceps corda',     meta: '4 × 12 · 22kg' },
+    ]},
+  'strength-lower': { type: 'força · inferior', subtitle: 'pernas, glúteo · 75min', status: 'plan',
+    exercises: [
+      { name: 'agachamento',       meta: '5 × 6 · 100kg' },
+      { name: 'leg press',         meta: '4 × 10 · 180kg' },
+      { name: 'stiff',             meta: '4 × 10 · 70kg' },
+      { name: 'panturrilha',       meta: '4 × 15 · 100kg' },
+    ]},
+  cardio: { type: 'cardio', subtitle: 'corrida ou bike · 45min', status: 'plan',
+    exercises: [
+      { name: 'aquecimento',       meta: '5 min' },
+      { name: 'corrida steady',    meta: '35 min · pace 5:30' },
+      { name: 'desaquecimento',    meta: '5 min' },
+    ]},
+  mobility: { type: 'mobilidade', subtitle: 'alongamento + core · 30min', status: 'plan',
+    exercises: [
+      { name: 'cervical',          meta: '5 min' },
+      { name: 'quadril',           meta: '10 min' },
+      { name: 'core',              meta: '10 min' },
+      { name: 'respiração',        meta: '5 min' },
+    ]},
+  rest: { type: 'descanso', subtitle: 'recovery passivo', status: 'rest', exercises: [] },
+};
+
+document.querySelectorAll('.swap-opt').forEach((opt) => {
+  opt.addEventListener('click', () => {
+    const key = opt.dataset.swap;
+    const tpl = SWAP_TEMPLATES[key];
+    const d = WEEK_WORKOUTS[currentDayKey];
+    if (!tpl || !d) return;
+    d.type = tpl.type;
+    d.subtitle = tpl.subtitle;
+    d.status = tpl.status;
+    d.exercises = tpl.exercises.map((x) => ({ ...x }));
+    hap(15);
+    openDay(currentDayKey);
+  });
+});
+
+// remover → dia vira descanso
+const dayRemove = document.getElementById('day-remove');
+if (dayRemove) {
+  dayRemove.addEventListener('click', () => {
+    const d = WEEK_WORKOUTS[currentDayKey];
+    if (!d) return;
+    d.type = 'descanso';
+    d.subtitle = 'sem treino programado';
+    d.status = 'rest';
+    d.exercises = [];
+    hap(15);
+    openDay(currentDayKey);
+  });
+}
+
 // ───── "que a circa revise" ─────
 const openReview = document.getElementById('open-review');
 if (openReview) {
@@ -532,6 +774,10 @@ function updateGlow(score) {
   root.style.setProperty('--glow-rgb', `${r}, ${g}, ${b}`);
   root.style.setProperty('--glow-strength', strength);
 
+  // coroa aparece a partir de 85, peaka em 95+
+  const crownOpacity = clamp((score - 85) / 10, 0, 1);
+  root.style.setProperty('--crown-opacity', crownOpacity.toFixed(2));
+
   // drop-shadow multi-camada no anel (mais amarelo + mais forte conforme sobe)
   root.style.setProperty('--ring-shadow', `
     drop-shadow(0 0 4px rgba(${r},${g},${b},${(strength * 1.0).toFixed(2)}))
@@ -626,11 +872,31 @@ function updateHeroScore() {
   }
 }
 
+// palavras qualitativas por métrica
+const MOOD_WORDS = {
+  energy: ['sem energia', 'baixa', 'pouca', 'ok', 'boa', 'cheia'],
+  mood:   ['péssimo', 'baixo', 'instável', 'ok', 'bom', 'ótimo'],
+  anx:    ['calma', 'leve', 'controlada', 'alta', 'tensa', 'em crise'],
+};
+
+// para ansiedade, valores altos = ruim (semântica invertida)
+const MOOD_WARN_AT = {
+  energy: (v) => v <= 1,      // energia baixa = warn
+  mood:   (v) => v <= 1,      // humor baixo = warn
+  anx:    (v) => v >= 3,      // ansiedade alta = warn
+};
+
 document.querySelectorAll('.slider__input').forEach((input) => {
   const metric = input.dataset.metric;
-  const valEl = document.querySelector(`[data-value="${metric}"]`);
+  const valEl  = document.querySelector(`[data-value="${metric}"]`);
+  const wordEl = document.querySelector(`[data-word="${metric}"]`);
   const sync = () => {
-    if (valEl) valEl.textContent = input.value;
+    const v = parseInt(input.value, 10);
+    if (valEl)  valEl.textContent = v;
+    if (wordEl) {
+      wordEl.textContent = MOOD_WORDS[metric][v] || '—';
+      wordEl.classList.toggle('slider__word--warn', MOOD_WARN_AT[metric](v));
+    }
     updateHeroScore();
   };
   sync();
