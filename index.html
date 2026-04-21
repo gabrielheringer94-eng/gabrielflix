@@ -216,8 +216,78 @@
         <button class="btn btn--primary btn--full ob-next">continuar</button>
       </div>
 
-      <!-- 15 · comida -->
-      <div class="ob-slide" data-step="15">
+      <!-- 15 · calibração fisiológica · seletor de trilha -->
+      <div class="ob-slide fisio-intro" data-step="15">
+        <span class="eyebrow">calibração fisiológica</span>
+        <h1 class="display">como é o<br/><em>seu corpo?</em></h1>
+        <p class="lead">as perguntas se adaptam à sua fisiologia real — não só ao gênero.</p>
+
+        <div class="fisio-trilhas">
+          <button class="fisio-trilha" data-trilha="masculina">
+            <span class="fisio-trilha__icon" style="--c:#7B8BB8">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="9"/>
+                <path d="M12 8v8M9 11l3-3 3 3"/>
+              </svg>
+            </span>
+            <div class="fisio-trilha__body">
+              <strong>corpo masculino</strong>
+              <span>testosterona, cortisol, recuperação muscular.</span>
+              <div class="fisio-trilha__tags">
+                <i>testosterona</i><i>cortisol</i><i>recuperação</i>
+              </div>
+            </div>
+          </button>
+
+          <button class="fisio-trilha" data-trilha="feminina">
+            <span class="fisio-trilha__icon" style="--c:#D99D85">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="10" r="6"/>
+                <path d="M12 16v6M9 19h6"/>
+              </svg>
+            </span>
+            <div class="fisio-trilha__body">
+              <strong>corpo feminino com ciclo</strong>
+              <span>fases do ciclo, estrogênio, progesterona, variação de performance.</span>
+              <div class="fisio-trilha__tags">
+                <i>ciclo</i><i>hormônios</i><i>fases</i>
+              </div>
+            </div>
+          </button>
+
+          <button class="fisio-trilha" data-trilha="transicao">
+            <span class="fisio-trilha__icon" style="--c:#D4B896">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 3v18M3 12h18"/>
+                <circle cx="12" cy="12" r="4"/>
+              </svg>
+            </span>
+            <div class="fisio-trilha__body">
+              <strong>transição hormonal</strong>
+              <span>menopausa, perimenopausa ou andropausa. foco em adaptação e longevidade.</span>
+              <div class="fisio-trilha__tags">
+                <i>menopausa</i><i>andropausa</i><i>longevidade</i>
+              </div>
+            </div>
+          </button>
+        </div>
+
+        <p class="micro-note">6 perguntas · ~2 min · tu pode recalibrar depois</p>
+      </div>
+
+      <!-- 16-21 · 6 perguntas fisiológicas (renderizadas por JS com base na trilha) -->
+      <div class="ob-slide fisio-question" data-step="16" data-fqindex="0"></div>
+      <div class="ob-slide fisio-question" data-step="17" data-fqindex="1"></div>
+      <div class="ob-slide fisio-question" data-step="18" data-fqindex="2"></div>
+      <div class="ob-slide fisio-question" data-step="19" data-fqindex="3"></div>
+      <div class="ob-slide fisio-question" data-step="20" data-fqindex="4"></div>
+      <div class="ob-slide fisio-question" data-step="21" data-fqindex="5"></div>
+
+      <!-- 22 · resultado fisiológico -->
+      <div class="ob-slide fisio-result" data-step="22"></div>
+
+      <!-- 23 · comida -->
+      <div class="ob-slide" data-step="23">
         <h1 class="display">e como<br/>você come?</h1>
         <p class="lead">o que você nunca comeria, e o que te dá tesão de comer.</p>
 
@@ -246,8 +316,8 @@
         <button class="btn btn--primary btn--full ob-next">continuar</button>
       </div>
 
-      <!-- 16 · sentido -->
-      <div class="ob-slide" data-step="16">
+      <!-- 24 · sentido -->
+      <div class="ob-slide" data-step="24">
         <h1 class="display">quando você<br/>pensa em<br/>sentido...</h1>
         <p class="lead">o que faz mais sentido pra <em>você</em>? isso molda como o circa vai falar contigo sobre essa área.</p>
 
@@ -276,8 +346,8 @@
         <button class="btn btn--primary btn--full ob-next" disabled>continuar</button>
       </div>
 
-      <!-- 17 · apple health -->
-      <div class="ob-slide" data-step="17">
+      <!-- 25 · apple health -->
+      <div class="ob-slide" data-step="25">
         <h1 class="display">conecta o<br/>Apple Health?</h1>
         <p class="lead">sono, passos, frequência cardíaca e treinos entram sozinhos. menos coisa pra você logar à mão.</p>
 
@@ -291,8 +361,8 @@
         <button class="btn btn--text ob-next" id="ob-hk-no">depois</button>
       </div>
 
-      <!-- 18 · medicamentos & suplementos -->
-      <div class="ob-slide" data-step="18">
+      <!-- 26 · medicamentos & suplementos -->
+      <div class="ob-slide" data-step="26">
         <h1 class="display">remédios &<br/>suplementos.</h1>
         <p class="lead">o que você toma rotineiramente? cada item vira uma tarefa diária no app.</p>
 
@@ -328,8 +398,8 @@
         <button class="btn btn--primary btn--full ob-next">continuar</button>
       </div>
 
-      <!-- 19 · bora -->
-      <div class="ob-slide" data-step="19">
+      <!-- 27 · bora -->
+      <div class="ob-slide" data-step="27">
         <div class="ob-final">
           <svg viewBox="0 0 80 80" width="72" height="72" fill="none" stroke="currentColor" stroke-width="1.2">
             <circle cx="40" cy="40" r="34" opacity="0.3"/>

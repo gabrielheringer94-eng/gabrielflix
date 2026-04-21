@@ -1592,7 +1592,7 @@ if (qdPanel) {
 }
 
 // ───── ONBOARDING ─────
-const TOTAL_STEPS = 19;
+const TOTAL_STEPS = 27;
 let obStep = 1;
 const onboard       = document.getElementById('onboard');
 const obSlides      = document.querySelectorAll('.ob-slide');
@@ -1770,6 +1770,419 @@ function renderQuizQuestion(slideEl) {
   });
 }
 
+// ───── CALIBRAÇÃO FISIOLÓGICA (steps 15-22) ─────
+const TRILHAS_FISIO = {
+  masculina: {
+    nome: 'corpo masculino',
+    cor: '#7B8BB8',
+    perguntas: [
+      {
+        texto: 'Como está sua disposição ao longo do dia?',
+        contexto: 'baixa energia pode indicar desequilíbrio de testosterona ou cortisol elevado.',
+        opcoes: [
+          { texto: 'Constante — me sinto bem do início ao fim',            score: { equilbrio: 2 } },
+          { texto: 'Queda forte após o almoço, difícil de ignorar',        score: { cortisol: 2 } },
+          { texto: 'Manhã fraca, melhoro à tarde',                         score: { testosterona: 2 } },
+          { texto: 'Instável — varia muito sem padrão claro',              score: { variavel: 2 } }
+        ]
+      },
+      {
+        texto: 'Como é sua recuperação após treinos intensos?',
+        contexto: 'recuperação lenta pode indicar cortisol elevado, sono fragmentado ou déficit de testosterona.',
+        opcoes: [
+          { texto: 'Ótima — 24h e estou pronto novamente',                 score: { equilbrio: 2 } },
+          { texto: 'Preciso de 48-72h para me sentir recuperado',          score: { cortisol: 1, testosterona: 1 } },
+          { texto: 'Demoro mais de 3 dias — dores persistentes',           score: { cortisol: 2 } },
+          { texto: 'Treino sem descanso — não costumo esperar recuperar',  score: { inabalavel: 2 } }
+        ]
+      },
+      {
+        texto: 'Como está sua qualidade de sono nos últimos 30 dias?',
+        contexto: 'sono fragmentado reduz testosterona em até 15% e eleva cortisol cronicamente.',
+        opcoes: [
+          { texto: 'Durmo bem — 7 a 8h sem interrupção',                   score: { equilbrio: 2 } },
+          { texto: 'Adormeço fácil mas acordo no meio da noite',           score: { cortisol: 2 } },
+          { texto: 'Dificuldade para adormecer, mente acelerada',          score: { stress: 2 } },
+          { texto: 'Durmo pouco por escolha — menos de 6h',                score: { privacao: 2 } }
+        ]
+      },
+      {
+        texto: 'Nos últimos 3 meses, como está sua libido?',
+        contexto: 'libido reduzida é um dos primeiros sinais de queda de testosterona livre.',
+        opcoes: [
+          { texto: 'Normal para mim — sem mudança',                        score: { equilbrio: 2 } },
+          { texto: 'Percebo uma queda progressiva',                        score: { testosterona: 2 } },
+          { texto: 'Queda acentuada — diferente do que era antes',         score: { testosterona: 3 } },
+          { texto: 'Nunca prestei atenção nisso',                          score: { desconhecido: 1 } }
+        ]
+      },
+      {
+        texto: 'Você já fez exame de testosterona total?',
+        contexto: 'saber os níveis basais é o ponto de partida para calibração hormonal.',
+        opcoes: [
+          { texto: 'Sim, recentemente — dentro do esperado',               score: { consciente: 2 } },
+          { texto: 'Fiz, mas estava abaixo do ideal',                      score: { testosterona: 2, consciente: 1 } },
+          { texto: 'Nunca fiz',                                            score: { desconhecido: 2 } },
+          { texto: 'Faço acompanhamento regular com médico',               score: { consciente: 3 } }
+        ]
+      },
+      {
+        texto: 'Como é sua relação com estresse?',
+        contexto: 'cortisol cronicamente elevado é o maior inibidor de testosterona e recuperação muscular.',
+        opcoes: [
+          { texto: 'Gerenciável — consigo descomprimir',                   score: { equilbrio: 2 } },
+          { texto: 'Alto, mas funciono bem sob pressão',                   score: { cortisol: 1 } },
+          { texto: 'Elevado e sinto impacto no corpo',                     score: { cortisol: 3 } },
+          { texto: 'Extremo — raramente desconecto',                       score: { cortisol: 3, stress: 2 } }
+        ]
+      }
+    ]
+  },
+  feminina: {
+    nome: 'corpo feminino com ciclo',
+    cor: '#D99D85',
+    perguntas: [
+      {
+        texto: 'Seu ciclo menstrual é regular?',
+        contexto: 'irregularidade pode indicar desequilíbrio estrogênio/progesterona ou SOP.',
+        opcoes: [
+          { texto: 'Regular — 28 a 32 dias com pouca variação',            score: { equilbrio: 2 } },
+          { texto: 'Irregular — varia mais de 5 dias entre ciclos',        score: { irregular: 2 } },
+          { texto: 'Uso anticoncepcional hormonal — ciclo induzido',       score: { anticoncepcional: 2 } },
+          { texto: 'Ciclo ausente ou muito espaçado',                      score: { ausente: 3 } }
+        ]
+      },
+      {
+        texto: 'Como sua performance física varia ao longo do mês?',
+        contexto: 'fase folicular (1-14) estrogênio alto = melhor performance. fase lútea (15-28) fadiga sobe.',
+        opcoes: [
+          { texto: 'Noto diferença clara — semanas melhores e piores',     score: { cicloConsciente: 3 } },
+          { texto: 'Percebo queda de energia antes da menstruação',        score: { lutea: 2 } },
+          { texto: 'Não noto variação — me sinto igual o mês todo',        score: { neutro: 2 } },
+          { texto: 'Nunca prestei atenção nisso',                          score: { desconhecido: 2 } }
+        ]
+      },
+      {
+        texto: 'Como é a intensidade da sua TPM?',
+        contexto: 'TPM intensa pode indicar dominância de estrogênio ou déficit de progesterona.',
+        opcoes: [
+          { texto: 'Leve — quase não sinto',                               score: { equilbrio: 2 } },
+          { texto: 'Moderada — irritabilidade e retenção',                 score: { tpm: 1 } },
+          { texto: 'Intensa — impacta trabalho e relacionamentos',         score: { tpm: 3 } },
+          { texto: 'Não tenho TPM ou uso anticoncepcional',                score: { neutro: 1 } }
+        ]
+      },
+      {
+        texto: 'Como está sua energia nos dias 5-10 do ciclo?',
+        contexto: 'esse é o pico de estrogênio — deveria ser o maior período de energia e força.',
+        opcoes: [
+          { texto: 'Me sinto ótima — mais disposta e forte',               score: { estrogenoBom: 2 } },
+          { texto: 'Melhora um pouco, mas não é expressiva',               score: { estrogenoBaixo: 1 } },
+          { texto: 'Continuo cansada mesmo nesse período',                 score: { fadiga: 2 } },
+          { texto: 'Não noto diferença entre as fases',                    score: { neutro: 2 } }
+        ]
+      },
+      {
+        texto: 'Sente compulsão alimentar antes da menstruação?',
+        contexto: 'compulsão por carboidratos na fase lútea é resposta à queda de serotonina.',
+        opcoes: [
+          { texto: 'Sim — compulsão clara, especialmente por doces',       score: { serotonina: 2 } },
+          { texto: 'Apetite aumenta mas consigo controlar',                score: { serotonina: 1 } },
+          { texto: 'Não noto mudança no apetite',                          score: { equilbrio: 1 } },
+          { texto: 'Perco o apetite antes da menstruação',                 score: { stress: 1 } }
+        ]
+      },
+      {
+        texto: 'Você mapeia o ciclo e adapta treino/alimentação?',
+        contexto: 'treinar conforme as fases pode aumentar performance em até 25% e reduzir lesões.',
+        opcoes: [
+          { texto: 'Sim — faço isso ativamente',                           score: { cicloConsciente: 3 } },
+          { texto: 'Sei que deveria mas não faço',                         score: { conhecimento: 1 } },
+          { texto: 'Não sabia que isso era possível',                      score: { desconhecido: 2 } },
+          { texto: 'Uso anticoncepcional — ciclo suprimido',               score: { anticoncepcional: 2 } }
+        ]
+      }
+    ]
+  },
+  transicao: {
+    nome: 'transição hormonal',
+    cor: '#D4B896',
+    perguntas: [
+      {
+        texto: 'Qual melhor descreve seu momento hormonal?',
+        contexto: 'perimenopausa pode começar até 10 anos antes da menopausa. andropausa tipicamente 40-55 anos.',
+        opcoes: [
+          { texto: 'Perimenopausa — ciclos irregulares, ainda menstruo',   score: { peri: 3 } },
+          { texto: 'Menopausa — sem menstruação há mais de 12 meses',      score: { meno: 3 } },
+          { texto: 'Andropausa — queda progressiva de testosterona',       score: { andro: 3 } },
+          { texto: 'Suspeito que estou nessa fase mas não confirmei',      score: { suspeita: 2 } }
+        ]
+      },
+      {
+        texto: 'Como estão seus fogachos ou ondas de calor?',
+        contexto: 'frequência e intensidade indicam velocidade da queda de estrogênio.',
+        opcoes: [
+          { texto: 'Ausentes ou muito leves',                              score: { leve: 2 } },
+          { texto: 'Moderados — algumas vezes ao dia',                     score: { moderado: 2 } },
+          { texto: 'Intensos — impactam sono e trabalho',                  score: { intenso: 3 } },
+          { texto: 'Não tenho esse sintoma',                               score: { ausente: 1 } }
+        ]
+      },
+      {
+        texto: 'Como está sua qualidade de sono?',
+        contexto: 'queda de estrogênio e progesterona fragmenta o sono profundo.',
+        opcoes: [
+          { texto: 'Durmo bem — 7h sem grandes interrupções',              score: { equilbrio: 2 } },
+          { texto: 'Acordo 1-2x por noite mas volto a dormir',             score: { fragmentado: 2 } },
+          { texto: 'Sono muito fragmentado — acordo cansado',              score: { privacao: 3 } },
+          { texto: 'Insônia — difícil adormecer ou manter o sono',         score: { insonia: 3 } }
+        ]
+      },
+      {
+        texto: 'Você faz ou já fez terapia de reposição hormonal?',
+        contexto: 'TRH bem conduzida pode reverter a maioria dos sintomas e proteger coração e ossos.',
+        opcoes: [
+          { texto: 'Sim, acompanhamento atual com médico',                 score: { trh: 3 } },
+          { texto: 'Já fiz mas parei',                                     score: { trh: 1 } },
+          { texto: 'Nunca fiz — não me sinto informado o suficiente',      score: { desinformado: 2 } },
+          { texto: 'Prefiro não fazer — busco alternativas naturais',      score: { natural: 2 } }
+        ]
+      },
+      {
+        texto: 'Como está sua composição corporal nos últimos 12 meses?',
+        contexto: 'ganho de gordura visceral e perda muscular aceleram na transição, mesmo sem mudança de hábitos.',
+        opcoes: [
+          { texto: 'Estável — não sinto mudança significativa',            score: { equilbrio: 2 } },
+          { texto: 'Ganho de gordura abdominal mesmo com dieta',           score: { gordura: 3 } },
+          { texto: 'Perda muscular perceptível apesar do treino',          score: { muscular: 3 } },
+          { texto: 'Ambos — gordura subindo e músculo diminuindo',         score: { gordura: 2, muscular: 2 } }
+        ]
+      },
+      {
+        texto: 'Qual é seu maior desafio de saúde hoje?',
+        contexto: 'identificar a prioridade permite plano mais focado e efetivo.',
+        opcoes: [
+          { texto: 'Energia e disposição ao longo do dia',                 score: { energia: 3 } },
+          { texto: 'Sono e recuperação',                                   score: { sono: 3 } },
+          { texto: 'Composição corporal e peso',                           score: { composicao: 3 } },
+          { texto: 'Humor, ansiedade ou cognição',                         score: { humor: 3 } }
+        ]
+      }
+    ]
+  }
+};
+
+const RESULTADOS_FISIO = {
+  masculina: {
+    equilibrado: {
+      nome: 'perfil equilibrado',
+      label: 'masculina · equilibrado',
+      desc: 'tua fisiologia tá em boa sincronia. testosterona e cortisol operando em equilíbrio — o terreno ideal pra evoluir com consistência.',
+      insight: 'teu corpo responde bem ao estímulo atual. o foco agora é periodização inteligente e prevenção de platô.',
+      prioridade: 'manutenção + sobrecarga progressiva',
+      atencao: 'monitorar cortisol em períodos de alta demanda',
+      acoes: ['exame semestral de testosterona total e livre', 'protocolo de descanso ativo 1-2x/semana', 'creatina 5g/dia como suporte de base']
+    },
+    altoStress: {
+      nome: 'cortisol elevado',
+      label: 'masculina · cortisol alto',
+      desc: 'sinais de estresse crônico impactando recuperação e possivelmente testosterona. teu corpo tá em modo de alerta constante.',
+      insight: 'cortisol e testosterona competem pelos mesmos precursores. reduzir cortisol é o caminho mais rápido pra melhorar composição.',
+      prioridade: 'redução de carga de estresse',
+      atencao: 'evitar treinos de alta intensidade em sequência',
+      acoes: ['dosar cortisol salivar matinal', 'janela de descompressão de 30min antes de dormir', 'reduzir treinos de alta intensidade pra 2x/semana']
+    },
+    baixaTestosterona: {
+      nome: 'sinal de baixa T',
+      label: 'masculina · baixa testosterona',
+      desc: 'padrões sugerem queda de testosterona — libido caindo, recuperação lenta e energia baixa pela manhã são sinais clássicos.',
+      insight: 'testosterona baixa afeta composição, humor e cognição — não só performance física. vale investigar com exame.',
+      prioridade: 'investigação hormonal com médico',
+      atencao: 'suplementação sem exame pode mascarar causa real',
+      acoes: ['agendar painel hormonal completo (T total, T livre, LH, FSH)', 'priorizar sono 7-8h — produção de T é noturna', 'zinco + vitamina D como suporte enquanto aguarda exame']
+    }
+  },
+  feminina: {
+    cicloConsciente: {
+      nome: 'ciclicamente consciente',
+      label: 'feminina · ciclo consciente',
+      desc: 'tu já percebe as variações do teu ciclo — isso é um ativo enorme. a calibração vai traduzir esse autoconhecimento em protocolo prático.',
+      insight: 'mulheres que treinam conforme as fases do ciclo relatam até 25% mais performance e menos lesões.',
+      prioridade: 'periodização baseada no ciclo',
+      atencao: 'fase lútea pede redução de intensidade',
+      acoes: ['mapear ciclo por 2 meses pra identificar padrões', 'treino de força na fase folicular (dias 1-14)', 'yoga/pilates na fase lútea (dias 15-28)']
+    },
+    desequilibrio: {
+      nome: 'desequilíbrio hormonal',
+      label: 'feminina · desequilíbrio',
+      desc: 'sinais de dominância estrogênica ou déficit de progesterona — TPM intensa, ciclo irregular e fadiga persistente.',
+      insight: 'dominância de estrogênio é comum e tratável. alimentação, exercício e suplementação específica fazem diferença real.',
+      prioridade: 'avaliação com ginecologista/endócrino',
+      atencao: 'anticoncepcional pode mascarar sintomas',
+      acoes: ['exame de estrogênio, progesterona e FSH na fase lútea (dia 21)', 'reduzir disruptores endócrinos: plásticos, álcool, ultraprocessados', 'magnésio 300mg à noite — reduz TPM em estudos clínicos']
+    },
+    neutro: {
+      nome: 'perfil a descobrir',
+      label: 'feminina · descobrir',
+      desc: 'tu ainda não mapeou as variações do teu ciclo — oportunidade enorme de ganhar performance e qualidade de vida.',
+      insight: 'a maioria das mulheres desconhece como o ciclo afeta o corpo. essa calibração é o primeiro passo.',
+      prioridade: 'mapeamento do ciclo por 60 dias',
+      atencao: 'não subestimar o impacto da fase lútea',
+      acoes: ['usar o circa pra registrar energia e humor diários', 'marcar início e fim de cada fase no calendário', 'consulta com ginecologista pra painel hormonal base']
+    }
+  },
+  transicao: {
+    ativa: {
+      nome: 'transição ativa',
+      label: 'transição · ativa',
+      desc: 'tu tá no processo com sintomas presentes. com o protocolo certo, a maioria dos sintomas é reversível ou manejável.',
+      insight: 'a transição hormonal não precisa ser declínio — com intervenção adequada, muitos vivem os melhores anos depois dela.',
+      prioridade: 'acompanhamento médico especializado',
+      atencao: 'massa muscular e óssea precisam de proteção ativa',
+      acoes: ['consulta com endocrinologista pra avaliação de TRH', 'treino de força 3x/semana — essencial pra preservar massa', 'vitamina D3 + K2 + magnésio como base de suporte']
+    },
+    gerenciada: {
+      nome: 'transição gerenciada',
+      label: 'transição · gerenciada',
+      desc: 'tu já tá em acompanhamento ou tem clareza do momento. o foco agora é otimizar o protocolo e monitorar evolução.',
+      insight: 'quem faz TRH bem conduzida tem menor risco cardiovascular, ósseo e cognitivo a longo prazo.',
+      prioridade: 'otimização do protocolo atual',
+      atencao: 'revisão anual dos níveis hormonais',
+      acoes: ['revisão de exames a cada 6 meses com médico', 'adicionar proteína na dieta — 1.8g por kg de peso', 'registrar sintomas no circa pra identificar padrões']
+    },
+    inicial: {
+      nome: 'início de transição',
+      label: 'transição · inicial',
+      desc: 'primeiros sinais de transição — o momento ideal pra agir preventivamente antes que os sintomas se intensifiquem.',
+      insight: 'intervir cedo tem impacto muito maior do que intervir depois dos sintomas instalados.',
+      prioridade: 'investigação e prevenção',
+      atencao: 'não normalizar sintomas como envelhecimento inevitável',
+      acoes: ['exame completo: hormônios, densidade óssea, perfil lipídico', 'iniciar treino de força se ainda não faz', 'consulta preventiva com endocrinologista']
+    }
+  }
+};
+
+let fisioTrilha = null;
+let fisioScores = {};
+window.CIRCA_FISIO = null;
+
+// restaurar do localStorage
+try {
+  const savedFisio = localStorage.getItem('circa_fisio');
+  if (savedFisio) window.CIRCA_FISIO = JSON.parse(savedFisio);
+} catch (e) {}
+
+function renderFisioTrilhas(slideEl) {
+  slideEl.querySelectorAll('.fisio-trilha').forEach((btn) => {
+    // evita re-attach
+    if (btn.dataset.bound) return;
+    btn.dataset.bound = '1';
+    btn.addEventListener('click', () => {
+      slideEl.querySelectorAll('.fisio-trilha').forEach((b) => b.classList.remove('is-on'));
+      btn.classList.add('is-on');
+      fisioTrilha = btn.dataset.trilha;
+      fisioScores = {};
+      hap(10);
+      setTimeout(() => nextStep(), 380);
+    });
+  });
+}
+
+function renderFisioQuestion(slideEl) {
+  if (!fisioTrilha) return; // guard
+  const qindex = parseInt(slideEl.dataset.fqindex, 10);
+  const trilha = TRILHAS_FISIO[fisioTrilha];
+  const q = trilha.perguntas[qindex];
+  const letras = ['a', 'b', 'c', 'd'];
+
+  slideEl.innerHTML = `
+    <span class="eyebrow">pergunta ${String(qindex + 1).padStart(2, '0')} · ${trilha.nome}</span>
+    <h1 class="display quiz-text">${q.texto}</h1>
+    <p class="fisio-ctx">${q.contexto}</p>
+    <div class="quiz-options">
+      ${q.opcoes.map((op, i) => `
+        <button class="quiz-opt" data-score='${JSON.stringify(op.score)}'>
+          <span class="quiz-letter">${letras[i]}.</span>
+          <span class="quiz-opt__text">${op.texto}</span>
+        </button>
+      `).join('')}
+    </div>
+  `;
+
+  slideEl.querySelectorAll('.quiz-opt').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const scr = JSON.parse(btn.dataset.score);
+      Object.keys(scr).forEach((k) => { fisioScores[k] = (fisioScores[k] || 0) + scr[k]; });
+      slideEl.querySelectorAll('.quiz-opt').forEach((b) => b.classList.remove('is-on'));
+      btn.classList.add('is-on');
+      hap(10);
+      setTimeout(() => nextStep(), 380);
+    });
+  });
+}
+
+function computeFisioResult() {
+  const s = fisioScores;
+  if (fisioTrilha === 'masculina') {
+    if ((s.cortisol || 0) >= 4 || (s.stress || 0) >= 2) return RESULTADOS_FISIO.masculina.altoStress;
+    if ((s.testosterona || 0) >= 3) return RESULTADOS_FISIO.masculina.baixaTestosterona;
+    return RESULTADOS_FISIO.masculina.equilibrado;
+  }
+  if (fisioTrilha === 'feminina') {
+    if ((s.cicloConsciente || 0) >= 3) return RESULTADOS_FISIO.feminina.cicloConsciente;
+    if ((s.tpm || 0) >= 2 || (s.irregular || 0) >= 2) return RESULTADOS_FISIO.feminina.desequilibrio;
+    return RESULTADOS_FISIO.feminina.neutro;
+  }
+  if (fisioTrilha === 'transicao') {
+    if ((s.trh || 0) >= 2) return RESULTADOS_FISIO.transicao.gerenciada;
+    if ((s.intenso || 0) >= 2 || (s.privacao || 0) >= 2) return RESULTADOS_FISIO.transicao.ativa;
+    return RESULTADOS_FISIO.transicao.inicial;
+  }
+  return null;
+}
+
+function renderFisioResult(slideEl) {
+  const res = computeFisioResult();
+  if (!res) {
+    slideEl.innerHTML = '<p class="lead">não foi possível calcular — refaz a calibração.</p>';
+    return;
+  }
+  window.CIRCA_FISIO = { trilha: fisioTrilha, resultado: res.label };
+  try { localStorage.setItem('circa_fisio', JSON.stringify(window.CIRCA_FISIO)); } catch (e) {}
+
+  slideEl.innerHTML = `
+    <span class="eyebrow">${res.label} · calibração concluída</span>
+    <h1 class="display quiz-result__name">${res.nome}</h1>
+    <p class="lead">${res.desc}</p>
+
+    <div class="fisio-insight">
+      <span class="eyebrow">insight fisiológico</span>
+      <p>${res.insight}</p>
+    </div>
+
+    <div class="profile-cards">
+      <div class="profile-card">
+        <span class="eyebrow">prioridade agora</span>
+        <strong>${res.prioridade}</strong>
+      </div>
+      <div class="profile-card">
+        <span class="eyebrow">atenção</span>
+        <strong>${res.atencao}</strong>
+      </div>
+    </div>
+
+    <div class="profile-plan">
+      <span class="eyebrow">3 ações pra esta semana</span>
+      <ul class="sugg" style="margin-top:6px;">
+        ${res.acoes.map((a) => `<li><i class="s-dot"></i>${a}</li>`).join('')}
+      </ul>
+    </div>
+
+    <button class="btn btn--primary btn--full ob-next">continuar</button>
+  `;
+  slideEl.querySelector('.ob-next').addEventListener('click', () => nextStep());
+}
+
 function renderQuizResult(slideEl) {
   const keys = Object.keys(quizVotes);
   const winner = keys.length
@@ -1813,6 +2226,8 @@ function renderQuizResult(slideEl) {
 function openOnboard() {
   obStep = 1;
   quizVotes = {};
+  fisioTrilha = null;
+  fisioScores = {};
   renderObStep();
   onboard.classList.add('is-open');
   onboard.setAttribute('aria-hidden', 'false');
@@ -1848,6 +2263,22 @@ function renderObStep() {
   // rodas do onboarding agora em steps 12 e 13
   if (obStep === 12) renderObWheel();
   if (obStep === 13) renderObGoalWheel();
+
+  // calibração fisiológica · seletor (step 15)
+  if (obStep === 15) {
+    const slide = document.querySelector('.ob-slide[data-step="15"]');
+    if (slide) renderFisioTrilhas(slide);
+  }
+  // perguntas fisiológicas · steps 16-21
+  if (obStep >= 16 && obStep <= 21) {
+    const slide = document.querySelector('.ob-slide[data-step="' + obStep + '"]');
+    if (slide) renderFisioQuestion(slide);
+  }
+  // resultado fisiológico · step 22
+  if (obStep === 22) {
+    const slide = document.querySelector('.ob-slide[data-step="22"]');
+    if (slide) renderFisioResult(slide);
+  }
 }
 
 function nextStep() {
@@ -1923,12 +2354,12 @@ document.querySelectorAll('.ob-chip').forEach((chip) => {
   });
 });
 
-// step 16 · sentido (single)
-document.querySelectorAll('.ob-slide[data-step="16"] .ob-card').forEach((card) => {
+// step 24 · sentido (single)
+document.querySelectorAll('.ob-slide[data-step="24"] .ob-card').forEach((card) => {
   card.addEventListener('click', () => {
-    document.querySelectorAll('.ob-slide[data-step="16"] .ob-card').forEach((c) => c.classList.remove('is-on'));
+    document.querySelectorAll('.ob-slide[data-step="24"] .ob-card').forEach((c) => c.classList.remove('is-on'));
     card.classList.add('is-on');
-    document.querySelector('.ob-slide[data-step="16"] .ob-next').disabled = false;
+    document.querySelector('.ob-slide[data-step="24"] .ob-next').disabled = false;
     hap(8);
   });
 });
