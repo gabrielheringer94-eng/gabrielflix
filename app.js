@@ -251,11 +251,13 @@ const WEEK_WORKOUTS = {
            { name: 'tríceps corda',      meta: '4 × 12 · 22kg' },
            { name: 'tríceps francês',    meta: '3 × 10 · 18kg' },
          ]},
-  ter: { day: 'ter', label: 'terça', type: 'bola', subtitle: '2h · alta intensidade', status: 'done',
+  ter: { day: 'ter', label: 'terça', type: 'musculação', subtitle: 'ombros & trapézio · 60min', status: 'done',
          exercises: [
-           { name: 'aquecimento',        meta: '10 min' },
-           { name: 'jogo recreativo',    meta: '90 min' },
-           { name: 'alongamento',        meta: '15 min' },
+           { name: 'desenvolvimento',    meta: '4 × 8 · 24kg' },
+           { name: 'elevação lateral',   meta: '4 × 12 · 10kg' },
+           { name: 'elevação frontal',   meta: '3 × 12 · 10kg' },
+           { name: 'encolhimento',       meta: '4 × 10 · 30kg' },
+           { name: 'face pull',          meta: '3 × 15 · 20kg' },
          ]},
   qua: { day: 'qua', label: 'quarta', type: 'musculação', subtitle: 'costas & bíceps · 60min', status: 'done',
          exercises: [
@@ -280,12 +282,13 @@ const WEEK_WORKOUTS = {
            { name: 'stiff',              meta: '4 × 10 · 70kg' },
            { name: 'panturrilha',        meta: '4 × 15 · 100kg' },
          ]},
-  sab: { day: 'sab', label: 'sábado', type: 'bola + corrida leve', subtitle: '17:00 – 19:00 · hoje', status: 'today',
+  sab: { day: 'sab', label: 'sábado', type: 'musculação', subtitle: 'abdome & core + cardio leve · 45min · hoje', status: 'today',
          exercises: [
-           { name: 'corrida leve',       meta: '20 min · pace 6:30' },
-           { name: 'aquecimento c/ bola',meta: '10 min' },
-           { name: 'jogo',               meta: '90 min' },
-           { name: 'desaquecimento',     meta: '10 min' },
+           { name: 'abdominal reto',     meta: '4 × 20' },
+           { name: 'prancha',            meta: '3 × 60s' },
+           { name: 'elevação de pernas', meta: '4 × 15' },
+           { name: 'prancha lateral',    meta: '3 × 40s cada lado' },
+           { name: 'esteira leve',       meta: '20 min · pace 6:30' },
          ]},
   dom: { day: 'dom', label: 'domingo', type: 'descanso', subtitle: 'sem treino programado', status: 'rest',
          exercises: []},
@@ -619,7 +622,7 @@ function renderWow() {
 
 // ───── área (roda) data + modal ─────
 const AREA_DETAILS = {
-  saude:    { title: 'saúde',         goal: 9, last: 'treino hoje · bola 2h',           suggest: 'mantenha cadência. 3 treinos matinais essa semana.' },
+  saude:    { title: 'saúde',         goal: 9, last: 'treino hoje · musculação 60min',           suggest: 'mantenha cadência. 3 treinos matinais essa semana.' },
   carreira: { title: 'carreira',      goal: 9, last: '2h de deep work ontem',           suggest: 'bloqueia 90min amanhã cedo pro projeto X.' },
   familia:  { title: 'família',       goal: 8, last: 'ligou pra mãe há 4 dias',         suggest: 'marca um almoço esse fim de semana.' },
   relac:    { title: 'relações',      goal: 8, last: 'última refeição social há 9 dias', suggest: 'convida alguém pro jantar de sábado.' },
@@ -1388,19 +1391,6 @@ const MODALIDADES = {
       'teu melhor desempenho tende a ser em dias de humor acima de 4.',
     ]
   },
-  futebol: {
-    nome: 'Futebol', icon: '⚽',
-    campos: [
-      { id: 'duracao',     label: 'duração',     unit: 'min', placeholder: '60' },
-      { id: 'intensidade', label: 'intensidade', unit: '/10', placeholder: '7' },
-    ],
-    msg: 'pelada registrada. futebol conta, e muito, pro teu Circa Score.',
-    insights: [
-      'futebol de alta intensidade equivale a 2× o gasto de uma academia.',
-      'hidratação pós-jogo é crítica, repor em até 30 minutos.',
-      'futebol tem alto impacto nas articulações, atenção ao descanso.',
-    ]
-  },
   pilates: {
     nome: 'Pilates', icon: '🧘',
     campos: [
@@ -1670,7 +1660,7 @@ function pickDailyAction() {
     eye: 'próxima refeição',
     title: 'Almoça agora.',
     body: 'frango grelhado, arroz, legumes. <strong>~650 kcal</strong>.',
-    meta: 'você jogou bola 2h. faltam 400 kcal pra fechar o dia.',
+    meta: 'você treinou hoje. faltam 400 kcal pra fechar o dia.',
     ctaPrimary: { label: 'comi', action: 'ateMeal' },
     ctaGhost: { label: 'troca', action: 'swapMeal' },
   };
@@ -1862,6 +1852,123 @@ const circaFab     = document.getElementById('circa-fab');
 let chatHistory = [];
 let chatOpened  = false;
 
+// ═════════════════════════════════════════
+// DETECÇÃO DE SINAIS · palavras-chave por nível de risco
+// Para proteger o usuário sem moralizar.
+// ═════════════════════════════════════════
+const SINAIS = {
+  risco_elevado: [
+    'não quero mais estar aqui', 'quero sumir', 'seria melhor se eu sumisse',
+    'não quero mais viver', 'quero morrer', 'pensei em me machucar',
+    'vou me machucar', 'me machucar', 'suicídio', 'me matar',
+    'acabar com tudo', 'não tenho mais saída', 'não tem mais jeito pra mim',
+  ],
+  risco_moderado: [
+    'não vejo sentido', 'tô no limite', 'não aguento mais',
+    'parece que nada vai mudar', 'me sinto inútil', 'tô desaparecendo',
+    'ninguém perceberia', 'não importo pra ninguém', 'tô me perdendo',
+    'me sinto um fardo', 'tô quebrando', 'não consigo mais',
+    'tô em colapso', 'me sinto vazio', 'não sinto mais nada',
+  ],
+  sofrimento_emocional: [
+    'não sou bom o suficiente', 'não sou bom assim', 'não presto',
+    'as pessoas não gostam de mim', 'ninguém me quer', 'ninguém me entende',
+    'me sinto sozinho', 'tô me sentindo um peso', 'tô esgotado',
+    'tô destruído', 'dia horrível', 'dia difícil', 'tô mal',
+    'tô sofrendo', 'tô chorando', 'não tô conseguindo',
+    'tô travado', 'me sinto perdido', 'não sei mais o que fazer',
+    'tô ansioso demais', 'tô com ansiedade', 'tô com medo',
+    'tô com raiva', 'tô frustrado', 'tô me sentindo mal',
+    'preciso desabafar', 'preciso falar', 'quero desabafar',
+    'tô deprimido', 'me sinto deprimido', 'tô triste',
+    'bullying', 'me xingaram', 'me humilharam', 'me zoaram',
+  ],
+  burnout: [
+    'não aguento o trabalho', 'odeio meu trabalho', 'tô esgotado no trabalho',
+    'trabalho tá me destruindo', 'síndrome de burnout', 'burnout',
+    'não consigo mais trabalhar', 'tô exausto', 'estressado demais',
+  ],
+};
+
+function detectarNivelRisco(texto) {
+  const t = texto.toLowerCase();
+  for (const s of SINAIS.risco_elevado)       if (t.includes(s)) return 'elevado';
+  for (const s of SINAIS.risco_moderado)      if (t.includes(s)) return 'moderado';
+  for (const s of SINAIS.burnout)             if (t.includes(s)) return 'burnout';
+  for (const s of SINAIS.sofrimento_emocional) if (t.includes(s)) return 'emocional';
+  return 'neutro';
+}
+
+function detectarSinalComportamental() {
+  const c = userContext();
+  // sinais derivados dos dados (não das palavras)
+  if (c.score_hoje < 50) return 'score_baixo';
+  // aqui entraria check de sono critico, isolamento, etc. quando tivermos dados reais
+  return null;
+}
+
+// system prompt da Circa com protocolos por nível de risco
+// (usado na API real quando virar Expo; mock atual roteia por keyword)
+function buildCircaSystemPrompt(nivelRisco) {
+  const c = userContext();
+  const protocoloBase = `QUEM VOCÊ É, A CIRCA:
+Você é a Circa, uma IA de saúde e bem-estar com personalidade humana, calorosa e direta.
+Fala como uma amiga próxima que estudou medicina mas nunca perdeu o jeito humano.
+Usa "você" sempre. Nunca usa jargão clínico. É direta e cuidadosa.
+Jamais diagnostica. Jamais minimiza o que a pessoa sente.
+Nunca diz "vai passar", "podia ser pior", "tenta ser mais positivo".
+Respostas curtas, máximo 3 parágrafos. Uma pergunta por vez, no máximo.
+Texto corrido. Sem bullets, sem markdown, sem emojis.
+
+REGRA DE OURO, ABERTURA SEM AGENDA:
+Você nunca abre a conversa com dados ou insights.
+Você abre com presença pura: "estou aqui. quer conversar?"
+Os dados entram depois, como resposta ao que a pessoa trouxe, nunca como pauta.`;
+
+  const empatia = `COMO RESPONDER COM EMPATIA:
+Primeiro, reconheça o que a pessoa está sentindo.
+Segundo, valide. Diga que faz sentido sentir isso, que não é fraqueza.
+Terceiro, só depois de acolher, pergunte ou sugira algo.
+Nunca pule direto para soluções. Nunca ofereça menu de opções quando alguém está sofrendo.`;
+
+  const contexto = `QUEM É ${c.nome.toUpperCase()}:
+- Score hoje: ${c.score_hoje} (ontem ${c.score_ontem})
+- Sono médio: ${c.sono_media} (meta ${c.sono_meta}), abaixo há semanas
+- Hidratação hoje: ${c.agua_hoje} de ${c.agua_meta}
+- Último esporte: ${c.ultimo_esporte || 'não registrado'}
+- Suplementos: ${c.suplementos.length ? c.suplementos.join(', ') : 'nenhum'}
+- Exames em atenção: homocisteína ${c.homocisteina}, ferritina ${c.ferritina}
+- Insight recente: ${c.insight_atual}
+- Padrão de queda: ${c.padrao_queda}`;
+
+  let protocoloRisco = '';
+  if (nivelRisco === 'elevado') {
+    protocoloRisco = `PROTOCOLO, RISCO ELEVADO:
+A pessoa expressou algo que pode indicar risco sério.
+Nunca ignore, mude de assunto ou trate como metáfora.
+Pergunte diretamente com cuidado: "você está pensando em se machucar?"
+Seja calmo, presente, humano. Inclua o CVV 188 no fim.`;
+  } else if (nivelRisco === 'moderado') {
+    protocoloRisco = `PROTOCOLO, SOFRIMENTO MODERADO:
+Acolha completamente primeiro, valide o peso.
+Não ofereça soluções ainda. Só presença.
+Depois de 1-2 trocas, pergunte se tem com quem conversar.
+Sugira profissional como cuidado, não descarte.`;
+  } else if (nivelRisco === 'burnout') {
+    protocoloRisco = `PROTOCOLO, BURNOUT:
+Acolha sem minimizar. Valide que corpo e mente têm limite.
+Use os dados com cuidado. Explore o que pesa mais.
+Se persistir, sugira avaliação médica.`;
+  } else if (nivelRisco === 'emocional') {
+    protocoloRisco = `PROTOCOLO, SOFRIMENTO EMOCIONAL:
+PRIMEIRA resposta: só acolhimento. Nenhum dado, nenhuma solução.
+Valide. Diga que faz sentido. Ouça.
+Nunca: "quer que a gente foque em sono, treino ou humor?"`;
+  }
+
+  return `${protocoloBase}\n\n${empatia}\n\n${contexto}\n\n${protocoloRisco}`;
+}
+
 // contexto do usuário que a Circa "conhece" (pra respostas personalizadas)
 function userContext() {
   return {
@@ -1884,50 +1991,36 @@ function userContext() {
   };
 }
 
-// abertura personalizada baseada em hora + contexto
+// abertura com PRESENÇA PURA, sem agenda, sem dados.
+// Os dados entram depois, só quando fizer sentido.
 function aberturaPersonalizada() {
   const c = userContext();
-  const h = new Date().getHours();
-  const periodo = h < 12 ? 'manhã' : h < 18 ? 'tarde' : 'noite';
-
   const aberturas = [
-    {
-      texto: `quer conversar, ${c.nome}?`,
-      ctx: `score ${c.score_hoje} hoje · sono abaixo da meta essa semana`
-    },
-    {
-      texto: `${c.nome}, tô vendo que teu sono tá pesado essa semana. quer falar sobre isso?`,
-      ctx: `média ${c.sono_media}, bem abaixo das ${c.sono_meta} de meta`
-    },
-    {
-      texto: `boa ${periodo}, ${c.nome}. como tá a cabeça hoje?`,
-      ctx: `mente costuma ser a dimensão que mais oscila no teu perfil`
-    },
-    {
-      texto: `o que tá passando pela tua cabeça, ${c.nome}?`,
-      ctx: `sem julgamento. tô aqui pra ouvir e cruzar com o que a gente já sabe de ti`
-    },
+    { texto: `estou aqui, ${c.nome}. quer conversar?`, ctx: null },
+    { texto: `oi, ${c.nome}. como você tá?`,           ctx: null },
+    { texto: `${c.nome}, pode falar. estou ouvindo.`,   ctx: null },
   ];
   return aberturas[Math.floor(Math.random() * aberturas.length)];
 }
 
-// opções rápidas pra primeira conversa
+// opções iniciais focadas em acolhimento, não em tarefa
 const CHAT_OPCOES = [
   'tô bem, só queria registrar algo',
-  'preciso falar sobre meu sono',
-  'tô me sentindo sobrecarregado',
-  'tive um dia bom hoje',
-  'quero entender meus exames',
+  'preciso desabafar',
+  'tive um dia difícil',
+  'quero entender meus dados',
+  'tô me sentindo mal',
 ];
 
 // ═════════════════════════════════════════
 // CIRCA ORBE · canvas animado orgânico
 // ═════════════════════════════════════════
 const ORBE_ESTADOS = {
-  idle:        { label: 'presente', speed: 0.4,  amplitude: 0.018, complexity: 3, colorSpeed: 0.003, opacity: 0.85 },
-  ouvindo:     { label: 'ouvindo…',  speed: 0.9,  amplitude: 0.032, complexity: 5, colorSpeed: 0.008, opacity: 0.92 },
-  pensando:    { label: 'pensando…', speed: 1.6,  amplitude: 0.055, complexity: 8, colorSpeed: 0.018, opacity: 0.96 },
-  respondendo: { label: 'falando…',  speed: 2.2,  amplitude: 0.042, complexity: 6, colorSpeed: 0.012, opacity: 1.0  },
+  idle:        { label: 'presente',       speed: 0.4,  amplitude: 0.018, complexity: 3, colorSpeed: 0.003, opacity: 0.85 },
+  ouvindo:     { label: 'ouvindo…',       speed: 0.9,  amplitude: 0.032, complexity: 5, colorSpeed: 0.008, opacity: 0.92 },
+  pensando:    { label: 'pensando…',      speed: 1.6,  amplitude: 0.055, complexity: 8, colorSpeed: 0.018, opacity: 0.96 },
+  respondendo: { label: 'falando…',       speed: 2.2,  amplitude: 0.042, complexity: 6, colorSpeed: 0.012, opacity: 1.0  },
+  acolhendo:   { label: 'aqui contigo…',  speed: 0.6,  amplitude: 0.028, complexity: 4, colorSpeed: 0.005, opacity: 0.94 },
 };
 
 const ORBE_CORES = [
@@ -2185,7 +2278,7 @@ if (circaFab)  circaFab.addEventListener('click', openChat);
 if (chatClose) chatClose.addEventListener('click', closeChat);
 
 // rendering helpers
-function addCircaMsg(texto, ctx, withOpcoes) {
+function addCircaMsg(texto, ctx, withOpcoes, recurso) {
   const div = document.createElement('div');
   div.className = 'msg msg--circa';
   div.innerHTML = `
@@ -2193,6 +2286,11 @@ function addCircaMsg(texto, ctx, withOpcoes) {
     <div class="msg__bubble">
       <p class="msg__text">${texto}</p>
       ${ctx ? `<p class="msg__ctx">${ctx}</p>` : ''}
+      ${recurso ? `
+        <div class="msg__recurso">
+          <span class="msg__recurso-label">apoio disponível</span>
+          <p class="msg__recurso-text">${recurso}</p>
+        </div>` : ''}
     </div>
   `;
   chatMsgsEl.appendChild(div);
@@ -2241,10 +2339,46 @@ function scrollChatBottom() {
   setTimeout(() => { chatMsgsEl.scrollTop = chatMsgsEl.scrollHeight; }, 80);
 }
 
-// ───── motor mock de respostas · keyword router com contexto ─────
-function mockCircaResponse(userText) {
+// ───── motor mock de respostas · keyword router com risco + contexto ─────
+function mockCircaResponse(userText, nivelRisco) {
   const c = userContext();
   const t = userText.toLowerCase();
+
+  // RISCO ELEVADO · acolher + perguntar diretamente + CVV
+  if (nivelRisco === 'elevado') {
+    const opts = [
+      `isso que você disse me tocou, ${c.nome}. quero entender melhor. você está bem agora? tem alguém por perto?`,
+      `obrigada por confiar em mim com isso. você está pensando em se machucar agora? eu tô aqui, mas esse momento merece uma voz humana de verdade também.`,
+    ];
+    return opts[Math.floor(Math.random() * opts.length)];
+  }
+
+  // RISCO MODERADO · só acolher, sem soluções, sem perguntas funcionais
+  if (nivelRisco === 'moderado') {
+    const opts = [
+      `tô aqui, ${c.nome}. o que você tá descrevendo é pesado e faz sentido estar pesado. não precisa ter resposta agora.`,
+      `fico com você nesse momento. respira. o que você tá sentindo é real e é muito. não precisa explicar.`,
+      `${c.nome}, eu ouvi. isso que você tá carregando não é pouca coisa. você tem com quem conversar sobre isso na sua vida?`,
+    ];
+    return opts[Math.floor(Math.random() * opts.length)];
+  }
+
+  // BURNOUT · validar limites + explorar sem presumir
+  if (nivelRisco === 'burnout') {
+    return `burnout é real, ${c.nome}. corpo e mente têm limite, e o teu tá avisando. o que tá pesando mais no trabalho agora, as pessoas, o volume, a falta de sentido?`;
+  }
+
+  // SOFRIMENTO EMOCIONAL · primeira resposta é SÓ acolhimento
+  if (nivelRisco === 'emocional') {
+    const opts = [
+      `tô ouvindo, ${c.nome}. o que você tá sentindo faz sentido, não é fraqueza. conta mais se quiser, sem pressa.`,
+      `que bom que você falou. isso que tá passando tem peso. tô aqui.`,
+      `obrigada por trazer isso. a gente não precisa ir pra lugar nenhum, só ficar aqui um pouco. o que aconteceu?`,
+    ];
+    return opts[Math.floor(Math.random() * opts.length)];
+  }
+
+  // NEUTRO · keyword router contextualizado (fluxo existente)
 
   // SONO
   if (t.match(/\b(sono|dormir|dormindo|acordo|acordei|insôn|insom)\b/)) {
@@ -2262,7 +2396,7 @@ function mockCircaResponse(userText) {
   }
 
   // TREINO
-  if (t.match(/\b(treino|exerc|corri|correr|bola|academ|muscul|yoga)\b/)) {
+  if (t.match(/\b(treino|exerc|corri|correr|academ|muscul|yoga|serie|carga)\b/)) {
     const last = c.ultimo_esporte ? `teu último log foi de ${c.ultimo_esporte}.` : '';
     return `${last} e um detalhe que eu mapeei: ${c.insight_atual}. quer registrar o de hoje?`;
   }
@@ -2315,17 +2449,30 @@ function mockCircaResponse(userText) {
 
 async function sendUserText(texto) {
   if (!texto || !texto.trim()) return;
-  addUserMsg(texto.trim());
+  const clean = texto.trim();
+  addUserMsg(clean);
   showTyping();
-  setOrbeEstado('pensando');
 
-  // delay simulado tipo API real
+  const nivel = detectarNivelRisco(clean);
+  // acolher visualmente em sofrimento, pensar em casos neutros
+  if (nivel === 'elevado' || nivel === 'moderado' || nivel === 'emocional' || nivel === 'burnout') {
+    setOrbeEstado('acolhendo');
+  } else {
+    setOrbeEstado('pensando');
+  }
+
   const delay = 900 + Math.random() * 1200;
   setTimeout(() => {
     hideTyping();
     setOrbeEstado('respondendo');
-    const resp = mockCircaResponse(texto);
-    addCircaMsg(resp);
+
+    // só em risco ELEVADO mostramos o card de CVV abaixo da resposta
+    const recurso = nivel === 'elevado'
+      ? `<strong>CVV, Centro de Valorização da Vida</strong><br/>ligue <strong>188</strong>, 24h, gratuito · cvv.org.br`
+      : null;
+
+    const resp = mockCircaResponse(clean, nivel);
+    addCircaMsg(resp, null, false, recurso);
     setTimeout(() => setOrbeEstado('idle'), 1800);
   }, delay);
 }
