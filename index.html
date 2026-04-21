@@ -25,6 +25,54 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <!-- ───────── WELCOME · primeira visita ───────── -->
+  <div class="welcome" id="welcome" aria-hidden="true">
+    <div class="welcome__inner">
+      <div class="welcome__brand">
+        <img src="circa-logo.png" alt="Circa" width="40" height="40" />
+        <span>circa</span>
+      </div>
+
+      <span class="eyebrow">registrar hoje muda amanhã</span>
+      <h1 class="display">o que você<br/><em>ganha</em></h1>
+
+      <ul class="ganhos">
+        <li>
+          <span class="ganho-num" style="--c:#7B8BB8">48<i>min</i></span>
+          <div class="ganho-body">
+            <strong>a mais de sono por noite</strong>
+            <span>em 7 dias de check-in contínuo</span>
+          </div>
+        </li>
+        <li>
+          <span class="ganho-num" style="--c:#E8A87C">31<i>%</i></span>
+          <div class="ganho-body">
+            <strong>menos ansiedade em 3 semanas</strong>
+            <span>quem registra humor + treino + sono juntos</span>
+          </div>
+        </li>
+        <li>
+          <span class="ganho-num" style="--c:#A88AE8">2,4<i>×</i></span>
+          <div class="ganho-body">
+            <strong>mais dias bons por mês</strong>
+            <span>corpo · mente · espírito juntos</span>
+          </div>
+        </li>
+        <li>
+          <span class="ganho-num" style="--c:#D4B896">21<i>d</i></span>
+          <div class="ganho-body">
+            <strong>pros insights aparecerem</strong>
+            <span>quanto mais registra, mais preciso o espelho fica</span>
+          </div>
+        </li>
+      </ul>
+
+      <p class="welcome__time">60 segundos por dia · sem formulário</p>
+      <button class="btn btn--primary btn--full" id="welcome-start">começar agora</button>
+      <button class="btn btn--text btn--full" id="welcome-skip">pular por ora</button>
+    </div>
+  </div>
+
   <!-- ───────── ONBOARDING OVERLAY ───────── -->
   <div class="onboard" id="onboard" aria-hidden="true">
     <header class="ob-top">
@@ -1786,6 +1834,114 @@
         <path d="M12 2L9.5 8.5 3 9l5 4.5L6 20l6-3.5 6 3.5-2-6.5L21 9l-6.5-.5z"/>
       </svg>
     </button>
+
+    <!-- ───────── SHEET · esporte picker ───────── -->
+    <div class="sheet" id="sheet-esporte" aria-hidden="true">
+      <div class="sheet__backdrop" data-close></div>
+      <div class="sheet__panel" role="dialog" aria-label="qual treino">
+        <div class="sheet__grab"></div>
+
+        <div class="sheet__head">
+          <span class="eyebrow">log de treino</span>
+          <h2 class="display display--sm">qual foi<br/>seu treino?</h2>
+          <p class="lead lead--sm">a gente lembra pra próxima vez.</p>
+        </div>
+
+        <div class="sheet__section">
+          <div class="esporte-grid" id="esporte-grid">
+            <button class="esporte" data-sport="musculacao"><span class="esporte__icon">🏋️</span><span class="esporte__name">Musculação</span></button>
+            <button class="esporte" data-sport="corrida"><span class="esporte__icon">🏃</span><span class="esporte__name">Corrida</span></button>
+            <button class="esporte" data-sport="futebol"><span class="esporte__icon">⚽</span><span class="esporte__name">Futebol</span></button>
+            <button class="esporte" data-sport="pilates"><span class="esporte__icon">🧘</span><span class="esporte__name">Pilates</span></button>
+            <button class="esporte" data-sport="ciclismo"><span class="esporte__icon">🚴</span><span class="esporte__name">Ciclismo</span></button>
+            <button class="esporte" data-sport="beach_tennis"><span class="esporte__icon">🎾</span><span class="esporte__name">Beach Tennis</span></button>
+            <button class="esporte" data-sport="yoga"><span class="esporte__icon">🌿</span><span class="esporte__name">Yoga</span></button>
+            <button class="esporte" data-sport="natacao"><span class="esporte__icon">🏊</span><span class="esporte__name">Natação</span></button>
+            <button class="esporte" data-sport="crossfit"><span class="esporte__icon">⚡</span><span class="esporte__name">Crossfit</span></button>
+            <button class="esporte" data-sport="caminhada"><span class="esporte__icon">🚶</span><span class="esporte__name">Caminhada</span></button>
+            <button class="esporte" data-sport="outro"><span class="esporte__icon">✦</span><span class="esporte__name">Outro</span></button>
+            <button class="esporte" data-sport="descanso"><span class="esporte__icon">💤</span><span class="esporte__name">Descanso</span></button>
+          </div>
+
+          <div class="esporte-outro" id="esporte-outro" style="display:none;">
+            <input type="text" id="esporte-outro-input" placeholder="qual esporte você praticou?" class="outro-input" />
+          </div>
+        </div>
+
+        <button class="btn btn--primary btn--full" id="esporte-continuar" disabled>continuar</button>
+        <button class="btn btn--text btn--full" data-close>cancelar</button>
+      </div>
+    </div>
+
+    <!-- ───────── SHEET · log adaptativo por modalidade ───────── -->
+    <div class="sheet" id="sheet-log-treino" aria-hidden="true">
+      <div class="sheet__backdrop" data-close></div>
+      <div class="sheet__panel" role="dialog" aria-label="log de treino">
+        <div class="sheet__grab"></div>
+
+        <div class="sheet__head">
+          <span class="eyebrow" id="log-t-eye">treino · hoje</span>
+          <h2 class="display display--sm" id="log-t-nome">—</h2>
+          <p class="lead lead--sm" id="log-t-data">—</p>
+        </div>
+
+        <div class="sheet__section">
+          <span class="eyebrow">métricas</span>
+          <div class="log-campos" id="log-t-campos"></div>
+        </div>
+
+        <div class="sheet__section">
+          <span class="eyebrow">como você se sentiu</span>
+          <div class="sensacao-grid">
+            <button class="sensacao" data-sens="1"><span>😩</span><small>muito mal</small></button>
+            <button class="sensacao" data-sens="2"><span>😕</span><small>mal</small></button>
+            <button class="sensacao" data-sens="3"><span>😐</span><small>ok</small></button>
+            <button class="sensacao" data-sens="4"><span>🙂</span><small>bem</small></button>
+            <button class="sensacao" data-sens="5"><span>🔥</span><small>incrível</small></button>
+          </div>
+        </div>
+
+        <div class="sheet__section">
+          <span class="eyebrow">nota do dia · opcional</span>
+          <textarea class="reflect-text" id="log-t-nota" rows="3" placeholder="como foi? algo que valha registrar…"></textarea>
+        </div>
+
+        <button class="btn btn--primary btn--full" id="log-t-salvar">registrar treino</button>
+        <button class="btn btn--text btn--full" data-close>cancelar</button>
+      </div>
+    </div>
+
+    <!-- ───────── SHEET · confirmação com daily score ───────── -->
+    <div class="sheet" id="sheet-log-ok" aria-hidden="true">
+      <div class="sheet__backdrop" data-close></div>
+      <div class="sheet__panel" role="dialog" aria-label="registro confirmado">
+        <div class="sheet__grab"></div>
+
+        <div class="log-ok__check">
+          <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="5 12 10 17 19 8"/>
+          </svg>
+        </div>
+
+        <div class="sheet__head" style="text-align:center;">
+          <h2 class="display display--sm" id="log-ok-title">registrado.</h2>
+          <p class="lead lead--sm" id="log-ok-sub">—</p>
+        </div>
+
+        <div class="sheet__section log-ok__score">
+          <span class="eyebrow">circa score · hoje</span>
+          <strong class="log-ok__num" id="log-ok-num">—</strong>
+          <div class="log-ok__dims" id="log-ok-dims"></div>
+        </div>
+
+        <div class="sheet__section log-ok__insight">
+          <span class="eyebrow">insight de hoje</span>
+          <p id="log-ok-insight">—</p>
+        </div>
+
+        <button class="btn btn--ghost btn--full" data-close>fechar</button>
+      </div>
+    </div>
 
     <!-- ───────── QUICK LOG · handle + drawer ───────── -->
     <button class="qd-handle" id="qd-handle" aria-label="abrir log rápido">

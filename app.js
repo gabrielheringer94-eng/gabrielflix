@@ -1326,6 +1326,317 @@ document.querySelectorAll('.btn, .quick__item').forEach((b) => {
   b.addEventListener('click', () => hap(8));
 });
 
+// ═════════════════════════════════════════
+// WELCOME · primeira visita (pré-onboarding)
+// ═════════════════════════════════════════
+const welcomeEl = document.getElementById('welcome');
+const welcomeStart = document.getElementById('welcome-start');
+const welcomeSkip  = document.getElementById('welcome-skip');
+
+function openWelcome() {
+  if (!welcomeEl) return;
+  welcomeEl.classList.add('is-open');
+  welcomeEl.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+}
+function closeWelcome() {
+  if (!welcomeEl) return;
+  welcomeEl.classList.remove('is-open');
+  welcomeEl.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
+  try { localStorage.setItem('circa_welcome_seen', '1'); } catch (e) {}
+}
+
+if (welcomeStart) welcomeStart.addEventListener('click', () => { closeWelcome(); openOnboard(); hap(15); });
+if (welcomeSkip)  welcomeSkip.addEventListener('click', () => { closeWelcome(); hap(8); });
+
+try {
+  if (!localStorage.getItem('circa_welcome_seen')) {
+    setTimeout(openWelcome, 400);
+  }
+} catch (e) {}
+
+// ═════════════════════════════════════════
+// LOG DE TREINO · esporte picker + log adaptativo + confirmação
+// ═════════════════════════════════════════
+const MODALIDADES = {
+  musculacao: {
+    nome: 'Musculação', icon: '🏋️',
+    campos: [
+      { id: 'duracao',  label: 'duração',      unit: 'min',     placeholder: '60' },
+      { id: 'series',   label: 'séries totais',unit: 'séries',  placeholder: '20' },
+      { id: 'carga',    label: 'carga média',  unit: 'kg',      placeholder: '40' },
+    ],
+    msg: 'carga registrada. o Circa tá mapeando teu padrão de recuperação.',
+    insights: [
+      'treinos acima de 45min têm retorno decrescente — intensidade bate duração.',
+      'você treina melhor em dias com mais de 7h de sono.',
+      'consistência semanal gera mais resultado que volume por sessão.',
+    ]
+  },
+  corrida: {
+    nome: 'Corrida', icon: '🏃',
+    campos: [
+      { id: 'distancia', label: 'distância', unit: 'km',      placeholder: '5' },
+      { id: 'duracao',   label: 'tempo',     unit: 'min',     placeholder: '30' },
+      { id: 'pace',      label: 'pace médio',unit: 'min/km',  placeholder: '6.0' },
+    ],
+    msg: 'km registrados. continua por 7 dias e os insights começam a aparecer.',
+    insights: [
+      'corredores que registram pace melhoram 12% mais rápido.',
+      'hidratação antes do treino impacta diretamente no teu pace.',
+      'teu melhor desempenho tende a ser em dias de humor acima de 4.',
+    ]
+  },
+  futebol: {
+    nome: 'Futebol', icon: '⚽',
+    campos: [
+      { id: 'duracao',     label: 'duração',     unit: 'min', placeholder: '60' },
+      { id: 'intensidade', label: 'intensidade', unit: '/10', placeholder: '7' },
+    ],
+    msg: 'pelada registrada. futebol conta — e muito — pro teu Circa Score.',
+    insights: [
+      'futebol de alta intensidade equivale a 2× o gasto de uma academia.',
+      'hidratação pós-jogo é crítica — repor em até 30 minutos.',
+      'futebol tem alto impacto nas articulações — atenção ao descanso.',
+    ]
+  },
+  pilates: {
+    nome: 'Pilates', icon: '🧘',
+    campos: [
+      { id: 'duracao', label: 'duração', unit: 'min', placeholder: '50' },
+      { id: 'foco',    label: 'foco',    unit: '',    placeholder: 'core / mobilidade / força' },
+    ],
+    msg: 'pilates registrado. consistência aqui é o que gera transformação real.',
+    insights: [
+      'pilates regular reduz dores lombares em até 36% em 8 semanas.',
+      'combinar pilates com musculação maximiza mobilidade e força.',
+      'consistência semanal é mais importante que duração da sessão.',
+    ]
+  },
+  ciclismo: {
+    nome: 'Ciclismo', icon: '🚴',
+    campos: [
+      { id: 'distancia', label: 'distância', unit: 'km',  placeholder: '20' },
+      { id: 'duracao',   label: 'tempo',     unit: 'min', placeholder: '60' },
+      { id: 'elevacao',  label: 'elevação',  unit: 'm',   placeholder: '200' },
+    ],
+    msg: 'pedal registrado. distância e elevação alimentam teu perfil fisiológico.',
+    insights: [
+      'ciclismo é excelente pra saúde cardiovascular com baixo impacto articular.',
+      'pedalar em jejum acelera queima de gordura em treinos leves.',
+      'consistência semanal gera adaptação cardiovascular em 3-4 semanas.',
+    ]
+  },
+  beach_tennis: {
+    nome: 'Beach Tennis', icon: '🎾',
+    campos: [
+      { id: 'duracao', label: 'duração',     unit: 'min',  placeholder: '90' },
+      { id: 'sets',    label: 'sets jogados',unit: 'sets', placeholder: '3' },
+    ],
+    msg: 'jogo registrado. beach tennis combina cardio + coordenação numa sessão.',
+    insights: [
+      'beach tennis combina cardio, coordenação e força em uma sessão.',
+      'a areia aumenta em até 30% o gasto calórico vs quadra dura.',
+      'alta exposição solar — vitamina D e protetor são aliados.',
+    ]
+  },
+  yoga: {
+    nome: 'Yoga', icon: '🌿',
+    campos: [
+      { id: 'duracao', label: 'duração',     unit: 'min', placeholder: '60' },
+      { id: 'tipo',    label: 'tipo',        unit: '',    placeholder: 'hatha / vinyasa / yin' },
+    ],
+    msg: 'prática registrada. yoga é a dimensão que mais influencia o Espírito.',
+    insights: [
+      'yoga regular reduz cortisol e melhora qualidade do sono.',
+      'prática noturna de yin yoga é especialmente eficaz pra recuperação.',
+      'combinar yoga com treino de força maximiza mobilidade.',
+    ]
+  },
+  natacao: {
+    nome: 'Natação', icon: '🏊',
+    campos: [
+      { id: 'metros',  label: 'metros nadados', unit: 'm',   placeholder: '1000' },
+      { id: 'duracao', label: 'tempo na água',  unit: 'min', placeholder: '40' },
+    ],
+    msg: 'treino registrado. natação é ótima pra recuperação ativa.',
+    insights: [
+      'natação é o esporte com menor impacto e maior benefício cardiovascular.',
+      'treinar técnica em baixa velocidade gera mais resultado que volume.',
+      'hidratação é essencial mesmo na natação.',
+    ]
+  },
+  crossfit: {
+    nome: 'Crossfit', icon: '⚡',
+    campos: [
+      { id: 'duracao', label: 'duração do WOD', unit: 'min', placeholder: '45' },
+      { id: 'wod',     label: 'nome do WOD',   unit: '',    placeholder: 'Fran / Murph / custom' },
+    ],
+    msg: 'WOD registrado. descansa bem — teu corpo tá trabalhando agora.',
+    insights: [
+      'crossfit de alta intensidade exige 48-72h de recuperação real.',
+      'monitorar frequência cardíaca evita overtraining.',
+      'nutrição pré e pós-treino é crítica pra performance.',
+    ]
+  },
+  caminhada: {
+    nome: 'Caminhada', icon: '🚶',
+    campos: [
+      { id: 'distancia', label: 'distância', unit: 'km',  placeholder: '3' },
+      { id: 'duracao',   label: 'duração',   unit: 'min', placeholder: '40' },
+    ],
+    msg: 'caminhada registrada. movimento consistente é o maior preditor de saúde.',
+    insights: [
+      '8.000 passos por dia reduz mortalidade cardiovascular em 51%.',
+      'caminhada pós-refeição melhora glicemia e digestão.',
+      'consistência diária supera treinos intensos esporádicos.',
+    ]
+  },
+  outro: {
+    nome: 'Outro esporte', icon: '✦',
+    campos: [
+      { id: 'duracao',     label: 'duração',     unit: 'min', placeholder: '60' },
+      { id: 'intensidade', label: 'intensidade', unit: '/10', placeholder: '7' },
+    ],
+    msg: 'treino registrado. continua e o Circa aprende o que funciona pra ti.',
+    insights: [
+      'qualquer movimento conta — o mais importante é a consistência.',
+      'variar modalidades reduz risco de lesão por repetição.',
+      'registrar ajuda a identificar o que funciona melhor pra você.',
+    ]
+  },
+  descanso: {
+    nome: 'Dia de descanso', icon: '💤',
+    campos: [
+      { id: 'sono',         label: 'horas de sono',            unit: 'h',   placeholder: '8' },
+      { id: 'recuperacao',  label: 'sensação de recuperação', unit: '/10', placeholder: '7' },
+    ],
+    msg: 'descanso registrado. recuperação é metade do resultado.',
+    insights: [
+      'descanso ativo é parte da performance — não o oposto dela.',
+      'dias de descanso com boa recuperação geram adaptação muscular.',
+      'sono profundo produz 70% do GH — o hormônio de recuperação.',
+    ]
+  }
+};
+
+let esporteSel = null;
+let sensSel = null;
+
+function openEsportePicker() {
+  openSheet('sheet-esporte');
+  // pre-seleciona o último esporte se salvo
+  const last = (() => { try { return localStorage.getItem('circa_last_sport'); } catch (e) { return null; } })();
+  document.querySelectorAll('#esporte-grid .esporte').forEach((b) => b.classList.remove('is-on'));
+  if (last) {
+    const btn = document.querySelector(`#esporte-grid .esporte[data-sport="${last}"]`);
+    if (btn) { btn.classList.add('is-on'); esporteSel = last; }
+  } else {
+    esporteSel = null;
+  }
+  const cont = document.getElementById('esporte-continuar');
+  if (cont) cont.disabled = !esporteSel;
+  const outro = document.getElementById('esporte-outro');
+  if (outro) outro.style.display = esporteSel === 'outro' ? '' : 'none';
+}
+
+document.querySelectorAll('#esporte-grid .esporte').forEach((btn) => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('#esporte-grid .esporte').forEach((b) => b.classList.remove('is-on'));
+    btn.classList.add('is-on');
+    esporteSel = btn.dataset.sport;
+    document.getElementById('esporte-outro').style.display = esporteSel === 'outro' ? '' : 'none';
+    document.getElementById('esporte-continuar').disabled = false;
+    try { localStorage.setItem('circa_last_sport', esporteSel); } catch (e) {}
+    hap(8);
+  });
+});
+
+const esporteContinuar = document.getElementById('esporte-continuar');
+if (esporteContinuar) esporteContinuar.addEventListener('click', () => {
+  if (!esporteSel) return;
+  closeSheet();
+  setTimeout(() => openLogTreino(esporteSel), 260);
+});
+
+function openLogTreino(sportKey) {
+  const m = MODALIDADES[sportKey];
+  if (!m) return;
+  const nomeFinal = sportKey === 'outro'
+    ? (document.getElementById('esporte-outro-input').value || 'Outro esporte')
+    : m.nome;
+  document.getElementById('log-t-eye').textContent = 'treino · hoje';
+  document.getElementById('log-t-nome').innerHTML = `${m.icon} ${nomeFinal}`;
+  document.getElementById('log-t-data').textContent = new Date().toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' });
+
+  const wrap = document.getElementById('log-t-campos');
+  wrap.innerHTML = m.campos.map((c) => `
+    <label class="ob-field">
+      <span>${c.label}${c.unit ? ' · ' + c.unit : ''}</span>
+      <input type="${c.unit === '' ? 'text' : 'number'}" step="0.1" placeholder="${c.placeholder}" data-campo="${c.id}" />
+    </label>
+  `).join('');
+
+  // reset sensação e nota
+  sensSel = null;
+  document.querySelectorAll('.sensacao').forEach((s) => s.classList.remove('is-on'));
+  const notaEl = document.getElementById('log-t-nota');
+  if (notaEl) notaEl.value = '';
+
+  openSheet('sheet-log-treino');
+}
+
+document.querySelectorAll('.sensacao').forEach((b) => {
+  b.addEventListener('click', () => {
+    document.querySelectorAll('.sensacao').forEach((x) => x.classList.remove('is-on'));
+    b.classList.add('is-on');
+    sensSel = parseInt(b.dataset.sens, 10);
+    hap(8);
+  });
+});
+
+function salvarLogTreino() {
+  if (!esporteSel) return;
+  const m = MODALIDADES[esporteSel];
+  const dados = { esporte: esporteSel, sensacao: sensSel, data: new Date().toISOString() };
+  document.querySelectorAll('#log-t-campos [data-campo]').forEach((el) => { dados[el.dataset.campo] = el.value; });
+  dados.nota = document.getElementById('log-t-nota').value;
+  try {
+    const hist = JSON.parse(localStorage.getItem('circa_workout_log') || '[]');
+    hist.push(dados);
+    localStorage.setItem('circa_workout_log', JSON.stringify(hist));
+  } catch (e) {}
+
+  // score simulado com base na sensação
+  const base = sensSel ? sensSel * 16 : 70;
+  const corpo    = Math.min(100, base + Math.floor(Math.random() * 12));
+  const mente    = Math.min(100, base - 5 + Math.floor(Math.random() * 15));
+  const espirito = Math.min(100, base + 2 + Math.floor(Math.random() * 10));
+  const total    = Math.round(corpo * 0.4 + mente * 0.35 + espirito * 0.25);
+
+  document.getElementById('log-ok-title').textContent = esporteSel === 'descanso' ? 'descansado.' : 'registrado.';
+  document.getElementById('log-ok-sub').textContent = m.msg;
+  document.getElementById('log-ok-num').textContent = total;
+
+  const dimsEl = document.getElementById('log-ok-dims');
+  dimsEl.innerHTML = [
+    ['#7B8BB8', 'corpo ' + corpo],
+    ['#E8A87C', 'mente ' + mente],
+    ['#A88AE8', 'espírito ' + espirito],
+  ].map(([c, txt]) => `<span class="dim-chip"><i style="background:${c}"></i>${txt}</span>`).join('');
+
+  const insight = m.insights[Math.floor(Math.random() * m.insights.length)];
+  document.getElementById('log-ok-insight').textContent = insight;
+
+  closeSheet();
+  setTimeout(() => openSheet('sheet-log-ok'), 260);
+  hap(18);
+}
+
+const logSalvar = document.getElementById('log-t-salvar');
+if (logSalvar) logSalvar.addEventListener('click', salvarLogTreino);
+
 // ───── QUICK LOG drawer ─────
 const qd         = document.getElementById('qd');
 const qdHandle   = document.getElementById('qd-handle');
@@ -1360,7 +1671,7 @@ qd && qd.querySelectorAll('.qd__item').forEach((btn) => {
       if (type === 'mood')    goTo('mood');
       if (type === 'lab')     goTo('labs');
       if (type === 'water')   { goTo('home'); const m = document.querySelector('[data-add="200"]'); if (m) m.click(); }
-      if (type === 'workout') goTo('home');
+      if (type === 'workout') { goTo('home'); setTimeout(openEsportePicker, 120); }
       if (type === 'meal')    goTo('home');
       if (type === 'sleep')   goTo('home');
       if (type === 'spirit')  openArea('espirit');
