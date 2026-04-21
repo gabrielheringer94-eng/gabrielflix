@@ -318,7 +318,7 @@ function openDay(key) {
   const tglLabel = document.getElementById('day-toggle-label');
   if (tgl && tglLabel) {
     tgl.classList.toggle('is-active', d.status === 'done');
-    tglLabel.textContent = d.status === 'done' ? '✓ feito — desfazer' : 'marcar feito';
+    tglLabel.textContent = d.status === 'done' ? '✓ feito, desfazer' : 'marcar feito';
   }
 
   // reset edit mode & swap panel
@@ -624,7 +624,7 @@ const AREA_DETAILS = {
   familia:  { title: 'família',       goal: 8, last: 'ligou pra mãe há 4 dias',         suggest: 'marca um almoço esse fim de semana.' },
   relac:    { title: 'relações',      goal: 8, last: 'última refeição social há 9 dias', suggest: 'convida alguém pro jantar de sábado.' },
   lazer:    { title: 'lazer',         goal: 7, last: 'nada logado essa semana',          suggest: 'tira 1h hoje pra algo que não é produtivo.' },
-  desenv:   { title: 'desenvolvimento', goal: 8, last: 'leu 20min ontem',                suggest: 'continua no mesmo livro — consistência > volume.' },
+  desenv:   { title: 'desenvolvimento', goal: 8, last: 'leu 20min ontem',                suggest: 'continua no mesmo livro, consistência > volume.' },
   espirit:  { title: 'espírito',      goal: 7, last: 'última prática 12 dias atrás',     suggest: 'você marcou meditação como prática. 10min hoje?' },
   financas: { title: 'finanças',      goal: 8, last: 'sem registro esse mês',            suggest: 'define esse mês onde tá a meta dos 30%.' },
 };
@@ -952,8 +952,8 @@ function stateWord(score) {
 
 function narrativePrefix(score, name) {
   // templates com nome no começo. "Parabéns" só aparece em scores altos.
-  if (score >= 90) return `${name}, parabéns — você tá <em id="hero-state-inline">voando</em>.`;
-  if (score >= 80) return `${name}, parabéns — você tá <em id="hero-state-inline">constante</em>.`;
+  if (score >= 90) return `${name}, parabéns, você tá <em id="hero-state-inline">voando</em>.`;
+  if (score >= 80) return `${name}, parabéns, você tá <em id="hero-state-inline">constante</em>.`;
   if (score >= 70) return `${name}, você tá <em id="hero-state-inline">em ritmo</em>.`;
   if (score >= 60) return `${name}, hoje tá <em id="hero-state-inline">aquecendo</em>.`;
   if (score >= 45) return `${name}, dia pedindo <em id="hero-state-inline">atenção</em>.`;
@@ -973,7 +973,7 @@ const AFFIRMATIONS = [
   // 0-44 · precisa descanso (nurturing, zero cobrança)
   [
     'tudo bem não estar bem.',
-    'se cuide agora — recupera depois.',
+    'se cuide agora, recupera depois.',
     'corpo pede descanso. ouça.',
     'liga pra alguém. toma água. dorme cedo.',
     'amanhã você cuida. hoje só passa.',
@@ -981,7 +981,7 @@ const AFFIRMATIONS = [
   ],
   // 45-59 · atenção (acolhedor + convite à pausa)
   [
-    'respira — amanhã refaz.',
+    'respira, amanhã refaz.',
     'tá pedindo uma pausa. ouve.',
     'nem todo dia é alto. faz parte do ritmo.',
     'amanhã começa sem culpa.',
@@ -991,7 +991,7 @@ const AFFIRMATIONS = [
   // 60-69 · aquecendo (realista, acolhedor)
   [
     'amanhã começa em branco.',
-    'hoje foi hoje — descansa.',
+    'hoje foi hoje, descansa.',
     'dia na média também é progresso.',
     'não tá perfeito, tá dentro.',
     'amanhã tem espaço pra crescer.',
@@ -1002,7 +1002,7 @@ const AFFIRMATIONS = [
     'fluindo, sem drama.',
     'tá no caminho. mantém.',
     'pequenos ajustes e vira ótimo.',
-    'sem grandes desvios — bom sinal.',
+    'sem grandes desvios, bom sinal.',
     'o ritmo tá teu.',
     'constância é o truque.',
   ],
@@ -1011,7 +1011,7 @@ const AFFIRMATIONS = [
     'confia no processo.',
     'pequenos passos, grande caminho.',
     'tá no teu jogo.',
-    'sólido — e sustentável.',
+    'sólido, e sustentável.',
     'dia redondo. guarda essa sensação.',
     'o que tu faz de novo hoje, amanhã é hábito.',
   ],
@@ -1022,7 +1022,7 @@ const AFFIRMATIONS = [
     'dia de pico. aproveita o impulso.',
     'quando funciona, funciona.',
     'consistência premiada.',
-    'corpo e mente alinhados — saboreia.',
+    'corpo e mente alinhados, saboreia.',
   ],
 ];
 
@@ -1193,7 +1193,7 @@ const STATUS_DEFS = {
       { desc: 'bateria no fim. consegue funcionar, mas cada tarefa pesa. treino pesado hoje vai custar.' },
       { desc: 'engrenando devagar. faz o essencial sem brilho extra. ritmo mínimo sustentável.' },
       { desc: 'operando bem. dá conta do dia normal sem tropeço. treino moderado tranquilo.' },
-      { desc: 'disposto. sobra pra fazer o extra — treino sério, foco prolongado, decisões difíceis.' },
+      { desc: 'disposto. sobra pra fazer o extra, treino sério, foco prolongado, decisões difíceis.' },
       { desc: 'transbordando. dia com capacidade de alto rendimento em qualquer coisa que escolher.' },
     ]
   },
@@ -1201,12 +1201,12 @@ const STATUS_DEFS = {
     title: 'humor',
     hint:  'como você tá se sentindo emocionalmente agora.',
     levels: [
-      { desc: 'tristeza forte ou irritação difícil de controlar. dia pedindo cuidado extra — conversa, descanso, apoio.' },
+      { desc: 'tristeza forte ou irritação difícil de controlar. dia pedindo cuidado extra, conversa, descanso, apoio.' },
       { desc: 'pra baixo, apagado. nada empolga muito. dia tá pesando.' },
       { desc: 'oscilando. alguns momentos bons, outros pesam. sensível a gatilho.' },
       { desc: 'estável. nem pra cima nem pra baixo. neutro funcional.' },
       { desc: 'satisfeito. dia com mais momentos bons que ruins. sensação de tá no lugar certo.' },
-      { desc: 'animado, leve, conectado. dia redondo emocionalmente — aproveita.' },
+      { desc: 'animado, leve, conectado. dia redondo emocionalmente, aproveita.' },
     ]
   },
   anx: {
@@ -1216,9 +1216,9 @@ const STATUS_DEFS = {
       { desc: 'presente, relaxado. mente sem ruído de fundo. estado ideal.' },
       { desc: 'um alerta de fundo, mas sob controle. normal em dia de tarefa importante.' },
       { desc: 'preocupação existe mas não atrapalha o que precisa ser feito.' },
-      { desc: 'começa a interferir — em decisões, sono, foco. atenção aqui.' },
+      { desc: 'começa a interferir, em decisões, sono, foco. atenção aqui.' },
       { desc: 'corpo tenso, ruminação constante. custa executar tarefa básica. dia pesado.' },
-      { desc: 'sintomas físicos, pensamento acelerado, paralisia. procure apoio — não tem que passar sozinho.' },
+      { desc: 'sintomas físicos, pensamento acelerado, paralisia. procure apoio, não tem que passar sozinho.' },
     ]
   },
 };
@@ -1369,7 +1369,7 @@ const MODALIDADES = {
     ],
     msg: 'carga registrada. o Circa tá mapeando teu padrão de recuperação.',
     insights: [
-      'treinos acima de 45min têm retorno decrescente — intensidade bate duração.',
+      'treinos acima de 45min têm retorno decrescente, intensidade bate duração.',
       'você treina melhor em dias com mais de 7h de sono.',
       'consistência semanal gera mais resultado que volume por sessão.',
     ]
@@ -1394,11 +1394,11 @@ const MODALIDADES = {
       { id: 'duracao',     label: 'duração',     unit: 'min', placeholder: '60' },
       { id: 'intensidade', label: 'intensidade', unit: '/10', placeholder: '7' },
     ],
-    msg: 'pelada registrada. futebol conta — e muito — pro teu Circa Score.',
+    msg: 'pelada registrada. futebol conta, e muito, pro teu Circa Score.',
     insights: [
       'futebol de alta intensidade equivale a 2× o gasto de uma academia.',
-      'hidratação pós-jogo é crítica — repor em até 30 minutos.',
-      'futebol tem alto impacto nas articulações — atenção ao descanso.',
+      'hidratação pós-jogo é crítica, repor em até 30 minutos.',
+      'futebol tem alto impacto nas articulações, atenção ao descanso.',
     ]
   },
   pilates: {
@@ -1438,7 +1438,7 @@ const MODALIDADES = {
     insights: [
       'beach tennis combina cardio, coordenação e força em uma sessão.',
       'a areia aumenta em até 30% o gasto calórico vs quadra dura.',
-      'alta exposição solar — vitamina D e protetor são aliados.',
+      'alta exposição solar, vitamina D e protetor são aliados.',
     ]
   },
   yoga: {
@@ -1473,7 +1473,7 @@ const MODALIDADES = {
       { id: 'duracao', label: 'duração do WOD', unit: 'min', placeholder: '45' },
       { id: 'wod',     label: 'nome do WOD',   unit: '',    placeholder: 'Fran / Murph / custom' },
     ],
-    msg: 'WOD registrado. descansa bem — teu corpo tá trabalhando agora.',
+    msg: 'WOD registrado. descansa bem, teu corpo tá trabalhando agora.',
     insights: [
       'crossfit de alta intensidade exige 48-72h de recuperação real.',
       'monitorar frequência cardíaca evita overtraining.',
@@ -1501,7 +1501,7 @@ const MODALIDADES = {
     ],
     msg: 'treino registrado. continua e o Circa aprende o que funciona pra ti.',
     insights: [
-      'qualquer movimento conta — o mais importante é a consistência.',
+      'qualquer movimento conta, o mais importante é a consistência.',
       'variar modalidades reduz risco de lesão por repetição.',
       'registrar ajuda a identificar o que funciona melhor pra você.',
     ]
@@ -1514,9 +1514,9 @@ const MODALIDADES = {
     ],
     msg: 'descanso registrado. recuperação é metade do resultado.',
     insights: [
-      'descanso ativo é parte da performance — não o oposto dela.',
+      'descanso ativo é parte da performance, não o oposto dela.',
       'dias de descanso com boa recuperação geram adaptação muscular.',
-      'sono profundo produz 70% do GH — o hormônio de recuperação.',
+      'sono profundo produz 70% do GH, o hormônio de recuperação.',
     ]
   }
 };
@@ -1645,7 +1645,7 @@ function pickDailyAction() {
   const h = new Date().getHours();
   const name = USER_NAME || 'você';
 
-  // manhã cedo · 5-10h — como dormiu?
+  // manhã cedo · 5-10h, como dormiu?
   if (h >= 5 && h < 10) return {
     eye: 'agora',
     title: `Como você dormiu, ${name}?`,
@@ -1655,11 +1655,11 @@ function pickDailyAction() {
     ctaGhost: null,
   };
 
-  // meio da manhã · 10-12h — hidratar
+  // meio da manhã · 10-12h, hidratar
   if (h >= 10 && h < 12) return {
     eye: 'agora',
     title: 'Hidrata antes do almoço.',
-    body: 'teu corpo ainda tá pedindo água — uns 800ml pra alcançar a meta.',
+    body: 'teu corpo ainda tá pedindo água, uns 800ml pra alcançar a meta.',
     meta: '',
     ctaPrimary: { label: '+ 500 ml', action: 'water500' },
     ctaGhost: { label: '+ 200 ml', action: 'water200' },
@@ -1675,7 +1675,7 @@ function pickDailyAction() {
     ctaGhost: { label: 'troca', action: 'swapMeal' },
   };
 
-  // tarde · 14-17h — hidratar de novo
+  // tarde · 14-17h, hidratar de novo
   if (h >= 14 && h < 17) return {
     eye: 'agora',
     title: 'Faltam 1L de água.',
@@ -1685,17 +1685,17 @@ function pickDailyAction() {
     ctaGhost: { label: '+ 200 ml', action: 'water200' },
   };
 
-  // fim da tarde · 17-19h — treino ou check-in
+  // fim da tarde · 17-19h, treino ou check-in
   if (h >= 17 && h < 19) return {
     eye: 'agora',
     title: 'Treinou? Conta aí.',
-    body: 'o que tu fez hoje — ou vai fazer — pro teu corpo?',
+    body: 'o que tu fez hoje, ou vai fazer, pro teu corpo?',
     meta: '',
     ctaPrimary: { label: 'registrar treino', action: 'workout' },
     ctaGhost: null,
   };
 
-  // noite · 19-22h — como foi o dia
+  // noite · 19-22h, como foi o dia
   if (h >= 19 && h < 22) return {
     eye: 'agora',
     title: `Como tá agora, ${name}?`,
@@ -1757,7 +1757,7 @@ function runAction(kind) {
   if (kind === 'water200') { const m = document.querySelector('[data-add="200"]'); if (m) m.click(); }
   if (kind === 'water500') { const m = document.querySelector('[data-add="500"]'); if (m) m.click(); }
   if (kind === 'ateMeal')  { const card = document.getElementById('home-action'); if (card) card.style.opacity = '0.55'; }
-  if (kind === 'swapMeal') { alert('troca de refeição — vem em breve'); }
+  if (kind === 'swapMeal') { alert('troca de refeição, vem em breve'); }
 }
 
 // renderiza ao carregar · também chamado quando o nome muda
@@ -1897,7 +1897,7 @@ function aberturaPersonalizada() {
     },
     {
       texto: `${c.nome}, tô vendo que teu sono tá pesado essa semana. quer falar sobre isso?`,
-      ctx: `média ${c.sono_media} — bem abaixo das ${c.sono_meta} de meta`
+      ctx: `média ${c.sono_media}, bem abaixo das ${c.sono_meta} de meta`
     },
     {
       texto: `boa ${periodo}, ${c.nome}. como tá a cabeça hoje?`,
@@ -2015,7 +2015,7 @@ function mockCircaResponse(userText) {
 
   // SONO
   if (t.match(/\b(sono|dormir|dormindo|acordo|acordei|insôn|insom)\b/)) {
-    return `teu sono tá em ${c.sono_media} de média essa semana, ${c.nome}. é a coisa que mais tá puxando teu score pra baixo agora. que tá te tirando do sono — trabalho na cabeça, ansiedade, escolha de dormir tarde?`;
+    return `teu sono tá em ${c.sono_media} de média essa semana, ${c.nome}. é a coisa que mais tá puxando teu score pra baixo agora. que tá te tirando do sono, trabalho na cabeça, ansiedade, escolha de dormir tarde?`;
   }
 
   // ANSIEDADE / SOBRECARGA
@@ -2025,7 +2025,7 @@ function mockCircaResponse(userText) {
 
   // TRISTEZA / DESANIMO
   if (t.match(/\b(triste|desanim|mal|ruim|baixo|deprim|chorar|sem for)\b/)) {
-    return `obrigada por contar, ${c.nome}. dia ruim não precisa ser consertado agora — só atravessado. se tá ficando difícil por muitos dias seguidos, vale conversar com um psicólogo. tu tem com quem falar próximo?`;
+    return `obrigada por contar, ${c.nome}. dia ruim não precisa ser consertado agora, só atravessado. se tá ficando difícil por muitos dias seguidos, vale conversar com um psicólogo. tu tem com quem falar próximo?`;
   }
 
   // TREINO
@@ -2046,7 +2046,7 @@ function mockCircaResponse(userText) {
 
   // HUMOR / DIA BOM
   if (t.match(/\b(bom dia|dia bom|feliz|alegr|bem|ótimo|otimo|tranqu)\b/)) {
-    return `bom de ouvir isso. dias bons não são acaso — tu acumulou consistência nas últimas semanas. quer registrar o humor pra eu aprender com esse padrão?`;
+    return `bom de ouvir isso. dias bons não são acaso, tu acumulou consistência nas últimas semanas. quer registrar o humor pra eu aprender com esse padrão?`;
   }
 
   // SUPLEMENTO / MEDICAÇÃO
@@ -2057,12 +2057,12 @@ function mockCircaResponse(userText) {
 
   // REGISTRAR
   if (t.match(/\b(registrar|log|anotar|marcar|salvar)\b/)) {
-    return `pode me contar o que tu quer registrar? treino, refeição, humor, momento que te moveu — eu anoto e cruzo com o resto.`;
+    return `pode me contar o que tu quer registrar? treino, refeição, humor, momento que te moveu, eu anoto e cruzo com o resto.`;
   }
 
   // AJUDA / COMO FUNCIONA
   if (t.match(/\b(ajuda|como funcion|o que tu faz|pra que|pode fazer)\b/)) {
-    return `eu cruzo tudo que tu registra — sono, treino, humor, exames — e mostro padrões que tu sozinho não consegue ver. também converso sempre que tu precisar. me pergunta qualquer coisa sobre ti.`;
+    return `eu cruzo tudo que tu registra, sono, treino, humor, exames, e mostro padrões que tu sozinho não consegue ver. também converso sempre que tu precisar. me pergunta qualquer coisa sobre ti.`;
   }
 
   // OI / SAUDAÇÃO
@@ -2134,7 +2134,7 @@ if (homeAction) {
   });
 }
 
-// moment modal — chip multi-select (dentro de cada grupo)
+// moment modal, chip multi-select (dentro de cada grupo)
 document.querySelectorAll('#sheet-moment .ob-chips').forEach((group) => {
   group.querySelectorAll('.ob-chip').forEach((c) => {
     c.addEventListener('click', () => {
@@ -2368,19 +2368,19 @@ const QUIZ_QUESTIONS = [
   {
     texto: 'Você decide mudar sua alimentação. O que acontece na primeira semana?',
     opcoes: [
-      { texto: 'Sigo à risca — pesquiso tudo, monto planilha, zero desvio.', perfis: ['arquiteto', 'inabalavel'] },
+      { texto: 'Sigo à risca, pesquiso tudo, monto planilha, zero desvio.', perfis: ['arquiteto', 'inabalavel'] },
       { texto: 'Começo intenso, mas no quarto dia já escapei duas vezes.', perfis: ['ignitor', 'relampago'] },
       { texto: 'Vai bem se meu humor estiver em dia. Se não, ignoro tudo.', perfis: ['flutuante'] },
-      { texto: 'Adapto conforme a semana — não sigo rígido, mas não abandono.', perfis: ['navegador'] }
+      { texto: 'Adapto conforme a semana, não sigo rígido, mas não abandono.', perfis: ['navegador'] }
     ]
   },
   {
     texto: 'Você treinou pesado três dias seguidos. Corpo pede descanso. O que faz?',
     opcoes: [
-      { texto: 'Descanso — o dado manda. Corpo falou, eu ouço.', perfis: ['arquiteto', 'navegador'] },
+      { texto: 'Descanso, o dado manda. Corpo falou, eu ouço.', perfis: ['arquiteto', 'navegador'] },
       { texto: 'Treino mesmo assim. Descanso parece preguiça.', perfis: ['inabalavel'] },
       { texto: 'Depende de como estou me sentindo emocionalmente.', perfis: ['flutuante'] },
-      { texto: 'Faço um treino leve — não consigo parar completamente.', perfis: ['ignitor', 'relampago'] }
+      { texto: 'Faço um treino leve, não consigo parar completamente.', perfis: ['ignitor', 'relampago'] }
     ]
   },
   {
@@ -2396,9 +2396,9 @@ const QUIZ_QUESTIONS = [
     texto: 'Como você reage quando os resultados demoram a aparecer?',
     opcoes: [
       { texto: 'Perco o interesse. Preciso ver resultado rápido.', perfis: ['relampago', 'ignitor'] },
-      { texto: 'Reviso o método — talvez esteja fazendo errado.', perfis: ['arquiteto'] },
+      { texto: 'Reviso o método, talvez esteja fazendo errado.', perfis: ['arquiteto'] },
       { texto: 'Continuo. Confio que tá funcionando mesmo sem ver.', perfis: ['navegador', 'inabalavel'] },
-      { texto: 'Depende do meu estado emocional — se não tô bem, abandono.', perfis: ['flutuante'] }
+      { texto: 'Depende do meu estado emocional, se não tô bem, abandono.', perfis: ['flutuante'] }
     ]
   },
   {
@@ -2415,25 +2415,25 @@ const QUIZ_QUESTIONS = [
     opcoes: [
       { texto: 'Estresse emocional ou relacionamentos em crise.', perfis: ['flutuante'] },
       { texto: 'Falta de resultado visível rápido.', perfis: ['relampago', 'ignitor'] },
-      { texto: 'Mudança de rotina — viagem, evento, imprevisto.', perfis: ['arquiteto'] },
+      { texto: 'Mudança de rotina, viagem, evento, imprevisto.', perfis: ['arquiteto'] },
       { texto: 'Quase nada. Sigo mesmo quando tá difícil.', perfis: ['inabalavel', 'navegador'] }
     ]
   },
   {
     texto: 'Como você prefere acompanhar tua evolução?',
     opcoes: [
-      { texto: 'Números detalhados — peso, medidas, percentual de gordura.', perfis: ['arquiteto'] },
+      { texto: 'Números detalhados, peso, medidas, percentual de gordura.', perfis: ['arquiteto'] },
       { texto: 'Como estou me sentindo no dia a dia.', perfis: ['flutuante', 'navegador'] },
       { texto: 'Comparando fotos e resultados a cada 30 dias.', perfis: ['relampago', 'ignitor'] },
-      { texto: 'Sequências e streaks — consistência no calendário.', perfis: ['inabalavel'] }
+      { texto: 'Sequências e streaks, consistência no calendário.', perfis: ['inabalavel'] }
     ]
   },
   {
     texto: 'Tu tá no melhor momento da tua rotina. O que provavelmente acontece em 60 dias?',
     opcoes: [
-      { texto: 'Vou estar ainda melhor — mantenho e evoluo devagar.', perfis: ['navegador', 'inabalavel'] },
-      { texto: 'Provavelmente terá oscilado bastante — altos e baixos.', perfis: ['flutuante'] },
-      { texto: 'Já terá passado — durto intenso, depois pausa.', perfis: ['ignitor'] },
+      { texto: 'Vou estar ainda melhor, mantenho e evoluo devagar.', perfis: ['navegador', 'inabalavel'] },
+      { texto: 'Provavelmente terá oscilado bastante, altos e baixos.', perfis: ['flutuante'] },
+      { texto: 'Já terá passado, durto intenso, depois pausa.', perfis: ['ignitor'] },
       { texto: 'Estarei num novo protocolo mais otimizado.', perfis: ['arquiteto', 'relampago'] }
     ]
   }
@@ -2446,13 +2446,13 @@ const PROFILES_DATA = {
     desc: 'Você começa com intensidade máxima e vive de picos. Quando está on, está completamente on. O desafio é criar estruturas que sustentam o movimento quando a chama diminui.',
     forca: 'Motivação explosiva',
     cego: 'Consistência zero',
-    plano: 'Metas de 7 dias, não de meses. Ritmo curto com recompensa imediata. Evite ciclos longos sem feedback visível — eles apagam sua chama.',
+    plano: 'Metas de 7 dias, não de meses. Ritmo curto com recompensa imediata. Evite ciclos longos sem feedback visível, eles apagam sua chama.',
     tags: ['alto começo', 'recaída rápida', 'precisa de âncora']
   },
   arquiteto: {
     nome: 'O Arquiteto',
     label: 'perfil 02',
-    desc: 'Você precisa entender o porquê antes de agir — e quando age, age com precisão. Seu maior inimigo é a paralisia: a análise infinita que atrasa a execução. O plano perfeito que nunca começa.',
+    desc: 'Você precisa entender o porquê antes de agir, e quando age, age com precisão. Seu maior inimigo é a paralisia: a análise infinita que atrasa a execução. O plano perfeito que nunca começa.',
     forca: 'Disciplina estruturada',
     cego: 'Paralisia por análise',
     plano: 'Dashboard com métricas claras, mas prazo pra agir mesmo sem certeza total. O dado bom o suficiente vale mais que o perfeito que demora.',
@@ -2461,25 +2461,25 @@ const PROFILES_DATA = {
   flutuante: {
     nome: 'O Flutuante',
     label: 'perfil 03',
-    desc: 'Você é intuitivo e profundamente conectado com seu estado interno. Vai extraordinariamente bem quando está bem — e isso é raro. O trabalho é criar âncoras mínimas que funcionem mesmo nos dias difíceis.',
+    desc: 'Você é intuitivo e profundamente conectado com seu estado interno. Vai extraordinariamente bem quando está bem, e isso é raro. O trabalho é criar âncoras mínimas que funcionem mesmo nos dias difíceis.',
     forca: 'Autoconhecimento alto',
     cego: 'Abandona em crises',
-    plano: 'Rotinas mínimas de 5 min que existem mesmo nos piores dias. O objetivo não é o ótimo — é o mínimo que mantém o fio.',
+    plano: 'Rotinas mínimas de 5 min que existem mesmo nos piores dias. O objetivo não é o ótimo, é o mínimo que mantém o fio.',
     tags: ['humor como motor', 'volátil', 'autoconsciente']
   },
   relampago: {
     nome: 'O Relâmpago',
     label: 'perfil 04',
-    desc: 'Você produz resultados expressivos em ciclos curtos e tem capacidade de foco intenso quando motivado. Sem retorno visível rápido, o interesse some. Não é inconstância — é sprint, não maratona.',
+    desc: 'Você produz resultados expressivos em ciclos curtos e tem capacidade de foco intenso quando motivado. Sem retorno visível rápido, o interesse some. Não é inconstância, é sprint, não maratona.',
     forca: 'Resultados imediatos',
     cego: 'Perde o fôlego',
-    plano: 'Sprints mensais com marcos claros. Conectar cada ação de hoje com impacto futuro visível — transformar o longo prazo em vários curtos prazos.',
+    plano: 'Sprints mensais com marcos claros. Conectar cada ação de hoje com impacto futuro visível, transformar o longo prazo em vários curtos prazos.',
     tags: ['sprint mentalidade', 'foco intenso', 'precisa de marco']
   },
   navegador: {
     nome: 'O Navegador',
     label: 'perfil 05',
-    desc: 'Você é o mais resiliente dos seis. Adaptável, consistente, raramente para completamente. A evolução é lenta mas real — o problema é que pode ficar tanto tempo na zona de conforto que para de crescer.',
+    desc: 'Você é o mais resiliente dos seis. Adaptável, consistente, raramente para completamente. A evolução é lenta mas real, o problema é que pode ficar tanto tempo na zona de conforto que para de crescer.',
     forca: 'Consistência total',
     cego: 'Zona de conforto crônica',
     plano: 'Desafios progressivos inseridos na rotina pra quebrar platô. Comparativos históricos pra tornar a evolução invisível visível.',
@@ -2488,10 +2488,10 @@ const PROFILES_DATA = {
   inabalavel: {
     nome: 'O Inabalável',
     label: 'perfil 06',
-    desc: 'Disciplina de ferro. Você segue a rotina independente de como está — e isso é uma força que poucos têm. O perigo é não saber quando parar: ignorar sinais do corpo até que eles gritem.',
+    desc: 'Disciplina de ferro. Você segue a rotina independente de como está, e isso é uma força que poucos têm. O perigo é não saber quando parar: ignorar sinais do corpo até que eles gritem.',
     forca: 'Consistência máxima',
     cego: 'Ignora sinais do corpo',
-    plano: 'Aprender a ler o cansaço como dado, não como fraqueza. Descanso ativo é parte da performance — não o oposto dela.',
+    plano: 'Aprender a ler o cansaço como dado, não como fraqueza. Descanso ativo é parte da performance, não o oposto dela.',
     tags: ['ferro na rotina', 'risco de burnout', 'alta disciplina']
   }
 };
@@ -2541,39 +2541,39 @@ const TRILHAS_FISIO = {
         texto: 'Como está sua disposição ao longo do dia?',
         contexto: 'baixa energia pode indicar desequilíbrio de testosterona ou cortisol elevado.',
         opcoes: [
-          { texto: 'Constante — me sinto bem do início ao fim',            score: { equilbrio: 2 } },
+          { texto: 'Constante, me sinto bem do início ao fim',            score: { equilbrio: 2 } },
           { texto: 'Queda forte após o almoço, difícil de ignorar',        score: { cortisol: 2 } },
           { texto: 'Manhã fraca, melhoro à tarde',                         score: { testosterona: 2 } },
-          { texto: 'Instável — varia muito sem padrão claro',              score: { variavel: 2 } }
+          { texto: 'Instável, varia muito sem padrão claro',              score: { variavel: 2 } }
         ]
       },
       {
         texto: 'Como é sua recuperação após treinos intensos?',
         contexto: 'recuperação lenta pode indicar cortisol elevado, sono fragmentado ou déficit de testosterona.',
         opcoes: [
-          { texto: 'Ótima — 24h e estou pronto novamente',                 score: { equilbrio: 2 } },
+          { texto: 'Ótima, 24h e estou pronto novamente',                 score: { equilbrio: 2 } },
           { texto: 'Preciso de 48-72h para me sentir recuperado',          score: { cortisol: 1, testosterona: 1 } },
-          { texto: 'Demoro mais de 3 dias — dores persistentes',           score: { cortisol: 2 } },
-          { texto: 'Treino sem descanso — não costumo esperar recuperar',  score: { inabalavel: 2 } }
+          { texto: 'Demoro mais de 3 dias, dores persistentes',           score: { cortisol: 2 } },
+          { texto: 'Treino sem descanso, não costumo esperar recuperar',  score: { inabalavel: 2 } }
         ]
       },
       {
         texto: 'Como está sua qualidade de sono nos últimos 30 dias?',
         contexto: 'sono fragmentado reduz testosterona em até 15% e eleva cortisol cronicamente.',
         opcoes: [
-          { texto: 'Durmo bem — 7 a 8h sem interrupção',                   score: { equilbrio: 2 } },
+          { texto: 'Durmo bem, 7 a 8h sem interrupção',                   score: { equilbrio: 2 } },
           { texto: 'Adormeço fácil mas acordo no meio da noite',           score: { cortisol: 2 } },
           { texto: 'Dificuldade para adormecer, mente acelerada',          score: { stress: 2 } },
-          { texto: 'Durmo pouco por escolha — menos de 6h',                score: { privacao: 2 } }
+          { texto: 'Durmo pouco por escolha, menos de 6h',                score: { privacao: 2 } }
         ]
       },
       {
         texto: 'Nos últimos 3 meses, como está sua libido?',
         contexto: 'libido reduzida é um dos primeiros sinais de queda de testosterona livre.',
         opcoes: [
-          { texto: 'Normal para mim — sem mudança',                        score: { equilbrio: 2 } },
+          { texto: 'Normal para mim, sem mudança',                        score: { equilbrio: 2 } },
           { texto: 'Percebo uma queda progressiva',                        score: { testosterona: 2 } },
-          { texto: 'Queda acentuada — diferente do que era antes',         score: { testosterona: 3 } },
+          { texto: 'Queda acentuada, diferente do que era antes',         score: { testosterona: 3 } },
           { texto: 'Nunca prestei atenção nisso',                          score: { desconhecido: 1 } }
         ]
       },
@@ -2581,7 +2581,7 @@ const TRILHAS_FISIO = {
         texto: 'Você já fez exame de testosterona total?',
         contexto: 'saber os níveis basais é o ponto de partida para calibração hormonal.',
         opcoes: [
-          { texto: 'Sim, recentemente — dentro do esperado',               score: { consciente: 2 } },
+          { texto: 'Sim, recentemente, dentro do esperado',               score: { consciente: 2 } },
           { texto: 'Fiz, mas estava abaixo do ideal',                      score: { testosterona: 2, consciente: 1 } },
           { texto: 'Nunca fiz',                                            score: { desconhecido: 2 } },
           { texto: 'Faço acompanhamento regular com médico',               score: { consciente: 3 } }
@@ -2591,10 +2591,10 @@ const TRILHAS_FISIO = {
         texto: 'Como é sua relação com estresse?',
         contexto: 'cortisol cronicamente elevado é o maior inibidor de testosterona e recuperação muscular.',
         opcoes: [
-          { texto: 'Gerenciável — consigo descomprimir',                   score: { equilbrio: 2 } },
+          { texto: 'Gerenciável, consigo descomprimir',                   score: { equilbrio: 2 } },
           { texto: 'Alto, mas funciono bem sob pressão',                   score: { cortisol: 1 } },
           { texto: 'Elevado e sinto impacto no corpo',                     score: { cortisol: 3 } },
-          { texto: 'Extremo — raramente desconecto',                       score: { cortisol: 3, stress: 2 } }
+          { texto: 'Extremo, raramente desconecto',                       score: { cortisol: 3, stress: 2 } }
         ]
       }
     ]
@@ -2607,9 +2607,9 @@ const TRILHAS_FISIO = {
         texto: 'Seu ciclo menstrual é regular?',
         contexto: 'irregularidade pode indicar desequilíbrio estrogênio/progesterona ou SOP.',
         opcoes: [
-          { texto: 'Regular — 28 a 32 dias com pouca variação',            score: { equilbrio: 2 } },
-          { texto: 'Irregular — varia mais de 5 dias entre ciclos',        score: { irregular: 2 } },
-          { texto: 'Uso anticoncepcional hormonal — ciclo induzido',       score: { anticoncepcional: 2 } },
+          { texto: 'Regular, 28 a 32 dias com pouca variação',            score: { equilbrio: 2 } },
+          { texto: 'Irregular, varia mais de 5 dias entre ciclos',        score: { irregular: 2 } },
+          { texto: 'Uso anticoncepcional hormonal, ciclo induzido',       score: { anticoncepcional: 2 } },
           { texto: 'Ciclo ausente ou muito espaçado',                      score: { ausente: 3 } }
         ]
       },
@@ -2617,9 +2617,9 @@ const TRILHAS_FISIO = {
         texto: 'Como sua performance física varia ao longo do mês?',
         contexto: 'fase folicular (1-14) estrogênio alto = melhor performance. fase lútea (15-28) fadiga sobe.',
         opcoes: [
-          { texto: 'Noto diferença clara — semanas melhores e piores',     score: { cicloConsciente: 3 } },
+          { texto: 'Noto diferença clara, semanas melhores e piores',     score: { cicloConsciente: 3 } },
           { texto: 'Percebo queda de energia antes da menstruação',        score: { lutea: 2 } },
-          { texto: 'Não noto variação — me sinto igual o mês todo',        score: { neutro: 2 } },
+          { texto: 'Não noto variação, me sinto igual o mês todo',        score: { neutro: 2 } },
           { texto: 'Nunca prestei atenção nisso',                          score: { desconhecido: 2 } }
         ]
       },
@@ -2627,17 +2627,17 @@ const TRILHAS_FISIO = {
         texto: 'Como é a intensidade da sua TPM?',
         contexto: 'TPM intensa pode indicar dominância de estrogênio ou déficit de progesterona.',
         opcoes: [
-          { texto: 'Leve — quase não sinto',                               score: { equilbrio: 2 } },
-          { texto: 'Moderada — irritabilidade e retenção',                 score: { tpm: 1 } },
-          { texto: 'Intensa — impacta trabalho e relacionamentos',         score: { tpm: 3 } },
+          { texto: 'Leve, quase não sinto',                               score: { equilbrio: 2 } },
+          { texto: 'Moderada, irritabilidade e retenção',                 score: { tpm: 1 } },
+          { texto: 'Intensa, impacta trabalho e relacionamentos',         score: { tpm: 3 } },
           { texto: 'Não tenho TPM ou uso anticoncepcional',                score: { neutro: 1 } }
         ]
       },
       {
         texto: 'Como está sua energia nos dias 5-10 do ciclo?',
-        contexto: 'esse é o pico de estrogênio — deveria ser o maior período de energia e força.',
+        contexto: 'esse é o pico de estrogênio, deveria ser o maior período de energia e força.',
         opcoes: [
-          { texto: 'Me sinto ótima — mais disposta e forte',               score: { estrogenoBom: 2 } },
+          { texto: 'Me sinto ótima, mais disposta e forte',               score: { estrogenoBom: 2 } },
           { texto: 'Melhora um pouco, mas não é expressiva',               score: { estrogenoBaixo: 1 } },
           { texto: 'Continuo cansada mesmo nesse período',                 score: { fadiga: 2 } },
           { texto: 'Não noto diferença entre as fases',                    score: { neutro: 2 } }
@@ -2647,7 +2647,7 @@ const TRILHAS_FISIO = {
         texto: 'Sente compulsão alimentar antes da menstruação?',
         contexto: 'compulsão por carboidratos na fase lútea é resposta à queda de serotonina.',
         opcoes: [
-          { texto: 'Sim — compulsão clara, especialmente por doces',       score: { serotonina: 2 } },
+          { texto: 'Sim, compulsão clara, especialmente por doces',       score: { serotonina: 2 } },
           { texto: 'Apetite aumenta mas consigo controlar',                score: { serotonina: 1 } },
           { texto: 'Não noto mudança no apetite',                          score: { equilbrio: 1 } },
           { texto: 'Perco o apetite antes da menstruação',                 score: { stress: 1 } }
@@ -2657,10 +2657,10 @@ const TRILHAS_FISIO = {
         texto: 'Você mapeia o ciclo e adapta treino/alimentação?',
         contexto: 'treinar conforme as fases pode aumentar performance em até 25% e reduzir lesões.',
         opcoes: [
-          { texto: 'Sim — faço isso ativamente',                           score: { cicloConsciente: 3 } },
+          { texto: 'Sim, faço isso ativamente',                           score: { cicloConsciente: 3 } },
           { texto: 'Sei que deveria mas não faço',                         score: { conhecimento: 1 } },
           { texto: 'Não sabia que isso era possível',                      score: { desconhecido: 2 } },
-          { texto: 'Uso anticoncepcional — ciclo suprimido',               score: { anticoncepcional: 2 } }
+          { texto: 'Uso anticoncepcional, ciclo suprimido',               score: { anticoncepcional: 2 } }
         ]
       }
     ]
@@ -2673,9 +2673,9 @@ const TRILHAS_FISIO = {
         texto: 'Qual melhor descreve seu momento hormonal?',
         contexto: 'perimenopausa pode começar até 10 anos antes da menopausa. andropausa tipicamente 40-55 anos.',
         opcoes: [
-          { texto: 'Perimenopausa — ciclos irregulares, ainda menstruo',   score: { peri: 3 } },
-          { texto: 'Menopausa — sem menstruação há mais de 12 meses',      score: { meno: 3 } },
-          { texto: 'Andropausa — queda progressiva de testosterona',       score: { andro: 3 } },
+          { texto: 'Perimenopausa, ciclos irregulares, ainda menstruo',   score: { peri: 3 } },
+          { texto: 'Menopausa, sem menstruação há mais de 12 meses',      score: { meno: 3 } },
+          { texto: 'Andropausa, queda progressiva de testosterona',       score: { andro: 3 } },
           { texto: 'Suspeito que estou nessa fase mas não confirmei',      score: { suspeita: 2 } }
         ]
       },
@@ -2684,8 +2684,8 @@ const TRILHAS_FISIO = {
         contexto: 'frequência e intensidade indicam velocidade da queda de estrogênio.',
         opcoes: [
           { texto: 'Ausentes ou muito leves',                              score: { leve: 2 } },
-          { texto: 'Moderados — algumas vezes ao dia',                     score: { moderado: 2 } },
-          { texto: 'Intensos — impactam sono e trabalho',                  score: { intenso: 3 } },
+          { texto: 'Moderados, algumas vezes ao dia',                     score: { moderado: 2 } },
+          { texto: 'Intensos, impactam sono e trabalho',                  score: { intenso: 3 } },
           { texto: 'Não tenho esse sintoma',                               score: { ausente: 1 } }
         ]
       },
@@ -2693,10 +2693,10 @@ const TRILHAS_FISIO = {
         texto: 'Como está sua qualidade de sono?',
         contexto: 'queda de estrogênio e progesterona fragmenta o sono profundo.',
         opcoes: [
-          { texto: 'Durmo bem — 7h sem grandes interrupções',              score: { equilbrio: 2 } },
+          { texto: 'Durmo bem, 7h sem grandes interrupções',              score: { equilbrio: 2 } },
           { texto: 'Acordo 1-2x por noite mas volto a dormir',             score: { fragmentado: 2 } },
-          { texto: 'Sono muito fragmentado — acordo cansado',              score: { privacao: 3 } },
-          { texto: 'Insônia — difícil adormecer ou manter o sono',         score: { insonia: 3 } }
+          { texto: 'Sono muito fragmentado, acordo cansado',              score: { privacao: 3 } },
+          { texto: 'Insônia, difícil adormecer ou manter o sono',         score: { insonia: 3 } }
         ]
       },
       {
@@ -2705,18 +2705,18 @@ const TRILHAS_FISIO = {
         opcoes: [
           { texto: 'Sim, acompanhamento atual com médico',                 score: { trh: 3 } },
           { texto: 'Já fiz mas parei',                                     score: { trh: 1 } },
-          { texto: 'Nunca fiz — não me sinto informado o suficiente',      score: { desinformado: 2 } },
-          { texto: 'Prefiro não fazer — busco alternativas naturais',      score: { natural: 2 } }
+          { texto: 'Nunca fiz, não me sinto informado o suficiente',      score: { desinformado: 2 } },
+          { texto: 'Prefiro não fazer, busco alternativas naturais',      score: { natural: 2 } }
         ]
       },
       {
         texto: 'Como está sua composição corporal nos últimos 12 meses?',
         contexto: 'ganho de gordura visceral e perda muscular aceleram na transição, mesmo sem mudança de hábitos.',
         opcoes: [
-          { texto: 'Estável — não sinto mudança significativa',            score: { equilbrio: 2 } },
+          { texto: 'Estável, não sinto mudança significativa',            score: { equilbrio: 2 } },
           { texto: 'Ganho de gordura abdominal mesmo com dieta',           score: { gordura: 3 } },
           { texto: 'Perda muscular perceptível apesar do treino',          score: { muscular: 3 } },
-          { texto: 'Ambos — gordura subindo e músculo diminuindo',         score: { gordura: 2, muscular: 2 } }
+          { texto: 'Ambos, gordura subindo e músculo diminuindo',         score: { gordura: 2, muscular: 2 } }
         ]
       },
       {
@@ -2738,7 +2738,7 @@ const RESULTADOS_FISIO = {
     equilibrado: {
       nome: 'perfil equilibrado',
       label: 'masculina · equilibrado',
-      desc: 'tua fisiologia tá em boa sincronia. testosterona e cortisol operando em equilíbrio — o terreno ideal pra evoluir com consistência.',
+      desc: 'tua fisiologia tá em boa sincronia. testosterona e cortisol operando em equilíbrio, o terreno ideal pra evoluir com consistência.',
       insight: 'teu corpo responde bem ao estímulo atual. o foco agora é periodização inteligente e prevenção de platô.',
       prioridade: 'manutenção + sobrecarga progressiva',
       atencao: 'monitorar cortisol em períodos de alta demanda',
@@ -2756,18 +2756,18 @@ const RESULTADOS_FISIO = {
     baixaTestosterona: {
       nome: 'sinal de baixa T',
       label: 'masculina · baixa testosterona',
-      desc: 'padrões sugerem queda de testosterona — libido caindo, recuperação lenta e energia baixa pela manhã são sinais clássicos.',
-      insight: 'testosterona baixa afeta composição, humor e cognição — não só performance física. vale investigar com exame.',
+      desc: 'padrões sugerem queda de testosterona, libido caindo, recuperação lenta e energia baixa pela manhã são sinais clássicos.',
+      insight: 'testosterona baixa afeta composição, humor e cognição, não só performance física. vale investigar com exame.',
       prioridade: 'investigação hormonal com médico',
       atencao: 'suplementação sem exame pode mascarar causa real',
-      acoes: ['agendar painel hormonal completo (T total, T livre, LH, FSH)', 'priorizar sono 7-8h — produção de T é noturna', 'zinco + vitamina D como suporte enquanto aguarda exame']
+      acoes: ['agendar painel hormonal completo (T total, T livre, LH, FSH)', 'priorizar sono 7-8h, produção de T é noturna', 'zinco + vitamina D como suporte enquanto aguarda exame']
     }
   },
   feminina: {
     cicloConsciente: {
       nome: 'ciclicamente consciente',
       label: 'feminina · ciclo consciente',
-      desc: 'tu já percebe as variações do teu ciclo — isso é um ativo enorme. a calibração vai traduzir esse autoconhecimento em protocolo prático.',
+      desc: 'tu já percebe as variações do teu ciclo, isso é um ativo enorme. a calibração vai traduzir esse autoconhecimento em protocolo prático.',
       insight: 'mulheres que treinam conforme as fases do ciclo relatam até 25% mais performance e menos lesões.',
       prioridade: 'periodização baseada no ciclo',
       atencao: 'fase lútea pede redução de intensidade',
@@ -2776,16 +2776,16 @@ const RESULTADOS_FISIO = {
     desequilibrio: {
       nome: 'desequilíbrio hormonal',
       label: 'feminina · desequilíbrio',
-      desc: 'sinais de dominância estrogênica ou déficit de progesterona — TPM intensa, ciclo irregular e fadiga persistente.',
+      desc: 'sinais de dominância estrogênica ou déficit de progesterona, TPM intensa, ciclo irregular e fadiga persistente.',
       insight: 'dominância de estrogênio é comum e tratável. alimentação, exercício e suplementação específica fazem diferença real.',
       prioridade: 'avaliação com ginecologista/endócrino',
       atencao: 'anticoncepcional pode mascarar sintomas',
-      acoes: ['exame de estrogênio, progesterona e FSH na fase lútea (dia 21)', 'reduzir disruptores endócrinos: plásticos, álcool, ultraprocessados', 'magnésio 300mg à noite — reduz TPM em estudos clínicos']
+      acoes: ['exame de estrogênio, progesterona e FSH na fase lútea (dia 21)', 'reduzir disruptores endócrinos: plásticos, álcool, ultraprocessados', 'magnésio 300mg à noite, reduz TPM em estudos clínicos']
     },
     neutro: {
       nome: 'perfil a descobrir',
       label: 'feminina · descobrir',
-      desc: 'tu ainda não mapeou as variações do teu ciclo — oportunidade enorme de ganhar performance e qualidade de vida.',
+      desc: 'tu ainda não mapeou as variações do teu ciclo, oportunidade enorme de ganhar performance e qualidade de vida.',
       insight: 'a maioria das mulheres desconhece como o ciclo afeta o corpo. essa calibração é o primeiro passo.',
       prioridade: 'mapeamento do ciclo por 60 dias',
       atencao: 'não subestimar o impacto da fase lútea',
@@ -2797,10 +2797,10 @@ const RESULTADOS_FISIO = {
       nome: 'transição ativa',
       label: 'transição · ativa',
       desc: 'tu tá no processo com sintomas presentes. com o protocolo certo, a maioria dos sintomas é reversível ou manejável.',
-      insight: 'a transição hormonal não precisa ser declínio — com intervenção adequada, muitos vivem os melhores anos depois dela.',
+      insight: 'a transição hormonal não precisa ser declínio, com intervenção adequada, muitos vivem os melhores anos depois dela.',
       prioridade: 'acompanhamento médico especializado',
       atencao: 'massa muscular e óssea precisam de proteção ativa',
-      acoes: ['consulta com endocrinologista pra avaliação de TRH', 'treino de força 3x/semana — essencial pra preservar massa', 'vitamina D3 + K2 + magnésio como base de suporte']
+      acoes: ['consulta com endocrinologista pra avaliação de TRH', 'treino de força 3x/semana, essencial pra preservar massa', 'vitamina D3 + K2 + magnésio como base de suporte']
     },
     gerenciada: {
       nome: 'transição gerenciada',
@@ -2809,12 +2809,12 @@ const RESULTADOS_FISIO = {
       insight: 'quem faz TRH bem conduzida tem menor risco cardiovascular, ósseo e cognitivo a longo prazo.',
       prioridade: 'otimização do protocolo atual',
       atencao: 'revisão anual dos níveis hormonais',
-      acoes: ['revisão de exames a cada 6 meses com médico', 'adicionar proteína na dieta — 1.8g por kg de peso', 'registrar sintomas no circa pra identificar padrões']
+      acoes: ['revisão de exames a cada 6 meses com médico', 'adicionar proteína na dieta, 1.8g por kg de peso', 'registrar sintomas no circa pra identificar padrões']
     },
     inicial: {
       nome: 'início de transição',
       label: 'transição · inicial',
-      desc: 'primeiros sinais de transição — o momento ideal pra agir preventivamente antes que os sintomas se intensifiquem.',
+      desc: 'primeiros sinais de transição, o momento ideal pra agir preventivamente antes que os sintomas se intensifiquem.',
       insight: 'intervir cedo tem impacto muito maior do que intervir depois dos sintomas instalados.',
       prioridade: 'investigação e prevenção',
       atencao: 'não normalizar sintomas como envelhecimento inevitável',
@@ -2904,7 +2904,7 @@ function computeFisioResult() {
 function renderFisioResult(slideEl) {
   const res = computeFisioResult();
   if (!res) {
-    slideEl.innerHTML = '<p class="lead">não foi possível calcular — refaz a calibração.</p>';
+    slideEl.innerHTML = '<p class="lead">não foi possível calcular, refaz a calibração.</p>';
     return;
   }
   window.CIRCA_FISIO = { trilha: fisioTrilha, resultado: res.label };
