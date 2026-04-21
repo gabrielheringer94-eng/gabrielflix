@@ -2167,26 +2167,12 @@ if (document.readyState === 'loading') {
   orbeLoop();
 }
 
-// AudioContext global, criado uma vez e reusado (iOS Safari precisa de gesture)
+// AudioContext global, criado uma vez no primeiro gesto do usuário
 let _circaAudioCtx = null;
-function getCircaAudioCtx() {
-  if (!_circaAudioCtx) {
-    const AC = window.AudioContext || window.webkitAudioContext;
-    if (!AC) return null;
-    _circaAudioCtx = new AC();
-  }
-  // iOS/Chrome frequentemente nascem suspensos
-  if (_circaAudioCtx.state === 'suspended') {
-    _circaAudioCtx.resume().catch(() => {});
-  }
-  return _circaAudioCtx;
-}
 
-// som de assinatura da Circa · 3 notas com reverb leve
-function tocarSomCirca() {
+// toca o chime completo (3 notas · reverb) a partir de um contexto já ACORDADO
+function _playCircaChime(ctx) {
   try {
-    const ctx = getCircaAudioCtx();
-    if (!ctx) return;
     const now = ctx.currentTime;
 
     // nota 1 · base quente (Mi3)
@@ -2196,7 +2182,7 @@ function tocarSomCirca() {
     osc1.frequency.setValueAtTime(329.63, now);
     osc1.frequency.exponentialRampToValueAtTime(340, now + 0.6);
     gain1.gain.setValueAtTime(0, now);
-    gain1.gain.linearRampToValueAtTime(0.12, now + 0.05);
+    gain1.gain.linearRampToValueAtTime(0.22, now + 0.05);
     gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.9);
     osc1.connect(gain1); gain1.connect(ctx.destination);
     osc1.start(now); osc1.stop(now + 0.9);
@@ -2207,7 +2193,7 @@ function tocarSomCirca() {
     osc2.type = 'sine';
     osc2.frequency.setValueAtTime(493.88, now + 0.08);
     gain2.gain.setValueAtTime(0, now + 0.08);
-    gain2.gain.linearRampToValueAtTime(0.09, now + 0.16);
+    gain2.gain.linearRampToValueAtTime(0.18, now + 0.16);
     gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.85);
     osc2.connect(gain2); gain2.connect(ctx.destination);
     osc2.start(now + 0.08); osc2.stop(now + 0.85);
@@ -2219,15 +2205,15 @@ function tocarSomCirca() {
     osc3.frequency.setValueAtTime(659.25, now + 0.18);
     osc3.frequency.exponentialRampToValueAtTime(670, now + 0.55);
     gain3.gain.setValueAtTime(0, now + 0.18);
-    gain3.gain.linearRampToValueAtTime(0.07, now + 0.26);
+    gain3.gain.linearRampToValueAtTime(0.14, now + 0.26);
     gain3.gain.exponentialRampToValueAtTime(0.001, now + 0.75);
     osc3.connect(gain3); gain3.connect(ctx.destination);
     osc3.start(now + 0.18); osc3.stop(now + 0.75);
 
-    // reverb leve
+    // reverb leve (convolver com decay expoential)
     const reverb = ctx.createConvolver();
     const reverbGain = ctx.createGain();
-    reverbGain.gain.value = 0.18;
+    reverbGain.gain.value = 0.22;
     const reverbBuffer = ctx.createBuffer(2, ctx.sampleRate * 0.4, ctx.sampleRate);
     for (let ch = 0; ch < 2; ch++) {
       const data = reverbBuffer.getChannelData(ch);
@@ -2238,7 +2224,30 @@ function tocarSomCirca() {
     reverb.buffer = reverbBuffer;
     gain1.connect(reverb); gain2.connect(reverb); gain3.connect(reverb);
     reverb.connect(reverbGain); reverbGain.connect(ctx.destination);
-  } catch (e) { /* silencia sem quebrar */ }
+  } catch (e) { console.warn('circa chime erro:', e); }
+}
+
+// som de assinatura da Circa · aguarda resume antes de agendar as notas
+function tocarSomCirca() {
+  const AC = window.AudioContext || window.webkitAudioContext;
+  if (!AC) return;
+
+  // cria apenas na primeira chamada (que está dentro de um user gesture)
+  if (!_circaAudioCtx) {
+    try { _circaAudioCtx = new AC(); } catch (e) { return; }
+  }
+
+  const ctx = _circaAudioCtx;
+
+  // se o ctx nasceu suspenso (iOS/Chrome autoplay policy), aguarda
+  // o resume() resolver ANTES de agendar os osciladores
+  if (ctx.state === 'suspended') {
+    ctx.resume()
+      .then(() => _playCircaChime(ctx))
+      .catch((e) => console.warn('circa resume falhou:', e));
+  } else {
+    _playCircaChime(ctx);
+  }
 }
 
 function openChat() {
