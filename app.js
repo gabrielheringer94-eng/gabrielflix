@@ -2073,12 +2073,11 @@ try {
 } catch (e) {}
 
 function renderFisioTrilhas(slideEl) {
-  slideEl.querySelectorAll('.fisio-trilha').forEach((btn) => {
-    // evita re-attach
+  slideEl.querySelectorAll('.fisio-chips .ob-chip').forEach((btn) => {
     if (btn.dataset.bound) return;
     btn.dataset.bound = '1';
     btn.addEventListener('click', () => {
-      slideEl.querySelectorAll('.fisio-trilha').forEach((b) => b.classList.remove('is-on'));
+      slideEl.querySelectorAll('.fisio-chips .ob-chip').forEach((b) => b.classList.remove('is-on'));
       btn.classList.add('is-on');
       fisioTrilha = btn.dataset.trilha;
       fisioScores = {};

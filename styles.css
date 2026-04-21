@@ -1773,7 +1773,19 @@ button.hero:active { transform: scale(0.985); }
    CALIBRAÇÃO FISIOLÓGICA (steps 15-22)
    ═════════════════════════════════════════ */
 
-/* seletor de trilha (step 15) */
+/* chips da pergunta inicial (step 4) */
+.fisio-chips {
+  gap: 10px;
+  margin: 20px 0 24px;
+}
+.fisio-chips .ob-chip {
+  padding: 14px 20px;
+  font-size: 14px;
+  font-family: var(--serif);
+  letter-spacing: -0.005em;
+}
+
+/* (legado) seletor de trilha em cards — n\u00e3o usado mais */
 .fisio-trilhas {
   display: flex;
   flex-direction: column;

@@ -199,63 +199,21 @@
         <button class="btn btn--primary btn--full ob-next">continuar</button>
       </div>
 
-      <!-- 15 · calibração fisiológica · seletor de trilha -->
+      <!-- 4 · calibração fisiológica · pergunta inicial (chips) -->
       <div class="ob-slide fisio-intro" data-step="4">
         <span class="eyebrow">calibração fisiológica</span>
-        <h1 class="display">como é o<br/><em>seu corpo?</em></h1>
-        <p class="lead">as perguntas se adaptam à sua fisiologia real — não só ao gênero.</p>
+        <h1 class="display">Qual sua relação<br/>com menstruação hoje?</h1>
+        <p class="lead">um tap define o ritmo do teu corpo pro app.</p>
 
-        <div class="fisio-trilhas">
-          <button class="fisio-trilha" data-trilha="masculina">
-            <span class="fisio-trilha__icon" style="--c:#7B8BB8">
-              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="9"/>
-                <path d="M12 8v8M9 11l3-3 3 3"/>
-              </svg>
-            </span>
-            <div class="fisio-trilha__body">
-              <strong>corpo masculino</strong>
-              <span>testosterona, cortisol, recuperação muscular.</span>
-              <div class="fisio-trilha__tags">
-                <i>testosterona</i><i>cortisol</i><i>recuperação</i>
-              </div>
-            </div>
-          </button>
-
-          <button class="fisio-trilha" data-trilha="feminina">
-            <span class="fisio-trilha__icon" style="--c:#D99D85">
-              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="10" r="6"/>
-                <path d="M12 16v6M9 19h6"/>
-              </svg>
-            </span>
-            <div class="fisio-trilha__body">
-              <strong>corpo feminino com ciclo</strong>
-              <span>fases do ciclo, estrogênio, progesterona, variação de performance.</span>
-              <div class="fisio-trilha__tags">
-                <i>ciclo</i><i>hormônios</i><i>fases</i>
-              </div>
-            </div>
-          </button>
-
-          <button class="fisio-trilha" data-trilha="transicao">
-            <span class="fisio-trilha__icon" style="--c:#D4B896">
-              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 3v18M3 12h18"/>
-                <circle cx="12" cy="12" r="4"/>
-              </svg>
-            </span>
-            <div class="fisio-trilha__body">
-              <strong>transição hormonal</strong>
-              <span>menopausa, perimenopausa ou andropausa. foco em adaptação e longevidade.</span>
-              <div class="fisio-trilha__tags">
-                <i>menopausa</i><i>andropausa</i><i>longevidade</i>
-              </div>
-            </div>
-          </button>
+        <div class="ob-chips fisio-chips">
+          <button class="ob-chip" data-trilha="feminina">ciclo regular</button>
+          <button class="ob-chip" data-trilha="feminina">ciclo irregular</button>
+          <button class="ob-chip" data-trilha="transicao">parei há pouco tempo</button>
+          <button class="ob-chip" data-trilha="transicao">parei há anos</button>
+          <button class="ob-chip" data-trilha="masculina">nunca menstruei</button>
         </div>
 
-        <p class="micro-note">6 perguntas · ~2 min · tu pode recalibrar depois</p>
+        <p class="micro-note">ciclo hormonal muda tudo — humor, sono, treino, nutrição. 6 perguntinhas em seguida · ~2 min.</p>
       </div>
 
       <!-- 16-21 · 6 perguntas fisiológicas (renderizadas por JS com base na trilha) -->
