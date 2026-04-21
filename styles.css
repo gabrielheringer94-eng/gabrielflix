@@ -35,6 +35,12 @@
 /* ───── base ───── */
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
+html {
+  overflow-x: hidden;
+  overflow-y: auto;
+  height: auto;
+  -webkit-text-size-adjust: 100%;
+}
 html, body {
   background: var(--bg);
   color: var(--fg);
@@ -64,8 +70,8 @@ body {
     radial-gradient(900px 600px at 100% 100%, rgba(123, 139, 184, 0.05), transparent 60%),
     var(--bg);
   background-attachment: fixed;
-  display: flex;
-  justify-content: center;
+  /* removido display:flex \u2014 estava conflitando com scroll em alguns navegadores desktop.
+     .app j\u00e1 se centraliza via margin:0 auto + max-width. */
 }
 
 button {
@@ -90,6 +96,7 @@ strong { color: var(--fg); font-weight: 500; }
   min-height: 100dvh;
   padding-bottom: 96px;
   position: relative;
+  margin: 0 auto;
 }
 
 /* ───── screens ───── */
