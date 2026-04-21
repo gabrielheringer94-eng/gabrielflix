@@ -67,6 +67,151 @@ if (labOpen) {
   labOpen.addEventListener('click', () => openSheet('sheet-lab'));
 }
 
+// ───── suplementos & medicamentos ─────
+// catálogo: nome curto + dose padrão + horário sugerido
+const SUPPS_CATALOG = {
+  creatina:    { nome: 'creatina',         dose: '5g',        timing: 'qualquer hora' },
+  whey:        { nome: 'whey protein',     dose: '30g',       timing: 'pós-treino' },
+  vitD:        { nome: 'vitamina D',       dose: '4000 UI',   timing: 'manhã com gordura' },
+  b12:         { nome: 'vitamina B12',     dose: '1000 mcg',  timing: 'manhã' },
+  omega3:      { nome: 'ômega 3',          dose: '2g',        timing: 'almoço' },
+  magnesio:    { nome: 'magnésio',         dose: '300mg',     timing: 'antes de dormir' },
+  multi:       { nome: 'multivitamínico',  dose: '1 cápsula', timing: 'manhã' },
+  folato:      { nome: 'folato',           dose: '400 mcg',   timing: 'manhã' },
+  anticonc:    { nome: 'anticoncepcional', dose: '1 comp.',   timing: 'mesma hora todo dia' },
+  antialerg:   { nome: 'antialérgico',     dose: '1 comp.',   timing: 'manhã' },
+  antihiper:   { nome: 'anti-hipertensivo',dose: '1 comp.',   timing: 'mesma hora todo dia' },
+  antidepres:  { nome: 'antidepressivo',   dose: '1 comp.',   timing: 'mesma hora todo dia' },
+  cafeina:     { nome: 'pre-treino',       dose: '1 dose',    timing: 'antes do treino' },
+};
+
+// estado: lista de keys que o usuário toma + status (true=tomou hoje)
+let userSupps = ['creatina', 'whey', 'vitD']; // mock inicial
+let suppsTaken = { whey: true }; // mock: whey já tomado hoje
+
+// persistência
+try {
+  const savedSupps  = localStorage.getItem('circa_supps');
+  const savedTaken  = localStorage.getItem('circa_supps_taken');
+  if (savedSupps)  userSupps  = JSON.parse(savedSupps);
+  if (savedTaken)  suppsTaken = JSON.parse(savedTaken);
+} catch (e) {}
+
+function saveSuppsState() {
+  try {
+    localStorage.setItem('circa_supps', JSON.stringify(userSupps));
+    localStorage.setItem('circa_supps_taken', JSON.stringify(suppsTaken));
+  } catch (e) {}
+}
+
+function renderSuppsHomeCard() {
+  const list  = document.getElementById('supps-list');
+  const count = document.getElementById('supps-count');
+  if (!list || !count) return;
+
+  if (!userSupps.length) {
+    list.innerHTML = '<li class="supps-empty">nenhum suplemento configurado · toque pra adicionar</li>';
+    count.textContent = '';
+    return;
+  }
+
+  // mostra até 3 no card da home; resto fica no sheet
+  const visible = userSupps.slice(0, 3);
+  list.innerHTML = visible.map((key) => {
+    const s = SUPPS_CATALOG[key];
+    if (!s) return '';
+    const taken = !!suppsTaken[key];
+    return `
+      <li class="supps-item ${taken ? 'is-taken' : ''}">
+        <i class="supps-bullet"></i>
+        <span class="supps-name">${s.nome}</span>
+        <span class="supps-meta">${s.dose} · ${s.timing}</span>
+      </li>
+    `;
+  }).join('');
+
+  const taken = userSupps.filter((k) => suppsTaken[k]).length;
+  count.textContent = taken + ' / ' + userSupps.length;
+}
+
+function renderSuppsSheet() {
+  const tasks = document.getElementById('supps-tasks');
+  const ad    = document.getElementById('supps-adherence');
+  const ssCount = document.getElementById('supps-sheet-count');
+  const ssTotal = document.getElementById('supps-sheet-total');
+
+  if (tasks) {
+    tasks.innerHTML = userSupps.map((key) => {
+      const s = SUPPS_CATALOG[key];
+      if (!s) return '';
+      const taken = !!suppsTaken[key];
+      return `
+        <li class="supps-task ${taken ? 'is-taken' : ''}" data-key="${key}">
+          <button class="supps-task__toggle" aria-label="marcar tomado">
+            <i class="supps-bullet supps-bullet--lg"></i>
+          </button>
+          <div class="supps-task__body">
+            <strong>${s.nome}</strong>
+            <span>${s.dose} · ${s.timing}</span>
+          </div>
+          <span class="supps-task__status">${taken ? '✓ feito' : 'pendente'}</span>
+        </li>
+      `;
+    }).join('');
+
+    tasks.querySelectorAll('.supps-task').forEach((row) => {
+      row.addEventListener('click', () => {
+        const key = row.dataset.key;
+        suppsTaken[key] = !suppsTaken[key];
+        saveSuppsState();
+        renderSuppsSheet();
+        renderSuppsHomeCard();
+        hap(12);
+      });
+    });
+  }
+
+  if (ssCount) ssCount.textContent = userSupps.filter((k) => suppsTaken[k]).length;
+  if (ssTotal) ssTotal.textContent = userSupps.length;
+
+  // aderência mockada (14 cells: cada uma = 1 dia, % do dia)
+  if (ad) {
+    const sample = [100,100,67,100,100,100,33,100,67,100,100,100,67,33];
+    ad.innerHTML = sample.map((pct, i) => {
+      const cls = pct === 100 ? 'is-full' : pct >= 50 ? 'is-half' : 'is-low';
+      return `<i class="adh-cell ${cls}" title="${pct}%"></i>`;
+    }).join('');
+  }
+}
+
+renderSuppsHomeCard();
+
+const suppsOpen = document.getElementById('supps-open');
+if (suppsOpen) {
+  suppsOpen.addEventListener('click', () => {
+    openSheet('sheet-supps');
+    renderSuppsSheet();
+  });
+}
+
+// ───── onboarding step 18 · seleção de suplementos ─────
+document.querySelectorAll('#supp-chips .ob-chip').forEach((chip) => {
+  // marca os que já estão em userSupps
+  if (userSupps.includes(chip.dataset.supp)) chip.classList.add('is-on');
+  chip.addEventListener('click', () => {
+    const key = chip.dataset.supp;
+    chip.classList.toggle('is-on');
+    if (chip.classList.contains('is-on')) {
+      if (!userSupps.includes(key)) userSupps.push(key);
+    } else {
+      userSupps = userSupps.filter((k) => k !== key);
+    }
+    saveSuppsState();
+    renderSuppsHomeCard();
+    hap(6);
+  });
+});
+
 // ───── idade biológica (estilo Centeni) ─────
 // série: idade biológica ao longo dos últimos 12 meses (por exame)
 const BIOAGE_HISTORY = [34.2, 34.0, 33.5, 33.1, 32.8, 32.5, 32.9, 32.5, 31.8, 31.4, 31.0, 30.8];
@@ -1412,7 +1557,7 @@ if (qdPanel) {
 }
 
 // ───── ONBOARDING ─────
-const TOTAL_STEPS = 18;
+const TOTAL_STEPS = 19;
 let obStep = 1;
 const onboard       = document.getElementById('onboard');
 const obSlides      = document.querySelectorAll('.ob-slide');

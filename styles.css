@@ -3249,6 +3249,197 @@ button.hero:active { transform: scale(0.985); }
   }
 }
 
+/* ═════════════════════════════════════════
+   SUPLEMENTOS
+   ═════════════════════════════════════════ */
+
+/* card na home */
+.card--supps {
+  width: 100%;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  cursor: pointer;
+  transition: border-color .2s ease, transform .15s ease;
+}
+.card--supps:hover { border-color: rgba(212,184,150,0.3); }
+.card--supps:active { transform: scale(0.995); }
+
+.supps-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.supps-head__left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.supps-head__left .eyebrow { margin-bottom: 0; }
+.supps-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  background: rgba(212,184,150,0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+.supps-count {
+  font-family: var(--serif);
+  font-size: 14px;
+  color: var(--accent);
+  letter-spacing: -0.005em;
+  font-variant-numeric: tabular-nums;
+}
+
+.supps-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.supps-item {
+  display: grid;
+  grid-template-columns: 16px 1fr auto;
+  gap: 10px;
+  align-items: baseline;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--divider);
+}
+.supps-item:last-child { border-bottom: none; }
+.supps-bullet {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1.5px solid var(--accent);
+  background: transparent;
+  display: inline-block;
+  margin-top: 5px;
+  transition: all .2s ease;
+}
+.supps-item.is-taken .supps-bullet,
+.supps-task.is-taken .supps-bullet {
+  background: var(--accent);
+  box-shadow: 0 0 8px rgba(212,184,150,0.5);
+}
+.supps-name {
+  font-family: var(--serif);
+  font-size: 15px;
+  color: var(--fg);
+  letter-spacing: -0.005em;
+}
+.supps-item.is-taken .supps-name {
+  color: var(--fg-muted);
+  text-decoration: line-through;
+  text-decoration-color: var(--accent-dim);
+}
+.supps-meta {
+  font-size: 11px;
+  color: var(--fg-dim);
+  letter-spacing: 0.02em;
+}
+.supps-empty {
+  padding: 16px 0;
+  font-size: 13px;
+  color: var(--fg-muted);
+  text-align: center;
+}
+
+/* sheet de suplementos */
+.supps-tasks {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.supps-task {
+  display: grid;
+  grid-template-columns: 32px 1fr auto;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border-radius: var(--r-md);
+  background: rgba(255,255,255,0.015);
+  border: 1px solid var(--divider);
+  cursor: pointer;
+  transition: all .2s ease;
+}
+.supps-task:hover {
+  border-color: rgba(212,184,150,0.3);
+}
+.supps-task__toggle {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.supps-bullet--lg {
+  width: 18px;
+  height: 18px;
+  margin-top: 0;
+  border-width: 2px;
+}
+.supps-task__body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.supps-task__body strong {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 16px;
+  color: var(--fg);
+  letter-spacing: -0.005em;
+}
+.supps-task__body span {
+  font-size: 12px;
+  color: var(--fg-muted);
+}
+.supps-task__status {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--fg-dim);
+}
+.supps-task.is-taken {
+  background: rgba(212,184,150,0.05);
+  border-color: var(--accent-dim);
+}
+.supps-task.is-taken .supps-task__status {
+  color: var(--accent);
+}
+.supps-task.is-taken .supps-task__body strong {
+  color: var(--fg-muted);
+}
+
+/* aderência grid (14 dias) */
+.adherence-grid {
+  display: grid;
+  grid-template-columns: repeat(14, 1fr);
+  gap: 4px;
+  margin-top: 6px;
+}
+.adh-cell {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 3px;
+  background: rgba(255,255,255,0.04);
+}
+.adh-cell.is-full { background: var(--accent); box-shadow: 0 0 6px rgba(212,184,150,0.4); }
+.adh-cell.is-half { background: rgba(212,184,150,0.5); }
+.adh-cell.is-low  { background: rgba(232,168,124,0.4); }
+
 /* ───── responsive polish ───── */
 @media (min-width: 480px) {
   .app {
