@@ -2188,6 +2188,54 @@ button.hero:active { transform: scale(0.985); }
 /* ───── tab bar 5 colunas ───── */
 .tabbar--5 { grid-template-columns: repeat(5, 1fr); }
 
+/* ═════════════════════════════════════════
+   HOME MINIMAL · esconde cards secundários
+   Tudo mais (treino, água, suplementos) vive nas abas ou no drawer.
+   Home só respira: score + narrativa + 1 ação.
+   ═════════════════════════════════════════ */
+.screen--home .hero-context,
+.screen--home .card--training,
+.screen--home .card--water,
+.screen--home .card--supps {
+  display: none;
+}
+
+/* handle de swipe-up pra abrir o drawer · aparece no fim da home */
+.home-pull {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin: 32px auto 8px;
+  padding: 14px 0;
+  background: none;
+  border: none;
+  color: var(--fg-dim);
+  cursor: pointer;
+  transition: color .2s ease;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 13px;
+  letter-spacing: -0.005em;
+  animation: pullBob 2.4s ease-in-out infinite;
+}
+.home-pull:hover { color: var(--accent); }
+.home-pull__line {
+  width: 36px;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--fg-faint);
+  margin-bottom: 2px;
+}
+.home-pull:hover .home-pull__line { background: var(--accent); }
+@keyframes pullBob {
+  0%, 100% { transform: translateY(0); opacity: 0.75; }
+  50%      { transform: translateY(-6px); opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .home-pull { animation: none; }
+}
+
 /* ───── FORMULA (breakdown do score) ───── */
 .formula {
   list-style: none;

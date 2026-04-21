@@ -1637,6 +1637,170 @@ function salvarLogTreino() {
 const logSalvar = document.getElementById('log-t-salvar');
 if (logSalvar) logSalvar.addEventListener('click', salvarLogTreino);
 
+// ═════════════════════════════════════════
+// HOME · ação dinâmica por hora do dia
+// Uma pergunta por tela, um número por momento.
+// ═════════════════════════════════════════
+function pickDailyAction() {
+  const h = new Date().getHours();
+  const name = USER_NAME || 'você';
+
+  // manhã cedo · 5-10h — como dormiu?
+  if (h >= 5 && h < 10) return {
+    eye: 'agora',
+    title: `Como você dormiu, ${name}?`,
+    body: 'conta em 10 segundos. o Circa cruza com teu treino e tua cabeça.',
+    meta: '',
+    ctaPrimary: { label: 'registrar sono', action: 'mood' },
+    ctaGhost: null,
+  };
+
+  // meio da manhã · 10-12h — hidratar
+  if (h >= 10 && h < 12) return {
+    eye: 'agora',
+    title: 'Hidrata antes do almoço.',
+    body: 'teu corpo ainda tá pedindo água — uns 800ml pra alcançar a meta.',
+    meta: '',
+    ctaPrimary: { label: '+ 500 ml', action: 'water500' },
+    ctaGhost: { label: '+ 200 ml', action: 'water200' },
+  };
+
+  // almoço · 12-14h
+  if (h >= 12 && h < 14) return {
+    eye: 'próxima refeição',
+    title: 'Almoça agora.',
+    body: 'frango grelhado, arroz, legumes. <strong>~650 kcal</strong>.',
+    meta: 'você jogou bola 2h. faltam 400 kcal pra fechar o dia.',
+    ctaPrimary: { label: 'comi', action: 'ateMeal' },
+    ctaGhost: { label: 'troca', action: 'swapMeal' },
+  };
+
+  // tarde · 14-17h — hidratar de novo
+  if (h >= 14 && h < 17) return {
+    eye: 'agora',
+    title: 'Faltam 1L de água.',
+    body: 'teu corpo ainda tá pedindo. até 17h dá tempo de recuperar a meta.',
+    meta: '',
+    ctaPrimary: { label: '+ 500 ml', action: 'water500' },
+    ctaGhost: { label: '+ 200 ml', action: 'water200' },
+  };
+
+  // fim da tarde · 17-19h — treino ou check-in
+  if (h >= 17 && h < 19) return {
+    eye: 'agora',
+    title: 'Treinou? Conta aí.',
+    body: 'o que tu fez hoje — ou vai fazer — pro teu corpo?',
+    meta: '',
+    ctaPrimary: { label: 'registrar treino', action: 'workout' },
+    ctaGhost: null,
+  };
+
+  // noite · 19-22h — como foi o dia
+  if (h >= 19 && h < 22) return {
+    eye: 'agora',
+    title: `Como tá agora, ${name}?`,
+    body: 'um check-in rápido fecha o dia. sem drama, só honesto.',
+    meta: '',
+    ctaPrimary: { label: 'check-in', action: 'mood' },
+    ctaGhost: null,
+  };
+
+  // madrugada · 22+ ou antes das 5
+  return {
+    eye: 'agora',
+    title: 'Hora de desacelerar.',
+    body: 'teu corpo produz hormônio de recuperação nas próximas horas. protege esse tempo.',
+    meta: '',
+    ctaPrimary: { label: 'registrar sono', action: 'mood' },
+    ctaGhost: null,
+  };
+}
+
+function renderHomeAction() {
+  const a = pickDailyAction();
+  const eye   = document.getElementById('action-eye');
+  const title = document.getElementById('action-title');
+  const body  = document.getElementById('action-body');
+  const meta  = document.getElementById('action-meta');
+  const cta   = document.getElementById('action-cta');
+  if (!eye || !title || !body || !meta || !cta) return;
+
+  eye.textContent   = a.eye;
+  title.textContent = a.title;
+  body.innerHTML    = a.body || '';
+  meta.textContent  = a.meta || '';
+  body.style.display = a.body ? '' : 'none';
+  meta.style.display = a.meta ? '' : 'none';
+
+  // re-render CTA
+  cta.innerHTML = '';
+  if (a.ctaPrimary) {
+    const b = document.createElement('button');
+    b.className = 'btn btn--primary';
+    b.textContent = a.ctaPrimary.label;
+    b.addEventListener('click', () => runAction(a.ctaPrimary.action));
+    cta.appendChild(b);
+  }
+  if (a.ctaGhost) {
+    const b = document.createElement('button');
+    b.className = 'btn btn--ghost';
+    b.textContent = a.ctaGhost.label;
+    b.addEventListener('click', () => runAction(a.ctaGhost.action));
+    cta.appendChild(b);
+  }
+}
+
+function runAction(kind) {
+  hap(10);
+  if (kind === 'mood')     goTo('mood');
+  if (kind === 'workout')  openEsportePicker();
+  if (kind === 'water200') { const m = document.querySelector('[data-add="200"]'); if (m) m.click(); }
+  if (kind === 'water500') { const m = document.querySelector('[data-add="500"]'); if (m) m.click(); }
+  if (kind === 'ateMeal')  { const card = document.getElementById('home-action'); if (card) card.style.opacity = '0.55'; }
+  if (kind === 'swapMeal') { alert('troca de refeição — vem em breve'); }
+}
+
+// renderiza ao carregar · também chamado quando o nome muda
+renderHomeAction();
+const _refreshOrig = refreshNameDependents;
+refreshNameDependents = function() { _refreshOrig(); renderHomeAction(); };
+
+// ═════════════════════════════════════════
+// HOME · gesto swipe-up + handle abre o drawer
+// ═════════════════════════════════════════
+const homePull = document.getElementById('home-pull');
+if (homePull) homePull.addEventListener('click', () => { openQd(); hap(10); });
+
+// swipe up na metade inferior da home abre o drawer
+let suStartY = 0, suStartX = 0, suTrack = false;
+window.addEventListener('touchstart', (e) => {
+  if (!e.touches[0]) return;
+  const homeActive = document.querySelector('.screen--home.is-active');
+  if (!homeActive) return;
+  const drawerOpen = document.getElementById('qd').classList.contains('is-open');
+  const anySheetOpen = document.querySelector('.sheet.is-open');
+  if (drawerOpen || anySheetOpen) return;
+  const y = e.touches[0].clientY;
+  // só ativa no terço inferior da tela
+  if (y < window.innerHeight * 0.65) return;
+  suStartY = y;
+  suStartX = e.touches[0].clientX;
+  suTrack = true;
+}, { passive: true });
+
+window.addEventListener('touchmove', (e) => {
+  if (!suTrack || !e.touches[0]) return;
+  const dy = e.touches[0].clientY - suStartY;
+  const dx = Math.abs(e.touches[0].clientX - suStartX);
+  if (dy < -60 && dx < 40) {
+    suTrack = false;
+    openQd();
+    hap(12);
+  }
+}, { passive: true });
+
+window.addEventListener('touchend', () => { suTrack = false; }, { passive: true });
+
 // ───── QUICK LOG drawer ─────
 const qd         = document.getElementById('qd');
 const qdHandle   = document.getElementById('qd-handle');
