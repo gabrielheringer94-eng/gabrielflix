@@ -1920,8 +1920,67 @@ const CHAT_OPCOES = [
   'quero entender meus exames',
 ];
 
+// som de assinatura da Circa · 3 notas com reverb leve
+function tocarSomCirca() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const now = ctx.currentTime;
+
+    // nota 1 · base quente (Mi3)
+    const osc1 = ctx.createOscillator();
+    const gain1 = ctx.createGain();
+    osc1.type = 'sine';
+    osc1.frequency.setValueAtTime(329.63, now);
+    osc1.frequency.exponentialRampToValueAtTime(340, now + 0.6);
+    gain1.gain.setValueAtTime(0, now);
+    gain1.gain.linearRampToValueAtTime(0.12, now + 0.05);
+    gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.9);
+    osc1.connect(gain1); gain1.connect(ctx.destination);
+    osc1.start(now); osc1.stop(now + 0.9);
+
+    // nota 2 · harmônico ouro (Si3)
+    const osc2 = ctx.createOscillator();
+    const gain2 = ctx.createGain();
+    osc2.type = 'sine';
+    osc2.frequency.setValueAtTime(493.88, now + 0.08);
+    gain2.gain.setValueAtTime(0, now + 0.08);
+    gain2.gain.linearRampToValueAtTime(0.09, now + 0.16);
+    gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.85);
+    osc2.connect(gain2); gain2.connect(ctx.destination);
+    osc2.start(now + 0.08); osc2.stop(now + 0.85);
+
+    // nota 3 · brilho cristal (Mi4)
+    const osc3 = ctx.createOscillator();
+    const gain3 = ctx.createGain();
+    osc3.type = 'sine';
+    osc3.frequency.setValueAtTime(659.25, now + 0.18);
+    osc3.frequency.exponentialRampToValueAtTime(670, now + 0.55);
+    gain3.gain.setValueAtTime(0, now + 0.18);
+    gain3.gain.linearRampToValueAtTime(0.07, now + 0.26);
+    gain3.gain.exponentialRampToValueAtTime(0.001, now + 0.75);
+    osc3.connect(gain3); gain3.connect(ctx.destination);
+    osc3.start(now + 0.18); osc3.stop(now + 0.75);
+
+    // reverb leve
+    const reverb = ctx.createConvolver();
+    const reverbGain = ctx.createGain();
+    reverbGain.gain.value = 0.18;
+    const reverbBuffer = ctx.createBuffer(2, ctx.sampleRate * 0.4, ctx.sampleRate);
+    for (let ch = 0; ch < 2; ch++) {
+      const data = reverbBuffer.getChannelData(ch);
+      for (let i = 0; i < data.length; i++) {
+        data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / data.length, 2.5);
+      }
+    }
+    reverb.buffer = reverbBuffer;
+    gain1.connect(reverb); gain2.connect(reverb); gain3.connect(reverb);
+    reverb.connect(reverbGain); reverbGain.connect(ctx.destination);
+  } catch (e) { /* silencia sem quebrar */ }
+}
+
 function openChat() {
   if (!chatEl) return;
+  tocarSomCirca();
   chatEl.classList.add('is-open');
   chatEl.setAttribute('aria-hidden', 'false');
   document.body.style.overflow = 'hidden';
