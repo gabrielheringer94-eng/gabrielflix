@@ -624,6 +624,12 @@ strong { color: var(--fg); font-weight: 500; }
 }
 .action-track.is-dragging {
   transition: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.action-track.is-dragging * {
+  user-select: none;
+  -webkit-user-select: none;
 }
 .action-track .card--action {
   flex: 0 0 100%;

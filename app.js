@@ -1871,6 +1871,71 @@ function setupActionSwipe() {
     track.classList.remove('is-dragging');
     applyActionIndex(true);
   }, { passive: true });
+
+  // ═════ DESKTOP · drag com mouse ═════
+  const onMouseDown = (e) => {
+    // ignora clique em botão, deixa o click normal funcionar
+    if (e.target.closest('button')) return;
+    _actDragging = true;
+    _actStartX = e.clientX;
+    _actStartY = e.clientY;
+    _actDx = 0;
+    _actLocked = null;
+    track.classList.add('is-dragging');
+    deck.style.cursor = 'grabbing';
+    e.preventDefault();
+  };
+
+  const onMouseMove = (e) => {
+    if (!_actDragging) return;
+    const dx = e.clientX - _actStartX;
+    const dy = e.clientY - _actStartY;
+    if (_actLocked === null) {
+      if (Math.abs(dx) > 6 || Math.abs(dy) > 6) {
+        _actLocked = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
+      }
+    }
+    if (_actLocked !== 'x') return;
+    _actDx = dx;
+    const w = deck.clientWidth || 1;
+    let pct = -ACTION_INDEX * 100 + (dx / w) * 100;
+    if (ACTION_INDEX === 0 && dx > 0) pct = -ACTION_INDEX * 100 + (dx / w) * 40;
+    if (ACTION_INDEX === ACTION_CARDS.length - 1 && dx < 0) pct = -ACTION_INDEX * 100 + (dx / w) * 40;
+    track.style.transform = `translateX(${pct}%)`;
+  };
+
+  const onMouseUp = () => {
+    if (!_actDragging) return;
+    _actDragging = false;
+    track.classList.remove('is-dragging');
+    deck.style.cursor = '';
+    const w = deck.clientWidth || 1;
+    const threshold = Math.min(70, w * 0.18);
+    if (_actLocked === 'x') {
+      if (_actDx < -threshold && ACTION_INDEX < ACTION_CARDS.length - 1) {
+        ACTION_INDEX++;
+      } else if (_actDx > threshold && ACTION_INDEX > 0) {
+        ACTION_INDEX--;
+      }
+    }
+    _actDx = 0;
+    _actLocked = null;
+    applyActionIndex(true);
+  };
+
+  deck.addEventListener('mousedown', onMouseDown);
+  window.addEventListener('mousemove', onMouseMove);
+  window.addEventListener('mouseup', onMouseUp);
+
+  // cursor indicativo de drag
+  deck.style.cursor = 'grab';
+
+  // setas do teclado, bonus
+  deck.setAttribute('tabindex', '0');
+  deck.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft'  && ACTION_INDEX > 0) { goToActionIndex(ACTION_INDEX - 1); e.preventDefault(); }
+    if (e.key === 'ArrowRight' && ACTION_INDEX < ACTION_CARDS.length - 1) { goToActionIndex(ACTION_INDEX + 1); e.preventDefault(); }
+  });
 }
 
 function runAction(kind) {
