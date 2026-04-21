@@ -920,7 +920,7 @@ function stateWord(score) {
   if (score >= 90) return 'voando';
   if (score >= 80) return 'firme';
   if (score >= 70) return 'em ritmo';
-  if (score >= 60) return 'carregando';
+  if (score >= 60) return 'aquecendo';
   if (score >= 45) return 'atenção';
   return 'precisa descanso';
 }
@@ -953,13 +953,13 @@ const AFFIRMATIONS = [
     'reconhece o que pesou. sem drama.',
     'desacelera. sem pressa de virar o jogo.',
   ],
-  // 60-69 · carregando (realista, acolhedor)
+  // 60-69 · aquecendo (realista, acolhedor)
   [
     'amanhã começa em branco.',
     'hoje foi hoje — descansa.',
     'dia na média também é progresso.',
     'não tá perfeito, tá dentro.',
-    'carregando energia pra amanhã.',
+    'amanhã tem espaço pra crescer.',
     'uma engrenagem de cada vez.',
   ],
   // 70-79 · em ritmo (afirmativo, sem exagero)
