@@ -1592,7 +1592,7 @@ if (qdPanel) {
 }
 
 // ───── ONBOARDING ─────
-const TOTAL_STEPS = 27;
+const TOTAL_STEPS = 26;
 let obStep = 1;
 const onboard       = document.getElementById('onboard');
 const obSlides      = document.querySelectorAll('.ob-slide');
@@ -2250,34 +2250,35 @@ function renderObStep() {
   if (obProgressLbl)  obProgressLbl.textContent = obStep + ' / ' + TOTAL_STEPS;
   obBackBtn.disabled = obStep === 1;
 
-  // quiz questions: steps 2-9
-  if (obStep >= 2 && obStep <= 9) {
-    const slide = document.querySelector('.ob-slide[data-step="' + obStep + '"]');
-    if (slide) renderQuizQuestion(slide);
-  }
-  // quiz result: step 10
-  if (obStep === 10) {
-    const slide = document.querySelector('.ob-slide[data-step="10"]');
-    if (slide) renderQuizResult(slide);
-  }
-  // rodas do onboarding agora em steps 12 e 13
-  if (obStep === 12) renderObWheel();
-  if (obStep === 13) renderObGoalWheel();
+  // rodas: steps 2 (hoje) e 3 (meta)
+  if (obStep === 2) renderObWheel();
+  if (obStep === 3) renderObGoalWheel();
 
-  // calibração fisiológica · seletor (step 15)
-  if (obStep === 15) {
-    const slide = document.querySelector('.ob-slide[data-step="15"]');
+  // calibração fisiológica · seletor (step 4)
+  if (obStep === 4) {
+    const slide = document.querySelector('.ob-slide[data-step="4"]');
     if (slide) renderFisioTrilhas(slide);
   }
-  // perguntas fisiológicas · steps 16-21
-  if (obStep >= 16 && obStep <= 21) {
+  // perguntas fisiológicas · steps 5-10
+  if (obStep >= 5 && obStep <= 10) {
     const slide = document.querySelector('.ob-slide[data-step="' + obStep + '"]');
     if (slide) renderFisioQuestion(slide);
   }
-  // resultado fisiológico · step 22
-  if (obStep === 22) {
-    const slide = document.querySelector('.ob-slide[data-step="22"]');
+  // resultado fisiológico · step 11
+  if (obStep === 11) {
+    const slide = document.querySelector('.ob-slide[data-step="11"]');
     if (slide) renderFisioResult(slide);
+  }
+
+  // quiz perfil comportamental: steps 12-19
+  if (obStep >= 12 && obStep <= 19) {
+    const slide = document.querySelector('.ob-slide[data-step="' + obStep + '"]');
+    if (slide) renderQuizQuestion(slide);
+  }
+  // resultado perfil: step 20
+  if (obStep === 20) {
+    const slide = document.querySelector('.ob-slide[data-step="20"]');
+    if (slide) renderQuizResult(slide);
   }
 }
 
@@ -2307,12 +2308,12 @@ document.querySelectorAll('.ob-next').forEach((btn) => {
   });
 });
 
-// step 11 · motivação (single select)
-document.querySelectorAll('.ob-slide[data-step="11"] .ob-card').forEach((card) => {
+// step 1 · motivação (single select)
+document.querySelectorAll('.ob-slide[data-step="1"] .ob-card').forEach((card) => {
   card.addEventListener('click', () => {
-    document.querySelectorAll('.ob-slide[data-step="11"] .ob-card').forEach((c) => c.classList.remove('is-on'));
+    document.querySelectorAll('.ob-slide[data-step="1"] .ob-card').forEach((c) => c.classList.remove('is-on'));
     card.classList.add('is-on');
-    document.querySelector('.ob-slide[data-step="11"] .ob-next').disabled = false;
+    document.querySelector('.ob-slide[data-step="1"] .ob-next').disabled = false;
     hap(8);
   });
 });
@@ -2354,12 +2355,12 @@ document.querySelectorAll('.ob-chip').forEach((chip) => {
   });
 });
 
-// step 24 · sentido (single)
-document.querySelectorAll('.ob-slide[data-step="24"] .ob-card').forEach((card) => {
+// step 23 · sentido (single)
+document.querySelectorAll('.ob-slide[data-step="23"] .ob-card').forEach((card) => {
   card.addEventListener('click', () => {
-    document.querySelectorAll('.ob-slide[data-step="24"] .ob-card').forEach((c) => c.classList.remove('is-on'));
+    document.querySelectorAll('.ob-slide[data-step="23"] .ob-card').forEach((c) => c.classList.remove('is-on'));
     card.classList.add('is-on');
-    document.querySelector('.ob-slide[data-step="24"] .ob-next').disabled = false;
+    document.querySelector('.ob-slide[data-step="23"] .ob-next').disabled = false;
     hap(8);
   });
 });

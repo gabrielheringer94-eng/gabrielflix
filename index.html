@@ -42,38 +42,21 @@
 
     <div class="ob-slides" id="ob-slides">
 
-      <!-- 1 · quiz intro -->
-      <div class="ob-slide is-active quiz-intro" data-step="1">
-        <div class="ob-logo">
-          <svg viewBox="0 0 40 40" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5">
-            <circle cx="20" cy="20" r="14"/>
-            <circle cx="20" cy="20" r="5" fill="currentColor"/>
-          </svg>
-          <span>circa · perfil</span>
-        </div>
-
-        <h1 class="display">descubra como<br/><em>você funciona</em>.</h1>
-        <p class="lead">8 perguntas situacionais. sem certo ou errado. só o seu padrão real.</p>
-
-        <button class="btn btn--primary btn--full ob-next">começar</button>
-        <p class="quiz-meta">~2 min · resultado imediato</p>
-      </div>
-
       <!-- 2-9 · perguntas (conteúdo renderizado por JS ao entrar no step) -->
-      <div class="ob-slide quiz-question" data-step="2" data-qindex="0"></div>
-      <div class="ob-slide quiz-question" data-step="3" data-qindex="1"></div>
-      <div class="ob-slide quiz-question" data-step="4" data-qindex="2"></div>
-      <div class="ob-slide quiz-question" data-step="5" data-qindex="3"></div>
-      <div class="ob-slide quiz-question" data-step="6" data-qindex="4"></div>
-      <div class="ob-slide quiz-question" data-step="7" data-qindex="5"></div>
-      <div class="ob-slide quiz-question" data-step="8" data-qindex="6"></div>
-      <div class="ob-slide quiz-question" data-step="9" data-qindex="7"></div>
+      <div class="ob-slide quiz-question" data-step="12" data-qindex="0"></div>
+      <div class="ob-slide quiz-question" data-step="13" data-qindex="1"></div>
+      <div class="ob-slide quiz-question" data-step="14" data-qindex="2"></div>
+      <div class="ob-slide quiz-question" data-step="15" data-qindex="3"></div>
+      <div class="ob-slide quiz-question" data-step="16" data-qindex="4"></div>
+      <div class="ob-slide quiz-question" data-step="17" data-qindex="5"></div>
+      <div class="ob-slide quiz-question" data-step="18" data-qindex="6"></div>
+      <div class="ob-slide quiz-question" data-step="19" data-qindex="7"></div>
 
       <!-- 10 · resultado do perfil (renderizado por JS) -->
-      <div class="ob-slide quiz-result" data-step="10"></div>
+      <div class="ob-slide quiz-result" data-step="20"></div>
 
       <!-- 11 · boas-vindas -->
-      <div class="ob-slide" data-step="11">
+      <div class="ob-slide is-active" data-step="1">
         <div class="ob-logo">
           <svg viewBox="0 0 40 40" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5">
             <circle cx="20" cy="20" r="14"/>
@@ -107,7 +90,7 @@
       </div>
 
       <!-- 12 · roda hoje -->
-      <div class="ob-slide" data-step="12">
+      <div class="ob-slide" data-step="2">
         <h1 class="display">como tá<br/>tua vida<br/>hoje?</h1>
         <p class="lead">arrasta cada área. sem julgamento, só um mapa.</p>
 
@@ -134,7 +117,7 @@
       </div>
 
       <!-- 13 · roda meta -->
-      <div class="ob-slide" data-step="13">
+      <div class="ob-slide" data-step="3">
         <h1 class="display">e daqui a<br/>3 meses?</h1>
         <p class="lead">arrasta pra onde quer chegar. a linha clara é onde você tá hoje.</p>
 
@@ -162,7 +145,7 @@
       </div>
 
       <!-- 14 · corpo + rotina -->
-      <div class="ob-slide" data-step="14">
+      <div class="ob-slide" data-step="21">
         <h1 class="display">sobre<br/>você.</h1>
         <p class="lead">dados básicos pra calibrar tudo.</p>
 
@@ -217,7 +200,7 @@
       </div>
 
       <!-- 15 · calibração fisiológica · seletor de trilha -->
-      <div class="ob-slide fisio-intro" data-step="15">
+      <div class="ob-slide fisio-intro" data-step="4">
         <span class="eyebrow">calibração fisiológica</span>
         <h1 class="display">como é o<br/><em>seu corpo?</em></h1>
         <p class="lead">as perguntas se adaptam à sua fisiologia real — não só ao gênero.</p>
@@ -276,18 +259,18 @@
       </div>
 
       <!-- 16-21 · 6 perguntas fisiológicas (renderizadas por JS com base na trilha) -->
-      <div class="ob-slide fisio-question" data-step="16" data-fqindex="0"></div>
-      <div class="ob-slide fisio-question" data-step="17" data-fqindex="1"></div>
-      <div class="ob-slide fisio-question" data-step="18" data-fqindex="2"></div>
-      <div class="ob-slide fisio-question" data-step="19" data-fqindex="3"></div>
-      <div class="ob-slide fisio-question" data-step="20" data-fqindex="4"></div>
-      <div class="ob-slide fisio-question" data-step="21" data-fqindex="5"></div>
+      <div class="ob-slide fisio-question" data-step="5" data-fqindex="0"></div>
+      <div class="ob-slide fisio-question" data-step="6" data-fqindex="1"></div>
+      <div class="ob-slide fisio-question" data-step="7" data-fqindex="2"></div>
+      <div class="ob-slide fisio-question" data-step="8" data-fqindex="3"></div>
+      <div class="ob-slide fisio-question" data-step="9" data-fqindex="4"></div>
+      <div class="ob-slide fisio-question" data-step="10" data-fqindex="5"></div>
 
       <!-- 22 · resultado fisiológico -->
-      <div class="ob-slide fisio-result" data-step="22"></div>
+      <div class="ob-slide fisio-result" data-step="11"></div>
 
       <!-- 23 · comida -->
-      <div class="ob-slide" data-step="23">
+      <div class="ob-slide" data-step="22">
         <h1 class="display">e como<br/>você come?</h1>
         <p class="lead">o que você nunca comeria, e o que te dá tesão de comer.</p>
 
@@ -317,7 +300,7 @@
       </div>
 
       <!-- 24 · sentido -->
-      <div class="ob-slide" data-step="24">
+      <div class="ob-slide" data-step="23">
         <h1 class="display">quando você<br/>pensa em<br/>sentido...</h1>
         <p class="lead">o que faz mais sentido pra <em>você</em>? isso molda como o circa vai falar contigo sobre essa área.</p>
 
@@ -347,7 +330,7 @@
       </div>
 
       <!-- 25 · apple health -->
-      <div class="ob-slide" data-step="25">
+      <div class="ob-slide" data-step="24">
         <h1 class="display">conecta o<br/>Apple Health?</h1>
         <p class="lead">sono, passos, frequência cardíaca e treinos entram sozinhos. menos coisa pra você logar à mão.</p>
 
@@ -362,7 +345,7 @@
       </div>
 
       <!-- 26 · medicamentos & suplementos -->
-      <div class="ob-slide" data-step="26">
+      <div class="ob-slide" data-step="25">
         <h1 class="display">remédios &<br/>suplementos.</h1>
         <p class="lead">o que você toma rotineiramente? cada item vira uma tarefa diária no app.</p>
 
@@ -399,7 +382,7 @@
       </div>
 
       <!-- 27 · bora -->
-      <div class="ob-slide" data-step="27">
+      <div class="ob-slide" data-step="26">
         <div class="ob-final">
           <svg viewBox="0 0 80 80" width="72" height="72" fill="none" stroke="currentColor" stroke-width="1.2">
             <circle cx="40" cy="40" r="34" opacity="0.3"/>
