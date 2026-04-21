@@ -1844,9 +1844,295 @@ qd && qd.querySelectorAll('.qd__item').forEach((btn) => {
   });
 });
 
-// ───── PIN FAB · momento ─────
+// ───── PIN FAB · momento (DEPRECATED · momento agora via drawer) ─────
 const pinFab = document.getElementById('pin-fab');
 if (pinFab) pinFab.addEventListener('click', () => openSheet('sheet-moment'));
+
+// ═════════════════════════════════════════
+// CIRCA CHAT · conversa contextual com a Circa
+// Motor mock com keyword router (Claude API real vem no Expo)
+// ═════════════════════════════════════════
+const chatEl       = document.getElementById('chat');
+const chatMsgsEl   = document.getElementById('chat-msgs');
+const chatInput    = document.getElementById('chat-input');
+const chatSend     = document.getElementById('chat-send');
+const chatClose    = document.getElementById('chat-close');
+const circaFab     = document.getElementById('circa-fab');
+
+let chatHistory = [];
+let chatOpened  = false;
+
+// contexto do usuário que a Circa "conhece" (pra respostas personalizadas)
+function userContext() {
+  return {
+    nome: USER_NAME || 'você',
+    score_hoje: computeScore(),
+    score_ontem: YESTERDAY_SCORE,
+    meta_3m: META_3M,
+    perfil: window.CIRCA_PROFILE || null,
+    fisio: window.CIRCA_FISIO || null,
+    sono_media: '5h42',
+    sono_meta: '7h',
+    agua_hoje: (waterMl / 1000).toFixed(1) + 'L',
+    agua_meta: '2.8L',
+    suplementos: (function() { try { return JSON.parse(localStorage.getItem('circa_supps') || '[]'); } catch (e) { return []; } })(),
+    homocisteina: '28 µmol/L (alto)',
+    ferritina: '484 ng/mL (alto)',
+    insight_atual: 'humor sobe 1.8 pts quando treina antes das 10h',
+    padrao_queda: 'ansiedade sobe 3 dias após noites <6h',
+    ultimo_esporte: (function() { try { return localStorage.getItem('circa_last_sport'); } catch (e) { return null; } })(),
+  };
+}
+
+// abertura personalizada baseada em hora + contexto
+function aberturaPersonalizada() {
+  const c = userContext();
+  const h = new Date().getHours();
+  const periodo = h < 12 ? 'manhã' : h < 18 ? 'tarde' : 'noite';
+
+  const aberturas = [
+    {
+      texto: `quer conversar, ${c.nome}?`,
+      ctx: `score ${c.score_hoje} hoje · sono abaixo da meta essa semana`
+    },
+    {
+      texto: `${c.nome}, tô vendo que teu sono tá pesado essa semana. quer falar sobre isso?`,
+      ctx: `média ${c.sono_media} — bem abaixo das ${c.sono_meta} de meta`
+    },
+    {
+      texto: `boa ${periodo}, ${c.nome}. como tá a cabeça hoje?`,
+      ctx: `mente costuma ser a dimensão que mais oscila no teu perfil`
+    },
+    {
+      texto: `o que tá passando pela tua cabeça, ${c.nome}?`,
+      ctx: `sem julgamento. tô aqui pra ouvir e cruzar com o que a gente já sabe de ti`
+    },
+  ];
+  return aberturas[Math.floor(Math.random() * aberturas.length)];
+}
+
+// opções rápidas pra primeira conversa
+const CHAT_OPCOES = [
+  'tô bem, só queria registrar algo',
+  'preciso falar sobre meu sono',
+  'tô me sentindo sobrecarregado',
+  'tive um dia bom hoje',
+  'quero entender meus exames',
+];
+
+function openChat() {
+  if (!chatEl) return;
+  chatEl.classList.add('is-open');
+  chatEl.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+  if (circaFab) circaFab.classList.remove('is-pulsing');
+  chatOpened = true;
+
+  if (chatHistory.length === 0) {
+    setTimeout(() => {
+      const a = aberturaPersonalizada();
+      addCircaMsg(a.texto, a.ctx, true);
+    }, 360);
+  }
+  setTimeout(() => { chatInput && chatInput.focus(); }, 500);
+  hap(12);
+}
+
+function closeChat() {
+  if (!chatEl) return;
+  chatEl.classList.remove('is-open');
+  chatEl.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
+  chatOpened = false;
+  setTimeout(() => { if (circaFab) circaFab.classList.add('is-pulsing'); }, 700);
+  hap(6);
+}
+
+if (circaFab)  circaFab.addEventListener('click', openChat);
+if (chatClose) chatClose.addEventListener('click', closeChat);
+
+// rendering helpers
+function addCircaMsg(texto, ctx, withOpcoes) {
+  const div = document.createElement('div');
+  div.className = 'msg msg--circa';
+  div.innerHTML = `
+    <span class="msg__label">circa</span>
+    <div class="msg__bubble">
+      <p class="msg__text">${texto}</p>
+      ${ctx ? `<p class="msg__ctx">${ctx}</p>` : ''}
+    </div>
+  `;
+  chatMsgsEl.appendChild(div);
+  chatHistory.push({ role: 'circa', text: texto });
+
+  if (withOpcoes && chatHistory.length === 1) {
+    const opts = document.createElement('div');
+    opts.className = 'chat-opts';
+    CHAT_OPCOES.forEach((t) => {
+      const b = document.createElement('button');
+      b.className = 'chat-opt';
+      b.textContent = t;
+      b.addEventListener('click', () => {
+        opts.remove();
+        sendUserText(t);
+      });
+      opts.appendChild(b);
+    });
+    chatMsgsEl.appendChild(opts);
+  }
+  scrollChatBottom();
+}
+
+function addUserMsg(texto) {
+  const div = document.createElement('div');
+  div.className = 'msg msg--user';
+  div.innerHTML = `<div class="msg__bubble"><p class="msg__text">${texto}</p></div>`;
+  chatMsgsEl.appendChild(div);
+  chatHistory.push({ role: 'user', text: texto });
+  scrollChatBottom();
+}
+
+function showTyping() {
+  const div = document.createElement('div');
+  div.id = 'chat-typing';
+  div.className = 'typing';
+  div.innerHTML = '<span class="typing__dot"></span><span class="typing__dot"></span><span class="typing__dot"></span>';
+  chatMsgsEl.appendChild(div);
+  scrollChatBottom();
+}
+function hideTyping() {
+  const el = document.getElementById('chat-typing');
+  if (el) el.remove();
+}
+function scrollChatBottom() {
+  setTimeout(() => { chatMsgsEl.scrollTop = chatMsgsEl.scrollHeight; }, 80);
+}
+
+// ───── motor mock de respostas · keyword router com contexto ─────
+function mockCircaResponse(userText) {
+  const c = userContext();
+  const t = userText.toLowerCase();
+
+  // SONO
+  if (t.match(/\b(sono|dormir|dormindo|acordo|acordei|insôn|insom)\b/)) {
+    return `teu sono tá em ${c.sono_media} de média essa semana, ${c.nome}. é a coisa que mais tá puxando teu score pra baixo agora. que tá te tirando do sono — trabalho na cabeça, ansiedade, escolha de dormir tarde?`;
+  }
+
+  // ANSIEDADE / SOBRECARGA
+  if (t.match(/\b(ansios|sobrecarreg|estress|nervos|cansad|exaust|pesad)\b/)) {
+    return `sobrecarga é dado, não fraqueza. vejo um padrão no teu perfil: ${c.padrao_queda}. hoje tu dormiu bem? ou a cabeça já começou acelerada?`;
+  }
+
+  // TRISTEZA / DESANIMO
+  if (t.match(/\b(triste|desanim|mal|ruim|baixo|deprim|chorar|sem for)\b/)) {
+    return `obrigada por contar, ${c.nome}. dia ruim não precisa ser consertado agora — só atravessado. se tá ficando difícil por muitos dias seguidos, vale conversar com um psicólogo. tu tem com quem falar próximo?`;
+  }
+
+  // TREINO
+  if (t.match(/\b(treino|exerc|corri|correr|bola|academ|muscul|yoga)\b/)) {
+    const last = c.ultimo_esporte ? `teu último log foi de ${c.ultimo_esporte}.` : '';
+    return `${last} e um detalhe que eu mapeei: ${c.insight_atual}. quer registrar o de hoje?`;
+  }
+
+  // ÁGUA
+  if (t.match(/\b(água|agua|hidrat|sede)\b/)) {
+    return `tu tá em ${c.agua_hoje} de ${c.agua_meta} hoje. nos dias de atividade tu tem média ainda mais baixa. quer que eu te lembre de 2 em 2 horas?`;
+  }
+
+  // EXAMES
+  if (t.match(/\b(exam|sangue|homo|ferrit|vitamin|colest|tireoid)\b/)) {
+    return `dois marcadores pediram atenção no teu último: homocisteína ${c.homocisteina} e ferritina ${c.ferritina}. nenhum é drama imediato, mas ambos pedem conversa com médico. querendo, posso te mostrar o que costuma baixar cada um.`;
+  }
+
+  // HUMOR / DIA BOM
+  if (t.match(/\b(bom dia|dia bom|feliz|alegr|bem|ótimo|otimo|tranqu)\b/)) {
+    return `bom de ouvir isso. dias bons não são acaso — tu acumulou consistência nas últimas semanas. quer registrar o humor pra eu aprender com esse padrão?`;
+  }
+
+  // SUPLEMENTO / MEDICAÇÃO
+  if (t.match(/\b(suplement|creat|whey|vitamin|remed|medic|pílula)\b/)) {
+    const supps = c.suplementos.length ? c.suplementos.join(', ') : 'nenhum';
+    return `hoje tu tá com: ${supps}. tem alguma coisa nova que tu quer incluir ou alguma dose que tá te deixando na dúvida?`;
+  }
+
+  // REGISTRAR
+  if (t.match(/\b(registrar|log|anotar|marcar|salvar)\b/)) {
+    return `pode me contar o que tu quer registrar? treino, refeição, humor, momento que te moveu — eu anoto e cruzo com o resto.`;
+  }
+
+  // AJUDA / COMO FUNCIONA
+  if (t.match(/\b(ajuda|como funcion|o que tu faz|pra que|pode fazer)\b/)) {
+    return `eu cruzo tudo que tu registra — sono, treino, humor, exames — e mostro padrões que tu sozinho não consegue ver. também converso sempre que tu precisar. me pergunta qualquer coisa sobre ti.`;
+  }
+
+  // OI / SAUDAÇÃO
+  if (t.match(/^(oi|olá|ola|hey|e aí|eai)\b/)) {
+    return `oi ${c.nome}. tô aqui. o que tá passando contigo hoje?`;
+  }
+
+  // FALLBACK contextual
+  const fallbacks = [
+    `me conta mais, ${c.nome}. tô aqui.`,
+    `entendi. quer que a gente foque em sono, treino, humor ou algo específico?`,
+    `tá valendo. conta com mais detalhe?`,
+    `guardei. tem mais alguma coisa que quer soltar?`,
+  ];
+  return fallbacks[Math.floor(Math.random() * fallbacks.length)];
+}
+
+async function sendUserText(texto) {
+  if (!texto || !texto.trim()) return;
+  addUserMsg(texto.trim());
+  showTyping();
+
+  // delay simulado tipo API real
+  const delay = 900 + Math.random() * 1200;
+  setTimeout(() => {
+    hideTyping();
+    const resp = mockCircaResponse(texto);
+    addCircaMsg(resp);
+  }, delay);
+}
+
+function sendFromInput() {
+  const v = chatInput.value.trim();
+  if (!v) return;
+  chatInput.value = '';
+  chatInput.style.height = 'auto';
+  if (chatSend) chatSend.disabled = true;
+  sendUserText(v);
+}
+
+if (chatSend) chatSend.addEventListener('click', sendFromInput);
+
+if (chatInput) {
+  chatInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendFromInput();
+    }
+  });
+  chatInput.addEventListener('input', () => {
+    chatInput.style.height = 'auto';
+    chatInput.style.height = Math.min(chatInput.scrollHeight, 120) + 'px';
+    if (chatSend) chatSend.disabled = !chatInput.value.trim();
+  });
+}
+
+// esc fecha o chat
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && chatOpened) closeChat();
+});
+
+// tap no card de próxima ação da home também abre o chat
+const homeAction = document.getElementById('home-action');
+if (homeAction) {
+  homeAction.addEventListener('click', (e) => {
+    // não dispara se o clique foi em um botão (CTA)
+    if (e.target.closest('button')) return;
+    openChat();
+  });
+}
 
 // moment modal — chip multi-select (dentro de cada grupo)
 document.querySelectorAll('#sheet-moment .ob-chips').forEach((group) => {

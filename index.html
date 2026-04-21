@@ -1834,12 +1834,40 @@
       </div>
     </div>
 
-    <!-- ───────── BOTÃO FLUTUANTE · pin de momento ───────── -->
-    <button class="pin-fab" id="pin-fab" aria-label="marcar momento">
-      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M12 2L9.5 8.5 3 9l5 4.5L6 20l6-3.5 6 3.5-2-6.5L21 9l-6.5-.5z"/>
-      </svg>
+    <!-- ───────── FAB · conversa com a Circa ───────── -->
+    <button class="circa-fab is-pulsing" id="circa-fab" aria-label="conversar com a circa">
+      <img src="circa-logo.png" alt="" width="40" height="40" />
     </button>
+
+    <!-- ───────── CHAT · conversa com a Circa ───────── -->
+    <div class="chat" id="chat" aria-hidden="true">
+      <header class="chat__top">
+        <div class="chat__who">
+          <span class="chat__who-icon"><img src="circa-logo.png" alt="" width="22" height="22"/></span>
+          <div class="chat__who-txt">
+            <strong>a circa</strong>
+            <span>conhece você · sempre aqui</span>
+          </div>
+        </div>
+        <button class="chat__close" id="chat-close" aria-label="fechar">✕</button>
+      </header>
+
+      <div class="chat__msgs" id="chat-msgs"></div>
+
+      <div class="chat__input-area">
+        <textarea
+          class="chat__input"
+          id="chat-input"
+          placeholder="escreva o que quiser…"
+          rows="1"
+        ></textarea>
+        <button class="chat__send" id="chat-send" aria-label="enviar" disabled>
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
 
     <!-- ───────── SHEET · esporte picker ───────── -->
     <div class="sheet" id="sheet-esporte" aria-hidden="true">
