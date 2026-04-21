@@ -491,27 +491,12 @@
 
       <div class="divider"></div>
 
-      <div class="card card--action" id="home-action">
-        <div class="action-head">
-          <span class="action-icon" aria-hidden="true" id="action-icon">
-            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="13" r="6"/>
-              <path d="M5 3v9M19 3v9"/>
-            </svg>
-          </span>
-          <span class="eyebrow" id="action-eye">próxima ação</span>
+      <!-- deck de logs · swipe horizontal pra trocar de tema -->
+      <div class="action-deck" id="action-deck">
+        <div class="action-track" id="action-track" role="group" aria-label="cards de log">
+          <!-- cards inseridos por JS -->
         </div>
-        <h2 class="card__title" id="action-title">Almoça agora.</h2>
-        <p class="card__body" id="action-body">
-          Frango grelhado, arroz, legumes. <strong>~650 kcal</strong>.
-        </p>
-        <p class="card__meta" id="action-meta">
-          Você treinou hoje. Faltam 400 kcal pra fechar o dia.
-        </p>
-        <div class="card__cta" id="action-cta">
-          <button class="btn btn--primary">comi</button>
-          <button class="btn btn--ghost">troca</button>
-        </div>
+        <div class="action-dots" id="action-dots" aria-hidden="true"></div>
       </div>
 
       <!-- handle de swipe-up pra abrir o log rápido -->

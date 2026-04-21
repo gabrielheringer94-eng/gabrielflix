@@ -1628,132 +1628,274 @@ const logSalvar = document.getElementById('log-t-salvar');
 if (logSalvar) logSalvar.addEventListener('click', salvarLogTreino);
 
 // ═════════════════════════════════════════
-// HOME · ação dinâmica por hora do dia
-// Uma pergunta por tela, um número por momento.
+// HOME · deck de logs swipeable
+// 5 cards: humor · sono · treino · água · refeição
+// Swipe esquerda, próximo, swipe direita, anterior.
 // ═════════════════════════════════════════
-function pickDailyAction() {
-  const h = new Date().getHours();
+function buildActionCards() {
   const name = USER_NAME || 'você';
-
-  // manhã cedo · 5-10h, como dormiu?
-  if (h >= 5 && h < 10) return {
-    eye: 'agora',
-    title: `Como você dormiu, ${name}?`,
-    body: 'conta em 10 segundos. o Circa cruza com teu treino e tua cabeça.',
-    meta: '',
-    ctaPrimary: { label: 'registrar sono', action: 'mood' },
-    ctaGhost: null,
-  };
-
-  // meio da manhã · 10-12h, hidratar
-  if (h >= 10 && h < 12) return {
-    eye: 'agora',
-    title: 'Hidrata antes do almoço.',
-    body: 'teu corpo ainda tá pedindo água, uns 800ml pra alcançar a meta.',
-    meta: '',
-    ctaPrimary: { label: '+ 500 ml', action: 'water500' },
-    ctaGhost: { label: '+ 200 ml', action: 'water200' },
-  };
-
-  // almoço · 12-14h
-  if (h >= 12 && h < 14) return {
-    eye: 'próxima refeição',
-    title: 'Almoça agora.',
-    body: 'frango grelhado, arroz, legumes. <strong>~650 kcal</strong>.',
-    meta: 'você treinou hoje. faltam 400 kcal pra fechar o dia.',
-    ctaPrimary: { label: 'comi', action: 'ateMeal' },
-    ctaGhost: { label: 'troca', action: 'swapMeal' },
-  };
-
-  // tarde · 14-17h, hidratar de novo
-  if (h >= 14 && h < 17) return {
-    eye: 'agora',
-    title: 'Faltam 1L de água.',
-    body: 'teu corpo ainda tá pedindo. até 17h dá tempo de recuperar a meta.',
-    meta: '',
-    ctaPrimary: { label: '+ 500 ml', action: 'water500' },
-    ctaGhost: { label: '+ 200 ml', action: 'water200' },
-  };
-
-  // fim da tarde · 17-19h, treino ou check-in
-  if (h >= 17 && h < 19) return {
-    eye: 'agora',
-    title: 'Treinou? Conta aí.',
-    body: 'o que tu fez hoje, ou vai fazer, pro teu corpo?',
-    meta: '',
-    ctaPrimary: { label: 'registrar treino', action: 'workout' },
-    ctaGhost: null,
-  };
-
-  // noite · 19-22h, como foi o dia
-  if (h >= 19 && h < 22) return {
-    eye: 'agora',
-    title: `Como tá agora, ${name}?`,
-    body: 'um check-in rápido fecha o dia. sem drama, só honesto.',
-    meta: '',
-    ctaPrimary: { label: 'check-in', action: 'mood' },
-    ctaGhost: null,
-  };
-
-  // madrugada · 22+ ou antes das 5
-  return {
-    eye: 'agora',
-    title: 'Hora de desacelerar.',
-    body: 'teu corpo produz hormônio de recuperação nas próximas horas. protege esse tempo.',
-    meta: '',
-    ctaPrimary: { label: 'registrar sono', action: 'mood' },
-    ctaGhost: null,
-  };
+  return [
+    {
+      key: 'humor',
+      eye: 'agora',
+      title: `Como tá agora, ${name}?`,
+      body: 'um check-in rápido. sem drama, só honesto.',
+      meta: '',
+      iconSvg: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>',
+      ctaPrimary: { label: 'check-in', action: 'mood' },
+      ctaGhost: null,
+    },
+    {
+      key: 'sono',
+      eye: 'agora',
+      title: `Como você dormiu, ${name}?`,
+      body: 'conta em 10 segundos. o Circa cruza com teu treino e tua cabeça.',
+      meta: '',
+      iconSvg: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>',
+      ctaPrimary: { label: 'registrar sono', action: 'sleep' },
+      ctaGhost: null,
+    },
+    {
+      key: 'treino',
+      eye: 'agora',
+      title: 'Treinou? Conta aí.',
+      body: 'o que tu fez hoje, ou vai fazer, pro teu corpo?',
+      meta: '',
+      iconSvg: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="6"/><path d="M5 3v9M19 3v9"/></svg>',
+      ctaPrimary: { label: 'registrar treino', action: 'workout' },
+      ctaGhost: null,
+    },
+    {
+      key: 'agua',
+      eye: 'agora',
+      title: 'Faltam 1L de água.',
+      body: 'teu corpo ainda tá pedindo. dá tempo de recuperar a meta.',
+      meta: '',
+      iconSvg: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5s6 7 6 11.5a6 6 0 0 1-12 0c0-4.5 6-11.5 6-11.5z"/></svg>',
+      ctaPrimary: { label: '+ 500 ml', action: 'water500' },
+      ctaGhost:   { label: '+ 200 ml', action: 'water200' },
+    },
+    {
+      key: 'refeicao',
+      eye: 'próxima refeição',
+      title: 'Almoça agora.',
+      body: 'frango grelhado, arroz, legumes. <strong>~650 kcal</strong>.',
+      meta: 'você treinou hoje. faltam 400 kcal pra fechar o dia.',
+      iconSvg: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v7a4 4 0 0 0 4 4h0v7M7 3v7M15 3c-1 2-2 4-2 7 0 2 1 3 2 3v8"/></svg>',
+      ctaPrimary: { label: 'comi', action: 'ateMeal' },
+      ctaGhost:   { label: 'troca', action: 'swapMeal' },
+    },
+  ];
 }
 
-function renderHomeAction() {
-  const a = pickDailyAction();
-  const eye   = document.getElementById('action-eye');
-  const title = document.getElementById('action-title');
-  const body  = document.getElementById('action-body');
-  const meta  = document.getElementById('action-meta');
-  const cta   = document.getElementById('action-cta');
-  if (!eye || !title || !body || !meta || !cta) return;
+// índice inicial por hora do dia (contextual)
+function pickInitialCardIndex() {
+  const h = new Date().getHours();
+  // manhã cedo, sono; manhã, água; almoço, refeição; tarde, água; fim de tarde, treino; noite, humor; madrugada, sono
+  if (h >= 5  && h < 10) return 1; // sono
+  if (h >= 10 && h < 12) return 3; // agua
+  if (h >= 12 && h < 14) return 4; // refeicao
+  if (h >= 14 && h < 17) return 3; // agua
+  if (h >= 17 && h < 19) return 2; // treino
+  if (h >= 19 && h < 22) return 0; // humor
+  return 1; // madrugada, sono
+}
 
-  eye.textContent   = a.eye;
-  title.textContent = a.title;
-  body.innerHTML    = a.body || '';
-  meta.textContent  = a.meta || '';
-  body.style.display = a.body ? '' : 'none';
-  meta.style.display = a.meta ? '' : 'none';
+let ACTION_CARDS = [];
+let ACTION_INDEX = 0;
 
-  // re-render CTA
-  cta.innerHTML = '';
-  if (a.ctaPrimary) {
-    const b = document.createElement('button');
-    b.className = 'btn btn--primary';
-    b.textContent = a.ctaPrimary.label;
-    b.addEventListener('click', () => runAction(a.ctaPrimary.action));
-    cta.appendChild(b);
+function renderActionDeck() {
+  const track = document.getElementById('action-track');
+  const dots  = document.getElementById('action-dots');
+  if (!track || !dots) return;
+
+  ACTION_CARDS = buildActionCards();
+  ACTION_INDEX = pickInitialCardIndex();
+
+  // monta cards
+  track.innerHTML = '';
+  ACTION_CARDS.forEach((c, i) => {
+    const card = document.createElement('div');
+    card.className = 'card card--action';
+    card.dataset.key = c.key;
+    card.setAttribute('role', 'group');
+    card.setAttribute('aria-label', `log de ${c.key}`);
+
+    const head = document.createElement('div');
+    head.className = 'action-head';
+    head.innerHTML = `<span class="action-icon" aria-hidden="true">${c.iconSvg}</span><span class="eyebrow">${c.eye}</span>`;
+    card.appendChild(head);
+
+    const title = document.createElement('h2');
+    title.className = 'card__title';
+    title.textContent = c.title;
+    card.appendChild(title);
+
+    if (c.body) {
+      const body = document.createElement('p');
+      body.className = 'card__body';
+      body.innerHTML = c.body;
+      card.appendChild(body);
+    }
+    if (c.meta) {
+      const meta = document.createElement('p');
+      meta.className = 'card__meta';
+      meta.textContent = c.meta;
+      card.appendChild(meta);
+    }
+
+    const cta = document.createElement('div');
+    cta.className = 'card__cta';
+    if (c.ctaPrimary) {
+      const b = document.createElement('button');
+      b.className = 'btn btn--primary';
+      b.textContent = c.ctaPrimary.label;
+      b.addEventListener('click', () => runAction(c.ctaPrimary.action));
+      cta.appendChild(b);
+    }
+    if (c.ctaGhost) {
+      const b = document.createElement('button');
+      b.className = 'btn btn--ghost';
+      b.textContent = c.ctaGhost.label;
+      b.addEventListener('click', () => runAction(c.ctaGhost.action));
+      cta.appendChild(b);
+    }
+    card.appendChild(cta);
+    track.appendChild(card);
+  });
+
+  // monta dots
+  dots.innerHTML = '';
+  ACTION_CARDS.forEach((c, i) => {
+    const d = document.createElement('button');
+    d.className = 'action-dot';
+    d.setAttribute('aria-label', `ir pro card ${c.key}`);
+    d.addEventListener('click', () => goToActionIndex(i));
+    dots.appendChild(d);
+  });
+
+  applyActionIndex(false);
+  setupActionSwipe();
+}
+
+function applyActionIndex(animate) {
+  const track = document.getElementById('action-track');
+  const dots  = document.getElementById('action-dots');
+  if (!track || !dots) return;
+  if (animate === false) track.classList.add('is-dragging');
+  track.style.transform = `translateX(-${ACTION_INDEX * 100}%)`;
+  if (animate === false) {
+    // força reflow e remove a classe, pra próxima mudança ter transição
+    void track.offsetWidth;
+    track.classList.remove('is-dragging');
   }
-  if (a.ctaGhost) {
-    const b = document.createElement('button');
-    b.className = 'btn btn--ghost';
-    b.textContent = a.ctaGhost.label;
-    b.addEventListener('click', () => runAction(a.ctaGhost.action));
-    cta.appendChild(b);
-  }
+  [...dots.children].forEach((d, i) => {
+    d.classList.toggle('is-active', i === ACTION_INDEX);
+  });
+}
+
+function goToActionIndex(i) {
+  const n = ACTION_CARDS.length;
+  if (!n) return;
+  ACTION_INDEX = Math.max(0, Math.min(n - 1, i));
+  applyActionIndex(true);
+  hap(8);
+}
+
+// swipe horizontal no deck
+let _actDragging = false;
+let _actStartX = 0;
+let _actStartY = 0;
+let _actDx = 0;
+let _actLocked = null; // 'x' | 'y' | null
+
+function setupActionSwipe() {
+  const deck = document.getElementById('action-deck');
+  const track = document.getElementById('action-track');
+  if (!deck || !track || deck.dataset.swipeBound === '1') return;
+  deck.dataset.swipeBound = '1';
+
+  deck.addEventListener('touchstart', (e) => {
+    if (!e.touches[0]) return;
+    _actDragging = true;
+    _actStartX = e.touches[0].clientX;
+    _actStartY = e.touches[0].clientY;
+    _actDx = 0;
+    _actLocked = null;
+    track.classList.add('is-dragging');
+  }, { passive: true });
+
+  deck.addEventListener('touchmove', (e) => {
+    if (!_actDragging || !e.touches[0]) return;
+    const dx = e.touches[0].clientX - _actStartX;
+    const dy = e.touches[0].clientY - _actStartY;
+    if (_actLocked === null) {
+      if (Math.abs(dx) > 8 || Math.abs(dy) > 8) {
+        _actLocked = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
+      }
+    }
+    if (_actLocked !== 'x') return;
+    _actDx = dx;
+    const w = deck.clientWidth || 1;
+    let pct = -ACTION_INDEX * 100 + (dx / w) * 100;
+    // resistência nas bordas
+    if (ACTION_INDEX === 0 && dx > 0) pct = -ACTION_INDEX * 100 + (dx / w) * 40;
+    if (ACTION_INDEX === ACTION_CARDS.length - 1 && dx < 0) pct = -ACTION_INDEX * 100 + (dx / w) * 40;
+    track.style.transform = `translateX(${pct}%)`;
+  }, { passive: true });
+
+  deck.addEventListener('touchend', () => {
+    if (!_actDragging) return;
+    _actDragging = false;
+    track.classList.remove('is-dragging');
+    const w = deck.clientWidth || 1;
+    const threshold = Math.min(70, w * 0.18);
+    if (_actLocked === 'x') {
+      if (_actDx < -threshold && ACTION_INDEX < ACTION_CARDS.length - 1) {
+        ACTION_INDEX++;
+        hap(10);
+      } else if (_actDx > threshold && ACTION_INDEX > 0) {
+        ACTION_INDEX--;
+        hap(10);
+      }
+    }
+    _actDx = 0;
+    _actLocked = null;
+    applyActionIndex(true);
+  }, { passive: true });
+
+  deck.addEventListener('touchcancel', () => {
+    _actDragging = false;
+    _actLocked = null;
+    _actDx = 0;
+    track.classList.remove('is-dragging');
+    applyActionIndex(true);
+  }, { passive: true });
 }
 
 function runAction(kind) {
   hap(10);
   if (kind === 'mood')     goTo('mood');
+  if (kind === 'sleep')    goTo('mood');
   if (kind === 'workout')  openEsportePicker();
   if (kind === 'water200') { const m = document.querySelector('[data-add="200"]'); if (m) m.click(); }
   if (kind === 'water500') { const m = document.querySelector('[data-add="500"]'); if (m) m.click(); }
-  if (kind === 'ateMeal')  { const card = document.getElementById('home-action'); if (card) card.style.opacity = '0.55'; }
+  if (kind === 'ateMeal')  { const track = document.getElementById('action-track'); const active = track && track.children[ACTION_INDEX]; if (active) active.style.opacity = '0.55'; }
   if (kind === 'swapMeal') { alert('troca de refeição, vem em breve'); }
 }
 
+// mantém compat, pickDailyAction e renderHomeAction ainda existem pra não quebrar chamadas antigas
+function pickDailyAction() {
+  const i = pickInitialCardIndex();
+  const cards = buildActionCards();
+  return cards[i] || cards[0];
+}
+function renderHomeAction() { renderActionDeck(); }
+
 // renderiza ao carregar · também chamado quando o nome muda
-renderHomeAction();
+renderActionDeck();
 const _refreshOrig = refreshNameDependents;
-refreshNameDependents = function() { _refreshOrig(); renderHomeAction(); };
+refreshNameDependents = function() { _refreshOrig(); renderActionDeck(); };
 
 // ═════════════════════════════════════════
 // HOME · gesto swipe-up + handle abre o drawer
