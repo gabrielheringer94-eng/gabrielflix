@@ -916,6 +916,31 @@ const YESTERDAY_SCORE = 66;
 const META_3M = 82;
 const PATTERN_RANGE = [65, 78]; // "homens ativos aos sábados"
 
+// nome do usuário (persistido, com fallback)
+let USER_NAME = 'Gabriel';
+try {
+  const savedName = localStorage.getItem('circa_name');
+  if (savedName && typeof savedName === 'string' && savedName.trim()) USER_NAME = savedName.trim();
+} catch (e) {}
+
+function setUserName(name) {
+  if (!name || !name.trim()) return;
+  USER_NAME = name.trim();
+  try { localStorage.setItem('circa_name', USER_NAME); } catch (e) {}
+  refreshNameDependents();
+}
+
+function refreshNameDependents() {
+  // saudação do topo
+  const greet = document.querySelector('.screen--home .top__greet');
+  if (greet) greet.textContent = 'boa tarde, ' + USER_NAME;
+  // título do humor
+  const moodTitle = document.querySelector('.screen--mood .mood-intro .display');
+  if (moodTitle) moodTitle.innerHTML = USER_NAME + ',<br/>como você<br/>está hoje?';
+  // re-render hero (pra puxar o novo prefixo)
+  if (typeof updateHeroScore === 'function') updateHeroScore();
+}
+
 function stateWord(score) {
   if (score >= 90) return 'voando';
   if (score >= 80) return 'firme';
@@ -923,6 +948,16 @@ function stateWord(score) {
   if (score >= 60) return 'aquecendo';
   if (score >= 45) return 'atenção';
   return 'precisa descanso';
+}
+
+function narrativePrefix(score, name) {
+  // templates com nome no começo. "Parabéns" só aparece em scores altos.
+  if (score >= 90) return `${name}, parabéns — você tá <em id="hero-state-inline">voando</em>.`;
+  if (score >= 80) return `${name}, parabéns — você tá <em id="hero-state-inline">constante</em>.`;
+  if (score >= 70) return `${name}, você tá <em id="hero-state-inline">em ritmo</em>.`;
+  if (score >= 60) return `${name}, hoje tá <em id="hero-state-inline">aquecendo</em>.`;
+  if (score >= 45) return `${name}, dia pedindo <em id="hero-state-inline">atenção</em>.`;
+  return `${name}, você precisa de <em id="hero-state-inline">descanso</em>.`;
 }
 
 function narrativeLine(score, humorContrib) {
@@ -1078,12 +1113,12 @@ function updateHeroScore() {
   // glow dinâmico (cor + intensidade baseados no score)
   updateGlow(total);
 
-  // narrativa protagonista: "Seu dia tá X. [afirmação contextual]"
-  const stateW = stateWord(total);
+  // narrativa protagonista: "{nome}, você tá X. [afirmação contextual]"
+  const prefix = narrativePrefix(total, USER_NAME);
   const affirm = affirmationFor(total);
   const affirmCap = affirm.charAt(0).toUpperCase() + affirm.slice(1);
   const nar = document.getElementById('hero-narrative');
-  if (nar) nar.innerHTML = `Seu dia tá <em id="hero-state-inline">${stateW}</em>. ${affirmCap}`;
+  if (nar) nar.innerHTML = `${prefix} ${affirmCap}`;
 
   // delta (linha de texto sutil)
   const deltaEl  = document.getElementById('hero-delta-line');
@@ -1850,6 +1885,24 @@ document.querySelectorAll('.ob-slide[data-step="11"] .ob-card').forEach((card) =
     hap(8);
   });
 });
+
+// step 14 · input de nome
+const obNameInput = document.getElementById('ob-name');
+if (obNameInput) {
+  // pre-popula se já tiver salvo
+  if (USER_NAME && USER_NAME !== 'Gabriel') obNameInput.value = USER_NAME;
+  obNameInput.addEventListener('input', (e) => {
+    const v = e.target.value.trim();
+    if (v) setUserName(v);
+  });
+  obNameInput.addEventListener('blur', (e) => {
+    const v = e.target.value.trim();
+    if (v) setUserName(v);
+  });
+}
+
+// aplica nome em todos os dependentes na inicialização
+refreshNameDependents();
 
 // step 4 · toggle H/M
 document.querySelectorAll('.ob-toggle').forEach((group) => {
