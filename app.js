@@ -1920,10 +1920,180 @@ const CHAT_OPCOES = [
   'quero entender meus exames',
 ];
 
+// ═════════════════════════════════════════
+// CIRCA ORBE · canvas animado orgânico
+// ═════════════════════════════════════════
+const ORBE_ESTADOS = {
+  idle:        { label: 'presente', speed: 0.4,  amplitude: 0.018, complexity: 3, colorSpeed: 0.003, opacity: 0.85 },
+  ouvindo:     { label: 'ouvindo…',  speed: 0.9,  amplitude: 0.032, complexity: 5, colorSpeed: 0.008, opacity: 0.92 },
+  pensando:    { label: 'pensando…', speed: 1.6,  amplitude: 0.055, complexity: 8, colorSpeed: 0.018, opacity: 0.96 },
+  respondendo: { label: 'falando…',  speed: 2.2,  amplitude: 0.042, complexity: 6, colorSpeed: 0.012, opacity: 1.0  },
+};
+
+const ORBE_CORES = [
+  [201, 168,  76], // champagne
+  [232, 168, 124], // salmon
+  [237, 208, 104], // light champagne
+  [245, 232, 192], // pale champagne
+  [138,  94,  24], // dark champagne
+];
+
+let orbeEstado = 'idle';
+let orbeT = 0;
+let orbeInputPulse = 0;
+let orbeRaf = null;
+
+function lerpOrbe(a, b, t) { return a + (b - a) * t; }
+
+function drawOrbeOn(canvas, isMain) {
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const size = canvas.width;
+  const cfg = ORBE_ESTADOS[orbeEstado];
+  const cx = size / 2, cy = size / 2;
+  const baseR = size * 0.36;
+
+  ctx.clearRect(0, 0, size, size);
+
+  // glow externo
+  const glowR = baseR * (1.35 + Math.sin(orbeT * cfg.speed * 0.5) * 0.04);
+  const glow = ctx.createRadialGradient(cx, cy, baseR * 0.6, cx, cy, glowR);
+  glow.addColorStop(0, `rgba(201,168,76,${isMain ? 0.12 : 0.08})`);
+  glow.addColorStop(1, `rgba(201,168,76,0)`);
+  ctx.beginPath();
+  ctx.arc(cx, cy, glowR, 0, Math.PI * 2);
+  ctx.fillStyle = glow;
+  ctx.fill();
+
+  // forma orgânica
+  const pts = isMain ? 120 : 60;
+  const amp = cfg.amplitude + orbeInputPulse * 0.02;
+
+  function buildShape() {
+    ctx.beginPath();
+    for (let i = 0; i <= pts; i++) {
+      const angle = (i / pts) * Math.PI * 2;
+      let r = baseR;
+      for (let h = 1; h <= cfg.complexity; h++) {
+        const freq = h * 0.7;
+        const phase = orbeT * cfg.speed * (h % 2 === 0 ? 1 : -0.7) + h * 1.3;
+        r += baseR * amp * Math.sin(angle * freq + phase) / h;
+      }
+      if (orbeInputPulse > 0) r += baseR * orbeInputPulse * 0.03 * Math.sin(angle * 4 + orbeT * 3);
+      const x = cx + r * Math.cos(angle);
+      const y = cy + r * Math.sin(angle);
+      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    }
+    ctx.closePath();
+  }
+
+  // gradiente interno girando
+  buildShape();
+  const gradAngle = orbeT * cfg.colorSpeed * Math.PI * 2;
+  const gx1 = cx + Math.cos(gradAngle) * baseR * 0.6;
+  const gy1 = cy + Math.sin(gradAngle) * baseR * 0.6;
+  const gx2 = cx + Math.cos(gradAngle + Math.PI) * baseR * 0.6;
+  const gy2 = cy + Math.sin(gradAngle + Math.PI) * baseR * 0.6;
+  const grad = ctx.createLinearGradient(gx1, gy1, gx2, gy2);
+
+  const ci  = Math.floor((orbeT * cfg.colorSpeed * 0.3) % ORBE_CORES.length);
+  const ci2 = (ci + 1) % ORBE_CORES.length;
+  const ci3 = (ci + 2) % ORBE_CORES.length;
+  const blend = (orbeT * cfg.colorSpeed * 0.3) % 1;
+
+  const c1 = ORBE_CORES[ci].map((v, i) => Math.round(lerpOrbe(v, ORBE_CORES[ci2][i], blend)));
+  const c2 = ORBE_CORES[ci2].map((v, i) => Math.round(lerpOrbe(v, ORBE_CORES[ci3][i], blend)));
+  const c3 = ORBE_CORES[ci3];
+
+  grad.addColorStop(0,    `rgba(${c1[0]},${c1[1]},${c1[2]},${cfg.opacity})`);
+  grad.addColorStop(0.45, `rgba(${c2[0]},${c2[1]},${c2[2]},${cfg.opacity * 0.9})`);
+  grad.addColorStop(1,    `rgba(${c3[0]},${c3[1]},${c3[2]},${cfg.opacity * 0.7})`);
+
+  ctx.fillStyle = grad;
+  ctx.fill();
+
+  // brilho interno
+  buildShape();
+  const shine = ctx.createRadialGradient(
+    cx - baseR * 0.25, cy - baseR * 0.3, 0,
+    cx, cy, baseR * 0.9
+  );
+  const shineOpacity = 0.22 + Math.sin(orbeT * cfg.speed * 0.3) * 0.08;
+  shine.addColorStop(0,   `rgba(255,248,220,${shineOpacity})`);
+  shine.addColorStop(0.4, `rgba(237,208,104,${shineOpacity * 0.3})`);
+  shine.addColorStop(1,   `rgba(255,248,220,0)`);
+  ctx.fillStyle = shine;
+  ctx.fill();
+
+  // partícula girando (só no grande)
+  if (isMain) {
+    const pAngle = orbeT * cfg.speed * 0.4;
+    const pR = baseR * (0.85 + Math.sin(orbeT * cfg.speed * 0.6) * 0.08);
+    const px = cx + pR * Math.cos(pAngle);
+    const py = cy + pR * Math.sin(pAngle);
+    const pGrad = ctx.createRadialGradient(px, py, 0, px, py, baseR * 0.12);
+    pGrad.addColorStop(0, 'rgba(255,248,220,0.7)');
+    pGrad.addColorStop(1, 'rgba(255,248,220,0)');
+    ctx.beginPath();
+    ctx.arc(px, py, baseR * 0.12, 0, Math.PI * 2);
+    ctx.fillStyle = pGrad;
+    ctx.fill();
+  }
+}
+
+function orbeLoop() {
+  orbeT += 0.016;
+  if (orbeInputPulse > 0) orbeInputPulse *= 0.88;
+
+  const main = document.getElementById('orbe-main');
+  const mini = document.getElementById('orbe-mini');
+  // só redesenha main quando o chat tá aberto (economia)
+  const chatIsOpen = document.getElementById('chat')?.classList.contains('is-open');
+  if (chatIsOpen && main) drawOrbeOn(main, true);
+  if (mini) drawOrbeOn(mini, false);
+
+  orbeRaf = requestAnimationFrame(orbeLoop);
+}
+
+function setOrbeEstado(estado) {
+  orbeEstado = estado;
+  const label = document.getElementById('orbe-estado');
+  if (label) {
+    label.style.opacity = '0';
+    setTimeout(() => {
+      label.textContent = ORBE_ESTADOS[estado].label;
+      label.style.opacity = '1';
+    }, 200);
+  }
+}
+
+// inicia o loop quando DOM tá pronto
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', orbeLoop);
+} else {
+  orbeLoop();
+}
+
+// AudioContext global, criado uma vez e reusado (iOS Safari precisa de gesture)
+let _circaAudioCtx = null;
+function getCircaAudioCtx() {
+  if (!_circaAudioCtx) {
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return null;
+    _circaAudioCtx = new AC();
+  }
+  // iOS/Chrome frequentemente nascem suspensos
+  if (_circaAudioCtx.state === 'suspended') {
+    _circaAudioCtx.resume().catch(() => {});
+  }
+  return _circaAudioCtx;
+}
+
 // som de assinatura da Circa · 3 notas com reverb leve
 function tocarSomCirca() {
   try {
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const ctx = getCircaAudioCtx();
+    if (!ctx) return;
     const now = ctx.currentTime;
 
     // nota 1 · base quente (Mi3)
@@ -1984,14 +2154,18 @@ function openChat() {
   chatEl.classList.add('is-open');
   chatEl.setAttribute('aria-hidden', 'false');
   document.body.style.overflow = 'hidden';
-  if (circaFab) circaFab.classList.remove('is-pulsing');
   chatOpened = true;
+
+  setOrbeEstado('ouvindo');
 
   if (chatHistory.length === 0) {
     setTimeout(() => {
       const a = aberturaPersonalizada();
       addCircaMsg(a.texto, a.ctx, true);
-    }, 360);
+      setOrbeEstado('idle');
+    }, 600);
+  } else {
+    setTimeout(() => setOrbeEstado('idle'), 1200);
   }
   setTimeout(() => { chatInput && chatInput.focus(); }, 500);
   hap(12);
@@ -2003,7 +2177,7 @@ function closeChat() {
   chatEl.setAttribute('aria-hidden', 'true');
   document.body.style.overflow = '';
   chatOpened = false;
-  setTimeout(() => { if (circaFab) circaFab.classList.add('is-pulsing'); }, 700);
+  setOrbeEstado('idle');
   hap(6);
 }
 
@@ -2143,13 +2317,16 @@ async function sendUserText(texto) {
   if (!texto || !texto.trim()) return;
   addUserMsg(texto.trim());
   showTyping();
+  setOrbeEstado('pensando');
 
   // delay simulado tipo API real
   const delay = 900 + Math.random() * 1200;
   setTimeout(() => {
     hideTyping();
+    setOrbeEstado('respondendo');
     const resp = mockCircaResponse(texto);
     addCircaMsg(resp);
+    setTimeout(() => setOrbeEstado('idle'), 1800);
   }, delay);
 }
 
@@ -2175,6 +2352,14 @@ if (chatInput) {
     chatInput.style.height = 'auto';
     chatInput.style.height = Math.min(chatInput.scrollHeight, 120) + 'px';
     if (chatSend) chatSend.disabled = !chatInput.value.trim();
+
+    // pulso visual + estado "ouvindo" enquanto digita
+    orbeInputPulse = Math.min(orbeInputPulse + 0.3, 1);
+    if (orbeEstado === 'idle') setOrbeEstado('ouvindo');
+    clearTimeout(window._orbeTypingTimer);
+    window._orbeTypingTimer = setTimeout(() => {
+      if (orbeEstado === 'ouvindo') setOrbeEstado('idle');
+    }, 1200);
   });
 }
 

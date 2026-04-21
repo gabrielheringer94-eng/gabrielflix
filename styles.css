@@ -1791,9 +1791,9 @@ button.hero:active { transform: scale(0.985); }
   padding: 0;
   overflow: hidden;
 }
-.circa-fab img {
-  width: 44px;
-  height: 44px;
+.circa-fab canvas {
+  width: 56px;
+  height: 56px;
   border-radius: 50%;
   display: block;
 }
@@ -1803,16 +1803,7 @@ button.hero:active { transform: scale(0.985); }
   box-shadow: 0 12px 32px rgba(0,0,0,0.55), 0 0 24px rgba(212,184,150,0.25);
 }
 .circa-fab:active { transform: scale(0.95); }
-.circa-fab.is-pulsing {
-  animation: circaFabPulse 3s ease-in-out infinite;
-}
-@keyframes circaFabPulse {
-  0%, 100% { box-shadow: 0 8px 24px rgba(0,0,0,0.5), 0 0 0 0 rgba(212,184,150,0); }
-  50%      { box-shadow: 0 8px 24px rgba(0,0,0,0.5), 0 0 20px 6px rgba(212,184,150,0.18); border-color: var(--accent); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .circa-fab.is-pulsing { animation: none; }
-}
+/* .is-pulsing obsoleto (orbe canvas já respira sozinho) */
 @media (min-width: 480px) {
   .circa-fab {
     right: calc(50% - 220px + 16px);
@@ -1892,10 +1883,38 @@ button.hero:active { transform: scale(0.985); }
 }
 .chat__close:hover { color: var(--fg); }
 
+/* orbe principal no topo do chat */
+.chat__orbe-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 20px 14px;
+  flex-shrink: 0;
+  max-width: 440px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+}
+.chat__orbe-wrap canvas {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  display: block;
+  margin-bottom: 14px;
+}
+.chat__orbe-estado {
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--fg-dim);
+  height: 14px;
+  transition: opacity 0.4s ease;
+}
+
 .chat__msgs {
   flex: 1;
   overflow-y: auto;
-  padding: 20px 22px 16px;
+  padding: 12px 22px 16px;
   display: flex;
   flex-direction: column;
   gap: 14px;

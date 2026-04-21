@@ -1834,9 +1834,9 @@
       </div>
     </div>
 
-    <!-- ───────── FAB · conversa com a Circa ───────── -->
-    <button class="circa-fab is-pulsing" id="circa-fab" aria-label="conversar com a circa">
-      <img src="circa-logo.png" alt="" width="40" height="40" />
+    <!-- ───────── FAB · conversa com a Circa (orbe mini animado) ───────── -->
+    <button class="circa-fab" id="circa-fab" aria-label="conversar com a circa">
+      <canvas id="orbe-mini" width="120" height="120"></canvas>
     </button>
 
     <!-- ───────── CHAT · conversa com a Circa ───────── -->
@@ -1851,6 +1851,11 @@
         </div>
         <button class="chat__close" id="chat-close" aria-label="fechar">✕</button>
       </header>
+
+      <div class="chat__orbe-wrap">
+        <canvas id="orbe-main" width="300" height="300"></canvas>
+        <p class="chat__orbe-estado" id="orbe-estado">presente</p>
+      </div>
 
       <div class="chat__msgs" id="chat-msgs"></div>
 
