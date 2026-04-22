@@ -4446,6 +4446,17 @@ button.hero:active { transform: scale(0.985); }
 .jsec .hero {
   margin-bottom: 14px;
 }
+/* variante menor pras dimensões (corpo/mente/espírito), mantém todas as animações */
+.jsec .hero--dim {
+  width: 220px;
+  height: 220px;
+  max-width: 55vw;
+  max-height: 55vw;
+  margin-bottom: 18px;
+}
+.jsec .hero--dim .hero__value {
+  font-size: clamp(72px, 20vw, 96px);
+}
 .jsec-score-lbl {
   font-family: var(--sans);
   font-size: 10px; letter-spacing: 4px;
@@ -4722,6 +4733,55 @@ canvas#j-roda { width: 220px; height: 220px; cursor: pointer; }
   line-height: 1; color: var(--fg); letter-spacing: -0.02em;
 }
 .j-antes-delta { font-size: 12px; margin-top: 4px; color: var(--fg-muted); }
+
+/* tripé comparativo dentro de cada box antes/agora */
+.j-antes-box {
+  cursor: default;
+  background: var(--bg-raised);
+  border: 1px solid var(--fg-faint);
+  font-family: inherit;
+  transition: border-color 0.22s ease, transform 0.22s ease;
+}
+.j-antes-box:hover { border-color: var(--accent-dim); }
+.j-antes-tripe {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--fg-faint);
+}
+.j-antes-tr {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--fg-muted);
+  letter-spacing: 0.02em;
+}
+.j-antes-tr i {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.j-antes-tr span { text-align: left; flex: 1; }
+.j-antes-tr b {
+  font-family: var(--serif);
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--fg);
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+.j-antes-tr b em {
+  font-style: normal;
+  font-size: 9px;
+  font-family: var(--sans);
+  letter-spacing: 0.05em;
+}
+.j-delta-up { color: #8FA87C; }
+.j-delta-down { color: #E8A87C; }
 .j-up { color: #8FA87C !important; }
 .j-end {
   font-size: 11px; color: var(--fg-dim);
@@ -4808,6 +4868,62 @@ canvas#j-roda { width: 220px; height: 220px; cursor: pointer; }
 
 /* empurra conteúdo das seções pra cima da nav */
 .jsec { padding-bottom: 84px; }
+
+/* ── blocos de temas (log rápido) no ritual ── */
+.j-logs {
+  width: 100%;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--fg-faint);
+}
+.j-logs-lbl {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--fg-dim);
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 14px;
+}
+.j-logs-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+  width: 100%;
+}
+.j-log {
+  background: var(--bg-raised);
+  border: 1px solid var(--fg-faint);
+  color: var(--fg-muted);
+  font-family: var(--sans);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: lowercase;
+  cursor: pointer;
+  padding: 10px 4px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.2s ease;
+  border-radius: 2px;
+}
+.j-log:hover,
+.j-log:active {
+  border-color: var(--accent-dim);
+  color: var(--accent);
+  transform: translateY(-1px);
+}
+.j-log-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(212, 184, 150, 0.05);
+  color: var(--accent);
+}
 
 /* ── seção de exames na jornada ── */
 .j-exames-wrap {

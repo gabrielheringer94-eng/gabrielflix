@@ -4514,6 +4514,23 @@ function renderObGoalWheel() {
     if (typeof openSheet === 'function') openSheet('sheet-body');
   });
 
+  // blocos de temas do log rápido no ritual · dispara runAction/goTo equivalentes
+  document.querySelectorAll('.j-log[data-log]').forEach((tile) => {
+    tile.addEventListener('click', () => {
+      const kind = tile.dataset.log;
+      try { hap(8); } catch (e) {}
+      // fecha a jornada pra deixar o sheet/tela aparecer sem sobreposição
+      if (typeof window.closeJornada === 'function') window.closeJornada();
+      setTimeout(() => {
+        if (kind === 'humor')    { if (typeof goTo === 'function') goTo('mood'); }
+        if (kind === 'sono')     { if (typeof goTo === 'function') goTo('mood'); }
+        if (kind === 'treino')   { if (typeof openEsportePicker === 'function') openEsportePicker(); }
+        if (kind === 'agua')     { const m = document.querySelector('[data-add="500"]'); if (m) m.click(); }
+        if (kind === 'refeicao') { if (typeof runAction === 'function') runAction('ateMeal'); }
+      }, 180);
+    });
+  });
+
   // nav inferior da jornada, pulo pra seção
   document.querySelectorAll('.j-nav-item[data-j-goto]').forEach((b) => {
     b.addEventListener('click', () => {
