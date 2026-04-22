@@ -4209,16 +4209,30 @@ function renderObGoalWheel() {
   });
 
   // ═══ RODA DA VIDA ═══
-  const RODA = [
-    { lbl:'saúde',         val:8.2, cor:'#7B8BB8', msg:'acima da média. treino e consistência funcionam.' },
-    { lbl:'mente',         val:7.1, cor:'#E8A87C', msg:'humor estável. ansiedade em monitoramento.' },
-    { lbl:'espírito',      val:8.0, cor:'#A89CC8', msg:'em alta. fé e propósito alimentando o score.' },
-    { lbl:'energia vital', val:7.4, cor:'#D4B896', msg:'faísca acesa. vitalidade respondendo ao treino.' },
-    { lbl:'relações',      val:6.0, cor:'#C09090', msg:'pedindo atenção. última conexão há 9 dias.' },
-    { lbl:'carreira',      val:7.5, cor:'#E8C9A0', msg:'sólida. atenção ao equilíbrio com descanso.' },
-    { lbl:'família',       val:7.8, cor:'#8FA87C', msg:'bem. vínculos próximos em dia.' },
-    { lbl:'lazer',         val:5.5, cor:'#E8A87C', msg:'abaixo do ideal. seu corpo pede mais pausa.' },
-  ];
+  // sincronizada com as 8 dimensões da roda principal do Circa (AREAS global)
+  // cor + mensagem por key, valor puxado direto do AREAS pra ficar sempre em dia
+  const RODA_META = {
+    saude:    { lbl:'saúde',      cor:'#7B8BB8', msg:'treino e consistência funcionam. corpo respondendo.' },
+    carreira: { lbl:'carreira',   cor:'#E8C9A0', msg:'sólida. atenção ao equilíbrio com descanso.' },
+    familia:  { lbl:'família',    cor:'#8FA87C', msg:'vínculos próximos em dia. presença consistente.' },
+    relac:    { lbl:'relações',   cor:'#C09090', msg:'pedindo atenção. última conexão há 9 dias.' },
+    lazer:    { lbl:'lazer',      cor:'#E8A87C', msg:'abaixo do ideal. teu corpo pede mais pausa.' },
+    desenv:   { lbl:'desenvolv.', cor:'#D4B896', msg:'ritmo estável. curiosidade acesa.' },
+    espirit:  { lbl:'espírito',   cor:'#A89CC8', msg:'fé e propósito alimentando o score.' },
+    financas: { lbl:'finanças',   cor:'#B8A878', msg:'previsível. sem sobressaltos no mês.' },
+  };
+  function buildRodaFromAreas() {
+    const src = (typeof AREAS !== 'undefined' && Array.isArray(AREAS)) ? AREAS : [];
+    if (!src.length) {
+      // fallback com valores sensatos caso AREAS ainda não tenha carregado
+      return Object.entries(RODA_META).map(([k, m]) => ({ key:k, lbl:m.lbl, cor:m.cor, msg:m.msg, val:6 }));
+    }
+    return src.map((a) => {
+      const m = RODA_META[a.key] || { lbl:a.label, cor:'var(--accent)', msg:'' };
+      return { key:a.key, lbl:m.lbl, cor:m.cor, msg:m.msg, val:a.value };
+    });
+  }
+  let RODA = buildRodaFromAreas();
   let rodaVals = RODA.map(() => 0);
   let rodaAnims = RODA.map(() => 0);
   let rodaPulsoT = 0;
@@ -4453,6 +4467,8 @@ function renderObGoalWheel() {
     current = 0;
     applySections();
     updateDots();
+    // rebuild RODA com valores atuais do AREAS global
+    RODA = buildRodaFromAreas();
     rodaDrawn = false;
     rodaVals = RODA.map(() => 0);
     rodaAnims = RODA.map(() => 0);
