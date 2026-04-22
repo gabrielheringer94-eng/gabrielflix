@@ -1897,6 +1897,104 @@
     </div>
 
     <!-- ───────── SHEET · log adaptativo por modalidade ───────── -->
+    <!-- ───────── MODAL · log de humor ───────── -->
+    <div class="sheet" id="sheet-log-humor" aria-hidden="true">
+      <div class="sheet__backdrop" data-close></div>
+      <div class="sheet__panel" role="dialog" aria-label="log de humor">
+        <div class="sheet__grab"></div>
+
+        <div class="sheet__head">
+          <span class="eyebrow">log de humor</span>
+          <h2 class="display display--sm">como você<br/>está agora?</h2>
+          <p class="lead lead--sm">10 segundos, sem drama. o circa cruza com treino, sono e espírito.</p>
+        </div>
+
+        <div class="sheet__section">
+          <span class="eyebrow">sensação geral</span>
+          <div class="sensacao-grid">
+            <button class="sensacao" data-humor-sens="1"><span>😩</span><small>muito mal</small></button>
+            <button class="sensacao" data-humor-sens="2"><span>😕</span><small>mal</small></button>
+            <button class="sensacao" data-humor-sens="3"><span>😐</span><small>ok</small></button>
+            <button class="sensacao" data-humor-sens="4"><span>🙂</span><small>bem</small></button>
+            <button class="sensacao" data-humor-sens="5"><span>🔥</span><small>incrível</small></button>
+          </div>
+        </div>
+
+        <div class="sheet__section">
+          <span class="eyebrow">energia · 1 a 5</span>
+          <div class="log-dots-scale" id="humor-energia">
+            <button class="log-dot" data-v="1">1</button>
+            <button class="log-dot" data-v="2">2</button>
+            <button class="log-dot" data-v="3">3</button>
+            <button class="log-dot" data-v="4">4</button>
+            <button class="log-dot" data-v="5">5</button>
+          </div>
+        </div>
+
+        <div class="sheet__section">
+          <span class="eyebrow">foco · 1 a 5</span>
+          <div class="log-dots-scale" id="humor-foco">
+            <button class="log-dot" data-v="1">1</button>
+            <button class="log-dot" data-v="2">2</button>
+            <button class="log-dot" data-v="3">3</button>
+            <button class="log-dot" data-v="4">4</button>
+            <button class="log-dot" data-v="5">5</button>
+          </div>
+        </div>
+
+        <div class="sheet__section">
+          <span class="eyebrow">nota do momento · opcional</span>
+          <textarea class="reflect-text" id="humor-nota" rows="3" placeholder="o que tá na tua cabeça…"></textarea>
+        </div>
+
+        <button class="btn btn--primary btn--full" id="humor-salvar">registrar humor</button>
+        <button class="btn btn--text btn--full" data-close>cancelar</button>
+      </div>
+    </div>
+
+    <!-- ───────── MODAL · log de refeição ───────── -->
+    <div class="sheet" id="sheet-log-refeicao" aria-hidden="true">
+      <div class="sheet__backdrop" data-close></div>
+      <div class="sheet__panel" role="dialog" aria-label="log de refeição">
+        <div class="sheet__grab"></div>
+
+        <div class="sheet__head">
+          <span class="eyebrow">log de refeição</span>
+          <h2 class="display display--sm">o que você<br/>comeu?</h2>
+          <p class="lead lead--sm">rápido. sem contar caloria. cruzamos com teu dia.</p>
+        </div>
+
+        <div class="sheet__section">
+          <span class="eyebrow">qual refeição</span>
+          <div class="log-meal-chips" id="ref-tipo">
+            <button class="log-meal-chip" data-meal="cafe">☕ café</button>
+            <button class="log-meal-chip" data-meal="almoco">🍽️ almoço</button>
+            <button class="log-meal-chip" data-meal="lanche">🍎 lanche</button>
+            <button class="log-meal-chip" data-meal="jantar">🌙 jantar</button>
+          </div>
+        </div>
+
+        <div class="sheet__section">
+          <label class="eyebrow" for="ref-desc">o que comeu</label>
+          <textarea class="reflect-text" id="ref-desc" rows="3" placeholder="ex: frango grelhado, arroz integral, salada…"></textarea>
+        </div>
+
+        <div class="sheet__section">
+          <span class="eyebrow">como você ficou</span>
+          <div class="sensacao-grid">
+            <button class="sensacao" data-ref-sens="1"><span>😩</span><small>pesado</small></button>
+            <button class="sensacao" data-ref-sens="2"><span>😕</span><small>meia-boca</small></button>
+            <button class="sensacao" data-ref-sens="3"><span>😐</span><small>ok</small></button>
+            <button class="sensacao" data-ref-sens="4"><span>🙂</span><small>bem</small></button>
+            <button class="sensacao" data-ref-sens="5"><span>🔥</span><small>satisfeito</small></button>
+          </div>
+        </div>
+
+        <button class="btn btn--primary btn--full" id="ref-salvar">registrar refeição</button>
+        <button class="btn btn--text btn--full" data-close>cancelar</button>
+      </div>
+    </div>
+
     <!-- ───────── MODAL · log de sono ───────── -->
     <div class="sheet" id="sheet-log-sono" aria-hidden="true">
       <div class="sheet__backdrop" data-close></div>

@@ -1112,7 +1112,7 @@ button.hero:active { transform: scale(0.985); }
 .sheet {
   position: fixed;
   inset: 0;
-  z-index: 50;
+  z-index: 250; /* acima da jornada (200) · sheets sempre por cima */
   display: none;
   justify-content: center;
 }
@@ -4872,6 +4872,57 @@ canvas#j-roda { width: 220px; height: 220px; cursor: pointer; }
 /* ═════════════════════════════════════════════════════════
    LOG SHEETS · sono, água, treino-semana
    ═════════════════════════════════════════════════════════ */
+/* escala 1-5 em bolinhas numéricas */
+.log-dots-scale {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+}
+.log-dot {
+  background: var(--bg-raised);
+  border: 1px solid var(--fg-faint);
+  color: var(--fg-muted);
+  font-family: var(--serif);
+  font-size: 18px;
+  font-weight: 300;
+  padding: 14px 0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-radius: 50%;
+  aspect-ratio: 1;
+}
+.log-dot:hover { border-color: var(--accent-dim); color: var(--fg); }
+.log-dot.is-active {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-dim);
+}
+
+/* chips de refeição */
+.log-meal-chips {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px;
+}
+.log-meal-chip {
+  background: var(--bg-raised);
+  border: 1px solid var(--fg-faint);
+  color: var(--fg);
+  font-family: var(--sans);
+  font-size: 13px;
+  padding: 14px 0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.log-meal-chip:hover {
+  border-color: var(--accent-dim);
+}
+.log-meal-chip.is-active {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-dim);
+}
+
 /* chips de dia da semana */
 .log-day-chips {
   display: grid;

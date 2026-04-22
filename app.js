@@ -4554,26 +4554,23 @@ function renderObGoalWheel() {
     if (typeof openSheet === 'function') openSheet('sheet-body');
   });
 
-  // blocos de temas do log rápido no ritual · abrem sheets dedicados
+  // blocos de temas do log rápido no ritual · abrem sheets dedicados POR CIMA da jornada
+  // (jornada fica aberta no fundo, sheet sobrepõe via z-index 250)
   document.querySelectorAll('.j-log[data-log]').forEach((tile) => {
     tile.addEventListener('click', () => {
       const kind = tile.dataset.log;
       try { hap(8); } catch (e) {}
-      // fecha a jornada pra deixar o sheet aparecer limpo
-      if (typeof window.closeJornada === 'function') window.closeJornada();
-      setTimeout(() => {
-        if (kind === 'humor') {
-          if (typeof goTo === 'function') goTo('mood');
-        } else if (kind === 'sono') {
-          if (typeof abrirLogSono === 'function') abrirLogSono();
-        } else if (kind === 'treino') {
-          if (typeof abrirLogTreinoSemana === 'function') abrirLogTreinoSemana();
-        } else if (kind === 'agua') {
-          if (typeof abrirLogAgua === 'function') abrirLogAgua();
-        } else if (kind === 'refeicao') {
-          if (typeof runAction === 'function') runAction('ateMeal');
-        }
-      }, 200);
+      if (kind === 'humor') {
+        if (typeof abrirLogHumor === 'function') abrirLogHumor();
+      } else if (kind === 'sono') {
+        if (typeof abrirLogSono === 'function') abrirLogSono();
+      } else if (kind === 'treino') {
+        if (typeof abrirLogTreinoSemana === 'function') abrirLogTreinoSemana();
+      } else if (kind === 'agua') {
+        if (typeof abrirLogAgua === 'function') abrirLogAgua();
+      } else if (kind === 'refeicao') {
+        if (typeof abrirLogRefeicao === 'function') abrirLogRefeicao();
+      }
     });
   });
 
@@ -4905,3 +4902,143 @@ function abrirLogTreinoSemana() {
 
   if (typeof openSheet === 'function') openSheet('sheet-log-treino-semana');
 }
+
+// ───── LOG DE HUMOR ─────
+let humorSens = null;
+let humorEnergia = null;
+let humorFoco = null;
+
+function abrirLogHumor() {
+  humorSens = null;
+  humorEnergia = null;
+  humorFoco = null;
+  document.querySelectorAll('#sheet-log-humor .sensacao').forEach((x) => x.classList.remove('is-on'));
+  document.querySelectorAll('#humor-energia .log-dot').forEach((x) => x.classList.remove('is-active'));
+  document.querySelectorAll('#humor-foco .log-dot').forEach((x) => x.classList.remove('is-active'));
+  const nota = document.getElementById('humor-nota');
+  if (nota) nota.value = '';
+  if (typeof openSheet === 'function') openSheet('sheet-log-humor');
+}
+
+(function () {
+  document.querySelectorAll('#sheet-log-humor .sensacao').forEach((b) => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('#sheet-log-humor .sensacao').forEach((x) => x.classList.remove('is-on'));
+      b.classList.add('is-on');
+      humorSens = parseInt(b.dataset.humorSens, 10);
+      try { hap(6); } catch (e) {}
+    });
+  });
+  document.querySelectorAll('#humor-energia .log-dot').forEach((b) => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('#humor-energia .log-dot').forEach((x) => x.classList.remove('is-active'));
+      b.classList.add('is-active');
+      humorEnergia = parseInt(b.dataset.v, 10);
+      try { hap(4); } catch (e) {}
+    });
+  });
+  document.querySelectorAll('#humor-foco .log-dot').forEach((b) => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('#humor-foco .log-dot').forEach((x) => x.classList.remove('is-active'));
+      b.classList.add('is-active');
+      humorFoco = parseInt(b.dataset.v, 10);
+      try { hap(4); } catch (e) {}
+    });
+  });
+
+  const salvar = document.getElementById('humor-salvar');
+  if (salvar) salvar.addEventListener('click', () => {
+    const nota = document.getElementById('humor-nota')?.value || '';
+    const registro = {
+      sens: humorSens,
+      energia: humorEnergia,
+      foco: humorFoco,
+      nota,
+      ts: Date.now(),
+    };
+    try {
+      const arr = JSON.parse(localStorage.getItem('circa_log_humor') || '[]');
+      arr.push(registro);
+      localStorage.setItem('circa_log_humor', JSON.stringify(arr));
+    } catch (e) {}
+    try { hap(14); } catch (e) {}
+    if (typeof closeSheet === 'function') closeSheet();
+    setTimeout(() => {
+      const t = document.getElementById('log-ok-title');
+      const s = document.getElementById('log-ok-sub');
+      if (t) t.textContent = 'humor registrado.';
+      const label = ['', 'muito mal', 'mal', 'ok', 'bem', 'incrível'][humorSens || 3];
+      if (s) s.textContent = `sensação: ${label}${humorEnergia ? ' · energia ' + humorEnergia + '/5' : ''}${humorFoco ? ' · foco ' + humorFoco + '/5' : ''}`;
+      if (typeof openSheet === 'function') openSheet('sheet-log-ok');
+    }, 200);
+  });
+})();
+
+// ───── LOG DE REFEIÇÃO ─────
+let refMeal = null;
+let refSens = null;
+
+function abrirLogRefeicao() {
+  refMeal = null;
+  refSens = null;
+  document.querySelectorAll('.log-meal-chip').forEach((x) => x.classList.remove('is-active'));
+  document.querySelectorAll('#sheet-log-refeicao .sensacao').forEach((x) => x.classList.remove('is-on'));
+  const desc = document.getElementById('ref-desc');
+  if (desc) desc.value = '';
+
+  // default pro horário atual
+  const h = new Date().getHours();
+  let auto = null;
+  if (h < 11) auto = 'cafe';
+  else if (h < 15) auto = 'almoco';
+  else if (h < 18) auto = 'lanche';
+  else auto = 'jantar';
+  const autoChip = document.querySelector(`.log-meal-chip[data-meal="${auto}"]`);
+  if (autoChip) { autoChip.classList.add('is-active'); refMeal = auto; }
+
+  if (typeof openSheet === 'function') openSheet('sheet-log-refeicao');
+}
+
+(function () {
+  document.querySelectorAll('.log-meal-chip').forEach((c) => {
+    c.addEventListener('click', () => {
+      document.querySelectorAll('.log-meal-chip').forEach((x) => x.classList.toggle('is-active', x === c));
+      refMeal = c.dataset.meal;
+      try { hap(6); } catch (e) {}
+    });
+  });
+  document.querySelectorAll('#sheet-log-refeicao .sensacao').forEach((b) => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('#sheet-log-refeicao .sensacao').forEach((x) => x.classList.remove('is-on'));
+      b.classList.add('is-on');
+      refSens = parseInt(b.dataset.refSens, 10);
+      try { hap(6); } catch (e) {}
+    });
+  });
+
+  const salvar = document.getElementById('ref-salvar');
+  if (salvar) salvar.addEventListener('click', () => {
+    const desc = document.getElementById('ref-desc')?.value || '';
+    const registro = {
+      meal: refMeal,
+      desc,
+      sens: refSens,
+      ts: Date.now(),
+    };
+    try {
+      const arr = JSON.parse(localStorage.getItem('circa_log_refeicao') || '[]');
+      arr.push(registro);
+      localStorage.setItem('circa_log_refeicao', JSON.stringify(arr));
+    } catch (e) {}
+    try { hap(14); } catch (e) {}
+    if (typeof closeSheet === 'function') closeSheet();
+    setTimeout(() => {
+      const t = document.getElementById('log-ok-title');
+      const s = document.getElementById('log-ok-sub');
+      if (t) t.textContent = 'refeição registrada.';
+      const mealLabel = { cafe:'café', almoco:'almoço', lanche:'lanche', jantar:'jantar' }[refMeal] || 'refeição';
+      if (s) s.textContent = desc ? `${mealLabel} · ${desc.slice(0, 60)}${desc.length > 60 ? '…' : ''}` : mealLabel;
+      if (typeof openSheet === 'function') openSheet('sheet-log-ok');
+    }, 200);
+  });
+})();
