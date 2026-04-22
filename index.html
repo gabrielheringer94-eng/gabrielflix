@@ -2069,6 +2069,176 @@
       </aside>
     </div>
 
+    <!-- ───────── JORNADA (overlay fullscreen) ───────── -->
+    <div class="jornada" id="jornada" aria-hidden="true">
+      <div class="jornada__bg"><canvas id="jornada-bg"></canvas></div>
+
+      <button class="jornada__close" id="jornada-close" aria-label="fechar jornada">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M6 6l12 12M6 18L18 6"/></svg>
+      </button>
+
+      <div class="jornada__dots" id="jornada-dots" aria-hidden="true"></div>
+
+      <div class="jornada__sections" id="jornada-sections">
+
+        <!-- 1. SCORE -->
+        <section class="jsec is-active" data-index="0" data-label="hoje">
+          <p class="jsec-greet">boa tarde, Gabriel</p>
+          <div class="jsec-score">78</div>
+          <p class="jsec-score-lbl">circa score</p>
+          <div class="jsec-tripe">
+            <div class="jt"><i class="jt__dot" style="background:#7B8BB8"></i><span>corpo</span><b>82</b></div>
+            <div class="jt__sep"></div>
+            <div class="jt"><i class="jt__dot" style="background:#E8A87C"></i><span>mente</span><b>71</b></div>
+            <div class="jt__sep"></div>
+            <div class="jt"><i class="jt__dot" style="background:#A89CC8"></i><span>espírito</span><b>80</b></div>
+          </div>
+          <p class="jsec-delta">▲ +6 pontos em relação a ontem</p>
+          <div class="jsec-hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12l7 7 7-7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span>deslize</span>
+          </div>
+        </section>
+
+        <!-- 2. RITUAL -->
+        <section class="jsec is-below" data-index="1" data-label="ritual">
+          <p class="jsec-eye">ritual · o relâmpago</p>
+          <h2 class="jsec-q">o que você conquistou hoje?</h2>
+          <div id="j-ritual-content" class="j-ritual">
+            <input class="j-inp" id="j-ritual-input" type="text" placeholder="uma conquista..."/>
+            <button class="j-btn" id="j-ritual-btn"><span>registrar</span></button>
+          </div>
+          <div id="j-ritual-done" class="j-ritual-done">
+            <p class="j-done-msg">resultado registrado. próximo.</p>
+            <p class="j-streak">12 dias seguidos</p>
+          </div>
+        </section>
+
+        <!-- 3. CORPO -->
+        <section class="jsec is-below" data-index="2" data-label="corpo">
+          <p class="jsec-eye">dimensão</p>
+          <h2 class="jsec-title" style="color:#7B8BB8">corpo</h2>
+          <div class="j-line"></div>
+          <p class="j-dim-big" style="color:#7B8BB8">82</p>
+          <div class="j-bar"><i style="width:82%;background:#7B8BB8"></i></div>
+          <div class="j-metrics">
+            <div class="j-card"><p class="j-card-lbl">treino</p><p class="j-card-val">2h</p><p class="j-card-desc">musculação + cardio leve</p></div>
+            <div class="j-card"><p class="j-card-lbl">água</p><p class="j-card-val">1.8<span>L</span></p><p class="j-card-desc">meta 2.8L · 35% abaixo</p></div>
+            <div class="j-card"><p class="j-card-lbl">sono</p><p class="j-card-val">5h42</p><p class="j-card-desc">meta 7h · abaixo há 5 dias</p></div>
+            <div class="j-card"><p class="j-card-lbl">suplementos</p><p class="j-card-val">1<span>/3</span></p><p class="j-card-desc">creatina · 2 pendentes</p></div>
+          </div>
+        </section>
+
+        <!-- 4. MENTE -->
+        <section class="jsec is-below" data-index="3" data-label="mente">
+          <p class="jsec-eye">dimensão</p>
+          <h2 class="jsec-title" style="color:#E8A87C">mente</h2>
+          <div class="j-line"></div>
+          <p class="j-dim-big" style="color:#E8A87C">71</p>
+          <div class="j-bar"><i style="width:71%;background:#E8A87C"></i></div>
+          <p class="j-small">como você está agora?</p>
+          <div class="j-mood">
+            <div class="j-mood__item"><div class="j-mood__circle">😩</div><span>muito mal</span></div>
+            <div class="j-mood__item"><div class="j-mood__circle">😕</div><span>mal</span></div>
+            <div class="j-mood__item is-active"><div class="j-mood__circle">🙂</div><span>bem</span></div>
+            <div class="j-mood__item"><div class="j-mood__circle">😄</div><span>ótimo</span></div>
+            <div class="j-mood__item"><div class="j-mood__circle">🔥</div><span>incrível</span></div>
+          </div>
+          <div class="j-insight">
+            <p class="j-insight-lbl">padrão detectado</p>
+            <p class="j-insight-text">teu humor sobe 1.8 pontos quando treina antes das 10h.</p>
+          </div>
+        </section>
+
+        <!-- 5. PAUSA CIRCA -->
+        <section class="jsec is-below jsec--pausa" data-index="4" data-label="circa" data-pausa="true">
+          <div class="j-pausa-orbe">
+            <canvas id="j-pausa-orbe" width="200" height="200"></canvas>
+          </div>
+          <p class="j-pausa-from">a circa</p>
+          <p class="j-pausa-msg" id="j-pausa-msg"></p>
+          <div class="j-pausa-hint">
+            continue deslizando
+            <div class="j-pausa-prog"><i id="j-pausa-fill"></i></div>
+          </div>
+        </section>
+
+        <!-- 6. ESPÍRITO -->
+        <section class="jsec is-below" data-index="5" data-label="espírito">
+          <p class="jsec-eye">dimensão</p>
+          <h2 class="jsec-title" style="color:#A89CC8">espírito</h2>
+          <div class="j-line"></div>
+          <p class="j-dim-big" style="color:#A89CC8">80</p>
+          <div class="j-bar"><i style="width:80%;background:#A89CC8"></i></div>
+          <p class="j-small">o que tocou você hoje?</p>
+          <div class="j-areas">
+            <div class="j-area is-on">fé</div>
+            <div class="j-area">silêncio</div>
+            <div class="j-area">natureza</div>
+            <div class="j-area">conexão</div>
+            <div class="j-area">propósito</div>
+            <div class="j-area">gratidão</div>
+          </div>
+          <div class="j-insight">
+            <p class="j-insight-lbl">circa observou</p>
+            <p class="j-insight-text">última refeição social há 9 dias. relacionamentos pede atenção.</p>
+          </div>
+        </section>
+
+        <!-- 7. INSIGHTS -->
+        <section class="jsec is-below" data-index="6" data-label="insights">
+          <p class="jsec-eye">a circa viu</p>
+          <h2 class="jsec-title"><em>padrões</em></h2>
+          <div class="j-line"></div>
+          <div class="j-insights-list">
+            <div class="j-insight"><p class="j-insight-lbl" style="color:#7B8BB8">corpo</p><p class="j-insight-text">sono curto há 5 dias + alta intensidade, recuperação comprometida. teu corpo tá pedindo 7h.</p></div>
+            <div class="j-insight"><p class="j-insight-lbl" style="color:#E8A87C">mente</p><p class="j-insight-text">teu humor sobe 1.8 pontos quando treinas antes das 10h. amanhã é sábado.</p></div>
+            <div class="j-insight"><p class="j-insight-lbl" style="color:#A89CC8">espírito</p><p class="j-insight-text">relacionamentos caiu 2 semanas. última refeição social há 9 dias.</p></div>
+            <div class="j-insight j-insight--accent"><p class="j-insight-lbl">exames</p><p class="j-insight-text">homocisteína 28 + sono curto é combinação que aumenta estresse oxidativo. prioridade esta semana.</p></div>
+          </div>
+        </section>
+
+        <!-- 8. RODA -->
+        <section class="jsec is-below" data-index="7" data-label="roda">
+          <p class="jsec-eye" id="j-roda-eye">sua vida</p>
+          <div class="j-roda-wrap">
+            <canvas id="j-roda" width="440" height="440"></canvas>
+            <div class="j-roda-tt" id="j-roda-tt">
+              <p id="j-roda-tt-lbl"></p>
+              <p id="j-roda-tt-val"></p>
+              <p id="j-roda-tt-msg"></p>
+            </div>
+          </div>
+          <div class="j-roda-legenda" id="j-roda-legenda"></div>
+        </section>
+
+        <!-- 9. ANTERIORMENTE -->
+        <section class="jsec is-below" data-index="8" data-label="30 dias">
+          <div class="j-chip"><i></i><span>anteriormente no circa</span></div>
+          <p class="jsec-eye">30 dias atrás</p>
+          <h2 class="jsec-title">você era <em>outro.</em></h2>
+          <div class="j-antes-row">
+            <div class="j-antes-box">
+              <p class="j-antes-lbl">antes</p>
+              <p class="j-antes-num" style="color:var(--fg-dim)">62</p>
+              <p class="j-antes-delta" style="color:var(--fg-dim)">março</p>
+            </div>
+            <div class="j-antes-box is-now">
+              <p class="j-antes-lbl">agora</p>
+              <p class="j-antes-num">78</p>
+              <p class="j-antes-delta j-up">▲ +16</p>
+            </div>
+          </div>
+          <div class="j-insight">
+            <p class="j-insight-lbl">o circa interpretou</p>
+            <p class="j-insight-text">em 30 dias melhorou: energia, sono e dias bons. não foi por acaso, foi por escolha.</p>
+          </div>
+          <p class="j-end">você chegou ao fim da sua jornada de hoje.</p>
+        </section>
+
+      </div>
+    </div>
+
     <!-- ───────── BOTTOM NAV ───────── -->
     <nav class="tabbar tabbar--5" role="tablist">
       <button class="tab is-active" data-target="home" aria-label="home">

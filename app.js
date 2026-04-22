@@ -3928,3 +3928,576 @@ function renderObGoalWheel() {
 
   updateGoalShape();
 }
+
+// ═════════════════════════════════════════════════════════
+// JORNADA · 9 seções, scroll ancorado, pausa, roda, fundo vivo
+// ═════════════════════════════════════════════════════════
+(function () {
+  const SCORE_J = 78;
+  const MSGS_PAUSA = [
+    'você está carregando mais do que o normal esta semana. o sono sabe disso antes de você.',
+    'corpo em 82, mente em 71. o que está pesando?',
+    '78 pontos hoje. mas o número não conta o que você sentiu.',
+    'espírito em alta. corpo pedindo atenção. a Circa viu os dois.',
+    'você voltou. quem volta está evoluindo, mesmo quando parece que não.',
+  ];
+
+  // paleta do fundo vivo · adaptada pra champanhe
+  function getPaletaScore(score) {
+    if (score >= 80) return { c1:[212,184,150,0.07], c2:[232,201,160,0.04], c3:[184,149,114,0.03], spd:0.003, amp:0.018, nb:3 };
+    if (score >= 65) return { c1:[212,184,150,0.05], c2:[184,149,114,0.03], c3:[232,201,160,0.02], spd:0.002, amp:0.012, nb:2 };
+    if (score >= 50) return { c1:[123,139,184,0.04], c2:[212,184,150,0.02], c3:[123,139,184,0.02], spd:0.0015, amp:0.008, nb:2 };
+    return                 { c1:[123,139,184,0.03], c2:[74,62,40,0.02],     c3:[123,139,184,0.01], spd:0.001,  amp:0.005, nb:1 };
+  }
+
+  // ═══ fundo vivo ═══
+  let fundoT = 0;
+  let fundoRAF = null;
+  let fundoAtivo = false;
+  function initFundoJ() {
+    const c = document.getElementById('jornada-bg');
+    if (!c) return;
+    const dpr = window.devicePixelRatio || 1;
+    c.width  = window.innerWidth  * dpr;
+    c.height = window.innerHeight * dpr;
+    c.style.width  = window.innerWidth  + 'px';
+    c.style.height = window.innerHeight + 'px';
+  }
+  function loopFundoJ() {
+    if (!fundoAtivo) return;
+    const c = document.getElementById('jornada-bg');
+    if (!c) return;
+    const ctx = c.getContext('2d');
+    const W = c.width, H = c.height;
+    const p = getPaletaScore(SCORE_J);
+    ctx.clearRect(0, 0, W, H);
+    const blobs = [
+      { x:W*0.2, y:H*0.25, r:Math.min(W,H)*0.4,  px:0,   py:0.5 },
+      { x:W*0.8, y:H*0.65, r:Math.min(W,H)*0.35, px:1.2, py:1.8 },
+      { x:W*0.5, y:H*0.5,  r:Math.min(W,H)*0.5,  px:2.1, py:0.3 },
+    ];
+    blobs.slice(0, p.nb).forEach((b, bi) => {
+      const rx = b.r * (1 + p.amp * Math.sin(fundoT * p.spd * 60 + b.px));
+      const ry = b.r * (1 + p.amp * Math.cos(fundoT * p.spd * 60 + b.py));
+      const cx = b.x + Math.sin(fundoT * p.spd * 30 + b.px) * W * 0.04;
+      const cy = b.y + Math.cos(fundoT * p.spd * 25 + b.py) * H * 0.04;
+      const cor = bi === 0 ? p.c1 : bi === 1 ? p.c2 : p.c3;
+      const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, rx);
+      g.addColorStop(0, `rgba(${cor[0]},${cor[1]},${cor[2]},${cor[3]})`);
+      g.addColorStop(1, `rgba(${cor[0]},${cor[1]},${cor[2]},0)`);
+      ctx.beginPath();
+      ctx.ellipse(cx, cy, rx, ry, fundoT * p.spd * 15, 0, Math.PI * 2);
+      ctx.fillStyle = g;
+      ctx.fill();
+    });
+    fundoT++;
+    fundoRAF = requestAnimationFrame(loopFundoJ);
+  }
+
+  // ═══ orbe da pausa ═══
+  let orbeT = 0, orbePausaAtivo = false, orbeRAF = null;
+  function loopOrbePausaJ() {
+    const c = document.getElementById('j-pausa-orbe');
+    if (!c) return;
+    const ctx = c.getContext('2d');
+    const size = c.width;
+    const cx = size/2, cy = size/2, baseR = size * 0.34;
+    ctx.clearRect(0, 0, size, size);
+    const glow = ctx.createRadialGradient(cx, cy, baseR*0.5, cx, cy, baseR*1.4);
+    glow.addColorStop(0, 'rgba(212,184,150,0.14)');
+    glow.addColorStop(1, 'rgba(212,184,150,0)');
+    ctx.beginPath(); ctx.arc(cx, cy, baseR*1.4, 0, Math.PI*2); ctx.fillStyle = glow; ctx.fill();
+    const pts = 80, amp = 0.022, spd = orbePausaAtivo ? 0.6 : 0.3;
+    ctx.beginPath();
+    for (let i = 0; i <= pts; i++) {
+      const a = (i/pts) * Math.PI * 2;
+      let r = baseR;
+      for (let h = 1; h <= 4; h++) {
+        r += baseR * amp * Math.sin(a * h * 0.7 + orbeT * spd * (h % 2 === 0 ? 1 : -0.7) + h * 1.3) / h;
+      }
+      const x = cx + r * Math.cos(a), y = cy + r * Math.sin(a);
+      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    }
+    ctx.closePath();
+    const ga = orbeT * 0.004 * Math.PI * 2;
+    const grad = ctx.createLinearGradient(
+      cx + Math.cos(ga) * baseR * 0.5,       cy + Math.sin(ga) * baseR * 0.5,
+      cx + Math.cos(ga + Math.PI) * baseR * 0.5, cy + Math.sin(ga + Math.PI) * baseR * 0.5
+    );
+    grad.addColorStop(0,   'rgba(232,201,160,0.95)');
+    grad.addColorStop(0.4, 'rgba(212,184,150,0.85)');
+    grad.addColorStop(1,   'rgba(122,90,56,0.7)');
+    ctx.fillStyle = grad; ctx.fill();
+    const shine = ctx.createRadialGradient(cx - baseR*0.25, cy - baseR*0.3, 0, cx, cy, baseR*0.85);
+    shine.addColorStop(0, `rgba(245,238,230,${0.18 + Math.sin(orbeT * 0.02) * 0.06})`);
+    shine.addColorStop(1, 'rgba(245,238,230,0)');
+    ctx.beginPath();
+    for (let i = 0; i <= pts; i++) {
+      const a = (i/pts) * Math.PI * 2;
+      let r = baseR;
+      for (let h = 1; h <= 4; h++) r += baseR * amp * Math.sin(a * h * 0.7 + orbeT * spd * (h % 2 === 0 ? 1 : -0.7) + h * 1.3) / h;
+      const x = cx + r * Math.cos(a), y = cy + r * Math.sin(a);
+      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    }
+    ctx.closePath(); ctx.fillStyle = shine; ctx.fill();
+    orbeT++;
+    orbeRAF = requestAnimationFrame(loopOrbePausaJ);
+  }
+
+  // ═══ sons de transição ═══
+  const NOTAS_J = [329.63, 369.99, 392.00, 440.00, 493.88, 523.25, 587.33, 659.25, 698.46];
+  function tocarNotaJ(idx) {
+    try {
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return;
+      const actx = new AC();
+      const freq = NOTAS_J[idx] || 440;
+      const o = actx.createOscillator(), g = actx.createGain();
+      o.type = 'sine';
+      o.frequency.setValueAtTime(freq, actx.currentTime);
+      o.frequency.exponentialRampToValueAtTime(freq * 1.002, actx.currentTime + 0.3);
+      g.gain.setValueAtTime(0, actx.currentTime);
+      g.gain.linearRampToValueAtTime(0.07, actx.currentTime + 0.04);
+      g.gain.exponentialRampToValueAtTime(0.001, actx.currentTime + 0.55);
+      o.connect(g); g.connect(actx.destination);
+      o.start(); o.stop(actx.currentTime + 0.55);
+    } catch (e) {}
+  }
+
+  // ═══ nav entre seções ═══
+  const sectionsEl = document.getElementById('jornada-sections');
+  if (!sectionsEl) return;
+  const secs = sectionsEl.querySelectorAll('.jsec');
+  const TOTAL = secs.length;
+  let current = 0;
+  let isAnim = false;
+  let pausaTimeout = null;
+  let touchStartY = 0, touchStartX = 0;
+
+  function applySections() {
+    secs.forEach((s, i) => {
+      s.classList.remove('is-active', 'is-above', 'is-below');
+      if (i === current)      s.classList.add('is-active');
+      else if (i < current)   s.classList.add('is-above');
+      else                    s.classList.add('is-below');
+    });
+  }
+
+  function updateDots() {
+    document.querySelectorAll('.jornada__dots .j-dot').forEach((d, i) => {
+      d.classList.toggle('is-active', i === current);
+    });
+  }
+
+  function buildDots() {
+    const c = document.getElementById('jornada-dots');
+    if (!c) return;
+    c.innerHTML = '';
+    secs.forEach((s, i) => {
+      const d = document.createElement('button');
+      d.className = 'j-dot' + (i === 0 ? ' is-active' : '');
+      if (s.dataset.pausa === 'true') d.classList.add('is-pausa');
+      d.setAttribute('aria-label', `ir pra ${s.dataset.label || i}`);
+      d.addEventListener('click', () => goToSec(i));
+      c.appendChild(d);
+    });
+  }
+
+  function goToSec(idx) {
+    if (isAnim || idx === current || idx < 0 || idx >= TOTAL) return;
+    const tgt = secs[idx];
+    const isPausa = tgt?.dataset.pausa === 'true';
+    isAnim = true;
+    current = idx;
+    applySections();
+    tocarNotaJ(idx);
+    updateDots();
+    drawRodaIfVisible();
+    setTimeout(() => {
+      isAnim = false;
+      if (isPausa) {
+        orbePausaAtivo = true;
+        const prog = document.getElementById('j-pausa-fill');
+        if (prog) {
+          prog.classList.remove('is-running');
+          void prog.offsetWidth;
+          prog.classList.add('is-running');
+        }
+        pausaTimeout = setTimeout(() => {
+          orbePausaAtivo = false;
+          pausaTimeout = null;
+          goToSec(current + 1);
+        }, 3200);
+      }
+    }, 580);
+  }
+
+  function nextSec() {
+    if (pausaTimeout) return;
+    goToSec(current + 1);
+  }
+  function prevSec() {
+    if (pausaTimeout) {
+      clearTimeout(pausaTimeout);
+      pausaTimeout = null;
+      orbePausaAtivo = false;
+    }
+    goToSec(current - 1);
+  }
+
+  // touch
+  sectionsEl.addEventListener('touchstart', (e) => {
+    touchStartY = e.touches[0].clientY;
+    touchStartX = e.touches[0].clientX;
+  }, { passive: true });
+  sectionsEl.addEventListener('touchend', (e) => {
+    if (pausaTimeout) return;
+    const dy = touchStartY - e.changedTouches[0].clientY;
+    const dx = Math.abs(touchStartX - e.changedTouches[0].clientX);
+    if (Math.abs(dy) > 40 && Math.abs(dy) > dx) {
+      dy > 0 ? nextSec() : prevSec();
+    }
+  }, { passive: true });
+
+  // wheel
+  let wheelTimer = null;
+  sectionsEl.addEventListener('wheel', (e) => {
+    if (!document.getElementById('jornada').classList.contains('is-open')) return;
+    e.preventDefault();
+    if (wheelTimer || pausaTimeout) return;
+    e.deltaY > 0 ? nextSec() : prevSec();
+    wheelTimer = setTimeout(() => { wheelTimer = null; }, 700);
+  }, { passive: false });
+
+  // teclado
+  document.addEventListener('keydown', (e) => {
+    if (!document.getElementById('jornada').classList.contains('is-open')) return;
+    if (e.key === 'ArrowDown' || e.key === 'ArrowRight') nextSec();
+    if (e.key === 'ArrowUp'   || e.key === 'ArrowLeft')  prevSec();
+    if (e.key === 'Escape') closeJornada();
+  });
+
+  // ═══ ritual ═══
+  const ritualBtn = document.getElementById('j-ritual-btn');
+  if (ritualBtn) ritualBtn.addEventListener('click', () => {
+    const inp = document.getElementById('j-ritual-input');
+    if (!inp || !inp.value.trim()) return;
+    document.getElementById('j-ritual-content').style.display = 'none';
+    document.getElementById('j-ritual-done').classList.add('is-visible');
+  });
+
+  // ═══ mood · click pra selecionar ═══
+  document.querySelectorAll('.j-mood__item').forEach((m) => {
+    m.addEventListener('click', () => {
+      document.querySelectorAll('.j-mood__item').forEach((x) => x.classList.remove('is-active'));
+      m.classList.add('is-active');
+    });
+  });
+
+  // ═══ areas espírito · toggle ═══
+  document.querySelectorAll('.j-area').forEach((a) => {
+    a.addEventListener('click', () => a.classList.toggle('is-on'));
+  });
+
+  // ═══ RODA DA VIDA ═══
+  const RODA = [
+    { lbl:'saúde',         val:8.2, cor:'#7B8BB8', msg:'acima da média. treino e consistência funcionam.' },
+    { lbl:'mente',         val:7.1, cor:'#E8A87C', msg:'humor estável. ansiedade em monitoramento.' },
+    { lbl:'espírito',      val:8.0, cor:'#A89CC8', msg:'em alta. fé e propósito alimentando o score.' },
+    { lbl:'energia vital', val:7.4, cor:'#D4B896', msg:'faísca acesa. vitalidade respondendo ao treino.' },
+    { lbl:'relações',      val:6.0, cor:'#C09090', msg:'pedindo atenção. última conexão há 9 dias.' },
+    { lbl:'carreira',      val:7.5, cor:'#E8C9A0', msg:'sólida. atenção ao equilíbrio com descanso.' },
+    { lbl:'família',       val:7.8, cor:'#8FA87C', msg:'bem. vínculos próximos em dia.' },
+    { lbl:'lazer',         val:5.5, cor:'#E8A87C', msg:'abaixo do ideal. seu corpo pede mais pausa.' },
+  ];
+  let rodaVals = RODA.map(() => 0);
+  let rodaAnims = RODA.map(() => 0);
+  let rodaPulsoT = 0;
+  let rodaAreaAtiva = -1;
+  let rodaDrawn = false;
+  let rodaRAF = null;
+  let ttTimer = null;
+
+  function drawRodaIfVisible() {
+    if (current !== 7 || rodaDrawn) return;
+    rodaDrawn = true;
+    animarRoda();
+    buildLegenda();
+    initRodaTouch();
+  }
+
+  function animarRoda() {
+    const start = performance.now();
+    const dur = 1600;
+    function frame(now) {
+      const prog = Math.min((now - start) / dur, 1);
+      RODA.forEach((a, i) => {
+        const delay = (i / RODA.length) * 0.5;
+        const p = Math.max(0, Math.min((prog - delay) / (1 - delay), 1));
+        const e = 1 - Math.pow(1 - p, 2.5);
+        rodaVals[i] = a.val * e;
+        if (p > 0.85 && rodaAnims[i] === 0) {
+          rodaAnims[i] = 1;
+          tocarNotaArea(i);
+        }
+      });
+      drawRodaFrame();
+      if (prog < 1) requestAnimationFrame(frame);
+      else { rodaVals = RODA.map(a => a.val); loopRodaPulso(); }
+    }
+    requestAnimationFrame(frame);
+  }
+
+  function loopRodaPulso() {
+    rodaPulsoT += 0.02;
+    drawRodaFrame();
+    rodaRAF = requestAnimationFrame(loopRodaPulso);
+  }
+
+  function hexToRgba(hex, a) {
+    const r = parseInt(hex.slice(1,3), 16);
+    const g = parseInt(hex.slice(3,5), 16);
+    const b = parseInt(hex.slice(5,7), 16);
+    return `rgba(${r},${g},${b},${a})`;
+  }
+
+  function drawRodaFrame() {
+    const canvas = document.getElementById('j-roda');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const W = canvas.width, H = canvas.height;
+    const cx = W/2, cy = H/2;
+    const maxR = Math.min(W, H) * 0.40;
+    const n = RODA.length;
+    ctx.clearRect(0, 0, W, H);
+    // grades
+    for (let r = 1; r <= 10; r++) {
+      ctx.beginPath();
+      ctx.arc(cx, cy, maxR * r/10, 0, Math.PI*2);
+      ctx.strokeStyle = r === 10 ? 'rgba(212,184,150,0.2)' : r % 2 === 0 ? 'rgba(212,184,150,0.07)' : 'rgba(212,184,150,0.03)';
+      ctx.lineWidth = r === 10 ? 1.5 : 1;
+      ctx.stroke();
+    }
+    // divisórias
+    for (let i = 0; i < n; i++) {
+      const angle = (i / n) * Math.PI * 2 - Math.PI/2;
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.lineTo(cx + Math.cos(angle) * maxR, cy + Math.sin(angle) * maxR);
+      ctx.strokeStyle = 'rgba(212,184,150,0.1)';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+    }
+    // fatias
+    RODA.forEach((a, i) => {
+      const aStart = (i / n) * Math.PI * 2 - Math.PI/2;
+      const aEnd   = ((i+1) / n) * Math.PI * 2 - Math.PI/2;
+      const v = rodaVals[i];
+      const isAtiva = i === rodaAreaAtiva;
+      const off = isAtiva ? 0.15 : 0.04;
+      const pulso = 1 + off * Math.sin(rodaPulsoT + i * 0.8);
+      const r = maxR * (v / 10) * pulso;
+      const alpha = v >= 7 ? 0.22 : v >= 5 ? 0.14 : 0.08;
+      const alphaS = v >= 7 ? 0.7 : v >= 5 ? 0.5 : 0.3;
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.arc(cx, cy, r, aStart, aEnd);
+      ctx.closePath();
+      ctx.fillStyle = hexToRgba(a.cor, isAtiva ? alpha * 1.8 : alpha);
+      ctx.fill();
+      ctx.strokeStyle = hexToRgba(a.cor, isAtiva ? alphaS * 1.3 : alphaS * 0.6);
+      ctx.lineWidth = isAtiva ? 1.5 : 1;
+      ctx.stroke();
+    });
+    // polígono de valores
+    ctx.beginPath();
+    RODA.forEach((a, i) => {
+      const angle = (i / n) * Math.PI * 2 - Math.PI/2;
+      const v = rodaVals[i];
+      const pulso = 1 + 0.025 * Math.sin(rodaPulsoT + i * 0.8);
+      const r = maxR * (v / 10) * pulso;
+      const x = cx + Math.cos(angle) * r, y = cy + Math.sin(angle) * r;
+      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    });
+    ctx.closePath();
+    ctx.strokeStyle = 'rgba(212,184,150,0.55)';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+    ctx.fillStyle = 'rgba(212,184,150,0.05)';
+    ctx.fill();
+    // pontos
+    RODA.forEach((a, i) => {
+      const angle = (i / n) * Math.PI * 2 - Math.PI/2;
+      const v = rodaVals[i];
+      const pulso = 1 + 0.025 * Math.sin(rodaPulsoT + i * 0.8);
+      const r = maxR * (v / 10) * pulso;
+      const x = cx + Math.cos(angle) * r, y = cy + Math.sin(angle) * r;
+      const isAtiva = i === rodaAreaAtiva;
+      if (isAtiva || v >= 7) {
+        const glow = ctx.createRadialGradient(x, y, 0, x, y, isAtiva ? 18 : 12);
+        glow.addColorStop(0, hexToRgba(a.cor, isAtiva ? 0.4 : 0.2));
+        glow.addColorStop(1, hexToRgba(a.cor, 0));
+        ctx.beginPath();
+        ctx.arc(x, y, isAtiva ? 18 : 12, 0, Math.PI * 2);
+        ctx.fillStyle = glow;
+        ctx.fill();
+      }
+      ctx.beginPath();
+      ctx.arc(x, y, isAtiva ? 7 : 5, 0, Math.PI * 2);
+      ctx.fillStyle = a.cor;
+      ctx.fill();
+      if (isAtiva) {
+        ctx.beginPath();
+        ctx.arc(x, y, 11, 0, Math.PI * 2);
+        ctx.strokeStyle = hexToRgba(a.cor, 0.5);
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+      }
+    });
+  }
+
+  function tocarNotaArea(idx) {
+    try {
+      const notas = [261.63, 293.66, 329.63, 349.23, 392, 440, 493.88, 523.25];
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return;
+      const actx = new AC();
+      const o = actx.createOscillator(), g = actx.createGain();
+      o.type = 'sine';
+      o.frequency.setValueAtTime(notas[idx] || 440, actx.currentTime);
+      g.gain.setValueAtTime(0, actx.currentTime);
+      g.gain.linearRampToValueAtTime(0.05, actx.currentTime + 0.03);
+      g.gain.exponentialRampToValueAtTime(0.001, actx.currentTime + 0.4);
+      o.connect(g); g.connect(actx.destination);
+      o.start(); o.stop(actx.currentTime + 0.4);
+    } catch (e) {}
+  }
+
+  function mostrarTooltip(idx) {
+    const a = RODA[idx];
+    const tt = document.getElementById('j-roda-tt');
+    document.getElementById('j-roda-tt-lbl').textContent = a.lbl;
+    document.getElementById('j-roda-tt-val').innerHTML = `${a.val} <span>/10</span>`;
+    document.getElementById('j-roda-tt-msg').textContent = a.msg;
+    tt.style.borderLeftColor = a.cor;
+    tt.classList.add('is-visible');
+    clearTimeout(ttTimer);
+    ttTimer = setTimeout(() => {
+      rodaAreaAtiva = -1;
+      tt.classList.remove('is-visible');
+    }, 3000);
+  }
+
+  function initRodaTouch() {
+    const c = document.getElementById('j-roda');
+    if (!c || c.dataset.touchBound === '1') return;
+    c.dataset.touchBound = '1';
+    const handle = (cx, cy) => {
+      const rect = c.getBoundingClientRect();
+      const sx = c.width / rect.width, sy = c.height / rect.height;
+      const x = (cx - rect.left) * sx, y = (cy - rect.top) * sy;
+      const ccx = c.width/2, ccy = c.height/2;
+      const maxR = Math.min(c.width, c.height) * 0.40;
+      const dx = x - ccx, dy = y - ccy;
+      const dist = Math.sqrt(dx*dx + dy*dy);
+      if (dist > maxR * 1.15) {
+        rodaAreaAtiva = -1;
+        document.getElementById('j-roda-tt').classList.remove('is-visible');
+        return;
+      }
+      let angle = Math.atan2(dy, dx) + Math.PI/2;
+      if (angle < 0) angle += Math.PI * 2;
+      const idx = Math.floor(angle / (Math.PI * 2) * RODA.length) % RODA.length;
+      rodaAreaAtiva = idx;
+      tocarNotaArea(idx);
+      mostrarTooltip(idx);
+    };
+    c.addEventListener('click', (e) => handle(e.clientX, e.clientY));
+    c.addEventListener('touchstart', (e) => { e.preventDefault(); handle(e.touches[0].clientX, e.touches[0].clientY); }, { passive: false });
+  }
+
+  function buildLegenda() {
+    const l = document.getElementById('j-roda-legenda');
+    if (!l) return;
+    l.innerHTML = '';
+    RODA.forEach((a, i) => {
+      const it = document.createElement('div');
+      it.className = 'j-roda-item';
+      it.innerHTML = `<i style="background:${a.cor}"></i><span>${a.lbl}</span><b style="color:${a.cor}">${a.val}</b>`;
+      it.addEventListener('click', () => {
+        rodaAreaAtiva = i;
+        tocarNotaArea(i);
+        mostrarTooltip(i);
+      });
+      l.appendChild(it);
+    });
+    setTimeout(() => l.classList.add('is-visible'), 100);
+  }
+
+  // ═══ abrir / fechar ═══
+  window.openJornada = function () {
+    const el = document.getElementById('jornada');
+    if (!el) return;
+    el.classList.add('is-open');
+    el.setAttribute('aria-hidden', 'false');
+    // reset
+    current = 0;
+    applySections();
+    updateDots();
+    rodaDrawn = false;
+    rodaVals = RODA.map(() => 0);
+    rodaAnims = RODA.map(() => 0);
+    // mensagem aleatória da pausa
+    const m = document.getElementById('j-pausa-msg');
+    if (m) m.textContent = MSGS_PAUSA[Math.floor(Math.random() * MSGS_PAUSA.length)];
+    // fundo vivo
+    initFundoJ();
+    fundoAtivo = true;
+    loopFundoJ();
+    // orbe da pausa em loop
+    orbeT = 0;
+    loopOrbePausaJ();
+    try { hap(12); } catch (e) {}
+  };
+
+  window.closeJornada = function () {
+    const el = document.getElementById('jornada');
+    if (!el) return;
+    el.classList.remove('is-open');
+    el.setAttribute('aria-hidden', 'true');
+    fundoAtivo = false;
+    if (fundoRAF) cancelAnimationFrame(fundoRAF);
+    if (orbeRAF)  cancelAnimationFrame(orbeRAF);
+    if (rodaRAF)  cancelAnimationFrame(rodaRAF);
+    if (pausaTimeout) { clearTimeout(pausaTimeout); pausaTimeout = null; }
+    orbePausaAtivo = false;
+  };
+
+  const closeBtn = document.getElementById('jornada-close');
+  if (closeBtn) closeBtn.addEventListener('click', () => window.closeJornada());
+
+  buildDots();
+  applySections();
+  updateDots();
+
+  window.addEventListener('resize', () => {
+    if (document.getElementById('jornada').classList.contains('is-open')) initFundoJ();
+  });
+})();
+
+// ═════════════════════════════════════════════════════════
+// ENTRY POINT · "Saber mais" da home agora abre a jornada
+// ═════════════════════════════════════════════════════════
+(function () {
+  const btn = document.getElementById('hero-link-more');
+  if (!btn) return;
+  // remove listener antigo clonando
+  const fresh = btn.cloneNode(true);
+  btn.parentNode.replaceChild(fresh, btn);
+  fresh.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    try { hap(10); } catch (er) {}
+    if (typeof window.openJornada === 'function') window.openJornada();
+  });
+})();
