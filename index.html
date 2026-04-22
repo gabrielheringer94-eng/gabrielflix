@@ -2081,11 +2081,29 @@
 
       <div class="jornada__sections" id="jornada-sections">
 
-        <!-- 1. SCORE -->
+        <!-- 1. SCORE · mesmo círculo/ring do Circa principal -->
         <section class="jsec is-active" data-index="0" data-label="hoje">
           <p class="jsec-greet">boa tarde, Gabriel</p>
-          <div class="jsec-score">78</div>
+
+          <div class="jsec-hero">
+            <svg class="ring" viewBox="0 0 240 240" aria-hidden="true">
+              <defs>
+                <linearGradient id="ringGradJ" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#E8C9A0"/>
+                  <stop offset="100%" stop-color="#B89572"/>
+                </linearGradient>
+              </defs>
+              <circle cx="120" cy="120" r="118" class="ring__crown" stroke="url(#ringGradJ)" />
+              <circle cx="120" cy="120" r="108" class="ring__fill" stroke="url(#ringGradJ)"
+                      pathLength="100" stroke-dasharray="78 100" />
+            </svg>
+            <div class="hero__num">
+              <span class="hero__value">78</span>
+            </div>
+          </div>
+
           <p class="jsec-score-lbl">circa score</p>
+
           <div class="jsec-tripe">
             <div class="jt"><i class="jt__dot" style="background:#7B8BB8"></i><span>corpo</span><b>82</b></div>
             <div class="jt__sep"></div>
@@ -2198,8 +2216,47 @@
           </div>
         </section>
 
-        <!-- 8. RODA -->
-        <section class="jsec is-below" data-index="7" data-label="roda">
+        <!-- 8. EXAMES · mapa metabólico no eixo vertical -->
+        <section class="jsec is-below jsec--exames" data-index="7" data-label="exames">
+          <p class="jsec-eye">seu mapa metabólico</p>
+          <h2 class="jsec-title">exames contam<br/><em>uma história.</em></h2>
+          <div class="j-line"></div>
+
+          <div class="j-exames-wrap">
+            <div class="j-lab-card" id="j-lab-open">
+              <div class="j-lab-top">
+                <span class="jsec-eye" style="margin:0">último exame</span>
+                <span class="j-lab-date">25 mar · 2026</span>
+              </div>
+              <h3 class="j-lab-title">hemograma +<br/>perfil metabólico</h3>
+              <div class="j-lab-stats">
+                <span class="j-stat"><b>47</b><small>marcadores</small></span>
+                <span class="j-stat j-stat--warn"><b>2</b><small>alertas</small></span>
+                <span class="j-stat j-stat--ok"><b>45</b><small>ok</small></span>
+              </div>
+              <div class="j-lab-markers">
+                <span class="j-marker j-marker--warn">homocisteína <i>28 µmol/L</i></span>
+                <span class="j-marker j-marker--warn">ferritina <i>484 ng/mL</i></span>
+              </div>
+            </div>
+
+            <div class="j-lab-card j-lab-card--bio" id="j-body-open">
+              <div class="j-lab-top">
+                <span class="jsec-eye" style="margin:0">idade biológica</span>
+                <span class="j-lab-date">20 abr · 2026</span>
+              </div>
+              <h3 class="j-lab-title"><em>30.8</em> anos<br/><span class="j-lab-sub">1.2 anos mais jovem que a idade real</span></h3>
+              <div class="j-lab-stats">
+                <span class="j-stat j-stat--ok"><b>3</b><small>categorias ok</small></span>
+                <span class="j-stat j-stat--warn"><b>1</b><small>puxando up</small></span>
+                <span class="j-stat"><b>32</b><small>idade real</small></span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 9. RODA -->
+        <section class="jsec is-below" data-index="8" data-label="roda">
           <p class="jsec-eye" id="j-roda-eye">sua vida</p>
           <div class="j-roda-wrap">
             <canvas id="j-roda" width="440" height="440"></canvas>
@@ -2212,8 +2269,8 @@
           <div class="j-roda-legenda" id="j-roda-legenda"></div>
         </section>
 
-        <!-- 9. ANTERIORMENTE -->
-        <section class="jsec is-below" data-index="8" data-label="30 dias">
+        <!-- 10. ANTERIORMENTE -->
+        <section class="jsec is-below" data-index="9" data-label="30 dias">
           <div class="j-chip"><i></i><span>anteriormente no circa</span></div>
           <p class="jsec-eye">30 dias atrás</p>
           <h2 class="jsec-title">você era <em>outro.</em></h2>
@@ -2253,11 +2310,15 @@
             <img src="circa-logo.png" alt="" width="26" height="26" />
           </span>
         </button>
-        <button class="j-nav-item" data-j-goto="7" aria-label="roda">
+        <button class="j-nav-item" data-j-goto="7" aria-label="exames">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6v4l5 10a3 3 0 0 1-2.7 4.3H10.7A3 3 0 0 1 8 17l5-10V3"/><path d="M9.5 13h5"/></svg>
+          <span>exames</span>
+        </button>
+        <button class="j-nav-item" data-j-goto="8" aria-label="roda">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5"/><path d="M12 8v4l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
           <span>roda</span>
         </button>
-        <button class="j-nav-item" data-j-goto="8" aria-label="30 dias">
+        <button class="j-nav-item" data-j-goto="9" aria-label="30 dias">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5"/><path d="M12 8v4M12 16h.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
           <span>30d</span>
         </button>

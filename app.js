@@ -4045,7 +4045,8 @@ function renderObGoalWheel() {
   }
 
   // ═══ sons de transição ═══
-  const NOTAS_J = [329.63, 369.99, 392.00, 440.00, 493.88, 523.25, 587.33, 659.25, 698.46];
+  // 10 notas pra 10 seções (score/ritual/corpo/mente/pausa/espírito/insights/exames/roda/30d)
+  const NOTAS_J = [329.63, 369.99, 392.00, 440.00, 493.88, 523.25, 587.33, 622.25, 659.25, 698.46];
   function tocarNotaJ(idx) {
     try {
       const AC = window.AudioContext || window.webkitAudioContext;
@@ -4091,7 +4092,8 @@ function renderObGoalWheel() {
   }
 
   function updateJornadaNav() {
-    const navMap = { 0: 0, 6: 1, 7: 3, 8: 4 }; // section index, nav button index
+    // section index → índice do botão na nav (hoje=0, insights=1, circa-som=2, exames=3, roda=4, 30d=5)
+    const navMap = { 0: 0, 6: 1, 7: 3, 8: 4, 9: 5 };
     const navIdx = navMap[current];
     document.querySelectorAll('.j-nav-item').forEach((b, i) => {
       b.classList.toggle('is-active', i === navIdx);
@@ -4242,7 +4244,8 @@ function renderObGoalWheel() {
   let ttTimer = null;
 
   function drawRodaIfVisible() {
-    if (current !== 7 || rodaDrawn) return;
+    // seção 8 é a roda (depois do exames na 7)
+    if (current !== 8 || rodaDrawn) return;
     rodaDrawn = true;
     animarRoda();
     buildLegenda();
@@ -4500,6 +4503,16 @@ function renderObGoalWheel() {
 
   const closeBtn = document.getElementById('jornada-close');
   if (closeBtn) closeBtn.addEventListener('click', () => window.closeJornada());
+
+  // cards de exames · abrem os sheets existentes do Circa
+  const jLabCard = document.getElementById('j-lab-open');
+  if (jLabCard) jLabCard.addEventListener('click', () => {
+    if (typeof openSheet === 'function') openSheet('sheet-lab');
+  });
+  const jBodyCard = document.getElementById('j-body-open');
+  if (jBodyCard) jBodyCard.addEventListener('click', () => {
+    if (typeof openSheet === 'function') openSheet('sheet-body');
+  });
 
   // nav inferior da jornada, pulo pra seção
   document.querySelectorAll('.j-nav-item[data-j-goto]').forEach((b) => {
