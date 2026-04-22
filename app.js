@@ -4087,6 +4087,15 @@ function renderObGoalWheel() {
     document.querySelectorAll('.jornada__dots .j-dot').forEach((d, i) => {
       d.classList.toggle('is-active', i === current);
     });
+    updateJornadaNav();
+  }
+
+  function updateJornadaNav() {
+    const navMap = { 0: 0, 6: 1, 7: 3, 8: 4 }; // section index, nav button index
+    const navIdx = navMap[current];
+    document.querySelectorAll('.j-nav-item').forEach((b, i) => {
+      b.classList.toggle('is-active', i === navIdx);
+    });
   }
 
   function buildDots() {
@@ -4475,6 +4484,21 @@ function renderObGoalWheel() {
 
   const closeBtn = document.getElementById('jornada-close');
   if (closeBtn) closeBtn.addEventListener('click', () => window.closeJornada());
+
+  // nav inferior da jornada, pulo pra seção
+  document.querySelectorAll('.j-nav-item[data-j-goto]').forEach((b) => {
+    b.addEventListener('click', () => {
+      const idx = parseInt(b.dataset.jGoto, 10);
+      if (!isNaN(idx)) goToSec(idx);
+    });
+  });
+
+  // botão circa no meio da nav, toca o chime da Circa
+  const jCirca = document.getElementById('j-nav-circa');
+  if (jCirca) jCirca.addEventListener('click', () => {
+    if (typeof tocarSomCirca === 'function') tocarSomCirca();
+    else if (typeof window.tocarSomCirca === 'function') window.tocarSomCirca();
+  });
 
   buildDots();
   applySections();

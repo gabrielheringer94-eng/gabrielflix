@@ -2191,10 +2191,10 @@
           <h2 class="jsec-title"><em>padrões</em></h2>
           <div class="j-line"></div>
           <div class="j-insights-list">
-            <div class="j-insight"><p class="j-insight-lbl" style="color:#7B8BB8">corpo</p><p class="j-insight-text">sono curto há 5 dias + alta intensidade, recuperação comprometida. teu corpo tá pedindo 7h.</p></div>
-            <div class="j-insight"><p class="j-insight-lbl" style="color:#E8A87C">mente</p><p class="j-insight-text">teu humor sobe 1.8 pontos quando treinas antes das 10h. amanhã é sábado.</p></div>
-            <div class="j-insight"><p class="j-insight-lbl" style="color:#A89CC8">espírito</p><p class="j-insight-text">relacionamentos caiu 2 semanas. última refeição social há 9 dias.</p></div>
-            <div class="j-insight j-insight--accent"><p class="j-insight-lbl">exames</p><p class="j-insight-text">homocisteína 28 + sono curto é combinação que aumenta estresse oxidativo. prioridade esta semana.</p></div>
+            <div class="j-insight" style="border-left-color:#7B8BB8"><p class="j-insight-lbl" style="color:#7B8BB8"><i class="j-ins-dot" style="background:#7B8BB8"></i>corpo</p><p class="j-insight-text">sono curto há 5 dias + alta intensidade, recuperação comprometida. teu corpo tá pedindo 7h.</p></div>
+            <div class="j-insight" style="border-left-color:#E8A87C"><p class="j-insight-lbl" style="color:#E8A87C"><i class="j-ins-dot" style="background:#E8A87C"></i>mente</p><p class="j-insight-text">teu humor sobe 1.8 pontos quando treinas antes das 10h. amanhã é sábado.</p></div>
+            <div class="j-insight" style="border-left-color:#A89CC8"><p class="j-insight-lbl" style="color:#A89CC8"><i class="j-ins-dot" style="background:#A89CC8"></i>espírito</p><p class="j-insight-text">relacionamentos caiu 2 semanas. última refeição social há 9 dias.</p></div>
+            <div class="j-insight j-insight--accent"><p class="j-insight-lbl"><i class="j-ins-dot" style="background:var(--accent)"></i>exames</p><p class="j-insight-text">homocisteína 28 + sono curto é combinação que aumenta estresse oxidativo. prioridade esta semana.</p></div>
           </div>
         </section>
 
@@ -2237,6 +2237,31 @@
         </section>
 
       </div>
+
+      <!-- nav inferior interna da jornada -->
+      <nav class="jornada__nav" role="tablist">
+        <button class="j-nav-item is-active" data-j-goto="0" aria-label="hoje">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M3 12L12 4l9 8M5 10v9a1 1 0 001 1h4v-5h4v5h4a1 1 0 001-1v-9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span>hoje</span>
+        </button>
+        <button class="j-nav-item" data-j-goto="6" aria-label="insights">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span>insights</span>
+        </button>
+        <button class="j-nav-circa" id="j-nav-circa" aria-label="som da circa">
+          <span class="j-nav-circa__icon">
+            <img src="circa-logo.png" alt="" width="26" height="26" />
+          </span>
+        </button>
+        <button class="j-nav-item" data-j-goto="7" aria-label="roda">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5"/><path d="M12 8v4l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          <span>roda</span>
+        </button>
+        <button class="j-nav-item" data-j-goto="8" aria-label="30 dias">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5"/><path d="M12 8v4M12 16h.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          <span>30d</span>
+        </button>
+      </nav>
     </div>
 
     <!-- ───────── BOTTOM NAV ───────── -->

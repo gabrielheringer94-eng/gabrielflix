@@ -4722,3 +4722,95 @@ canvas#j-roda { width: 220px; height: 220px; cursor: pointer; }
   font-size: 11px; color: var(--fg-dim);
   text-align: center; margin-top: 16px; letter-spacing: 1px;
 }
+
+/* ── nav interna da jornada ── */
+.jornada__nav {
+  position: absolute;
+  bottom: 0; left: 50%;
+  transform: translateX(-50%);
+  z-index: 25;
+  height: 64px;
+  width: 100%; max-width: 440px;
+  background: rgba(15, 14, 13, 0.96);
+  border-top: 1px solid var(--fg-faint);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 0 8px 6px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+.j-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  cursor: pointer;
+  padding: 6px 10px;
+  opacity: 0.38;
+  transition: opacity 0.25s ease, color 0.25s ease;
+  background: none;
+  border: none;
+  color: var(--fg-muted);
+  font-family: var(--sans);
+}
+.j-nav-item:hover { opacity: 0.7; }
+.j-nav-item.is-active {
+  opacity: 1;
+  color: var(--accent);
+}
+.j-nav-item span {
+  font-size: 9px;
+  letter-spacing: 1px;
+  color: inherit;
+}
+.j-nav-circa {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  padding: 4px 12px 6px;
+  background: none;
+  border: none;
+  margin-top: -10px;
+}
+.j-nav-circa__icon {
+  width: 46px; height: 46px;
+  border-radius: 50%;
+  background: var(--bg-raised);
+  border: 1px solid var(--accent-dim);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: jNavPulse 3s ease-in-out infinite;
+  overflow: hidden;
+}
+.j-nav-circa__icon img {
+  width: 26px; height: 26px;
+  display: block;
+  object-fit: contain;
+}
+@keyframes jNavPulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(212, 184, 150, 0.2);
+    border-color: rgba(212, 184, 150, 0.22);
+  }
+  50% {
+    box-shadow: 0 0 12px 3px rgba(212, 184, 150, 0.1);
+    border-color: rgba(212, 184, 150, 0.5);
+  }
+}
+
+/* empurra conteúdo das seções pra cima da nav */
+.jsec { padding-bottom: 84px; }
+
+/* dots inline nos insights */
+.j-ins-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  margin-right: 7px;
+  vertical-align: middle;
+  transform: translateY(-1px);
+}
