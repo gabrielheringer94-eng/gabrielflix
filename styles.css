@@ -5291,3 +5291,152 @@ canvas#j-roda { width: 220px; height: 220px; cursor: pointer; }
   vertical-align: middle;
   transform: translateY(-1px);
 }
+
+/* ═════════════════════════════════════════════════════════
+   RADIUS GLOBAL · arredonda todos os "quadrados" do app
+   ═════════════════════════════════════════════════════════ */
+:root {
+  --r-chip: 10px;
+  --r-tile: 12px;
+  --r-card: 14px;
+  --r-card-lg: 18px;
+  --r-input: 12px;
+  --r-btn: 12px;
+  --r-btn-pill: 999px;
+  --r-sheet: 22px;
+  --r-pill: 999px;
+}
+
+/* cards e blocos genéricos */
+.card,
+.hero-context .hc-item,
+.card--action,
+.card--insight,
+.card--training,
+.action-deck,
+.insight-card,
+.lab-card,
+.upload-card,
+.training-info,
+.reflect-card,
+.dims,
+.day-exercises li,
+.day-ex,
+.corr li,
+.j-card,
+.j-insight,
+.j-lab-card,
+.j-antes-box,
+.treino-semana-item,
+.qd__panel .qd__item,
+.obz,
+.ob-card {
+  border-radius: var(--r-card);
+}
+
+/* blocos grandes (destaques) */
+.hero-context,
+.area-sheet,
+.lab-card--bioage {
+  border-radius: var(--r-card-lg);
+}
+
+/* inputs, textareas e campos de formulário */
+.ritual-inp,
+.j-inp,
+.log-time-input,
+.log-qty-input,
+.reflect-text,
+.ob-field input,
+.ob-field select,
+.ob-field textarea,
+.qty-input,
+.chat__input,
+input[type="text"],
+input[type="number"],
+input[type="time"],
+input[type="email"],
+input[type="tel"],
+input[type="search"],
+textarea,
+select {
+  border-radius: var(--r-input) !important;
+}
+
+/* chips, tiles e elementos pequenos clicáveis */
+.tag,
+.chip,
+.day-chip,
+.log-day-chip,
+.log-agua-chip,
+.ritual-opt,
+.j-area,
+.j-log,
+.j-marker,
+.j-roda-item,
+.tsi-badge,
+.antes-score-box.now::before,
+.j-antes-box.is-now::before,
+.marker,
+.stat,
+.ob-chip,
+.risk-chip,
+.area-chip,
+.wt-tab,
+.dims li,
+.qd__item,
+.supl-item,
+.esporte-card,
+.moment-option {
+  border-radius: var(--r-chip);
+}
+
+/* botões (semi-arredondados, não pill) */
+.btn,
+.btn--primary,
+.btn--ghost,
+.btn--text,
+.btn--full,
+.btn--undo,
+.btn--review,
+.btn-ok,
+.j-btn,
+.sensacao {
+  border-radius: var(--r-btn) !important;
+}
+
+/* mini-histórico de água (barras) */
+.lww-day i,
+.ww-day i {
+  border-radius: var(--r-chip);
+}
+
+/* nav interna da jornada e bottom nav */
+.j-nav-item,
+.j-nav-circa,
+.tab,
+.nav-item {
+  border-radius: var(--r-chip);
+}
+
+/* painel dos sheets (deslizam de baixo pra cima) */
+.sheet__panel,
+.qd__panel {
+  border-top-left-radius: var(--r-sheet);
+  border-top-right-radius: var(--r-sheet);
+}
+
+/* tooltip da roda */
+.j-roda-tt {
+  border-radius: var(--r-chip);
+}
+
+/* cards do action deck (swipeable) */
+.action-track .card--action {
+  border-radius: var(--r-card);
+}
+
+/* bolinha de confirmação do botão no sheet-log-ok */
+.log-ok__check {
+  border-radius: 50%;
+}
