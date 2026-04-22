@@ -4526,18 +4526,59 @@ function renderObGoalWheel() {
 })();
 
 // ═════════════════════════════════════════════════════════
-// ENTRY POINT · "Saber mais" da home agora abre a jornada
+// ENTRY POINT · jornada é a experiência primária do "hoje"
+// Auto-abre ao carregar, ao tocar na aba hoje, e ao clicar em score/saber mais
 // ═════════════════════════════════════════════════════════
 (function () {
-  const btn = document.getElementById('hero-link-more');
-  if (!btn) return;
-  // remove listener antigo clonando
-  const fresh = btn.cloneNode(true);
-  btn.parentNode.replaceChild(fresh, btn);
-  fresh.addEventListener('click', (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    try { hap(10); } catch (er) {}
-    if (typeof window.openJornada === 'function') window.openJornada();
+  // memória de sessão, pra não re-abrir sozinho se o user fechou
+  let jornadaFechadaManual = false;
+  const _closeOrig = window.closeJornada;
+  window.closeJornada = function () {
+    jornadaFechadaManual = true;
+    if (typeof _closeOrig === 'function') _closeOrig();
+  };
+
+  function abrirJornadaSafe() {
+    if (typeof window.openJornada !== 'function') return;
+    // respeita onboarding: só abre se não tiver overlay de welcome/onboarding ativo
+    const welcome = document.getElementById('welcome');
+    const onboard = document.getElementById('onboard');
+    if (welcome && welcome.classList.contains('is-open')) return;
+    if (onboard && onboard.classList.contains('is-open')) return;
+    window.openJornada();
+  }
+
+  // 1. "Saber mais" abre a jornada
+  const link = document.getElementById('hero-link-more');
+  if (link) {
+    const fresh = link.cloneNode(true);
+    link.parentNode.replaceChild(fresh, link);
+    fresh.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      jornadaFechadaManual = false;
+      try { hap(10); } catch (er) {}
+      abrirJornadaSafe();
+    });
+  }
+
+  // 2. tocar na aba "hoje" re-abre a jornada
+  document.querySelectorAll('.tab[data-target="home"]').forEach((t) => {
+    t.addEventListener('click', () => {
+      jornadaFechadaManual = false;
+      setTimeout(abrirJornadaSafe, 80);
+    });
   });
+
+  // 3. auto-abre ao carregar a primeira vez
+  function autoOpen() {
+    if (jornadaFechadaManual) return;
+    abrirJornadaSafe();
+  }
+  // espera o DOM assentar e qualquer splash/welcome passar
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => setTimeout(autoOpen, 450));
+  } else {
+    setTimeout(autoOpen, 450);
+  }
 })();
