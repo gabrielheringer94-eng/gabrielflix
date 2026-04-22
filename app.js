@@ -4156,28 +4156,68 @@ function renderObGoalWheel() {
     goToSec(current - 1);
   }
 
+  // helper: o gesto começou num input/botão/card interativo? se sim, ignora swipe
+  function gestoEmElementoInterativo(target) {
+    if (!target || !target.closest) return false;
+    return !!target.closest(
+      'input, textarea, select, button, .j-log, .j-mood__item, .j-area, .j-lab-card, .j-card, .j-antes-box, .j-roda-item, canvas#j-roda, .j-nav-item, .j-nav-circa, .j-dot, .jornada__close'
+    );
+  }
+
   // touch
+  let touchStartTarget = null;
+  let touchStartTime = 0;
   sectionsEl.addEventListener('touchstart', (e) => {
     touchStartY = e.touches[0].clientY;
     touchStartX = e.touches[0].clientX;
+    touchStartTarget = e.target;
+    touchStartTime = Date.now();
   }, { passive: true });
+
   sectionsEl.addEventListener('touchend', (e) => {
     if (pausaTimeout) return;
+    // bloqueia: ignora se o toque começou num elemento interativo
+    if (gestoEmElementoInterativo(touchStartTarget)) return;
+    // bloqueia: ignora se qualquer input está focado (user tá digitando)
+    if (document.activeElement && document.activeElement.matches('input, textarea')) return;
+    // bloqueia: toques muito rápidos (<100ms) são taps, não swipes
+    if (Date.now() - touchStartTime < 100) return;
+
     const dy = touchStartY - e.changedTouches[0].clientY;
     const dx = Math.abs(touchStartX - e.changedTouches[0].clientX);
-    if (Math.abs(dy) > 40 && Math.abs(dy) > dx) {
+    // threshold maior (60px em vez de 40) e check de velocidade
+    if (Math.abs(dy) > 60 && Math.abs(dy) > dx * 1.3) {
       dy > 0 ? nextSec() : prevSec();
     }
   }, { passive: true });
 
-  // wheel
+  // wheel · com renovação de timer pra bloquear in\u00e9rcia de trackpad
   let wheelTimer = null;
+  let wheelLastTime = 0;
   sectionsEl.addEventListener('wheel', (e) => {
     if (!document.getElementById('jornada').classList.contains('is-open')) return;
     e.preventDefault();
-    if (wheelTimer || pausaTimeout) return;
+    if (pausaTimeout) return;
+    // bloqueia: ignora se o wheel veio dentro de um elemento interativo
+    if (gestoEmElementoInterativo(e.target)) return;
+    // bloqueia: ignora se um input está focado
+    if (document.activeElement && document.activeElement.matches('input, textarea')) return;
+
+    const now = Date.now();
+    const hadRecentWheel = wheelTimer !== null;
+
+    // sempre renova o timer, pra que in\u00e9rcia contínua mantenha o lock ativo
+    if (wheelTimer) clearTimeout(wheelTimer);
+    wheelTimer = setTimeout(() => { wheelTimer = null; }, 450);
+
+    // se já tinha timer rolando, é in\u00e9rcia ou swipe segmentado, não avança de novo
+    if (hadRecentWheel) return;
+
+    // bloqueia eventos muito próximos (<650ms) por segurança adicional
+    if (now - wheelLastTime < 650) return;
+    wheelLastTime = now;
+
     e.deltaY > 0 ? nextSec() : prevSec();
-    wheelTimer = setTimeout(() => { wheelTimer = null; }, 700);
   }, { passive: false });
 
   // teclado
