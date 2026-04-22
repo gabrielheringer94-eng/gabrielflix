@@ -4554,20 +4554,26 @@ function renderObGoalWheel() {
     if (typeof openSheet === 'function') openSheet('sheet-body');
   });
 
-  // blocos de temas do log rápido no ritual · dispara runAction/goTo equivalentes
+  // blocos de temas do log rápido no ritual · abrem sheets dedicados
   document.querySelectorAll('.j-log[data-log]').forEach((tile) => {
     tile.addEventListener('click', () => {
       const kind = tile.dataset.log;
       try { hap(8); } catch (e) {}
-      // fecha a jornada pra deixar o sheet/tela aparecer sem sobreposição
+      // fecha a jornada pra deixar o sheet aparecer limpo
       if (typeof window.closeJornada === 'function') window.closeJornada();
       setTimeout(() => {
-        if (kind === 'humor')    { if (typeof goTo === 'function') goTo('mood'); }
-        if (kind === 'sono')     { if (typeof goTo === 'function') goTo('mood'); }
-        if (kind === 'treino')   { if (typeof openEsportePicker === 'function') openEsportePicker(); }
-        if (kind === 'agua')     { const m = document.querySelector('[data-add="500"]'); if (m) m.click(); }
-        if (kind === 'refeicao') { if (typeof runAction === 'function') runAction('ateMeal'); }
-      }, 180);
+        if (kind === 'humor') {
+          if (typeof goTo === 'function') goTo('mood');
+        } else if (kind === 'sono') {
+          if (typeof abrirLogSono === 'function') abrirLogSono();
+        } else if (kind === 'treino') {
+          if (typeof abrirLogTreinoSemana === 'function') abrirLogTreinoSemana();
+        } else if (kind === 'agua') {
+          if (typeof abrirLogAgua === 'function') abrirLogAgua();
+        } else if (kind === 'refeicao') {
+          if (typeof runAction === 'function') runAction('ateMeal');
+        }
+      }, 200);
     });
   });
 
@@ -4652,3 +4658,250 @@ function renderObGoalWheel() {
     setTimeout(autoOpen, 450);
   }
 })();
+
+// ═════════════════════════════════════════════════════════
+// LOG SHEETS · sono, água, treino-semana
+// tudo persistido em localStorage, correlacionado com o app
+// ═════════════════════════════════════════════════════════
+
+// ───── helpers compartilhados ─────
+function diaAtualKey() {
+  // retorna key (seg/ter/qua/qui/sex/sab/dom) do dia de hoje
+  const map = ['dom','seg','ter','qua','qui','sex','sab'];
+  return map[new Date().getDay()];
+}
+function diaOntemKey() {
+  const map = ['dom','seg','ter','qua','qui','sex','sab'];
+  return map[(new Date().getDay() + 6) % 7];
+}
+
+// ───── LOG DE SONO ─────
+let sonoDaySel = null;
+let sonoSens = null;
+
+function abrirLogSono() {
+  sonoDaySel = diaOntemKey(); // default pro user registrar a noite passada
+  sonoSens = null;
+  const chips = document.querySelectorAll('#sono-day-chips .log-day-chip');
+  chips.forEach((c) => c.classList.toggle('is-active', c.dataset.day === sonoDaySel));
+
+  // carrega último salvo pra pré-preencher, se houver
+  try {
+    const last = JSON.parse(localStorage.getItem('circa_log_sono_last') || 'null');
+    if (last) {
+      if (document.getElementById('sono-bedtime')) document.getElementById('sono-bedtime').value = last.bed || '23:00';
+      if (document.getElementById('sono-waketime')) document.getElementById('sono-waketime').value = last.wake || '07:00';
+    }
+  } catch (e) {}
+
+  document.querySelectorAll('#sheet-log-sono .sensacao').forEach((s) => s.classList.remove('is-on'));
+  calcularDuracaoSono();
+  if (typeof openSheet === 'function') openSheet('sheet-log-sono');
+}
+
+function calcularDuracaoSono() {
+  const bed = document.getElementById('sono-bedtime');
+  const wake = document.getElementById('sono-waketime');
+  const out = document.getElementById('sono-dur');
+  const hint = document.getElementById('sono-hint');
+  if (!bed || !wake || !out || !hint) return;
+
+  const [bh, bm] = bed.value.split(':').map(Number);
+  const [wh, wm] = wake.value.split(':').map(Number);
+  let bedMin = bh * 60 + bm;
+  let wakeMin = wh * 60 + wm;
+  // se acordou antes de dormir no clock, atravessou a meia-noite
+  if (wakeMin <= bedMin) wakeMin += 24 * 60;
+  const totalMin = wakeMin - bedMin;
+  const hh = Math.floor(totalMin / 60);
+  const mm = totalMin % 60;
+  out.textContent = `${hh}h ${String(mm).padStart(2,'0')}min`;
+
+  // hint qualitativo
+  hint.classList.remove('is-low', 'is-good');
+  if (totalMin < 6 * 60) {
+    hint.textContent = 'abaixo da meta · 7-9h recomendadas';
+    hint.classList.add('is-low');
+  } else if (totalMin >= 7 * 60 && totalMin <= 9 * 60 + 30) {
+    hint.textContent = 'dentro da meta · 7-9h';
+    hint.classList.add('is-good');
+  } else if (totalMin > 9 * 60 + 30) {
+    hint.textContent = 'mais longo que o usual';
+  } else {
+    hint.textContent = 'próximo da meta · 7-9h';
+  }
+}
+
+// wiring do sono
+(function () {
+  const chips = document.querySelectorAll('#sono-day-chips .log-day-chip');
+  chips.forEach((c) => c.addEventListener('click', () => {
+    sonoDaySel = c.dataset.day;
+    chips.forEach((x) => x.classList.toggle('is-active', x === c));
+    try { hap(6); } catch (e) {}
+  }));
+
+  const bed = document.getElementById('sono-bedtime');
+  const wake = document.getElementById('sono-waketime');
+  if (bed) bed.addEventListener('input', calcularDuracaoSono);
+  if (wake) wake.addEventListener('input', calcularDuracaoSono);
+
+  document.querySelectorAll('#sheet-log-sono .sensacao').forEach((b) => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('#sheet-log-sono .sensacao').forEach((x) => x.classList.remove('is-on'));
+      b.classList.add('is-on');
+      sonoSens = parseInt(b.dataset.sonoSens, 10);
+      try { hap(6); } catch (e) {}
+    });
+  });
+
+  const salvar = document.getElementById('sono-salvar');
+  if (salvar) salvar.addEventListener('click', () => {
+    const bed = document.getElementById('sono-bedtime').value;
+    const wake = document.getElementById('sono-waketime').value;
+    const dur = document.getElementById('sono-dur').textContent;
+    const registro = {
+      day: sonoDaySel,
+      bed, wake, dur,
+      sens: sonoSens,
+      ts: Date.now(),
+    };
+    try {
+      const arr = JSON.parse(localStorage.getItem('circa_log_sono') || '[]');
+      arr.push(registro);
+      localStorage.setItem('circa_log_sono', JSON.stringify(arr));
+      localStorage.setItem('circa_log_sono_last', JSON.stringify(registro));
+    } catch (e) {}
+    try { hap(14); } catch (e) {}
+    if (typeof closeSheet === 'function') closeSheet();
+    // feedback visual via sheet-log-ok
+    setTimeout(() => {
+      const t = document.getElementById('log-ok-title');
+      const s = document.getElementById('log-ok-sub');
+      if (t) t.textContent = 'sono registrado.';
+      if (s) s.textContent = `${dur} · ${sonoDaySel || 'hoje'}`;
+      if (typeof openSheet === 'function') openSheet('sheet-log-ok');
+    }, 200);
+  });
+})();
+
+// ───── LOG DE ÁGUA ─────
+let aguaHojeMl = 1800;
+let aguaMetaMl = 2800;
+let aguaCustomVal = 0;
+
+function formatLitros(ml) { return (ml / 1000).toFixed(1); }
+
+function refreshAguaUI() {
+  const big = document.getElementById('agua-hoje');
+  if (big) big.textContent = formatLitros(aguaHojeMl);
+  const todayBar = document.getElementById('lww-today-bar');
+  const todayVal = document.getElementById('lww-today-val');
+  if (todayBar) todayBar.style.setProperty('--h', Math.min(100, (aguaHojeMl / aguaMetaMl) * 100) + '%');
+  if (todayVal) todayVal.textContent = formatLitros(aguaHojeMl);
+  // sync com qualquer #water-big do sheet-water existente
+  const wbig = document.getElementById('water-big');
+  if (wbig) wbig.textContent = formatLitros(aguaHojeMl);
+}
+
+function abrirLogAgua() {
+  // carrega valor persistido
+  try {
+    const saved = localStorage.getItem('circa_agua_hoje');
+    if (saved) aguaHojeMl = parseInt(saved, 10);
+  } catch (e) {}
+  aguaCustomVal = 0;
+  const inp = document.getElementById('agua-custom');
+  if (inp) inp.value = '';
+  document.querySelectorAll('.log-agua-chip').forEach((c) => c.classList.remove('is-active'));
+  refreshAguaUI();
+  if (typeof openSheet === 'function') openSheet('sheet-log-agua');
+}
+
+(function () {
+  // chips rápidos
+  document.querySelectorAll('.log-agua-chip').forEach((c) => {
+    c.addEventListener('click', () => {
+      const ml = parseInt(c.dataset.ml, 10);
+      aguaCustomVal = ml;
+      document.querySelectorAll('.log-agua-chip').forEach((x) => x.classList.toggle('is-active', x === c));
+      const inp = document.getElementById('agua-custom');
+      if (inp) inp.value = ml;
+      try { hap(6); } catch (e) {}
+    });
+  });
+
+  const inp = document.getElementById('agua-custom');
+  if (inp) inp.addEventListener('input', () => {
+    aguaCustomVal = parseInt(inp.value, 10) || 0;
+    document.querySelectorAll('.log-agua-chip').forEach((x) => x.classList.remove('is-active'));
+  });
+
+  const salvar = document.getElementById('agua-salvar');
+  if (salvar) salvar.addEventListener('click', () => {
+    if (!aguaCustomVal || aguaCustomVal <= 0) {
+      try { hap(4); } catch (e) {}
+      return;
+    }
+    aguaHojeMl += aguaCustomVal;
+    try { localStorage.setItem('circa_agua_hoje', String(aguaHojeMl)); } catch (e) {}
+    try { hap(12); } catch (e) {}
+    refreshAguaUI();
+    // reset input pro próximo add
+    aguaCustomVal = 0;
+    if (inp) inp.value = '';
+    document.querySelectorAll('.log-agua-chip').forEach((x) => x.classList.remove('is-active'));
+    // feedback
+    if (typeof closeSheet === 'function') closeSheet();
+    setTimeout(() => {
+      const t = document.getElementById('log-ok-title');
+      const s = document.getElementById('log-ok-sub');
+      if (t) t.textContent = 'água registrada.';
+      if (s) s.textContent = `total hoje: ${formatLitros(aguaHojeMl)} L / ${formatLitros(aguaMetaMl)} L`;
+      if (typeof openSheet === 'function') openSheet('sheet-log-ok');
+    }, 180);
+  });
+})();
+
+// ───── LOG DE TREINO · semana ─────
+function abrirLogTreinoSemana() {
+  const list = document.getElementById('treino-semana-list');
+  if (!list || typeof WEEK_WORKOUTS === 'undefined') return;
+  const ordem = ['seg','ter','qua','qui','sex','sab','dom'];
+  const hoje = diaAtualKey();
+  list.innerHTML = '';
+
+  ordem.forEach((k) => {
+    const w = WEEK_WORKOUTS[k];
+    if (!w) return;
+    const isToday = k === hoje;
+    const cls = isToday ? 'is-today' : (w.status === 'done' ? 'is-done' : w.status === 'rest' ? 'is-rest' : '');
+    const badgeCls = isToday ? 'tsi-badge--today' : w.status === 'done' ? 'tsi-badge--done' : w.status === 'rest' ? 'tsi-badge--rest' : '';
+    const badgeTxt = isToday ? 'hoje' : w.status === 'done' ? 'feito' : w.status === 'rest' ? 'descanso' : '';
+    const btn = document.createElement('button');
+    btn.className = 'treino-semana-item ' + cls;
+    btn.innerHTML = `
+      <span class="tsi-day">${w.label}</span>
+      <span class="tsi-info">
+        <strong>${w.type}</strong>
+        <span>${w.subtitle.replace(' · hoje','')}</span>
+      </span>
+      ${badgeTxt ? `<span class="tsi-badge ${badgeCls}">${badgeTxt}</span>` : ''}
+    `;
+    btn.addEventListener('click', () => {
+      if (w.status === 'rest') {
+        try { hap(4); } catch (e) {}
+        return;
+      }
+      // navega pro dia + abre o detalhe do dia (usa openDay existente)
+      try { hap(10); } catch (e) {}
+      if (typeof closeSheet === 'function') closeSheet();
+      setTimeout(() => {
+        if (typeof openDay === 'function') openDay(k);
+      }, 200);
+    });
+    list.appendChild(btn);
+  });
+
+  if (typeof openSheet === 'function') openSheet('sheet-log-treino-semana');
+}

@@ -4869,6 +4869,250 @@ canvas#j-roda { width: 220px; height: 220px; cursor: pointer; }
 /* empurra conteúdo das seções pra cima da nav */
 .jsec { padding-bottom: 84px; }
 
+/* ═════════════════════════════════════════════════════════
+   LOG SHEETS · sono, água, treino-semana
+   ═════════════════════════════════════════════════════════ */
+/* chips de dia da semana */
+.log-day-chips {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+  width: 100%;
+}
+.log-day-chip {
+  background: var(--bg-raised);
+  border: 1px solid var(--fg-faint);
+  color: var(--fg-muted);
+  font-family: var(--sans);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  padding: 10px 0;
+  text-transform: lowercase;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-radius: 2px;
+}
+.log-day-chip:hover { border-color: var(--accent-dim); color: var(--fg); }
+.log-day-chip.is-active {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-dim);
+}
+
+/* par horário (fui dormir / acordei) */
+.log-time-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.log-time-cell { padding-bottom: 0; }
+.log-time-input {
+  width: 100%;
+  background: var(--bg-raised);
+  border: 1px solid var(--fg-faint);
+  color: var(--fg);
+  font-family: var(--serif);
+  font-size: 28px;
+  font-weight: 300;
+  padding: 14px 16px;
+  outline: none;
+  border-radius: 2px;
+  text-align: center;
+  letter-spacing: -0.01em;
+}
+.log-time-input:focus { border-color: var(--accent-dim); }
+
+/* output de duração do sono */
+.log-sono-out { text-align: center; }
+.log-sono-big {
+  display: block;
+  font-family: var(--serif);
+  font-size: 42px;
+  font-weight: 300;
+  color: var(--fg);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  margin: 8px 0;
+}
+.log-sono-hint {
+  display: block;
+  font-size: 11px;
+  color: var(--fg-muted);
+  letter-spacing: 0.06em;
+  text-transform: lowercase;
+}
+.log-sono-hint.is-low  { color: #E8A87C; }
+.log-sono-hint.is-good { color: #8FA87C; }
+
+/* chips de quantidade de água */
+.log-agua-chips {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+}
+.log-agua-chip {
+  background: var(--bg-raised);
+  border: 1px solid var(--fg-faint);
+  color: var(--fg);
+  font-family: var(--sans);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  padding: 14px 0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-radius: 2px;
+}
+.log-agua-chip:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-dim);
+}
+.log-agua-chip.is-active {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-dim);
+}
+
+/* input de quantidade custom */
+.log-qty-input {
+  width: 100%;
+  background: var(--bg-raised);
+  border: 1px solid var(--fg-faint);
+  color: var(--fg);
+  font-family: var(--serif);
+  font-size: 22px;
+  font-weight: 300;
+  padding: 14px 16px;
+  outline: none;
+  border-radius: 2px;
+  letter-spacing: -0.01em;
+}
+.log-qty-input:focus { border-color: var(--accent-dim); }
+.log-qty-input::placeholder { color: var(--fg-dim); }
+
+/* mini-histórico semanal de água */
+.log-agua-week {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+  align-items: end;
+}
+.lww-day {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
+  color: var(--fg-dim);
+  letter-spacing: 0.06em;
+}
+.lww-day i {
+  display: block;
+  width: 100%;
+  height: var(--h, 0%);
+  min-height: 3px;
+  background: var(--accent);
+  opacity: 0.7;
+  border-radius: 2px;
+  transition: height 0.35s ease;
+}
+.lww-day span {
+  margin-top: 4px;
+}
+.lww-day b {
+  font-family: var(--serif);
+  font-size: 12px;
+  color: var(--fg);
+  font-weight: 400;
+}
+.lww-day.is-low i { opacity: 0.35; background: #E8A87C; }
+.lww-day.is-today i { opacity: 1; }
+.lww-day.is-today span { color: var(--accent); }
+.lww-day.is-future i { background: var(--fg-faint); }
+.lww-day.is-future b { color: var(--fg-dim); }
+
+/* lista de treinos da semana */
+.treino-semana {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.treino-semana-item {
+  background: var(--bg-raised);
+  border: 1px solid var(--fg-faint);
+  padding: 14px 16px;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s ease;
+  font-family: var(--sans);
+  color: var(--fg);
+}
+.treino-semana-item:hover {
+  border-color: var(--accent-dim);
+  transform: translateX(2px);
+}
+.treino-semana-item.is-today {
+  border-left: 2px solid var(--accent);
+}
+.treino-semana-item.is-done {
+  opacity: 0.7;
+}
+.treino-semana-item.is-rest {
+  background: transparent;
+  opacity: 0.55;
+}
+.tsi-day {
+  width: 52px;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fg-dim);
+  flex-shrink: 0;
+}
+.treino-semana-item.is-today .tsi-day { color: var(--accent); }
+.tsi-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.tsi-info strong {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 15px;
+  color: var(--fg);
+  letter-spacing: -0.01em;
+}
+.tsi-info span {
+  font-size: 11px;
+  color: var(--fg-muted);
+}
+.tsi-badge {
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+.tsi-badge--done {
+  background: rgba(143, 168, 124, 0.15);
+  color: #8FA87C;
+}
+.tsi-badge--today {
+  background: var(--accent-dim);
+  color: var(--accent);
+}
+.tsi-badge--rest {
+  background: var(--fg-faint);
+  color: var(--fg-dim);
+}
+
 /* ── blocos de temas (log rápido) no ritual ── */
 .j-logs {
   width: 100%;

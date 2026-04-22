@@ -1897,6 +1897,129 @@
     </div>
 
     <!-- ───────── SHEET · log adaptativo por modalidade ───────── -->
+    <!-- ───────── MODAL · log de sono ───────── -->
+    <div class="sheet" id="sheet-log-sono" aria-hidden="true">
+      <div class="sheet__backdrop" data-close></div>
+      <div class="sheet__panel" role="dialog" aria-label="log de sono">
+        <div class="sheet__grab"></div>
+
+        <div class="sheet__head">
+          <span class="eyebrow">log de sono</span>
+          <h2 class="display display--sm">como foi a<br/>tua noite?</h2>
+          <p class="lead lead--sm">cruzamos com treino, humor e recuperação.</p>
+        </div>
+
+        <div class="sheet__section">
+          <span class="eyebrow">dia</span>
+          <div class="log-day-chips" id="sono-day-chips">
+            <button class="log-day-chip" data-day="seg">seg</button>
+            <button class="log-day-chip" data-day="ter">ter</button>
+            <button class="log-day-chip" data-day="qua">qua</button>
+            <button class="log-day-chip" data-day="qui">qui</button>
+            <button class="log-day-chip" data-day="sex">sex</button>
+            <button class="log-day-chip" data-day="sab">sáb</button>
+            <button class="log-day-chip" data-day="dom">dom</button>
+          </div>
+        </div>
+
+        <div class="log-time-row">
+          <div class="sheet__section log-time-cell">
+            <label class="eyebrow" for="sono-bedtime">fui dormir às</label>
+            <input class="log-time-input" id="sono-bedtime" type="time" value="23:00"/>
+          </div>
+          <div class="sheet__section log-time-cell">
+            <label class="eyebrow" for="sono-waketime">acordei às</label>
+            <input class="log-time-input" id="sono-waketime" type="time" value="07:00"/>
+          </div>
+        </div>
+
+        <div class="sheet__section log-sono-out">
+          <span class="eyebrow">duração</span>
+          <strong class="log-sono-big" id="sono-dur">8h 00min</strong>
+          <span class="log-sono-hint" id="sono-hint">dentro da meta · 7-9h</span>
+        </div>
+
+        <div class="sheet__section">
+          <span class="eyebrow">como você acordou</span>
+          <div class="sensacao-grid">
+            <button class="sensacao" data-sono-sens="1"><span>😩</span><small>exausto</small></button>
+            <button class="sensacao" data-sono-sens="2"><span>😕</span><small>cansado</small></button>
+            <button class="sensacao" data-sono-sens="3"><span>😐</span><small>ok</small></button>
+            <button class="sensacao" data-sono-sens="4"><span>🙂</span><small>bem</small></button>
+            <button class="sensacao" data-sono-sens="5"><span>🔥</span><small>ótimo</small></button>
+          </div>
+        </div>
+
+        <button class="btn btn--primary btn--full" id="sono-salvar">registrar sono</button>
+        <button class="btn btn--text btn--full" data-close>cancelar</button>
+      </div>
+    </div>
+
+    <!-- ───────── MODAL · log de água ───────── -->
+    <div class="sheet" id="sheet-log-agua" aria-hidden="true">
+      <div class="sheet__backdrop" data-close></div>
+      <div class="sheet__panel" role="dialog" aria-label="log de água">
+        <div class="sheet__grab"></div>
+
+        <div class="sheet__head">
+          <span class="eyebrow">log de água</span>
+          <h2 class="display display--sm"><span id="agua-hoje">1.8</span><i style="font-family:var(--sans);font-size:14px;font-style:normal;color:var(--fg-muted);"> / 2.8L hoje</i></h2>
+          <p class="lead lead--sm">toque num chip ou digite a quantidade.</p>
+        </div>
+
+        <div class="sheet__section">
+          <span class="eyebrow">rápido</span>
+          <div class="log-agua-chips">
+            <button class="log-agua-chip" data-ml="200">+200 ml</button>
+            <button class="log-agua-chip" data-ml="500">+500 ml</button>
+            <button class="log-agua-chip" data-ml="750">+750 ml</button>
+            <button class="log-agua-chip" data-ml="1000">+1 L</button>
+          </div>
+        </div>
+
+        <div class="sheet__section">
+          <label class="eyebrow" for="agua-custom">ou digite em ml</label>
+          <input class="log-qty-input" id="agua-custom" type="number" placeholder="ex: 300" min="0" max="3000" step="50"/>
+        </div>
+
+        <div class="sheet__section log-agua-hist">
+          <span class="eyebrow">últimos 7 dias</span>
+          <div class="log-agua-week">
+            <div class="lww-day"><i style="--h:70%"></i><span>seg</span><b>2.0</b></div>
+            <div class="lww-day"><i style="--h:85%"></i><span>ter</span><b>2.4</b></div>
+            <div class="lww-day"><i style="--h:60%"></i><span>qua</span><b>1.7</b></div>
+            <div class="lww-day"><i style="--h:90%"></i><span>qui</span><b>2.5</b></div>
+            <div class="lww-day is-low"><i style="--h:42%"></i><span>sex</span><b>1.2</b></div>
+            <div class="lww-day is-today"><i style="--h:64%" id="lww-today-bar"></i><span>sáb</span><b id="lww-today-val">1.8</b></div>
+            <div class="lww-day is-future"><i style="--h:0%"></i><span>dom</span><b>—</b></div>
+          </div>
+        </div>
+
+        <button class="btn btn--primary btn--full" id="agua-salvar">adicionar</button>
+        <button class="btn btn--text btn--full" data-close>fechar</button>
+      </div>
+    </div>
+
+    <!-- ───────── MODAL · treinos da semana ───────── -->
+    <div class="sheet" id="sheet-log-treino-semana" aria-hidden="true">
+      <div class="sheet__backdrop" data-close></div>
+      <div class="sheet__panel" role="dialog" aria-label="meus treinos">
+        <div class="sheet__grab"></div>
+
+        <div class="sheet__head">
+          <span class="eyebrow">meus treinos</span>
+          <h2 class="display display--sm">semana de hoje</h2>
+          <p class="lead lead--sm">toque num dia pra registrar ou revisar.</p>
+        </div>
+
+        <div class="sheet__section">
+          <div class="treino-semana" id="treino-semana-list"></div>
+        </div>
+
+        <button class="btn btn--text btn--full" data-close>fechar</button>
+      </div>
+    </div>
+
     <div class="sheet" id="sheet-log-treino" aria-hidden="true">
       <div class="sheet__backdrop" data-close></div>
       <div class="sheet__panel" role="dialog" aria-label="log de treino">
