@@ -5440,3 +5440,449 @@ function abrirLogRefeicao() {
     }, 200);
   });
 })();
+
+// ═════════════════════════════════════════════════════════
+// ENGINE DE SCORE/INSIGHTS DINÂMICOS · lê logs salvos e gera análise
+// ═════════════════════════════════════════════════════════
+function _getLogs() {
+  const read = (k) => {
+    try { return JSON.parse(localStorage.getItem(k) || '[]'); } catch (e) { return []; }
+  };
+  return {
+    sono: read('circa_log_sono'),
+    humor: read('circa_log_humor'),
+    treino: read('circa_workout_log'),
+    refeicao: read('circa_log_refeicao'),
+    aguaHoje: parseInt(localStorage.getItem('circa_agua_hoje') || '1800', 10),
+    aguaMeta: 2800,
+  };
+}
+
+function calcularScoreDinamico() {
+  const d = _getLogs();
+
+  let corpo = 50;
+  const lastSono = d.sono[d.sono.length - 1];
+  if (lastSono && lastSono.dur) {
+    const m = lastSono.dur.match(/(\d+)h/);
+    const h = m ? parseInt(m[1], 10) : 0;
+    if (h >= 7 && h <= 9) corpo += 18;
+    else if (h >= 6) corpo += 8;
+    else corpo -= 5;
+    if (lastSono.qualidade) corpo += (lastSono.qualidade - 3) * 4;
+  }
+  const treinosHoje = d.treino.filter(t => new Date(t.data).toDateString() === new Date().toDateString());
+  if (treinosHoje.length) corpo += 15;
+  const pctAgua = Math.min(1, d.aguaHoje / d.aguaMeta);
+  corpo += Math.round(pctAgua * 12);
+
+  let mente = 50;
+  const lastHumor = d.humor[d.humor.length - 1];
+  if (lastHumor) {
+    mente += ((lastHumor.sens || 3) - 3) * 8;
+    if (lastHumor.energia) mente += (lastHumor.energia - 3) * 3;
+    if (lastHumor.foco)    mente += (lastHumor.foco - 3) * 3;
+  }
+
+  let espirito = 60;
+  try {
+    const profile = JSON.parse(localStorage.getItem('circa_profile') || '{}');
+    if (profile && Object.keys(profile).length) espirito += 10;
+  } catch (e) {}
+  if (lastSono && lastSono.sens >= 4) espirito += 8;
+  if (treinosHoje.length && treinosHoje[treinosHoje.length - 1].sensacao >= 4) espirito += 8;
+
+  corpo    = Math.max(0, Math.min(100, Math.round(corpo)));
+  mente    = Math.max(0, Math.min(100, Math.round(mente)));
+  espirito = Math.max(0, Math.min(100, Math.round(espirito)));
+  const total = Math.round(corpo * 0.4 + mente * 0.35 + espirito * 0.25);
+
+  return { total, corpo, mente, espirito, logs: d };
+}
+
+function gerarInsightsDinamicos() {
+  const s = calcularScoreDinamico();
+  const d = s.logs;
+  const ins = [];
+
+  const lastSono = d.sono[d.sono.length - 1];
+  if (lastSono) {
+    const m = lastSono.dur && lastSono.dur.match(/(\d+)h\s*(\d+)min/);
+    const totalMin = m ? parseInt(m[1], 10) * 60 + parseInt(m[2], 10) : 0;
+    if (totalMin > 0 && totalMin < 420) {
+      ins.push({ tag: 'corpo', cor: '#7B8BB8', txt: `dormiu ${lastSono.dur}, abaixo da meta. teu corpo tá pedindo 7h.` });
+    } else if (totalMin >= 420 && totalMin <= 540) {
+      ins.push({ tag: 'corpo', cor: '#7B8BB8', txt: `${lastSono.dur} de sono, dentro da meta. recuperação ok.` });
+    }
+    if (lastSono.cafeina === 'sim') {
+      ins.push({ tag: 'corpo', cor: '#7B8BB8', txt: `cafeína após 14h ontem. sono costuma ficar mais fragmentado.` });
+    }
+  } else {
+    ins.push({ tag: 'corpo', cor: '#7B8BB8', txt: `registra teu sono pro circa começar a cruzar padrões.` });
+  }
+
+  const lastHumor = d.humor[d.humor.length - 1];
+  if (lastHumor && lastHumor.sens) {
+    if (lastHumor.sens <= 2) {
+      ins.push({ tag: 'mente', cor: '#E8A87C', txt: `humor baixo no último check-in. movimento e sol costumam ajudar.` });
+    } else if (lastHumor.sens >= 4) {
+      ins.push({ tag: 'mente', cor: '#E8A87C', txt: `humor alto no último check-in. observa o que tá puxando.` });
+    }
+  } else {
+    ins.push({ tag: 'mente', cor: '#E8A87C', txt: `check-in rápido de humor ajuda o circa a cruzar com teu dia.` });
+  }
+
+  const treinosHoje = d.treino.filter(t => new Date(t.data).toDateString() === new Date().toDateString());
+  if (treinosHoje.length) {
+    const t = treinosHoje[treinosHoje.length - 1];
+    if (t.intensidade >= 4) {
+      ins.push({ tag: 'corpo', cor: '#7B8BB8', txt: `treino intenso hoje. hidrata mais e cuida do sono à noite.` });
+    } else if (t.intensidade) {
+      ins.push({ tag: 'corpo', cor: '#7B8BB8', txt: `treino moderado hoje. consistência vale mais que intensidade.` });
+    }
+  } else if (d.treino.length) {
+    const last = d.treino[d.treino.length - 1];
+    const diasAtras = Math.floor((Date.now() - new Date(last.data).getTime()) / (24 * 60 * 60 * 1000));
+    if (diasAtras >= 2) {
+      ins.push({ tag: 'corpo', cor: '#7B8BB8', txt: `último treino há ${diasAtras} dias. corpo pedindo movimento.` });
+    }
+  }
+
+  const pctAgua = (d.aguaHoje / d.aguaMeta) * 100;
+  if (pctAgua < 60) {
+    ins.push({ tag: 'corpo', cor: '#7B8BB8', txt: `${Math.round(pctAgua)}% da meta de água. mira 500ml nas próximas horas.` });
+  }
+
+  const refHoje = d.refeicao.filter(r => new Date(r.ts).toDateString() === new Date().toDateString());
+  if (!refHoje.length) {
+    ins.push({ tag: 'mente', cor: '#E8A87C', txt: `nenhuma refeição registrada hoje. alimentação afeta humor direto.` });
+  }
+
+  return { score: s, insights: ins };
+}
+
+function atualizarJornadaComLogs() {
+  const r = gerarInsightsDinamicos();
+  const s = r.score;
+
+  const heroVal = document.getElementById('j-hero-value');
+  const ringFill = document.getElementById('j-ring-fill');
+  if (heroVal) heroVal.textContent = s.total;
+  if (ringFill) ringFill.setAttribute('stroke-dasharray', `${s.total} 100`);
+
+  const tripe = document.querySelectorAll('.jsec-tripe .jt b');
+  if (tripe[0]) tripe[0].textContent = s.corpo;
+  if (tripe[1]) tripe[1].textContent = s.mente;
+  if (tripe[2]) tripe[2].textContent = s.espirito;
+
+  const updates = [
+    { val: 'j-score-corpo',    ring: 'j-ring-corpo',    v: s.corpo },
+    { val: 'j-score-mente',    ring: 'j-ring-mente',    v: s.mente },
+    { val: 'j-score-espirito', ring: 'j-ring-espirito', v: s.espirito },
+  ];
+  updates.forEach(u => {
+    const el = document.getElementById(u.val);
+    const ring = document.getElementById(u.ring);
+    if (el) el.textContent = u.v;
+    if (ring) ring.setAttribute('stroke-dasharray', `${u.v} 100`);
+  });
+
+  const list = document.querySelector('.j-insights-list');
+  if (list) {
+    list.innerHTML = '';
+    r.insights.slice(0, 5).forEach(ins => {
+      const div = document.createElement('div');
+      div.className = 'j-insight';
+      div.style.borderLeftColor = ins.cor;
+      div.innerHTML = `<p class="j-insight-lbl" style="color:${ins.cor}"><i class="j-ins-dot" style="background:${ins.cor}"></i>${ins.tag}</p><p class="j-insight-text">${ins.txt}</p>`;
+      list.appendChild(div);
+    });
+  }
+}
+
+function abrirScoreBreakdown() {
+  const r = gerarInsightsDinamicos();
+  const s = r.score;
+  const d = s.logs;
+
+  document.getElementById('sbd-total').textContent = s.total;
+
+  const partes = [];
+  if (d.sono.length) partes.push('sono');
+  if (d.humor.length) partes.push('humor');
+  if (d.treino.length) partes.push('treino');
+  if (d.refeicao.length) partes.push('refeição');
+  partes.push('água');
+  document.getElementById('sbd-resumo').textContent = partes.length > 1
+    ? `cruzando ${partes.join(', ')}.`
+    : `comece a registrar pra ficar mais preciso.`;
+
+  const ul = document.getElementById('sbd-composicao');
+  ul.innerHTML = '';
+  const comp = [
+    { lbl: 'corpo',    val: s.corpo,    peso: '40%', cor: '#7B8BB8' },
+    { lbl: 'mente',    val: s.mente,    peso: '35%', cor: '#E8A87C' },
+    { lbl: 'espírito', val: s.espirito, peso: '25%', cor: '#A89CC8' },
+  ];
+  comp.forEach(c => {
+    const li = document.createElement('li');
+    li.className = 'sbd-item';
+    li.style.setProperty('--c', c.cor);
+    li.innerHTML = `
+      <span class="sbd-item__dot" style="background:${c.cor}"></span>
+      <span class="sbd-item__lbl">${c.lbl}</span>
+      <span class="sbd-item__val">${c.val}</span>
+      <span class="sbd-item__sub">${c.peso}</span>
+    `;
+    ul.appendChild(li);
+  });
+
+  const motivos = document.getElementById('sbd-motivos');
+  motivos.innerHTML = '';
+  r.insights.slice(0, 4).forEach(ins => {
+    const li = document.createElement('li');
+    li.textContent = ins.txt;
+    motivos.appendChild(li);
+  });
+
+  if (typeof openSheet === 'function') openSheet('sheet-score-breakdown');
+}
+
+(function () {
+  const btn = document.getElementById('j-hero-btn');
+  if (btn) btn.addEventListener('click', (e) => {
+    e.preventDefault();
+    try { hap(10); } catch (er) {}
+    abrirScoreBreakdown();
+  });
+})();
+
+function abrirDimDetalhes(dim) {
+  const r = gerarInsightsDinamicos();
+  const s = r.score;
+  const d = s.logs;
+  const cores = { corpo: '#7B8BB8', mente: '#E8A87C', espirito: '#A89CC8' };
+  const titulos = { corpo: 'corpo', mente: 'mente', espirito: 'espírito' };
+  const subs = {
+    corpo: 'sono, treino, hidratação e suplementação.',
+    mente: 'humor, energia, foco.',
+    espirito: 'propósito, conexões, rituais.',
+  };
+
+  document.getElementById('dim-eye').textContent = 'dimensão';
+  const t = document.getElementById('dim-title');
+  t.textContent = titulos[dim] || dim;
+  t.style.color = cores[dim] || 'var(--fg)';
+  document.getElementById('dim-sub').textContent = subs[dim] || '';
+
+  const bd = document.getElementById('dim-breakdown');
+  bd.innerHTML = '';
+
+  if (dim === 'corpo') {
+    const lastSono = d.sono[d.sono.length - 1];
+    const treinosHoje = d.treino.filter(t => new Date(t.data).toDateString() === new Date().toDateString());
+    const metrics = [
+      { lbl: 'sono',    val: lastSono ? lastSono.dur : '—',           desc: lastSono ? `qualidade ${lastSono.qualidade || '—'}/5` : 'não registrado' },
+      { lbl: 'água',    val: `${(d.aguaHoje/1000).toFixed(1)}L`,       desc: `meta ${(d.aguaMeta/1000).toFixed(1)}L · ${Math.round(d.aguaHoje/d.aguaMeta*100)}%` },
+      { lbl: 'treino',  val: treinosHoje.length ? (treinosHoje[0].duracaoMin ? `${treinosHoje[0].duracaoMin}min` : 'feito') : '—', desc: treinosHoje.length ? `intensidade ${treinosHoje[0].intensidade || '—'}/5` : 'sem treino hoje' },
+      { lbl: 'suplementos', val: '1/3', desc: 'creatina · 2 pendentes' },
+    ];
+    bd.innerHTML = `<div class="j-metrics">${metrics.map(m => `
+      <div class="j-card"><p class="j-card-lbl">${m.lbl}</p><p class="j-card-val">${m.val}</p><p class="j-card-desc">${m.desc}</p></div>
+    `).join('')}</div>`;
+  }
+
+  if (dim === 'mente') {
+    const lastHumor = d.humor[d.humor.length - 1];
+    const emojiMap = { 1:'😩', 2:'😕', 3:'😐', 4:'🙂', 5:'🔥' };
+    const labelMap = { 1:'muito mal', 2:'mal', 3:'ok', 4:'bem', 5:'incrível' };
+    bd.innerHTML = `
+      <div class="j-metrics">
+        <div class="j-card"><p class="j-card-lbl">humor</p><p class="j-card-val">${lastHumor?.sens ? emojiMap[lastHumor.sens] : '—'}</p><p class="j-card-desc">${lastHumor?.sens ? labelMap[lastHumor.sens] : 'não registrado'}</p></div>
+        <div class="j-card"><p class="j-card-lbl">energia</p><p class="j-card-val">${lastHumor?.energia || '—'}<span>/5</span></p><p class="j-card-desc">último check-in</p></div>
+        <div class="j-card"><p class="j-card-lbl">foco</p><p class="j-card-val">${lastHumor?.foco || '—'}<span>/5</span></p><p class="j-card-desc">último check-in</p></div>
+        <div class="j-card"><p class="j-card-lbl">registros</p><p class="j-card-val">${d.humor.length}</p><p class="j-card-desc">total de check-ins</p></div>
+      </div>`;
+  }
+
+  if (dim === 'espirito') {
+    bd.innerHTML = `
+      <p class="j-small" style="margin-top:0">o que tocou você hoje?</p>
+      <div class="j-areas">
+        <div class="j-area is-on">fé</div>
+        <div class="j-area">silêncio</div>
+        <div class="j-area">natureza</div>
+        <div class="j-area">conexão</div>
+        <div class="j-area">propósito</div>
+        <div class="j-area">gratidão</div>
+      </div>`;
+    bd.querySelectorAll('.j-area').forEach((a) => {
+      a.addEventListener('click', () => a.classList.toggle('is-on'));
+    });
+  }
+
+  const ul = document.getElementById('dim-insights');
+  ul.innerHTML = '';
+  r.insights.filter(i => i.tag === dim).slice(0, 3).forEach(ins => {
+    const li = document.createElement('li');
+    li.textContent = ins.txt;
+    ul.appendChild(li);
+  });
+  if (!ul.children.length) {
+    const li = document.createElement('li');
+    li.textContent = 'registra mais logs pra circa começar a cruzar padrões.';
+    ul.appendChild(li);
+  }
+
+  if (typeof openSheet === 'function') openSheet('sheet-dim-detalhes');
+}
+
+(function () {
+  document.querySelectorAll('.j-dim-btn, .j-ver-detalhes').forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const dim = btn.dataset.dim;
+      if (!dim) return;
+      try { hap(8); } catch (er) {}
+      abrirDimDetalhes(dim);
+    });
+  });
+})();
+
+// botão C da nav abre o chat
+(function () {
+  const jCirca = document.getElementById('j-nav-circa');
+  if (!jCirca) return;
+  const fresh = jCirca.cloneNode(true);
+  jCirca.parentNode.replaceChild(fresh, jCirca);
+  fresh.addEventListener('click', () => {
+    try { hap(10); } catch (e) {}
+    if (typeof tocarSomCirca === 'function') tocarSomCirca();
+    if (typeof openChat === 'function') setTimeout(() => openChat(), 120);
+  });
+})();
+
+// perfil consolidado
+function renderPerfilMental() {
+  let profile = {};
+  try { profile = JSON.parse(localStorage.getItem('circa_profile') || '{}'); } catch (e) {}
+  const humorArr = (() => { try { return JSON.parse(localStorage.getItem('circa_log_humor') || '[]'); } catch (e) { return []; } })();
+  const lastHumor = humorArr[humorArr.length - 1];
+  const pane = document.getElementById('perfil-mental');
+  if (!pane) return;
+  pane.innerHTML = `
+    <div class="perfil-group">
+      <p class="perfil-group__head">perfil de motivação</p>
+      <div class="perfil-row"><span class="perfil-row__lbl">arquétipo</span><span class="perfil-row__val">${profile.nome || profile.label || profile.perfil || 'em construção'}</span></div>
+      <div class="perfil-row"><span class="perfil-row__lbl">energia média</span><span class="perfil-row__val">${lastHumor?.energia ? lastHumor.energia + '/5' : '—'}</span></div>
+      <div class="perfil-row"><span class="perfil-row__lbl">foco médio</span><span class="perfil-row__val">${lastHumor?.foco ? lastHumor.foco + '/5' : '—'}</span></div>
+    </div>
+    <div class="perfil-group">
+      <p class="perfil-group__head">humor recente</p>
+      ${(!humorArr.length
+        ? '<div class="perfil-row"><span class="perfil-row__lbl">sem registros ainda</span></div>'
+        : humorArr.slice(-5).reverse().map(h => {
+            const emoji = { 1:'😩', 2:'😕', 3:'😐', 4:'🙂', 5:'🔥' }[h.sens] || '—';
+            const quando = new Date(h.ts).toLocaleDateString('pt-BR', { day:'numeric', month:'short' });
+            return `<div class="perfil-row"><span class="perfil-row__lbl">${quando}</span><span class="perfil-row__val">${emoji}</span></div>`;
+          }).join(''))}
+    </div>
+  `;
+}
+
+function renderPerfilSaude() {
+  let fisio = {};
+  try { fisio = JSON.parse(localStorage.getItem('circa_fisio') || '{}'); } catch (e) {}
+  const sonoArr = (() => { try { return JSON.parse(localStorage.getItem('circa_log_sono') || '[]'); } catch (e) { return []; } })();
+  const mediaDuMin = (() => {
+    if (!sonoArr.length) return null;
+    const mins = sonoArr.slice(-7).map(s => {
+      const m = s.dur && s.dur.match(/(\d+)h\s*(\d+)min/);
+      return m ? parseInt(m[1],10)*60 + parseInt(m[2],10) : 0;
+    }).filter(n => n > 0);
+    if (!mins.length) return null;
+    return Math.round(mins.reduce((a,b) => a+b, 0) / mins.length);
+  })();
+
+  const pane = document.getElementById('perfil-saude');
+  if (!pane) return;
+  pane.innerHTML = `
+    <div class="perfil-group">
+      <p class="perfil-group__head">exames (último)</p>
+      <div class="perfil-row"><span class="perfil-row__lbl">homocisteína</span><span class="perfil-row__val">28 µmol/L</span></div>
+      <div class="perfil-row"><span class="perfil-row__lbl">ferritina</span><span class="perfil-row__val">484 ng/mL</span></div>
+      <div class="perfil-row"><span class="perfil-row__lbl">idade biológica</span><span class="perfil-row__val">30.8 anos</span></div>
+      <div class="perfil-row"><span class="perfil-row__lbl">marcadores ok</span><span class="perfil-row__val">45/47</span></div>
+    </div>
+    <div class="perfil-group">
+      <p class="perfil-group__head">sono (últimos 7 dias)</p>
+      <div class="perfil-row"><span class="perfil-row__lbl">média</span><span class="perfil-row__val">${mediaDuMin ? `${Math.floor(mediaDuMin/60)}h${String(mediaDuMin%60).padStart(2,'0')}` : '—'}</span></div>
+      <div class="perfil-row"><span class="perfil-row__lbl">registros</span><span class="perfil-row__val">${sonoArr.length}</span></div>
+    </div>
+    <div class="perfil-group">
+      <p class="perfil-group__head">fisio (onboarding)</p>
+      <div class="perfil-row"><span class="perfil-row__lbl">trilha</span><span class="perfil-row__val">${fisio.trilha || '—'}</span></div>
+      <div class="perfil-row"><span class="perfil-row__lbl">pontuação</span><span class="perfil-row__val">${fisio.score != null ? fisio.score + '/30' : '—'}</span></div>
+    </div>
+  `;
+}
+
+function renderPerfilFisico() {
+  let profile = {};
+  try { profile = JSON.parse(localStorage.getItem('circa_profile') || '{}'); } catch (e) {}
+  const treinoArr = (() => { try { return JSON.parse(localStorage.getItem('circa_workout_log') || '[]'); } catch (e) { return []; } })();
+  const ultimoTreino = treinoArr[treinoArr.length - 1];
+  const treinosSemana = treinoArr.filter(t => (Date.now() - new Date(t.data).getTime()) < 7 * 24 * 60 * 60 * 1000);
+
+  const pane = document.getElementById('perfil-fisico');
+  if (!pane) return;
+  pane.innerHTML = `
+    <div class="perfil-group">
+      <p class="perfil-group__head">composição corporal</p>
+      <div class="perfil-row"><span class="perfil-row__lbl">idade real</span><span class="perfil-row__val">${profile.idade || '32'} anos</span></div>
+      <div class="perfil-row"><span class="perfil-row__lbl">altura</span><span class="perfil-row__val">${profile.altura || '1.80'} m</span></div>
+      <div class="perfil-row"><span class="perfil-row__lbl">peso</span><span class="perfil-row__val">${profile.peso || '78'} kg</span></div>
+    </div>
+    <div class="perfil-group">
+      <p class="perfil-group__head">atividade</p>
+      <div class="perfil-row"><span class="perfil-row__lbl">último treino</span><span class="perfil-row__val">${ultimoTreino ? new Date(ultimoTreino.data).toLocaleDateString('pt-BR', { day:'numeric', month:'short' }) : '—'}</span></div>
+      <div class="perfil-row"><span class="perfil-row__lbl">treinos semana</span><span class="perfil-row__val">${treinosSemana.length}</span></div>
+      <div class="perfil-row"><span class="perfil-row__lbl">total registrados</span><span class="perfil-row__val">${treinoArr.length}</span></div>
+    </div>
+  `;
+}
+
+function abrirPerfil() {
+  renderPerfilMental();
+  renderPerfilSaude();
+  renderPerfilFisico();
+  if (typeof openSheet === 'function') openSheet('sheet-perfil');
+}
+
+(function () {
+  document.querySelectorAll('.perfil-tab').forEach((t) => {
+    t.addEventListener('click', () => {
+      const tab = t.dataset.perfilTab;
+      document.querySelectorAll('.perfil-tab').forEach(x => x.classList.toggle('is-on', x === t));
+      document.querySelectorAll('.perfil-pane').forEach(p => p.classList.toggle('is-on', p.dataset.perfilPane === tab));
+      try { hap(4); } catch (e) {}
+    });
+  });
+  const btn = document.getElementById('j-abrir-perfil');
+  if (btn) btn.addEventListener('click', () => {
+    try { hap(10); } catch (e) {}
+    abrirPerfil();
+  });
+})();
+
+// hook: toda vez que abrir a jornada, atualiza com dados frescos
+(function () {
+  const _origOpen = window.openJornada;
+  if (typeof _origOpen !== 'function') return;
+  window.openJornada = function () {
+    _origOpen();
+    setTimeout(() => {
+      try { atualizarJornadaComLogs(); } catch (e) {}
+    }, 80);
+  };
+})();

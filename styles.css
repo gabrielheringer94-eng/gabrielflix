@@ -4791,6 +4791,13 @@ canvas#j-roda { width: 220px; height: 220px; cursor: pointer; }
   font-size: 11px; color: var(--fg-dim);
   text-align: center; margin-top: 16px; letter-spacing: 1px;
 }
+.j-end-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 18px;
+}
 .j-refazer {
   display: block;
   margin: 18px auto 0;
@@ -4967,6 +4974,160 @@ canvas#j-roda { width: 220px; height: 220px; cursor: pointer; }
   font-size: 11px;
   color: var(--accent);
   letter-spacing: 0.02em;
+}
+
+/* botão "ver detalhes" nas dimensões */
+.j-ver-detalhes {
+  display: inline-block;
+  margin: 18px auto 0;
+  background: transparent;
+  border: 1px solid var(--fg-faint);
+  color: var(--fg-muted);
+  font-family: var(--sans);
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: lowercase;
+  padding: 11px 20px;
+  border-radius: var(--r-chip, 10px);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.j-ver-detalhes:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* pausa Circa · logo C mesmo estilo da nav inferior */
+.j-pausa-orbe--c {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.j-pausa-orbe--c > svg {
+  position: relative;
+  z-index: 2;
+  width: 70%;
+  height: 70%;
+  display: block;
+  filter: drop-shadow(0 0 12px rgba(212, 184, 150, 0.4));
+  animation: jCLogoPulse 3s ease-in-out infinite;
+}
+@keyframes jCLogoPulse {
+  0%, 100% { filter: drop-shadow(0 0 8px rgba(212, 184, 150, 0.35)); transform: scale(1); }
+  50%      { filter: drop-shadow(0 0 18px rgba(212, 184, 150, 0.6)); transform: scale(1.04); }
+}
+.j-pausa-orbe__halo {
+  position: absolute;
+  inset: -20%;
+  width: 140% !important;
+  height: 140% !important;
+  z-index: 1;
+  opacity: 0.5;
+}
+
+/* score breakdown · lista de composição */
+.sbd-list {
+  list-style: none;
+  padding: 0;
+  margin: 8px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.sbd-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--bg-raised);
+  border: 1px solid var(--fg-faint);
+  border-left: 2px solid var(--c, var(--accent));
+  padding: 12px 14px;
+  border-radius: var(--r-card, 14px);
+}
+.sbd-item__dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  flex-shrink: 0;
+}
+.sbd-item__lbl {
+  flex: 1;
+  font-size: 13px;
+  color: var(--fg);
+  font-family: var(--sans);
+}
+.sbd-item__val {
+  font-family: var(--serif);
+  font-size: 20px;
+  color: var(--fg);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+.sbd-item__sub {
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  color: var(--fg-dim);
+  text-transform: uppercase;
+}
+
+/* perfil consolidado · tabs */
+.perfil-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  margin: 0 0 14px;
+}
+.perfil-tab {
+  background: transparent;
+  border: 1px solid var(--fg-faint);
+  color: var(--fg-muted);
+  font-family: var(--sans);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  padding: 10px 0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-radius: var(--r-chip, 10px);
+}
+.perfil-tab:hover { border-color: var(--accent-dim); color: var(--fg); }
+.perfil-tab.is-on {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-dim);
+}
+.perfil-pane { display: none; }
+.perfil-pane.is-on { display: block; }
+.perfil-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--fg-faint);
+  font-family: var(--sans);
+  font-size: 13px;
+}
+.perfil-row:last-child { border-bottom: none; }
+.perfil-row__lbl {
+  color: var(--fg-muted);
+  letter-spacing: 0.02em;
+}
+.perfil-row__val {
+  color: var(--fg);
+  font-family: var(--serif);
+  font-size: 15px;
+}
+.perfil-group {
+  margin-bottom: 14px;
+}
+.perfil-group__head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  padding-top: 8px;
 }
 
 /* botões sim/não */
