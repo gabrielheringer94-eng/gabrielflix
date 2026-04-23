@@ -1897,6 +1897,43 @@
     </div>
 
     <!-- ───────── SHEET · log adaptativo por modalidade ───────── -->
+    <!-- ───────── MODAL · alterar treino (seletor de grupo + substitutos) ───────── -->
+    <div class="sheet" id="sheet-trocar-treino" aria-hidden="true">
+      <div class="sheet__backdrop" data-close></div>
+      <div class="sheet__panel" role="dialog" aria-label="alterar treino">
+        <div class="sheet__grab"></div>
+
+        <div class="sheet__head">
+          <span class="eyebrow" id="tr-eye">alterar treino</span>
+          <h2 class="display display--sm" id="tr-title">qual parte<br/>você quer trocar?</h2>
+          <p class="lead lead--sm" id="tr-sub">escolha o grupo muscular. depois, substitutos equivalentes.</p>
+        </div>
+
+        <!-- STEP 1: grupo muscular -->
+        <div class="sheet__section" id="tr-step-grupo">
+          <div class="tr-grupos">
+            <button class="tr-grupo" data-grupo="peito"><span>peito</span></button>
+            <button class="tr-grupo" data-grupo="costas"><span>costas</span></button>
+            <button class="tr-grupo" data-grupo="pernas"><span>pernas</span></button>
+            <button class="tr-grupo" data-grupo="ombro"><span>ombro</span></button>
+            <button class="tr-grupo" data-grupo="biceps"><span>bíceps</span></button>
+            <button class="tr-grupo" data-grupo="triceps"><span>tríceps</span></button>
+            <button class="tr-grupo" data-grupo="core"><span>core</span></button>
+            <button class="tr-grupo" data-grupo="cardio"><span>cardio</span></button>
+          </div>
+        </div>
+
+        <!-- STEP 2: substitutos -->
+        <div class="sheet__section" id="tr-step-subs" style="display:none;">
+          <span class="eyebrow" id="tr-subs-eye">substitutos recomendados</span>
+          <ul class="tr-subs-list" id="tr-subs-list"></ul>
+          <button class="btn btn--text btn--full" id="tr-voltar">← voltar</button>
+        </div>
+
+        <button class="btn btn--text btn--full" data-close>fechar</button>
+      </div>
+    </div>
+
     <!-- ───────── MODAL · log de humor ───────── -->
     <div class="sheet" id="sheet-log-humor" aria-hidden="true">
       <div class="sheet__backdrop" data-close></div>
@@ -2038,6 +2075,17 @@
         </div>
 
         <div class="sheet__section">
+          <span class="eyebrow">qualidade · 1 a 5</span>
+          <div class="log-dots-scale" id="sono-qualidade">
+            <button class="log-dot" data-v="1">1</button>
+            <button class="log-dot" data-v="2">2</button>
+            <button class="log-dot" data-v="3">3</button>
+            <button class="log-dot" data-v="4">4</button>
+            <button class="log-dot" data-v="5">5</button>
+          </div>
+        </div>
+
+        <div class="sheet__section">
           <span class="eyebrow">como você acordou</span>
           <div class="sensacao-grid">
             <button class="sensacao" data-sono-sens="1"><span>😩</span><small>exausto</small></button>
@@ -2046,6 +2094,46 @@
             <button class="sensacao" data-sono-sens="4"><span>🙂</span><small>bem</small></button>
             <button class="sensacao" data-sono-sens="5"><span>🔥</span><small>ótimo</small></button>
           </div>
+        </div>
+
+        <div class="sheet__section">
+          <span class="eyebrow">interrupções durante a noite?</span>
+          <div class="log-yn-row">
+            <button class="log-yn" data-sono-interr="sim">sim</button>
+            <button class="log-yn is-active" data-sono-interr="nao">não</button>
+          </div>
+        </div>
+
+        <div class="sheet__section">
+          <span class="eyebrow">consumiu cafeína após 14h?</span>
+          <div class="log-yn-row">
+            <button class="log-yn" data-sono-cafe="sim">sim</button>
+            <button class="log-yn is-active" data-sono-cafe="nao">não</button>
+          </div>
+        </div>
+
+        <div class="sheet__section">
+          <span class="eyebrow">álcool à noite?</span>
+          <div class="log-yn-row">
+            <button class="log-yn" data-sono-alc="sim">sim</button>
+            <button class="log-yn is-active" data-sono-alc="nao">não</button>
+          </div>
+        </div>
+
+        <div class="sheet__section">
+          <span class="eyebrow">observação · opcional</span>
+          <textarea class="reflect-text" id="sono-nota" rows="2" placeholder="algo que queira registrar…"></textarea>
+        </div>
+
+        <!-- resumo da semana (só aparece se tiver 2+ registros) -->
+        <div class="sheet__section log-semana" id="sono-semana-wrap" style="display:none;">
+          <span class="eyebrow">sua semana</span>
+          <div class="log-semana-grid">
+            <div class="ls-item"><small>média</small><strong id="sono-media">—</strong></div>
+            <div class="ls-item"><small>consistência</small><strong id="sono-consist">—</strong></div>
+            <div class="ls-item"><small>na meta</small><strong id="sono-meta">—</strong></div>
+          </div>
+          <ul class="log-insights" id="sono-insights"></ul>
         </div>
 
         <button class="btn btn--primary btn--full" id="sono-salvar">registrar sono</button>
@@ -2134,23 +2222,47 @@
           <div class="log-campos" id="log-t-campos"></div>
         </div>
 
-        <div class="sheet__section">
-          <span class="eyebrow">como você se sentiu</span>
-          <div class="sensacao-grid">
-            <button class="sensacao" data-sens="1"><span>😩</span><small>muito mal</small></button>
-            <button class="sensacao" data-sens="2"><span>😕</span><small>mal</small></button>
-            <button class="sensacao" data-sens="3"><span>😐</span><small>ok</small></button>
-            <button class="sensacao" data-sens="4"><span>🙂</span><small>bem</small></button>
-            <button class="sensacao" data-sens="5"><span>🔥</span><small>incrível</small></button>
+        <div class="log-time-row">
+          <div class="sheet__section log-time-cell">
+            <label class="eyebrow" for="log-t-inicio">início</label>
+            <input class="log-time-input" id="log-t-inicio" type="time"/>
+          </div>
+          <div class="sheet__section log-time-cell">
+            <label class="eyebrow" for="log-t-fim">fim</label>
+            <input class="log-time-input" id="log-t-fim" type="time"/>
           </div>
         </div>
 
         <div class="sheet__section">
-          <span class="eyebrow">nota do dia · opcional</span>
-          <textarea class="reflect-text" id="log-t-nota" rows="3" placeholder="como foi? algo que valha registrar…"></textarea>
+          <span class="eyebrow">intensidade percebida · 1 a 5</span>
+          <div class="log-dots-scale" id="log-t-intensidade">
+            <button class="log-dot" data-v="1">1</button>
+            <button class="log-dot" data-v="2">2</button>
+            <button class="log-dot" data-v="3">3</button>
+            <button class="log-dot" data-v="4">4</button>
+            <button class="log-dot" data-v="5">5</button>
+          </div>
+          <span class="log-small-hint" id="log-t-intensidade-hint">leve · moderado · forte · muito forte · máximo</span>
+        </div>
+
+        <div class="sheet__section">
+          <span class="eyebrow">humor pós-treino</span>
+          <div class="sensacao-grid">
+            <button class="sensacao" data-sens="1"><span>😩</span><small>exausto</small></button>
+            <button class="sensacao" data-sens="2"><span>😕</span><small>cansado</small></button>
+            <button class="sensacao" data-sens="3"><span>😐</span><small>neutro</small></button>
+            <button class="sensacao" data-sens="4"><span>🙂</span><small>bem</small></button>
+            <button class="sensacao" data-sens="5"><span>🔥</span><small>energizado</small></button>
+          </div>
+        </div>
+
+        <div class="sheet__section">
+          <span class="eyebrow">observação rápida · opcional</span>
+          <textarea class="reflect-text" id="log-t-nota" rows="2" placeholder="algo que valha registrar…"></textarea>
         </div>
 
         <button class="btn btn--primary btn--full" id="log-t-salvar">registrar treino</button>
+        <button class="btn btn--text btn--full" id="log-t-pular">pular, só marcar feito</button>
         <button class="btn btn--text btn--full" data-close>cancelar</button>
       </div>
     </div>
@@ -2607,6 +2719,7 @@
             <p class="j-insight-text">em 30 dias melhorou: energia, sono e dias bons. não foi por acaso, foi por escolha.</p>
           </div>
           <p class="j-end">você chegou ao fim da sua jornada de hoje.</p>
+          <button class="j-refazer" id="j-refazer-onb">refazer perguntas iniciais</button>
         </section>
 
       </div>

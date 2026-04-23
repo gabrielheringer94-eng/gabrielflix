@@ -1570,12 +1570,68 @@ function openLogTreino(sportKey) {
 
   // reset sensação e nota
   sensSel = null;
-  document.querySelectorAll('.sensacao').forEach((s) => s.classList.remove('is-on'));
+  treinoIntensidade = null;
+  document.querySelectorAll('#sheet-log-treino .sensacao').forEach((s) => s.classList.remove('is-on'));
+  document.querySelectorAll('#log-t-intensidade .log-dot').forEach((x) => x.classList.remove('is-active'));
   const notaEl = document.getElementById('log-t-nota');
   if (notaEl) notaEl.value = '';
 
+  // auto-captura horário · início = 1h atrás, fim = agora, só sugestão
+  const now = new Date();
+  const past = new Date(now.getTime() - 60 * 60 * 1000);
+  const fmt = (d) => String(d.getHours()).padStart(2,'0') + ':' + String(d.getMinutes()).padStart(2,'0');
+  const inicio = document.getElementById('log-t-inicio');
+  const fim = document.getElementById('log-t-fim');
+  if (inicio) inicio.value = fmt(past);
+  if (fim)    fim.value    = fmt(now);
+
   openSheet('sheet-log-treino');
 }
+
+let treinoIntensidade = null;
+const INTENSIDADE_HINTS = [
+  '',
+  'leve · mal subiu o pulso',
+  'moderado · conseguia conversar',
+  'forte · fala picada',
+  'muito forte · falar travou',
+  'máximo · tudo no limite',
+];
+document.querySelectorAll('#log-t-intensidade .log-dot').forEach((b) => {
+  b.addEventListener('click', () => {
+    document.querySelectorAll('#log-t-intensidade .log-dot').forEach((x) => x.classList.remove('is-active'));
+    b.classList.add('is-active');
+    treinoIntensidade = parseInt(b.dataset.v, 10);
+    const hint = document.getElementById('log-t-intensidade-hint');
+    if (hint) hint.textContent = INTENSIDADE_HINTS[treinoIntensidade] || '';
+    try { hap(6); } catch (e) {}
+  });
+});
+
+// botão "pular, só marcar feito"
+const logPular = document.getElementById('log-t-pular');
+if (logPular) logPular.addEventListener('click', () => {
+  try {
+    const hist = JSON.parse(localStorage.getItem('circa_workout_log') || '[]');
+    hist.push({
+      esporte: esporteSel || 'musculacao',
+      sensacao: null,
+      intensidade: null,
+      data: new Date().toISOString(),
+      skipped: true,
+    });
+    localStorage.setItem('circa_workout_log', JSON.stringify(hist));
+  } catch (e) {}
+  closeSheet();
+  setTimeout(() => {
+    const t = document.getElementById('log-ok-title');
+    const s = document.getElementById('log-ok-sub');
+    if (t) t.textContent = 'marcado como feito.';
+    if (s) s.textContent = 'sem detalhes, vale o compromisso';
+    openSheet('sheet-log-ok');
+  }, 220);
+  try { hap(10); } catch (e) {}
+});
 
 document.querySelectorAll('.sensacao').forEach((b) => {
   b.addEventListener('click', () => {
@@ -1589,7 +1645,27 @@ document.querySelectorAll('.sensacao').forEach((b) => {
 function salvarLogTreino() {
   if (!esporteSel) return;
   const m = MODALIDADES[esporteSel];
-  const dados = { esporte: esporteSel, sensacao: sensSel, data: new Date().toISOString() };
+  // captura início/fim + calcula duração
+  const inicioEl = document.getElementById('log-t-inicio');
+  const fimEl = document.getElementById('log-t-fim');
+  let durMin = null;
+  if (inicioEl && fimEl && inicioEl.value && fimEl.value) {
+    const [ih, im] = inicioEl.value.split(':').map(Number);
+    const [fh, fm] = fimEl.value.split(':').map(Number);
+    let iMin = ih * 60 + im;
+    let fMin = fh * 60 + fm;
+    if (fMin < iMin) fMin += 24 * 60; // atravessou meia-noite
+    durMin = fMin - iMin;
+  }
+  const dados = {
+    esporte: esporteSel,
+    sensacao: sensSel,
+    intensidade: treinoIntensidade,
+    inicio: inicioEl ? inicioEl.value : null,
+    fim: fimEl ? fimEl.value : null,
+    duracaoMin: durMin,
+    data: new Date().toISOString(),
+  };
   document.querySelectorAll('#log-t-campos [data-campo]').forEach((el) => { dados[el.dataset.campo] = el.value; });
   dados.nota = document.getElementById('log-t-nota').value;
   try {
@@ -3606,6 +3682,10 @@ function closeOnboard() {
   onboard.classList.remove('is-open');
   onboard.setAttribute('aria-hidden', 'true');
   document.body.style.overflow = '';
+  // ao fechar onboarding, abre a jornada pra entrar direto na experiência
+  setTimeout(() => {
+    if (typeof window.openJornada === 'function') window.openJornada();
+  }, 320);
 }
 
 function renderObStep() {
@@ -4164,58 +4244,88 @@ function renderObGoalWheel() {
     );
   }
 
-  // touch
+  // touch · com detecção de velocidade pra fluidez
   let touchStartTarget = null;
   let touchStartTime = 0;
+  let touchLastY = 0;
+  let touchLastTime = 0;
   sectionsEl.addEventListener('touchstart', (e) => {
     touchStartY = e.touches[0].clientY;
     touchStartX = e.touches[0].clientX;
+    touchLastY = touchStartY;
+    touchLastTime = Date.now();
     touchStartTarget = e.target;
-    touchStartTime = Date.now();
+    touchStartTime = touchLastTime;
+  }, { passive: true });
+
+  sectionsEl.addEventListener('touchmove', (e) => {
+    touchLastY = e.touches[0].clientY;
+    touchLastTime = Date.now();
   }, { passive: true });
 
   sectionsEl.addEventListener('touchend', (e) => {
     if (pausaTimeout) return;
-    // bloqueia: ignora se o toque começou num elemento interativo
     if (gestoEmElementoInterativo(touchStartTarget)) return;
-    // bloqueia: ignora se qualquer input está focado (user tá digitando)
     if (document.activeElement && document.activeElement.matches('input, textarea')) return;
-    // bloqueia: toques muito rápidos (<100ms) são taps, não swipes
-    if (Date.now() - touchStartTime < 100) return;
+    const duration = Date.now() - touchStartTime;
+    if (duration < 100) return; // tap, não swipe
 
-    const dy = touchStartY - e.changedTouches[0].clientY;
-    const dx = Math.abs(touchStartX - e.changedTouches[0].clientX);
-    // threshold maior (60px em vez de 40) e check de velocidade
-    if (Math.abs(dy) > 60 && Math.abs(dy) > dx * 1.3) {
+    const endY = e.changedTouches[0].clientY;
+    const endX = e.changedTouches[0].clientX;
+    const dy = touchStartY - endY;
+    const dx = Math.abs(touchStartX - endX);
+
+    // velocidade média (px/ms) · flick rápido tem threshold menor
+    const velocity = Math.abs(dy) / Math.max(duration, 1);
+    const isFlick = velocity > 0.4; // flick: mais de 0.4 px/ms
+
+    // threshold dinâmico: swipe lento precisa 55px, flick rápido só precisa 25px
+    const minDy = isFlick ? 25 : 55;
+
+    if (Math.abs(dy) > minDy && Math.abs(dy) > dx * 1.2) {
       dy > 0 ? nextSec() : prevSec();
     }
   }, { passive: true });
 
-  // wheel · com renovação de timer pra bloquear in\u00e9rcia de trackpad
+  // wheel · detecta in\u00e9rcia por magnitude decrescente de deltaY
   let wheelTimer = null;
   let wheelLastTime = 0;
+  let wheelLastDelta = 0;
+  let wheelInertialCount = 0;
   sectionsEl.addEventListener('wheel', (e) => {
     if (!document.getElementById('jornada').classList.contains('is-open')) return;
     e.preventDefault();
     if (pausaTimeout) return;
-    // bloqueia: ignora se o wheel veio dentro de um elemento interativo
     if (gestoEmElementoInterativo(e.target)) return;
-    // bloqueia: ignora se um input está focado
     if (document.activeElement && document.activeElement.matches('input, textarea')) return;
 
     const now = Date.now();
+    const absDelta = Math.abs(e.deltaY);
     const hadRecentWheel = wheelTimer !== null;
 
-    // sempre renova o timer, pra que in\u00e9rcia contínua mantenha o lock ativo
+    // renova timer a cada evento pra prender in\u00e9rcia
     if (wheelTimer) clearTimeout(wheelTimer);
-    wheelTimer = setTimeout(() => { wheelTimer = null; }, 450);
+    wheelTimer = setTimeout(() => {
+      wheelTimer = null;
+      wheelInertialCount = 0;
+    }, 380);
 
-    // se já tinha timer rolando, é in\u00e9rcia ou swipe segmentado, não avança de novo
-    if (hadRecentWheel) return;
+    // se já tinha timer, é in\u00e9rcia, incrementa contador
+    if (hadRecentWheel) {
+      wheelInertialCount++;
+      return;
+    }
 
-    // bloqueia eventos muito próximos (<650ms) por segurança adicional
-    if (now - wheelLastTime < 650) return;
+    // debounce mínimo entre gestos intencionais (420ms)
+    if (now - wheelLastTime < 420) return;
+
+    // flick forte (delta grande) avança imediatamente
+    // scroll pequeno/lento precisa acumular
+    if (absDelta < 8 && wheelInertialCount === 0) return;
+
     wheelLastTime = now;
+    wheelLastDelta = e.deltaY;
+    wheelInertialCount = 0;
 
     e.deltaY > 0 ? nextSec() : prevSec();
   }, { passive: false });
@@ -4544,6 +4654,16 @@ function renderObGoalWheel() {
   const closeBtn = document.getElementById('jornada-close');
   if (closeBtn) closeBtn.addEventListener('click', () => window.closeJornada());
 
+  // refazer onboarding, fecha jornada e abre o fluxo de perguntas
+  const jRefazer = document.getElementById('j-refazer-onb');
+  if (jRefazer) jRefazer.addEventListener('click', () => {
+    try { hap(10); } catch (e) {}
+    if (typeof window.closeJornada === 'function') window.closeJornada();
+    setTimeout(() => {
+      if (typeof openOnboard === 'function') openOnboard();
+    }, 240);
+  });
+
   // cards de exames · abrem os sheets existentes do Circa
   const jLabCard = document.getElementById('j-lab-open');
   if (jLabCard) jLabCard.addEventListener('click', () => {
@@ -4675,14 +4795,22 @@ function diaOntemKey() {
 // ───── LOG DE SONO ─────
 let sonoDaySel = null;
 let sonoSens = null;
+let sonoQualidade = null;
+let sonoInterrupcoes = 'nao';
+let sonoCafeina = 'nao';
+let sonoAlcool = 'nao';
 
 function abrirLogSono() {
-  sonoDaySel = diaOntemKey(); // default pro user registrar a noite passada
+  sonoDaySel = diaOntemKey();
   sonoSens = null;
+  sonoQualidade = null;
+  sonoInterrupcoes = 'nao';
+  sonoCafeina = 'nao';
+  sonoAlcool = 'nao';
+
   const chips = document.querySelectorAll('#sono-day-chips .log-day-chip');
   chips.forEach((c) => c.classList.toggle('is-active', c.dataset.day === sonoDaySel));
 
-  // carrega último salvo pra pré-preencher, se houver
   try {
     const last = JSON.parse(localStorage.getItem('circa_log_sono_last') || 'null');
     if (last) {
@@ -4692,8 +4820,115 @@ function abrirLogSono() {
   } catch (e) {}
 
   document.querySelectorAll('#sheet-log-sono .sensacao').forEach((s) => s.classList.remove('is-on'));
+  document.querySelectorAll('#sono-qualidade .log-dot').forEach((x) => x.classList.remove('is-active'));
+  document.querySelectorAll('[data-sono-interr]').forEach((x) => x.classList.toggle('is-active', x.dataset.sonoInterr === 'nao'));
+  document.querySelectorAll('[data-sono-cafe]').forEach((x) => x.classList.toggle('is-active', x.dataset.sonoCafe === 'nao'));
+  document.querySelectorAll('[data-sono-alc]').forEach((x) => x.classList.toggle('is-active', x.dataset.sonoAlc === 'nao'));
+  const nota = document.getElementById('sono-nota');
+  if (nota) nota.value = '';
+
   calcularDuracaoSono();
+  renderResumoSemanaSono();
   if (typeof openSheet === 'function') openSheet('sheet-log-sono');
+}
+
+// resumo semanal + insights automáticos
+function renderResumoSemanaSono() {
+  let arr = [];
+  try { arr = JSON.parse(localStorage.getItem('circa_log_sono') || '[]'); } catch (e) {}
+  const wrap = document.getElementById('sono-semana-wrap');
+  if (!wrap) return;
+
+  // filtra últimos 7 registros
+  const ultimos = arr.slice(-7);
+  if (ultimos.length < 2) {
+    wrap.style.display = 'none';
+    return;
+  }
+  wrap.style.display = '';
+
+  // helpers: dur em minutos
+  const durStr2Min = (s) => {
+    const m = s && s.match(/(\d+)h\s*(\d+)min/);
+    if (!m) return 0;
+    return parseInt(m[1], 10) * 60 + parseInt(m[2], 10);
+  };
+  const fmtDur = (min) => `${Math.floor(min / 60)}h${String(min % 60).padStart(2,'0')}`;
+  const minToTime = (t) => {
+    if (!t) return null;
+    const [h, m] = t.split(':').map(Number);
+    return h * 60 + m;
+  };
+
+  const dursMin = ultimos.map(r => durStr2Min(r.dur)).filter(n => n > 0);
+  const mediaMin = dursMin.reduce((a,b) => a+b, 0) / dursMin.length;
+
+  // consistência = desvio padrão dos horários de dormir (menor = mais consistente)
+  const bedMins = ultimos.map(r => minToTime(r.bed)).filter(n => n !== null);
+  const avgBed = bedMins.reduce((a,b) => a+b, 0) / bedMins.length;
+  const variance = bedMins.reduce((a,b) => a + Math.pow(b - avgBed, 2), 0) / bedMins.length;
+  const sdMin = Math.round(Math.sqrt(variance));
+
+  // % dias na meta (7h-9h)
+  const naMeta = dursMin.filter(m => m >= 420 && m <= 540).length;
+  const pctMeta = Math.round((naMeta / dursMin.length) * 100);
+
+  document.getElementById('sono-media').textContent = fmtDur(Math.round(mediaMin));
+  document.getElementById('sono-consist').textContent = sdMin + 'min';
+  document.getElementById('sono-meta').textContent = pctMeta + '%';
+
+  // gera insights automáticos
+  const insights = [];
+  if (mediaMin >= 420 && mediaMin <= 540) {
+    insights.push(`média na meta. seu corpo tá recuperando bem.`);
+  } else if (mediaMin < 420) {
+    const deficit = Math.round((420 - mediaMin) / 60 * 10) / 10;
+    insights.push(`${deficit}h abaixo da meta na semana. acumula cansaço.`);
+  } else {
+    insights.push(`dormindo acima da meta, vale investigar se é recovery ou excesso.`);
+  }
+
+  if (sdMin < 30) {
+    insights.push(`consistência alta, horário estável (${sdMin}min de variação).`);
+  } else if (sdMin > 60) {
+    insights.push(`horário oscilou ${sdMin}min. regularidade melhora qualidade.`);
+  }
+
+  // correlação cafeína
+  const comCafe = ultimos.filter(r => r.cafeina === 'sim');
+  const semCafe = ultimos.filter(r => r.cafeina === 'nao');
+  if (comCafe.length > 0 && semCafe.length > 0) {
+    const mediaComCafe = comCafe.map(r => durStr2Min(r.dur)).reduce((a,b) => a+b, 0) / comCafe.length;
+    const mediaSemCafe = semCafe.map(r => durStr2Min(r.dur)).reduce((a,b) => a+b, 0) / semCafe.length;
+    if (mediaSemCafe - mediaComCafe > 20) {
+      insights.push(`sono ${Math.round(mediaSemCafe - mediaComCafe)}min maior nos dias sem cafeína tarde.`);
+    }
+  }
+
+  // comparação com semana anterior (se houver 14 registros)
+  if (arr.length >= 14) {
+    const semanaAnt = arr.slice(-14, -7);
+    const durAnt = semanaAnt.map(r => durStr2Min(r.dur)).filter(n => n > 0);
+    if (durAnt.length > 0) {
+      const mediaAnt = durAnt.reduce((a,b) => a+b, 0) / durAnt.length;
+      const diff = Math.round(mediaMin - mediaAnt);
+      if (Math.abs(diff) > 10) {
+        insights.push(diff > 0
+          ? `média subiu ${diff}min vs semana passada.`
+          : `média caiu ${Math.abs(diff)}min vs semana passada.`);
+      }
+    }
+  }
+
+  const ul = document.getElementById('sono-insights');
+  if (ul) {
+    ul.innerHTML = '';
+    insights.slice(0, 3).forEach(txt => {
+      const li = document.createElement('li');
+      li.textContent = txt;
+      ul.appendChild(li);
+    });
+  }
 }
 
 function calcularDuracaoSono() {
@@ -4752,15 +4987,46 @@ function calcularDuracaoSono() {
     });
   });
 
+  // qualidade 1-5
+  document.querySelectorAll('#sono-qualidade .log-dot').forEach((b) => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('#sono-qualidade .log-dot').forEach((x) => x.classList.remove('is-active'));
+      b.classList.add('is-active');
+      sonoQualidade = parseInt(b.dataset.v, 10);
+      try { hap(4); } catch (e) {}
+    });
+  });
+
+  // sim/não, 3 perguntas
+  function setupYN(attr, setter) {
+    document.querySelectorAll(`[data-${attr}]`).forEach((b) => {
+      b.addEventListener('click', () => {
+        document.querySelectorAll(`[data-${attr}]`).forEach((x) => x.classList.remove('is-active'));
+        b.classList.add('is-active');
+        setter(b.dataset[attr.replace(/-([a-z])/g, (_, l) => l.toUpperCase())]);
+        try { hap(4); } catch (e) {}
+      });
+    });
+  }
+  setupYN('sono-interr', (v) => { sonoInterrupcoes = v; });
+  setupYN('sono-cafe',   (v) => { sonoCafeina = v; });
+  setupYN('sono-alc',    (v) => { sonoAlcool = v; });
+
   const salvar = document.getElementById('sono-salvar');
   if (salvar) salvar.addEventListener('click', () => {
     const bed = document.getElementById('sono-bedtime').value;
     const wake = document.getElementById('sono-waketime').value;
     const dur = document.getElementById('sono-dur').textContent;
+    const nota = document.getElementById('sono-nota')?.value || '';
     const registro = {
       day: sonoDaySel,
       bed, wake, dur,
       sens: sonoSens,
+      qualidade: sonoQualidade,
+      interrupcoes: sonoInterrupcoes,
+      cafeina: sonoCafeina,
+      alcool: sonoAlcool,
+      nota,
       ts: Date.now(),
     };
     try {
@@ -4771,12 +5037,13 @@ function calcularDuracaoSono() {
     } catch (e) {}
     try { hap(14); } catch (e) {}
     if (typeof closeSheet === 'function') closeSheet();
-    // feedback visual via sheet-log-ok
     setTimeout(() => {
       const t = document.getElementById('log-ok-title');
       const s = document.getElementById('log-ok-sub');
       if (t) t.textContent = 'sono registrado.';
-      if (s) s.textContent = `${dur} · ${sonoDaySel || 'hoje'}`;
+      const partes = [dur, sonoDaySel || 'hoje'];
+      if (sonoQualidade) partes.push(`qualidade ${sonoQualidade}/5`);
+      if (s) s.textContent = partes.join(' · ');
       if (typeof openSheet === 'function') openSheet('sheet-log-ok');
     }, 200);
   });
@@ -4902,6 +5169,137 @@ function abrirLogTreinoSemana() {
 
   if (typeof openSheet === 'function') openSheet('sheet-log-treino-semana');
 }
+
+// ───── ALTERAR TREINO · substitutos por grupo muscular ─────
+const SUBSTITUTOS_POR_GRUPO = {
+  peito: [
+    { nome: 'supino reto', meta: '4 × 8 · barra', por: 'mesmo padrão de empurrar · base' },
+    { nome: 'supino inclinado', meta: '3 × 10 · halteres', por: 'foca parte superior, mesma cadeia' },
+    { nome: 'crucifixo', meta: '3 × 12 · halteres', por: 'isola o peitoral, menos ombro' },
+    { nome: 'flexão de braço', meta: '4 × max · corpo', por: 'sem equipamento, recruta core' },
+  ],
+  costas: [
+    { nome: 'puxada frontal', meta: '4 × 10 · polia', por: 'vertical, dorsal amplo' },
+    { nome: 'remada curvada', meta: '4 × 8 · barra', por: 'horizontal, mid-back' },
+    { nome: 'remada baixa', meta: '3 × 10 · polia', por: 'mesmo padrão de puxar' },
+    { nome: 'barra fixa', meta: '4 × max · corpo', por: 'clássico, pega toda cadeia' },
+  ],
+  pernas: [
+    { nome: 'agachamento livre', meta: '5 × 6 · barra', por: 'padrão composto completo' },
+    { nome: 'leg press', meta: '4 × 10 · máquina', por: 'volume sem carga axial' },
+    { nome: 'stiff', meta: '4 × 10 · barra', por: 'posterior + glúteo' },
+    { nome: 'afundo', meta: '3 × 12 cada lado', por: 'unilateral, corrige assimetria' },
+  ],
+  ombro: [
+    { nome: 'desenvolvimento', meta: '4 × 8 · halteres', por: 'empurrar vertical, deltóide' },
+    { nome: 'elevação lateral', meta: '4 × 12 · halteres', por: 'isola deltóide médio' },
+    { nome: 'elevação frontal', meta: '3 × 12 · halteres', por: 'deltóide anterior' },
+    { nome: 'face pull', meta: '3 × 15 · polia', por: 'postural, deltóide posterior' },
+  ],
+  biceps: [
+    { nome: 'rosca direta', meta: '4 × 10 · barra', por: 'foco na cabeça longa' },
+    { nome: 'rosca martelo', meta: '3 × 12 · halteres', por: 'pega neutra, braquial' },
+    { nome: 'rosca scott', meta: '3 × 10 · banco', por: 'isola, tira impulso' },
+    { nome: 'rosca inversa', meta: '3 × 12 · barra', por: 'antebraço + braquiorradial' },
+  ],
+  triceps: [
+    { nome: 'tríceps corda', meta: '4 × 12 · polia', por: 'isola cabeça lateral' },
+    { nome: 'tríceps francês', meta: '3 × 10 · halter', por: 'alonga cabeça longa' },
+    { nome: 'paralela', meta: '3 × max · corpo', por: 'composto, peito + tríceps' },
+    { nome: 'supino fechado', meta: '4 × 8 · barra', por: 'pega fechada, foca tríceps' },
+  ],
+  core: [
+    { nome: 'prancha', meta: '3 × 60s', por: 'isométrica, core profundo' },
+    { nome: 'abdominal reto', meta: '4 × 20', por: 'reto abdominal direto' },
+    { nome: 'elevação de pernas', meta: '4 × 15', por: 'parte inferior do reto' },
+    { nome: 'prancha lateral', meta: '3 × 40s cada', por: 'oblíquos + estabilidade' },
+  ],
+  cardio: [
+    { nome: 'corrida', meta: '30min · pace 6:00', por: 'aeróbico contínuo, impacto' },
+    { nome: 'bike', meta: '40min · moderado', por: 'aeróbico sem impacto' },
+    { nome: 'hiit', meta: '20min · 30/30', por: 'anaeróbico intenso, queima alta' },
+    { nome: 'caminhada rápida', meta: '45min · incline', por: 'baixa intensidade, recovery' },
+  ],
+};
+
+let trocarGrupoSel = null;
+
+function abrirTrocarTreino() {
+  trocarGrupoSel = null;
+  document.getElementById('tr-step-grupo').style.display = '';
+  document.getElementById('tr-step-subs').style.display = 'none';
+  document.querySelectorAll('.tr-grupo').forEach((g) => g.classList.remove('is-active'));
+  if (typeof openSheet === 'function') openSheet('sheet-trocar-treino');
+}
+
+function renderTrocarSubs(grupo) {
+  trocarGrupoSel = grupo;
+  const list = document.getElementById('tr-subs-list');
+  const eye = document.getElementById('tr-subs-eye');
+  if (!list) return;
+  const subs = SUBSTITUTOS_POR_GRUPO[grupo] || [];
+  eye.textContent = `substitutos · ${grupo}`;
+  list.innerHTML = '';
+  subs.forEach((s) => {
+    const li = document.createElement('li');
+    const btn = document.createElement('button');
+    btn.className = 'tr-sub';
+    btn.innerHTML = `
+      <strong>${s.nome}</strong>
+      <span class="tr-sub-meta">${s.meta}</span>
+      <em>por quê: ${s.por}</em>
+    `;
+    btn.addEventListener('click', () => {
+      try {
+        const hist = JSON.parse(localStorage.getItem('circa_troca_exercicio') || '[]');
+        hist.push({ grupo, substituto: s.nome, meta: s.meta, ts: Date.now(), dia: currentDayKey });
+        localStorage.setItem('circa_troca_exercicio', JSON.stringify(hist));
+      } catch (e) {}
+      try { hap(14); } catch (e) {}
+      if (typeof closeSheet === 'function') closeSheet();
+      setTimeout(() => {
+        const t = document.getElementById('log-ok-title');
+        const sb = document.getElementById('log-ok-sub');
+        if (t) t.textContent = 'treino ajustado.';
+        if (sb) sb.textContent = `${grupo}: ${s.nome} · ${s.meta}`;
+        if (typeof openSheet === 'function') openSheet('sheet-log-ok');
+      }, 220);
+    });
+    li.appendChild(btn);
+    list.appendChild(li);
+  });
+  document.getElementById('tr-step-grupo').style.display = 'none';
+  document.getElementById('tr-step-subs').style.display = '';
+}
+
+(function () {
+  document.querySelectorAll('.tr-grupo').forEach((g) => {
+    g.addEventListener('click', () => {
+      try { hap(8); } catch (e) {}
+      renderTrocarSubs(g.dataset.grupo);
+    });
+  });
+  const voltar = document.getElementById('tr-voltar');
+  if (voltar) voltar.addEventListener('click', () => {
+    document.getElementById('tr-step-grupo').style.display = '';
+    document.getElementById('tr-step-subs').style.display = 'none';
+    trocarGrupoSel = null;
+  });
+})();
+
+// hook o botão "trocar" existente dentro do sheet-day pra abrir o novo flow
+(function () {
+  const btn = document.getElementById('day-swap-btn');
+  if (!btn) return;
+  // substitui listener antigo (que mostrava os 5 templates) pelo novo flow granular
+  const fresh = btn.cloneNode(true);
+  btn.parentNode.replaceChild(fresh, btn);
+  fresh.addEventListener('click', () => {
+    try { hap(10); } catch (e) {}
+    if (typeof closeSheet === 'function') closeSheet();
+    setTimeout(() => abrirTrocarTreino(), 220);
+  });
+})();
 
 // ───── LOG DE HUMOR ─────
 let humorSens = null;

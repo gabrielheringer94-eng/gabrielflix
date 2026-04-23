@@ -4389,10 +4389,14 @@ button.hero:active { transform: scale(0.985); }
   display: flex; flex-direction: column;
   align-items: center; justify-content: center;
   padding: 56px 28px 72px;
-  transition: transform 0.55s cubic-bezier(0.77,0,0.175,1), opacity 0.55s cubic-bezier(0.77,0,0.175,1);
+  transition:
+    transform 0.48s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.42s cubic-bezier(0.22, 1, 0.36, 1);
   will-change: transform, opacity;
   pointer-events: none; opacity: 0;
   transform: translateY(100%);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 .jsec.is-active { transform: translateY(0); opacity: 1; pointer-events: auto; }
 .jsec.is-above  { transform: translateY(-100%); opacity: 0; }
@@ -4787,6 +4791,24 @@ canvas#j-roda { width: 220px; height: 220px; cursor: pointer; }
   font-size: 11px; color: var(--fg-dim);
   text-align: center; margin-top: 16px; letter-spacing: 1px;
 }
+.j-refazer {
+  display: block;
+  margin: 18px auto 0;
+  background: transparent;
+  border: 1px solid var(--fg-faint);
+  color: var(--fg-muted);
+  font-family: var(--sans);
+  font-size: 11px;
+  letter-spacing: 2px;
+  padding: 10px 18px;
+  border-radius: var(--r-chip, 10px);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.j-refazer:hover {
+  border-color: var(--accent-dim);
+  color: var(--accent);
+}
 
 /* ── nav interna da jornada ── */
 .jornada__nav {
@@ -4872,6 +4894,182 @@ canvas#j-roda { width: 220px; height: 220px; cursor: pointer; }
 /* ═════════════════════════════════════════════════════════
    LOG SHEETS · sono, água, treino-semana
    ═════════════════════════════════════════════════════════ */
+/* trocar treino · grupos musculares */
+.tr-grupos {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+.tr-grupo {
+  background: var(--bg-raised);
+  border: 1px solid var(--fg-faint);
+  color: var(--fg);
+  font-family: var(--sans);
+  font-size: 12px;
+  padding: 14px 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  letter-spacing: 0.02em;
+}
+.tr-grupo:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-dim);
+}
+.tr-grupo.is-active {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-dim);
+}
+.tr-subs-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 8px 0 12px;
+}
+.tr-sub {
+  background: var(--bg-raised);
+  border: 1px solid var(--fg-faint);
+  border-left: 2px solid var(--accent);
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+  width: 100%;
+  display: block;
+  font-family: var(--sans);
+  color: var(--fg);
+}
+.tr-sub:hover {
+  border-color: var(--accent-dim);
+  border-left-color: var(--accent-hi);
+  transform: translateX(2px);
+}
+.tr-sub strong {
+  display: block;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 15px;
+  color: var(--fg);
+  letter-spacing: -0.01em;
+  margin-bottom: 4px;
+}
+.tr-sub span.tr-sub-meta {
+  display: block;
+  font-size: 11px;
+  color: var(--fg-muted);
+  margin-bottom: 6px;
+}
+.tr-sub em {
+  font-family: var(--sans);
+  font-style: italic;
+  font-size: 11px;
+  color: var(--accent);
+  letter-spacing: 0.02em;
+}
+
+/* botões sim/não */
+.log-yn-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.log-yn {
+  background: var(--bg-raised);
+  border: 1px solid var(--fg-faint);
+  color: var(--fg-muted);
+  font-family: var(--sans);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  padding: 12px 0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-radius: var(--r-chip, 10px);
+}
+.log-yn:hover {
+  border-color: var(--accent-dim);
+  color: var(--fg);
+}
+.log-yn.is-active {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-dim);
+}
+
+/* resumo da semana (sono) */
+.log-semana {
+  background: var(--bg-raised);
+  border: 1px solid var(--fg-faint);
+  border-radius: var(--r-card, 14px);
+  padding: 16px 18px !important;
+}
+.log-semana-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 8px;
+  margin-bottom: 12px;
+}
+.ls-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  text-align: center;
+}
+.ls-item small {
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  color: var(--fg-dim);
+  text-transform: uppercase;
+}
+.ls-item strong {
+  font-family: var(--serif);
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--fg);
+  letter-spacing: -0.01em;
+}
+.log-insights {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--fg-faint);
+  padding-top: 12px;
+}
+.log-insights li {
+  font-family: var(--serif);
+  font-size: 13px;
+  font-style: italic;
+  color: var(--fg-muted);
+  line-height: 1.55;
+  position: relative;
+  padding-left: 14px;
+}
+.log-insights li::before {
+  content: '·';
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-size: 18px;
+  line-height: 1;
+  top: 2px;
+}
+
+/* hint sutil abaixo de labels */
+.log-small-hint {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  color: var(--fg-dim);
+  margin-top: 8px;
+  text-align: center;
+}
+
 /* escala 1-5 em bolinhas numéricas */
 .log-dots-scale {
   display: grid;
