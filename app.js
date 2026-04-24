@@ -754,14 +754,11 @@ if (ppSave) ppSave.addEventListener('click', () => {
 
 // ───── roda da vida ─────
 const AREAS = [
-  { key: 'saude',   label: 'saúde',        value: 7 },
-  { key: 'carreira',label: 'carreira',     value: 8 },
-  { key: 'familia', label: 'família',      value: 6 },
-  { key: 'relac',   label: 'relações',     value: 5 },
-  { key: 'lazer',   label: 'lazer',        value: 4 },
-  { key: 'desenv',  label: 'desenvolv.',   value: 6 },
-  { key: 'espirit', label: 'espírito',     value: 3 },
-  { key: 'financas',label: 'finanças',     value: 5 },
+  { key: 'saude',   label: 'saúde',    value: 7 },
+  { key: 'familia', label: 'família',  value: 6 },
+  { key: 'relac',   label: 'relações', value: 5 },
+  { key: 'lazer',   label: 'lazer',    value: 4 },
+  { key: 'espirit', label: 'espírito', value: 7 },
 ];
 
 const R_MAX = 130;
@@ -3692,10 +3689,14 @@ function renderObStep() {
   obSlides.forEach((s) => {
     s.classList.toggle('is-active', parseInt(s.dataset.step, 10) === obStep);
   });
-  // progress bar contínua
-  if (obProgressFill) obProgressFill.style.width = ((obStep - 1) / (TOTAL_STEPS - 1) * 100).toFixed(1) + '%';
-  if (obProgressLbl)  obProgressLbl.textContent = obStep + ' / ' + TOTAL_STEPS;
-  obBackBtn.disabled = obStep === 1;
+  // progress bar baseada no flow atual (não em TOTAL_STEPS numérico)
+  const flow = obFlowFiltered();
+  const idx = flow.indexOf(obStep);
+  const total = flow.length;
+  const pos = idx >= 0 ? idx : 0;
+  if (obProgressFill) obProgressFill.style.width = (pos / Math.max(1, total - 1) * 100).toFixed(1) + '%';
+  if (obProgressLbl)  obProgressLbl.textContent = (pos + 1) + ' / ' + total;
+  obBackBtn.disabled = pos === 0;
 
   // rodas: steps 2 (hoje) e 3 (meta)
   if (obStep === 2) renderObWheel();
@@ -3729,16 +3730,43 @@ function renderObStep() {
   }
 }
 
+// fluxo explícito pra permitir branching por gênero
+// insere 31 (gênero), 32 (homem), 33 (mulher) entre step 1 e step 2
+const OB_FLOW = [1, 31, 32, 33, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26];
+
+function obCurrentGender() {
+  try { return localStorage.getItem('circa_gender') || null; } catch (e) { return null; }
+}
+
+function obFlowFiltered() {
+  const g = obCurrentGender();
+  return OB_FLOW.filter((s) => {
+    if (s === 32 && g !== 'man')   return false;
+    if (s === 33 && g !== 'woman') return false;
+    return true;
+  });
+}
+
+function obFlowIndex(step) {
+  const f = obFlowFiltered();
+  const i = f.indexOf(step);
+  return i >= 0 ? i : 0;
+}
+
 function nextStep() {
-  if (obStep < TOTAL_STEPS) {
-    obStep++;
+  const flow = obFlowFiltered();
+  const idx = flow.indexOf(obStep);
+  if (idx >= 0 && idx < flow.length - 1) {
+    obStep = flow[idx + 1];
     renderObStep();
     hap(6);
   }
 }
 function prevStep() {
-  if (obStep > 1) {
-    obStep--;
+  const flow = obFlowFiltered();
+  const idx = flow.indexOf(obStep);
+  if (idx > 0) {
+    obStep = flow[idx - 1];
     renderObStep();
     hap(4);
   }
@@ -3746,6 +3774,50 @@ function prevStep() {
 
 obBackBtn && obBackBtn.addEventListener('click', prevStep);
 obCloseBtn && obCloseBtn.addEventListener('click', closeOnboard);
+
+// seleção de gênero · step 31
+(function () {
+  const slide = document.querySelector('.ob-slide[data-step="31"]');
+  if (!slide) return;
+  const cards = slide.querySelectorAll('.ob-gender__card');
+  const next = slide.querySelector('.ob-next');
+
+  // pré-seleciona se já salvou antes
+  try {
+    const g = localStorage.getItem('circa_gender');
+    if (g) {
+      cards.forEach((c) => c.classList.toggle('is-sel', c.dataset.gender === g));
+      if (next) next.disabled = false;
+    }
+  } catch (e) {}
+
+  cards.forEach((c) => {
+    c.addEventListener('click', () => {
+      cards.forEach((x) => x.classList.toggle('is-sel', x === c));
+      try { localStorage.setItem('circa_gender', c.dataset.gender); } catch (e) {}
+      if (next) next.disabled = false;
+      try { hap(8); } catch (e) {}
+    });
+  });
+})();
+
+// cards genéricos dos steps 32 e 33 (perguntas de perfil por gênero)
+document.querySelectorAll('.ob-slide[data-step="32"] .ob-card, .ob-slide[data-step="33"] .ob-card').forEach((card) => {
+  card.addEventListener('click', () => {
+    const siblings = card.parentElement.querySelectorAll('.ob-card');
+    siblings.forEach((x) => x.classList.toggle('is-sel', x === card));
+    const slide = card.closest('.ob-slide');
+    const next = slide.querySelector('.ob-next');
+    if (next) next.disabled = false;
+    // salva perfil específico
+    try {
+      const step = slide.dataset.step;
+      const key = step === '32' ? 'circa_perfil_man' : 'circa_perfil_woman';
+      localStorage.setItem(key, card.dataset.val);
+    } catch (e) {}
+    try { hap(8); } catch (e) {}
+  });
+});
 
 // generic "continuar" forward
 document.querySelectorAll('.ob-next').forEach((btn) => {
@@ -3852,6 +3924,8 @@ function renderObWheel() {
     return `<text class="wheel__label" x="${p.x.toFixed(1)}" y="${p.y.toFixed(1)}">${area.label}</text>`;
   }).join('');
 
+  // cria handles uma vez só e depois reaproveita · evita destruir listeners
+  let handlesBuilt = false;
   function updateObShape() {
     const pts = OB_AREAS.map((a, i) => {
       const p = pointFor(i, a.value);
@@ -3859,17 +3933,38 @@ function renderObWheel() {
     }).join(' ');
     obShape.setAttribute('points', pts);
 
-    obHandles.innerHTML = OB_AREAS.map((a, i) => {
-      const p = pointFor(i, a.value);
-      return `
-        <g data-i="${i}">
-          <circle class="wheel__handle" cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="9" data-i="${i}"/>
-          <text class="wheel__val" x="${p.x.toFixed(1)}" y="${(p.y + 3).toFixed(1)}">${a.value}</text>
-        </g>
-      `;
-    }).join('');
-
-    obHandles.querySelectorAll('.wheel__handle').forEach(bindObDrag);
+    if (!handlesBuilt) {
+      obHandles.innerHTML = OB_AREAS.map((a, i) => {
+        const p = pointFor(i, a.value);
+        return `
+          <g data-i="${i}">
+            <circle class="wheel__hit" cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="22" data-i="${i}" fill="transparent" stroke="none"/>
+            <circle class="wheel__handle" cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="9" data-i="${i}"/>
+            <text class="wheel__val" x="${p.x.toFixed(1)}" y="${(p.y + 3).toFixed(1)}">${a.value}</text>
+          </g>
+        `;
+      }).join('');
+      // liga drag uma vez · usa hit area invisível maior + o handle visível
+      obHandles.querySelectorAll('.wheel__hit, .wheel__handle').forEach(bindObDrag);
+      handlesBuilt = true;
+    } else {
+      // só atualiza posições · mantém listeners intactos
+      OB_AREAS.forEach((a, i) => {
+        const p = pointFor(i, a.value);
+        const g = obHandles.querySelector(`g[data-i="${i}"]`);
+        if (!g) return;
+        g.querySelectorAll('.wheel__hit, .wheel__handle').forEach((c) => {
+          c.setAttribute('cx', p.x.toFixed(1));
+          c.setAttribute('cy', p.y.toFixed(1));
+        });
+        const text = g.querySelector('.wheel__val');
+        if (text) {
+          text.setAttribute('x', p.x.toFixed(1));
+          text.setAttribute('y', (p.y + 3).toFixed(1));
+          text.textContent = a.value;
+        }
+      });
+    }
   }
 
   function bindObDrag(handle) {
@@ -4764,17 +4859,47 @@ function renderObGoalWheel() {
     });
   });
 
-  // 3. auto-abre ao carregar a primeira vez
+  // 3. auto-abre ao carregar a primeira vez (esperando splash fechar)
   function autoOpen() {
     if (jornadaFechadaManual) return;
     abrirJornadaSafe();
   }
-  // espera o DOM assentar e qualquer splash/welcome passar
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => setTimeout(autoOpen, 450));
-  } else {
-    setTimeout(autoOpen, 450);
+  function agendarAutoOpen() {
+    // splash abre primeiro (~1.6s), depois auto-open
+    setTimeout(autoOpen, 1750);
   }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', agendarAutoOpen);
+  } else {
+    agendarAutoOpen();
+  }
+})();
+
+// ═════════════════════════════════════════════════════════
+// SPLASH · controla o fade out do logo inicial
+// ═════════════════════════════════════════════════════════
+(function () {
+  const splash = document.getElementById('splash');
+  if (!splash) return;
+
+  function esconderSplash() {
+    splash.classList.add('is-done');
+    splash.setAttribute('aria-hidden', 'true');
+  }
+
+  function iniciarSplash() {
+    // mostra por 1500ms (tempo pra animação respiratória + grão) e faz fade
+    setTimeout(esconderSplash, 1500);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', iniciarSplash);
+  } else {
+    iniciarSplash();
+  }
+
+  // segurança: clique em qualquer lugar fecha antes
+  splash.addEventListener('click', esconderSplash);
 })();
 
 // ═════════════════════════════════════════════════════════

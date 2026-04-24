@@ -25,6 +25,40 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <!-- ───────── SPLASH · logo Circa ao abrir o app ───────── -->
+  <div class="splash" id="splash" aria-hidden="false">
+    <div class="splash__inner">
+      <svg class="splash__c" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs>
+          <radialGradient id="splashGrad" cx="36%" cy="30%" r="72%">
+            <stop offset="0%"  stop-color="#FAE9C8"/>
+            <stop offset="22%" stop-color="#EDD9A6"/>
+            <stop offset="55%" stop-color="#D4B896"/>
+            <stop offset="82%" stop-color="#8A6D44"/>
+            <stop offset="100%" stop-color="#3A2610"/>
+          </radialGradient>
+          <linearGradient id="splashC" x1="28%" y1="22%" x2="72%" y2="78%">
+            <stop offset="0%"  stop-color="#F5E8C0"/>
+            <stop offset="55%" stop-color="#D4B896"/>
+            <stop offset="100%" stop-color="#5A3F1E"/>
+          </linearGradient>
+        </defs>
+        <circle cx="60" cy="60" r="54" fill="url(#splashGrad)"/>
+        <circle cx="60" cy="60" r="48" fill="none" stroke="rgba(58,38,16,0.45)" stroke-width="1"/>
+        <circle cx="60" cy="60" r="42" fill="none" stroke="rgba(58,38,16,0.65)" stroke-width="0.8" stroke-dasharray="1.5 3"/>
+        <text x="60" y="60" text-anchor="middle" dominant-baseline="central"
+              font-family="'Fraunces','Instrument Serif',Georgia,serif"
+              font-size="58" font-weight="400"
+              fill="rgba(40,24,8,0.7)" transform="translate(1.4,1.8)">C</text>
+        <text x="60" y="60" text-anchor="middle" dominant-baseline="central"
+              font-family="'Fraunces','Instrument Serif',Georgia,serif"
+              font-size="58" font-weight="400"
+              fill="url(#splashC)">C</text>
+      </svg>
+      <p class="splash__word">circa</p>
+    </div>
+  </div>
+
   <!-- ───────── WELCOME · primeira visita ───────── -->
   <div class="welcome" id="welcome" aria-hidden="true">
     <div class="welcome__inner">
@@ -103,7 +137,7 @@
       <!-- 10 · resultado do perfil (renderizado por JS) -->
       <div class="ob-slide quiz-result" data-step="20"></div>
 
-      <!-- 11 · boas-vindas -->
+      <!-- 1 · boas-vindas · o que busca no Circa -->
       <div class="ob-slide is-active" data-step="1">
         <div class="ob-logo">
           <svg viewBox="0 0 40 40" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -112,25 +146,186 @@
           </svg>
           <span>circa</span>
         </div>
-        <h1 class="display">oi.<br/>o que te<br/>traz aqui?</h1>
-        <p class="lead">a gente vai adaptar o circa ao teu motor principal.</p>
+        <h1 class="display">o que você<br/>quer melhorar<br/><em>primeiro?</em></h1>
+        <p class="lead">escolha teu foco principal. o circa adapta tudo a partir daí, da rotina aos insights.</p>
 
         <div class="ob-cards">
           <button class="ob-card" data-val="energia">
-            <span class="ob-card__title">energia diária</span>
-            <span class="ob-card__body">acordar disposto, render o dia inteiro.</span>
+            <span class="ob-card__title">⚡ mais energia</span>
+            <span class="ob-card__body">acordar disposto e render o dia inteiro.</span>
           </button>
           <button class="ob-card" data-val="performance">
-            <span class="ob-card__title">performance</span>
-            <span class="ob-card__body">treinar mais forte, recuperar melhor.</span>
+            <span class="ob-card__title">💪 performance física</span>
+            <span class="ob-card__body">treinar mais forte e recuperar melhor.</span>
           </button>
           <button class="ob-card" data-val="longevidade">
-            <span class="ob-card__title">longevidade</span>
-            <span class="ob-card__body">viver bem por muito tempo.</span>
+            <span class="ob-card__title">🌱 longevidade e saúde</span>
+            <span class="ob-card__body">construir saúde pra durar décadas.</span>
           </button>
           <button class="ob-card" data-val="composicao">
-            <span class="ob-card__title">composição corporal</span>
-            <span class="ob-card__body">perder gordura, manter músculo.</span>
+            <span class="ob-card__title">🔥 composição corporal</span>
+            <span class="ob-card__body">perder gordura sem perder músculo.</span>
+          </button>
+          <button class="ob-card" data-val="mental">
+            <span class="ob-card__title">🧘 equilíbrio mental</span>
+            <span class="ob-card__body">menos ansiedade, mais foco e clareza.</span>
+          </button>
+          <button class="ob-card" data-val="sono">
+            <span class="ob-card__title">🌙 dormir bem</span>
+            <span class="ob-card__body">pegar no sono rápido e acordar descansado.</span>
+          </button>
+        </div>
+
+        <button class="btn btn--primary btn--full ob-next" disabled>continuar</button>
+      </div>
+
+      <!-- 1.5 · seletor de gênero · molda o resto do onboarding -->
+      <div class="ob-slide" data-step="31">
+        <h1 class="display">como você<br/>se <em>identifica?</em></h1>
+        <p class="lead">isso ajuda o circa a adequar perguntas de saúde, corpo e rotina ao teu contexto.</p>
+
+        <div class="ob-gender">
+          <button class="ob-gender__card" data-gender="man" aria-label="homem">
+            <div class="ob-gender__ilus">
+              <svg viewBox="0 0 100 120" width="80" height="96" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <radialGradient id="obGenManFace" cx="40%" cy="38%" r="62%">
+                    <stop offset="0%" stop-color="#F5E8C0"/>
+                    <stop offset="100%" stop-color="#D4B896"/>
+                  </radialGradient>
+                  <linearGradient id="obGenManShirt" x1="50%" y1="0%" x2="50%" y2="100%">
+                    <stop offset="0%" stop-color="#7B8BB8"/>
+                    <stop offset="100%" stop-color="#5A6A95"/>
+                  </linearGradient>
+                </defs>
+                <!-- cabeça -->
+                <circle cx="50" cy="36" r="22" fill="url(#obGenManFace)"/>
+                <!-- cabelo curto -->
+                <path d="M32 26 Q38 16 50 14 Q64 16 68 26 Q68 30 64 32 Q58 22 50 22 Q42 22 36 32 Q32 30 32 26 Z" fill="#5A3F1E"/>
+                <!-- olhos -->
+                <circle cx="43" cy="38" r="1.5" fill="#3A2610"/>
+                <circle cx="57" cy="38" r="1.5" fill="#3A2610"/>
+                <!-- sorriso -->
+                <path d="M44 46 Q50 50 56 46" stroke="#3A2610" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+                <!-- camiseta -->
+                <path d="M26 108 Q26 80 42 70 L58 70 Q74 80 74 108 Z" fill="url(#obGenManShirt)"/>
+                <!-- pescoço -->
+                <rect x="44" y="56" width="12" height="14" fill="url(#obGenManFace)"/>
+              </svg>
+              <div class="ob-gender__symbol" style="color:#7B8BB8">♂</div>
+            </div>
+            <span class="ob-gender__label">homem</span>
+          </button>
+
+          <button class="ob-gender__card" data-gender="woman" aria-label="mulher">
+            <div class="ob-gender__ilus">
+              <svg viewBox="0 0 100 120" width="80" height="96" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <radialGradient id="obGenWomFace" cx="40%" cy="38%" r="62%">
+                    <stop offset="0%" stop-color="#F5E8C0"/>
+                    <stop offset="100%" stop-color="#D4B896"/>
+                  </radialGradient>
+                  <linearGradient id="obGenWomShirt" x1="50%" y1="0%" x2="50%" y2="100%">
+                    <stop offset="0%" stop-color="#C4A5C0"/>
+                    <stop offset="100%" stop-color="#9A7A96"/>
+                  </linearGradient>
+                </defs>
+                <!-- cabelo traseiro (atrás da cabeça) -->
+                <path d="M28 30 Q28 52 32 72 L32 90 Q36 80 40 66 Q38 48 40 34 Z" fill="#5A3F1E"/>
+                <path d="M72 30 Q72 52 68 72 L68 90 Q64 80 60 66 Q62 48 60 34 Z" fill="#5A3F1E"/>
+                <!-- cabeça -->
+                <circle cx="50" cy="38" r="22" fill="url(#obGenWomFace)"/>
+                <!-- franja/cabelo superior -->
+                <path d="M30 30 Q38 14 50 13 Q62 14 70 30 Q70 34 66 36 Q60 26 50 26 Q40 26 34 36 Q30 34 30 30 Z" fill="#5A3F1E"/>
+                <!-- olhos (cílios longos) -->
+                <circle cx="43" cy="40" r="1.5" fill="#3A2610"/>
+                <circle cx="57" cy="40" r="1.5" fill="#3A2610"/>
+                <path d="M40 38 L41 37 M58 37 L59 38" stroke="#3A2610" stroke-width="0.8" stroke-linecap="round"/>
+                <!-- sorriso -->
+                <path d="M44 48 Q50 52 56 48" stroke="#3A2610" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+                <!-- blusa -->
+                <path d="M26 108 Q26 80 42 72 L58 72 Q74 80 74 108 Z" fill="url(#obGenWomShirt)"/>
+                <!-- decote V -->
+                <path d="M42 72 L50 84 L58 72 Z" fill="url(#obGenWomFace)"/>
+                <!-- pescoço -->
+                <rect x="44" y="58" width="12" height="14" fill="url(#obGenWomFace)"/>
+              </svg>
+              <div class="ob-gender__symbol" style="color:#C4A5C0">♀</div>
+            </div>
+            <span class="ob-gender__label">mulher</span>
+          </button>
+
+          <button class="ob-gender__card ob-gender__card--alt" data-gender="outro" aria-label="prefiro não informar">
+            <span class="ob-gender__symbol" style="color:var(--fg-muted); font-size: 24px;">⚬</span>
+            <span class="ob-gender__label">prefiro não informar</span>
+          </button>
+        </div>
+
+        <button class="btn btn--primary btn--full ob-next" disabled>continuar</button>
+      </div>
+
+      <!-- 1.6 · pergunta específica pra homem -->
+      <div class="ob-slide" data-step="32" data-gender-only="man">
+        <div class="ob-logo" style="color:#7B8BB8">
+          <span>♂ teu perfil</span>
+        </div>
+        <h1 class="display">o que hoje<br/>te <em>pesa mais?</em></h1>
+        <p class="lead">o circa usa isso pra priorizar alertas de saúde, humor e rotina no teu dashboard.</p>
+
+        <div class="ob-cards">
+          <button class="ob-card" data-val="forca">
+            <span class="ob-card__title">💪 ganhar força e massa</span>
+            <span class="ob-card__body">construir corpo, testosterona natural, recuperação.</span>
+          </button>
+          <button class="ob-card" data-val="estresse">
+            <span class="ob-card__title">🧠 estresse e ansiedade</span>
+            <span class="ob-card__body">pressão do trabalho, cabeça acelerada, gatilhos.</span>
+          </button>
+          <button class="ob-card" data-val="libido">
+            <span class="ob-card__title">🔥 libido e vitalidade</span>
+            <span class="ob-card__body">energia sexual, vigor, disposição masculina.</span>
+          </button>
+          <button class="ob-card" data-val="peso">
+            <span class="ob-card__title">⚖️ gordura abdominal</span>
+            <span class="ob-card__body">barriga, cintura, inflamação silenciosa.</span>
+          </button>
+          <button class="ob-card" data-val="cardiometabolico">
+            <span class="ob-card__title">❤️ pressão e glicemia</span>
+            <span class="ob-card__body">prevenção cardíaca, metabolismo, longevidade.</span>
+          </button>
+        </div>
+
+        <button class="btn btn--primary btn--full ob-next" disabled>continuar</button>
+      </div>
+
+      <!-- 1.7 · pergunta específica pra mulher -->
+      <div class="ob-slide" data-step="33" data-gender-only="woman">
+        <div class="ob-logo" style="color:#C4A5C0">
+          <span>♀ teu perfil</span>
+        </div>
+        <h1 class="display">o que hoje<br/>te <em>pesa mais?</em></h1>
+        <p class="lead">o circa usa isso pra priorizar alertas de saúde, humor e ciclo no teu dashboard.</p>
+
+        <div class="ob-cards">
+          <button class="ob-card" data-val="ciclo">
+            <span class="ob-card__title">🌙 ciclo menstrual</span>
+            <span class="ob-card__body">cólica, humor, TPM, fase fértil, energia da fase.</span>
+          </button>
+          <button class="ob-card" data-val="hormonal">
+            <span class="ob-card__title">⚖️ equilíbrio hormonal</span>
+            <span class="ob-card__body">estrogênio, progesterona, tireoide, cabelo, pele.</span>
+          </button>
+          <button class="ob-card" data-val="estresse">
+            <span class="ob-card__title">🧠 estresse e ansiedade</span>
+            <span class="ob-card__body">carga mental, exaustão, humor oscilando.</span>
+          </button>
+          <button class="ob-card" data-val="peso">
+            <span class="ob-card__title">🔥 composição corporal</span>
+            <span class="ob-card__body">gordura, retenção, corpo de dentro pra fora.</span>
+          </button>
+          <button class="ob-card" data-val="fertilidade">
+            <span class="ob-card__title">🌱 fertilidade e longevidade</span>
+            <span class="ob-card__body">fase atual, envelhecimento ovariano, prevenção.</span>
           </button>
         </div>
 
