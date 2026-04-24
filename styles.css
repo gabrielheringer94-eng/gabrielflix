@@ -1414,16 +1414,26 @@ button.hero:active { transform: scale(0.985); }
   inset: 0;
   padding: 12px 22px calc(24px + env(safe-area-inset-bottom));
   overflow-y: auto;
-  display: none;
+  -webkit-overflow-scrolling: touch;
+  display: flex;
   flex-direction: column;
+  opacity: 0;
+  transform: translateY(100%);
+  pointer-events: none;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+              opacity 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 .ob-slide.is-active {
-  display: flex;
-  animation: slideFade .45s cubic-bezier(.2,.9,.2,1) both;
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
 }
-@keyframes slideFade {
-  from { opacity: 0; transform: translateY(14px); }
-  to   { opacity: 1; transform: translateY(0); }
+.ob-slide.is-above {
+  opacity: 0;
+  transform: translateY(-100%);
 }
 
 .ob-slide .display { margin-bottom: 10px; }

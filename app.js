@@ -3686,14 +3686,19 @@ function closeOnboard() {
 }
 
 function renderObStep() {
-  obSlides.forEach((s) => {
-    s.classList.toggle('is-active', parseInt(s.dataset.step, 10) === obStep);
-  });
-  // progress bar baseada no flow atual (não em TOTAL_STEPS numérico)
   const flow = obFlowFiltered();
-  const idx = flow.indexOf(obStep);
+  const currentIdx = flow.indexOf(obStep);
+  obSlides.forEach((s) => {
+    const step = parseInt(s.dataset.step, 10);
+    const stepIdx = flow.indexOf(step);
+    s.classList.remove('is-active', 'is-above', 'is-below');
+    if (stepIdx === currentIdx)             s.classList.add('is-active');
+    else if (stepIdx >= 0 && stepIdx < currentIdx) s.classList.add('is-above');
+    // demais (> currentIdx ou fora do flow) ficam em translateY(100%) pelo default
+  });
+  // progress bar baseada no flow atual
   const total = flow.length;
-  const pos = idx >= 0 ? idx : 0;
+  const pos = currentIdx >= 0 ? currentIdx : 0;
   if (obProgressFill) obProgressFill.style.width = (pos / Math.max(1, total - 1) * 100).toFixed(1) + '%';
   if (obProgressLbl)  obProgressLbl.textContent = (pos + 1) + ' / ' + total;
   obBackBtn.disabled = pos === 0;
