@@ -2971,7 +2971,72 @@
             <div class="club-pane" data-club-pane="selo">
               <div class="club-selo-head">
                 <div class="club-selo-av">
-                  <img src="circa-logo.png" alt=""/>
+                  <svg class="wax-seal" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <defs>
+                      <!-- corpo da cera: gradiente radial com highlight superior-esquerdo -->
+                      <radialGradient id="waxBodyLg" cx="36%" cy="30%" r="72%">
+                        <stop offset="0%"  stop-color="#FAE9C8"/>
+                        <stop offset="22%" stop-color="#EDD9A6"/>
+                        <stop offset="55%" stop-color="#C9A97E"/>
+                        <stop offset="82%" stop-color="#7A5A2E"/>
+                        <stop offset="100%" stop-color="#3A2610"/>
+                      </radialGradient>
+                      <!-- gradiente do C embossado -->
+                      <linearGradient id="waxCLg" x1="28%" y1="22%" x2="72%" y2="78%">
+                        <stop offset="0%"  stop-color="#F5E8C0"/>
+                        <stop offset="55%" stop-color="#C9A97E"/>
+                        <stop offset="100%" stop-color="#5A3F1E"/>
+                      </linearGradient>
+                      <!-- filtro de sombra interna -->
+                      <filter id="waxInnerShadowLg" x="-20%" y="-20%" width="140%" height="140%">
+                        <feGaussianBlur stdDeviation="0.6"/>
+                      </filter>
+                    </defs>
+
+                    <!-- forma irregular orgânica (cera escorrida) -->
+                    <path d="M60 4 C72 4 82 9 91 16 C101 22 109 30 113 42 C117 52 117 64 114 75 C110 87 103 97 92 104 C83 111 72 115 60 115 C48 115 36 112 27 106 C16 99 8 88 5 76 C2 65 3 52 8 41 C13 30 21 20 32 13 C41 7 50 4 60 4 Z"
+                          fill="url(#waxBodyLg)"/>
+
+                    <!-- highlight superior (brilho da cera molhada) -->
+                    <path d="M30 22 C42 12 55 8 70 10"
+                          fill="none" stroke="rgba(250,233,200,0.55)" stroke-width="3.5" stroke-linecap="round"/>
+
+                    <!-- anel externo gravado -->
+                    <circle cx="60" cy="60" r="48" fill="none"
+                            stroke="rgba(58,38,16,0.55)" stroke-width="1.2"/>
+
+                    <!-- anel pontilhado (estilo selo postal) -->
+                    <circle cx="60" cy="60" r="42" fill="none"
+                            stroke="rgba(58,38,16,0.75)" stroke-width="1"
+                            stroke-dasharray="1.5 3"/>
+
+                    <!-- anel interno sutil -->
+                    <circle cx="60" cy="60" r="36" fill="none"
+                            stroke="rgba(245,232,192,0.25)" stroke-width="0.6"/>
+
+                    <!-- C embossado: sombra, highlight e letra principal -->
+                    <g>
+                      <!-- sombra (offset pra baixo-direita) -->
+                      <text x="60" y="60" text-anchor="middle" dominant-baseline="central"
+                            font-family="'Fraunces','Instrument Serif',Georgia,serif"
+                            font-size="58" font-weight="400"
+                            fill="rgba(40,24,8,0.7)" transform="translate(1.6,2)">C</text>
+                      <!-- highlight (offset pra cima-esquerda) -->
+                      <text x="60" y="60" text-anchor="middle" dominant-baseline="central"
+                            font-family="'Fraunces','Instrument Serif',Georgia,serif"
+                            font-size="58" font-weight="400"
+                            fill="rgba(250,233,200,0.4)" transform="translate(-0.7,-0.8)">C</text>
+                      <!-- letra principal -->
+                      <text x="60" y="60" text-anchor="middle" dominant-baseline="central"
+                            font-family="'Fraunces','Instrument Serif',Georgia,serif"
+                            font-size="58" font-weight="400"
+                            fill="url(#waxCLg)">C</text>
+                    </g>
+
+                    <!-- reflexo pontual (brilho superior) -->
+                    <ellipse cx="42" cy="28" rx="12" ry="6"
+                             fill="rgba(250,233,200,0.25)" transform="rotate(-25 42 28)"/>
+                  </svg>
                 </div>
                 <h3 class="club-selo-nome">Gabriel Heringer</h3>
                 <span class="club-badge-top">✦ portador circa</span>
