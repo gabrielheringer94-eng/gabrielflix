@@ -1,5 +1,23 @@
 /* ───── Circa prototype interactions ───── */
 
+// ═════════════════════════════════════════
+// DATA RESET · zera todos os dados uma vez nesta versão
+// pra começar do zero e medir da linha de base
+// ═════════════════════════════════════════
+(function () {
+  const RESET_VERSION = 'v3-clean-2026-04-24';
+  try {
+    const current = localStorage.getItem('circa_data_version');
+    if (current !== RESET_VERSION) {
+      const keys = Object.keys(localStorage);
+      keys.forEach((k) => {
+        if (k.startsWith('circa_')) localStorage.removeItem(k);
+      });
+      localStorage.setItem('circa_data_version', RESET_VERSION);
+    }
+  } catch (e) {}
+})();
+
 const hap = (n = 8) => navigator.vibrate && navigator.vibrate(n);
 
 // ───── tab nav ─────
@@ -4942,6 +4960,7 @@ let sonoCafeina = 'nao';
 let sonoAlcool = 'nao';
 
 function abrirLogSono() {
+  // reset diário: dia padrão é ontem (noite que passou), todos valores limpos
   sonoDaySel = diaOntemKey();
   sonoSens = null;
   sonoQualidade = null;
@@ -4952,13 +4971,11 @@ function abrirLogSono() {
   const chips = document.querySelectorAll('#sono-day-chips .log-day-chip');
   chips.forEach((c) => c.classList.toggle('is-active', c.dataset.day === sonoDaySel));
 
-  try {
-    const last = JSON.parse(localStorage.getItem('circa_log_sono_last') || 'null');
-    if (last) {
-      if (document.getElementById('sono-bedtime')) document.getElementById('sono-bedtime').value = last.bed || '23:00';
-      if (document.getElementById('sono-waketime')) document.getElementById('sono-waketime').value = last.wake || '07:00';
-    }
-  } catch (e) {}
+  // horários padrão 23:00 / 07:00 · NÃO reutiliza o último, é um novo dia
+  const bedInp = document.getElementById('sono-bedtime');
+  const wakeInp = document.getElementById('sono-waketime');
+  if (bedInp)  bedInp.value  = '23:00';
+  if (wakeInp) wakeInp.value = '07:00';
 
   document.querySelectorAll('#sheet-log-sono .sensacao').forEach((s) => s.classList.remove('is-on'));
   document.querySelectorAll('#sono-qualidade .log-dot').forEach((x) => x.classList.remove('is-active'));
@@ -5269,23 +5286,58 @@ function abrirLogAgua() {
 })();
 
 // ───── LOG DE TREINO · semana ─────
+// ───── status de treino por dia (persistido) ─────
+function getTreinoStatusSemana() {
+  try {
+    const raw = localStorage.getItem('circa_treino_semana_status');
+    return raw ? JSON.parse(raw) : {};
+  } catch (e) { return {}; }
+}
+function setTreinoStatusSemana(obj) {
+  try { localStorage.setItem('circa_treino_semana_status', JSON.stringify(obj)); } catch (e) {}
+}
+
 function abrirLogTreinoSemana() {
   const list = document.getElementById('treino-semana-list');
   if (!list || typeof WEEK_WORKOUTS === 'undefined') return;
   const ordem = ['seg','ter','qua','qui','sex','sab','dom'];
   const hoje = diaAtualKey();
+  const status = getTreinoStatusSemana();
   list.innerHTML = '';
+
+  // header com progresso da semana
+  const ativosSemana = ordem.filter(k => WEEK_WORKOUTS[k]?.status !== 'rest');
+  const feitosSemana = ativosSemana.filter(k => status[k]).length;
+  const totalAtivo = ativosSemana.length;
+  const pctSemana = Math.round((feitosSemana / totalAtivo) * 100);
+  const prog = document.createElement('div');
+  prog.className = 'ref-prog';
+  prog.innerHTML = `
+    <div class="ref-prog__top">
+      <span>${feitosSemana} de ${totalAtivo} treinos da semana</span>
+      <b>${pctSemana}%</b>
+    </div>
+    <div class="ref-prog__bar"><i style="width:${pctSemana}%"></i></div>
+  `;
+  list.appendChild(prog);
 
   ordem.forEach((k) => {
     const w = WEEK_WORKOUTS[k];
     if (!w) return;
     const isToday = k === hoje;
-    const cls = isToday ? 'is-today' : (w.status === 'done' ? 'is-done' : w.status === 'rest' ? 'is-rest' : '');
-    const badgeCls = isToday ? 'tsi-badge--today' : w.status === 'done' ? 'tsi-badge--done' : w.status === 'rest' ? 'tsi-badge--rest' : '';
-    const badgeTxt = isToday ? 'hoje' : w.status === 'done' ? 'feito' : w.status === 'rest' ? 'descanso' : '';
-    const btn = document.createElement('button');
-    btn.className = 'treino-semana-item ' + cls;
-    btn.innerHTML = `
+    const isDone = !!status[k];
+    const isRest = w.status === 'rest';
+    const cls = [
+      isToday ? 'is-today' : '',
+      isDone  ? 'is-done'  : '',
+      isRest  ? 'is-rest'  : ''
+    ].filter(Boolean).join(' ');
+    const badgeTxt = isRest ? 'descanso' : isDone ? 'feito' : isToday ? 'hoje' : '';
+    const badgeCls = isRest ? 'tsi-badge--rest' : isDone ? 'tsi-badge--done' : isToday ? 'tsi-badge--today' : '';
+    const item = document.createElement('div');
+    item.className = 'treino-semana-item ' + cls;
+    item.innerHTML = `
+      <button class="ref-check tsi-check" data-day="${k}" aria-label="marcar ${w.label}"${isRest ? ' disabled' : ''}></button>
       <span class="tsi-day">${w.label}</span>
       <span class="tsi-info">
         <strong>${w.type}</strong>
@@ -5293,19 +5345,25 @@ function abrirLogTreinoSemana() {
       </span>
       ${badgeTxt ? `<span class="tsi-badge ${badgeCls}">${badgeTxt}</span>` : ''}
     `;
-    btn.addEventListener('click', () => {
-      if (w.status === 'rest') {
-        try { hap(4); } catch (e) {}
-        return;
-      }
-      // navega pro dia + abre o detalhe do dia (usa openDay existente)
-      try { hap(10); } catch (e) {}
-      if (typeof closeSheet === 'function') closeSheet();
-      setTimeout(() => {
-        if (typeof openDay === 'function') openDay(k);
-      }, 200);
+    // check toggle
+    const checkBtn = item.querySelector('.tsi-check');
+    if (checkBtn) checkBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (isRest) return;
+      const st = getTreinoStatusSemana();
+      st[k] = st[k] ? 0 : Date.now();
+      setTreinoStatusSemana(st);
+      try { hap(10); } catch (er) {}
+      abrirLogTreinoSemana(); // re-render pra atualizar progress
     });
-    list.appendChild(btn);
+    // click na linha abre o detalhe (exceto no check)
+    item.addEventListener('click', () => {
+      if (isRest) { try { hap(4); } catch (e) {} return; }
+      try { hap(8); } catch (e) {}
+      if (typeof closeSheet === 'function') closeSheet();
+      setTimeout(() => { if (typeof openDay === 'function') openDay(k); }, 200);
+    });
+    list.appendChild(item);
   });
 
   if (typeof openSheet === 'function') openSheet('sheet-log-treino-semana');
@@ -5448,6 +5506,7 @@ let humorEnergia = null;
 let humorFoco = null;
 
 function abrirLogHumor() {
+  // reset diário: todo novo dia começa limpo
   humorSens = null;
   humorEnergia = null;
   humorFoco = null;
@@ -5456,7 +5515,41 @@ function abrirLogHumor() {
   document.querySelectorAll('#humor-foco .log-dot').forEach((x) => x.classList.remove('is-active'));
   const nota = document.getElementById('humor-nota');
   if (nota) nota.value = '';
+  renderHumorHistorico();
   if (typeof openSheet === 'function') openSheet('sheet-log-humor');
+}
+
+function renderHumorHistorico() {
+  let arr = [];
+  try { arr = JSON.parse(localStorage.getItem('circa_log_humor') || '[]'); } catch (e) {}
+  const wrap = document.getElementById('humor-hist-wrap');
+  const ul = document.getElementById('humor-hist');
+  if (!wrap || !ul) return;
+  if (!arr.length) { wrap.style.display = 'none'; return; }
+  wrap.style.display = '';
+  ul.innerHTML = '';
+  const labelMap = { 1:'muito mal', 2:'mal', 3:'ok', 4:'bem', 5:'incrível' };
+  // últimos 5, mais recentes primeiro
+  arr.slice(-5).reverse().forEach((h) => {
+    const d = new Date(h.ts);
+    const dia = d.toLocaleDateString('pt-BR', { day:'numeric', month:'short' });
+    const hora = d.toLocaleTimeString('pt-BR', { hour:'2-digit', minute:'2-digit' });
+    const partes = [];
+    if (h.sens) partes.push(labelMap[h.sens] || '');
+    if (h.energia) partes.push(`energia ${h.energia}/5`);
+    if (h.foco)    partes.push(`foco ${h.foco}/5`);
+    const li = document.createElement('li');
+    li.className = 'log-hist-item';
+    li.innerHTML = `
+      <div class="log-hist-dot" data-v="${h.sens || 3}"></div>
+      <div class="log-hist-info">
+        <strong>${partes.join(' · ') || '—'}</strong>
+        ${h.nota ? `<em>"${h.nota.slice(0, 80)}${h.nota.length > 80 ? '…' : ''}"</em>` : ''}
+      </div>
+      <span class="log-hist-data">${dia} · ${hora}</span>
+    `;
+    ul.appendChild(li);
+  });
 }
 
 (function () {
@@ -5517,70 +5610,91 @@ function abrirLogHumor() {
 let refMeal = null;
 let refSens = null;
 
-function abrirLogRefeicao() {
-  refMeal = null;
-  refSens = null;
-  document.querySelectorAll('.log-meal-chip').forEach((x) => x.classList.remove('is-active'));
-  document.querySelectorAll('#sheet-log-refeicao .sensacao').forEach((x) => x.classList.remove('is-on'));
-  const desc = document.getElementById('ref-desc');
-  if (desc) desc.value = '';
+// ───── LOG DE REFEIÇÃO · plano de dieta do dia com check ─────
+// plano diário de 4 refeições (modelo v0, pode ser customizado por dieta)
+const REF_PLANO_HOJE = [
+  { id: 'cafe',   hora: '07:30', nome: 'café da manhã', prato: 'ovos mexidos + aveia + frutas vermelhas', kcal: 420 },
+  { id: 'almoco', hora: '13:00', nome: 'almoço',        prato: 'frango grelhado + arroz integral + legumes', kcal: 650 },
+  { id: 'lanche', hora: '16:30', nome: 'lanche',        prato: 'iogurte natural + castanhas + banana', kcal: 280 },
+  { id: 'jantar', hora: '20:00', nome: 'jantar',        prato: 'salmão + batata-doce + salada verde', kcal: 580 },
+];
 
-  // default pro horário atual
-  const h = new Date().getHours();
-  let auto = null;
-  if (h < 11) auto = 'cafe';
-  else if (h < 15) auto = 'almoco';
-  else if (h < 18) auto = 'lanche';
-  else auto = 'jantar';
-  const autoChip = document.querySelector(`.log-meal-chip[data-meal="${auto}"]`);
-  if (autoChip) { autoChip.classList.add('is-active'); refMeal = auto; }
-
-  if (typeof openSheet === 'function') openSheet('sheet-log-refeicao');
+function chaveDoDia() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 }
 
-(function () {
-  document.querySelectorAll('.log-meal-chip').forEach((c) => {
-    c.addEventListener('click', () => {
-      document.querySelectorAll('.log-meal-chip').forEach((x) => x.classList.toggle('is-active', x === c));
-      refMeal = c.dataset.meal;
-      try { hap(6); } catch (e) {}
-    });
-  });
-  document.querySelectorAll('#sheet-log-refeicao .sensacao').forEach((b) => {
-    b.addEventListener('click', () => {
-      document.querySelectorAll('#sheet-log-refeicao .sensacao').forEach((x) => x.classList.remove('is-on'));
-      b.classList.add('is-on');
-      refSens = parseInt(b.dataset.refSens, 10);
-      try { hap(6); } catch (e) {}
-    });
-  });
+function getRefStatusDoDia() {
+  try {
+    const raw = localStorage.getItem('circa_ref_dia_' + chaveDoDia());
+    return raw ? JSON.parse(raw) : {};
+  } catch (e) { return {}; }
+}
+function setRefStatusDoDia(obj) {
+  try { localStorage.setItem('circa_ref_dia_' + chaveDoDia(), JSON.stringify(obj)); } catch (e) {}
+}
 
-  const salvar = document.getElementById('ref-salvar');
-  if (salvar) salvar.addEventListener('click', () => {
-    const desc = document.getElementById('ref-desc')?.value || '';
-    const registro = {
-      meal: refMeal,
-      desc,
-      sens: refSens,
-      ts: Date.now(),
-    };
-    try {
-      const arr = JSON.parse(localStorage.getItem('circa_log_refeicao') || '[]');
-      arr.push(registro);
-      localStorage.setItem('circa_log_refeicao', JSON.stringify(arr));
-    } catch (e) {}
-    try { hap(14); } catch (e) {}
-    if (typeof closeSheet === 'function') closeSheet();
-    setTimeout(() => {
-      const t = document.getElementById('log-ok-title');
-      const s = document.getElementById('log-ok-sub');
-      if (t) t.textContent = 'refeição registrada.';
-      const mealLabel = { cafe:'café', almoco:'almoço', lanche:'lanche', jantar:'jantar' }[refMeal] || 'refeição';
-      if (s) s.textContent = desc ? `${mealLabel} · ${desc.slice(0, 60)}${desc.length > 60 ? '…' : ''}` : mealLabel;
-      if (typeof openSheet === 'function') openSheet('sheet-log-ok');
-    }, 200);
+function renderRefPlano() {
+  const ul = document.getElementById('ref-plano');
+  if (!ul) return;
+  const status = getRefStatusDoDia();
+  ul.innerHTML = '';
+  REF_PLANO_HOJE.forEach((m) => {
+    const li = document.createElement('li');
+    li.className = 'ref-item' + (status[m.id] ? ' is-done' : '');
+    li.innerHTML = `
+      <button class="ref-check" aria-label="marcar como feito"></button>
+      <div class="ref-info">
+        <div class="ref-top">
+          <span class="ref-hora">${m.hora}</span>
+          <span class="ref-nome">${m.nome}</span>
+        </div>
+        <div class="ref-prato">${m.prato}</div>
+        <div class="ref-kcal">~${m.kcal} kcal</div>
+      </div>
+    `;
+    li.querySelector('.ref-check').addEventListener('click', () => {
+      const st = getRefStatusDoDia();
+      st[m.id] = st[m.id] ? 0 : Date.now();
+      setRefStatusDoDia(st);
+      li.classList.toggle('is-done', !!st[m.id]);
+      try { hap(8); } catch (e) {}
+      renderRefProgresso();
+    });
+    ul.appendChild(li);
   });
-})();
+  renderRefProgresso();
+}
+
+function renderRefProgresso() {
+  const ul = document.getElementById('ref-plano');
+  if (!ul) return;
+  const status = getRefStatusDoDia();
+  const feitos = REF_PLANO_HOJE.filter(m => status[m.id]).length;
+  // injeta/atualiza um header de progresso acima da lista
+  let head = document.getElementById('ref-prog');
+  if (!head) {
+    head = document.createElement('div');
+    head.id = 'ref-prog';
+    head.className = 'ref-prog';
+    ul.parentElement.insertBefore(head, ul);
+  }
+  const pct = Math.round((feitos / REF_PLANO_HOJE.length) * 100);
+  head.innerHTML = `
+    <div class="ref-prog__top">
+      <span>${feitos} de ${REF_PLANO_HOJE.length} refeições</span>
+      <b>${pct}%</b>
+    </div>
+    <div class="ref-prog__bar"><i style="width:${pct}%"></i></div>
+  `;
+}
+
+function abrirLogRefeicao() {
+  renderRefPlano();
+  const nota = document.getElementById('ref-nota');
+  if (nota) nota.value = '';
+  if (typeof openSheet === 'function') openSheet('sheet-log-refeicao');
+}
 
 // ═════════════════════════════════════════════════════════
 // ENGINE DE SCORE/INSIGHTS DINÂMICOS · lê logs salvos e gera análise
@@ -5705,6 +5819,22 @@ function gerarInsightsDinamicos() {
 function atualizarJornadaComLogs() {
   const r = gerarInsightsDinamicos();
   const s = r.score;
+
+  // título do ritual e greet personalizados com o nome
+  const nomeUser = (typeof USER_NAME === 'string' && USER_NAME && USER_NAME.toLowerCase() !== 'você')
+    ? USER_NAME.split(' ')[0]
+    : 'você';
+  const hora = new Date().getHours();
+  const saudacao = hora < 12 ? 'bom dia' : hora < 18 ? 'boa tarde' : 'boa noite';
+
+  const ritTitulo = document.getElementById('j-ritual-titulo');
+  if (ritTitulo) {
+    ritTitulo.textContent = nomeUser === 'você' ? 'como foi seu dia?' : `como foi seu dia, ${nomeUser}?`;
+  }
+  const jGreet = document.getElementById('j-greet');
+  if (jGreet) {
+    jGreet.textContent = nomeUser === 'você' ? saudacao : `${saudacao}, ${nomeUser}`;
+  }
 
   const heroVal = document.getElementById('j-hero-value');
   const ringFill = document.getElementById('j-ring-fill');

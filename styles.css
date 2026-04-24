@@ -4635,8 +4635,17 @@ button.hero:active { transform: scale(0.985); }
   font-family: var(--serif);
   font-size: clamp(22px,5vw,30px); font-weight: 300;
   color: var(--fg); line-height: 1.35;
-  text-align: center; margin-bottom: 24px;
+  text-align: center; margin-bottom: 10px;
   letter-spacing: -0.01em;
+}
+.j-ritual-sub {
+  font-family: var(--sans);
+  font-size: 13px;
+  color: var(--fg-muted);
+  text-align: center;
+  line-height: 1.6;
+  max-width: 30ch;
+  margin: 0 auto 18px;
 }
 .j-ritual { width: 100%; display: flex; flex-direction: column; align-items: center; }
 .j-inp {
@@ -5028,6 +5037,13 @@ canvas#j-roda { width: 220px; height: 220px; cursor: pointer; }
   display: block;
   object-fit: contain;
 }
+.j-nav-circa__icon .wax-seal--sm {
+  width: 36px;
+  height: 36px;
+  display: block;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.3))
+          drop-shadow(0 0 10px rgba(212, 184, 150, 0.2));
+}
 @keyframes jNavPulse {
   0%, 100% {
     box-shadow: 0 0 0 0 rgba(212, 184, 150, 0.2);
@@ -5128,6 +5144,53 @@ canvas#j-roda { width: 220px; height: 220px; cursor: pointer; }
   padding: 44px 20px 84px;
   justify-content: flex-start;
   align-items: stretch;
+}
+
+/* estado bloqueado · só o selo + frase */
+.jsec--club-locked {
+  padding: 44px 28px 84px;
+  justify-content: center;
+  align-items: center;
+}
+.club-locked {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  text-align: center;
+  max-width: 320px;
+  margin: 0 auto;
+}
+.club-locked__seal {
+  width: 128px;
+  height: 128px;
+  filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.45))
+          drop-shadow(0 0 28px rgba(212, 184, 150, 0.22));
+  animation: waxBreathe 5.5s ease-in-out infinite;
+  margin-bottom: 6px;
+}
+.club-locked__seal .wax-seal { width: 100%; height: 100%; display: block; }
+.club-locked__eye {
+  font-family: var(--sans);
+  font-size: 10px;
+  letter-spacing: 0.4em;
+  color: var(--accent);
+  text-transform: lowercase;
+}
+.club-locked__title {
+  font-family: var(--serif);
+  font-size: clamp(28px, 7vw, 38px);
+  font-weight: 300;
+  color: var(--fg);
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+}
+.club-locked__sub {
+  font-family: var(--sans);
+  font-size: 13px;
+  color: var(--fg-muted);
+  line-height: 1.6;
+  max-width: 28ch;
 }
 
 /* tabs */
@@ -6092,7 +6155,187 @@ canvas#j-roda { width: 220px; height: 220px; cursor: pointer; }
   background: var(--accent-dim);
 }
 
-/* chips de refeição */
+/* histórico de logs (humor, sono, etc) */
+.log-hist-list {
+  list-style: none;
+  padding: 0;
+  margin: 8px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.log-hist-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: var(--bg-raised);
+  border: 1px solid var(--fg-faint);
+  border-radius: var(--r-chip, 10px);
+  font-family: var(--sans);
+}
+.log-hist-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: var(--accent);
+}
+.log-hist-dot[data-v="1"] { background: #C09090; }
+.log-hist-dot[data-v="2"] { background: #E8A87C; }
+.log-hist-dot[data-v="3"] { background: var(--fg-muted); }
+.log-hist-dot[data-v="4"] { background: #A8BBD0; }
+.log-hist-dot[data-v="5"] { background: #8FA87C; }
+.log-hist-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.log-hist-info strong {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--fg);
+}
+.log-hist-info em {
+  font-family: var(--serif);
+  font-size: 12px;
+  font-style: italic;
+  color: var(--fg-muted);
+  line-height: 1.4;
+}
+.log-hist-data {
+  flex-shrink: 0;
+  font-size: 10px;
+  color: var(--fg-dim);
+  letter-spacing: 0.04em;
+}
+
+/* plano de refeições do dia (v0-style) */
+.ref-plano {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.ref-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 14px;
+  background: var(--bg-raised);
+  border: 1px solid var(--fg-faint);
+  border-radius: var(--r-card, 14px);
+  transition: all 0.2s ease;
+}
+.ref-item.is-done {
+  opacity: 0.65;
+  border-color: rgba(143, 168, 124, 0.35);
+  background: rgba(143, 168, 124, 0.06);
+}
+.ref-check {
+  flex-shrink: 0;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  border: 1.5px solid var(--fg-faint);
+  background: transparent;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.22s ease;
+  margin-top: 2px;
+}
+.ref-check:hover { border-color: var(--accent); }
+.ref-item.is-done .ref-check {
+  background: #8FA87C;
+  border-color: #8FA87C;
+}
+.ref-item.is-done .ref-check::after {
+  content: '';
+  position: absolute;
+  left: 6px; top: 3px;
+  width: 6px; height: 11px;
+  border: solid var(--bg);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+.ref-info { flex: 1; min-width: 0; }
+.ref-top {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+.ref-hora {
+  font-family: var(--serif);
+  font-size: 14px;
+  color: var(--accent);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+.ref-nome {
+  font-family: var(--sans);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--fg-muted);
+  text-transform: uppercase;
+}
+.ref-item.is-done .ref-nome { text-decoration: line-through; opacity: 0.7; }
+.ref-prato {
+  font-family: var(--sans);
+  font-size: 13px;
+  color: var(--fg);
+  line-height: 1.4;
+  margin-bottom: 3px;
+}
+.ref-item.is-done .ref-prato { text-decoration: line-through; opacity: 0.7; }
+.ref-kcal {
+  font-family: var(--sans);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--fg-dim);
+  text-transform: lowercase;
+}
+
+/* barra de progresso da dieta */
+.ref-prog {
+  margin-bottom: 10px;
+  padding: 10px 12px;
+  background: var(--bg-raised);
+  border: 1px solid var(--fg-faint);
+  border-radius: var(--r-card, 14px);
+}
+.ref-prog__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--sans);
+  font-size: 12px;
+  color: var(--fg-muted);
+  margin-bottom: 6px;
+}
+.ref-prog__top b {
+  font-family: var(--serif);
+  font-size: 14px;
+  color: var(--accent);
+  font-weight: 400;
+}
+.ref-prog__bar {
+  height: 3px;
+  background: var(--fg-faint);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.ref-prog__bar i {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent-hi));
+  border-radius: 2px;
+  transition: width 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* chips de refeição · legacy, escondido */
 .log-meal-chips {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
