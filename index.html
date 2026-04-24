@@ -2753,8 +2753,313 @@
           <div class="j-roda-legenda" id="j-roda-legenda"></div>
         </section>
 
-        <!-- 10. ANTERIORMENTE -->
-        <section class="jsec is-below" data-index="9" data-label="30 dias">
+        <!-- 10. CLUB CIRCA · comunidade com dados reais -->
+        <section class="jsec is-below jsec--club" data-index="9" data-label="club" id="j-club">
+          <!-- tabs -->
+          <div class="club-tabs">
+            <button class="club-tab is-on" data-club-tab="feed">portadores</button>
+            <button class="club-tab" data-club-tab="encontros">encontros</button>
+            <button class="club-tab" data-club-tab="selo">meu selo</button>
+          </div>
+
+          <!-- scroll wrap pros 3 panes (um scroll interno por pane) -->
+          <div class="club-panes">
+
+            <!-- PANE: FEED DE PORTADORES -->
+            <div class="club-pane is-on" data-club-pane="feed">
+              <div class="club-intro">
+                <span class="club-badge-top">✦ club circa · assinantes</span>
+                <h2 class="jsec-title">influencers com <em>dados reais.</em></h2>
+                <p class="club-sub">score verificado pelo app. impossível de falsificar.</p>
+              </div>
+
+              <div class="club-filtros">
+                <button class="club-filtro is-on" data-club-filtro="todos">todos</button>
+                <button class="club-filtro" data-club-filtro="portador">✦ portador</button>
+                <button class="club-filtro" data-club-filtro="enraizado">🌳 enraizado</button>
+                <button class="club-filtro" data-club-filtro="cultivado">🌿 cultivado</button>
+              </div>
+
+              <!-- POST 1 · portador -->
+              <article class="club-post" data-selo="portador">
+                <header class="club-post__head">
+                  <div class="club-av"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=84&h=84&fit=crop&crop=face" alt=""/></div>
+                  <div class="club-post__who">
+                    <strong>Mariana Costa</strong>
+                    <small class="club-post__selo club-post__selo--portador">✦ portador circa</small>
+                  </div>
+                  <div class="club-post__score">
+                    <b>93</b><span>score</span>
+                  </div>
+                </header>
+                <div class="club-post__roda">
+                  <div class="club-roda-mini">
+                    <canvas data-club-roda="0" width="70" height="70"></canvas>
+                    <div class="club-roda-num"><b>93</b><small>score</small></div>
+                  </div>
+                  <div class="club-dims">
+                    <div class="club-dim"><span>saúde</span><i><u style="width:94%"></u></i><b>9</b></div>
+                    <div class="club-dim"><span>espírito</span><i><u style="width:91%"></u></i><b>9</b></div>
+                    <div class="club-dim"><span>energia</span><i><u style="width:90%"></u></i><b>9</b></div>
+                    <div class="club-dim"><span>mente</span><i><u style="width:88%"></u></i><b>9</b></div>
+                    <div class="club-dim"><span>relações</span><i><u style="width:86%"></u></i><b>9</b></div>
+                  </div>
+                </div>
+                <p class="club-post__frase">"acordei antes do sol pelo centésimo dia. não é disciplina, é quem eu me tornei."</p>
+                <div class="club-post__badges">
+                  <span class="club-chip club-chip--streak">212 dias streak</span>
+                  <span class="club-chip club-chip--marco">100 dias · madrugada</span>
+                </div>
+                <div class="club-post__acoes">
+                  <button data-club-msg="Mariana Costa" data-club-sub="score 93 · portador circa">💬 mensagem</button>
+                  <button data-club-gesto="🌱 plantar" data-club-alvo="Mariana">🌱 plantar</button>
+                  <button data-club-gesto="○ salvo" data-club-alvo="Mariana">○ salvar</button>
+                </div>
+              </article>
+
+              <!-- POST 2 · enraizado -->
+              <article class="club-post" data-selo="enraizado">
+                <header class="club-post__head">
+                  <div class="club-av"><img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=84&h=84&fit=crop&crop=face" alt=""/></div>
+                  <div class="club-post__who">
+                    <strong>Rodrigo Alves</strong>
+                    <small class="club-post__selo club-post__selo--enraizado">🌳 enraizado</small>
+                  </div>
+                  <div class="club-post__score club-post__score--enraizado">
+                    <b>88</b><span>score</span>
+                  </div>
+                </header>
+                <div class="club-post__roda">
+                  <div class="club-roda-mini">
+                    <canvas data-club-roda="1" width="70" height="70"></canvas>
+                    <div class="club-roda-num club-roda-num--green"><b>88</b><small>score</small></div>
+                  </div>
+                  <div class="club-dims club-dims--green">
+                    <div class="club-dim"><span>saúde</span><i><u style="width:91%"></u></i><b>9</b></div>
+                    <div class="club-dim"><span>mente</span><i><u style="width:88%"></u></i><b>9</b></div>
+                    <div class="club-dim"><span>lazer</span><i><u style="width:82%"></u></i><b>8</b></div>
+                    <div class="club-dim"><span>família</span><i><u style="width:87%"></u></i><b>9</b></div>
+                    <div class="club-dim"><span>energia</span><i><u style="width:85%"></u></i><b>9</b></div>
+                  </div>
+                </div>
+                <p class="club-post__frase">"quando lazer cai, todo o resto cai junto. aprendi isso na marra."</p>
+                <div class="club-post__badges">
+                  <span class="club-chip club-chip--streak">94 dias streak</span>
+                  <span class="club-chip club-chip--dim">família em alta</span>
+                </div>
+                <div class="club-post__acoes">
+                  <button data-club-msg="Rodrigo Alves" data-club-sub="score 88 · enraizado">💬 mensagem</button>
+                  <button data-club-gesto="🌱 plantar" data-club-alvo="Rodrigo">🌱 plantar</button>
+                  <button data-club-gesto="○ salvo" data-club-alvo="Rodrigo">○ salvar</button>
+                </div>
+              </article>
+
+              <!-- POST 3 · cultivado -->
+              <article class="club-post" data-selo="cultivado">
+                <header class="club-post__head">
+                  <div class="club-av"><img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=84&h=84&fit=crop&crop=face" alt=""/></div>
+                  <div class="club-post__who">
+                    <strong>Camila Neves</strong>
+                    <small class="club-post__selo club-post__selo--cultivado">🌿 cultivada</small>
+                  </div>
+                  <div class="club-post__score club-post__score--cultivado">
+                    <b>85</b><span>score</span>
+                  </div>
+                </header>
+                <div class="club-post__roda">
+                  <div class="club-roda-mini">
+                    <canvas data-club-roda="2" width="70" height="70"></canvas>
+                    <div class="club-roda-num club-roda-num--purple"><b>85</b><small>score</small></div>
+                  </div>
+                  <div class="club-dims club-dims--purple">
+                    <div class="club-dim"><span>espírito</span><i><u style="width:92%"></u></i><b>9</b></div>
+                    <div class="club-dim"><span>mente</span><i><u style="width:89%"></u></i><b>9</b></div>
+                    <div class="club-dim"><span>relações</span><i><u style="width:84%"></u></i><b>8</b></div>
+                    <div class="club-dim"><span>saúde</span><i><u style="width:79%"></u></i><b>8</b></div>
+                    <div class="club-dim"><span>lazer</span><i><u style="width:76%"></u></i><b>8</b></div>
+                  </div>
+                </div>
+                <p class="club-post__frase">"espírito em 92 não aconteceu por acaso. foi escolha diária de cinco minutos de silêncio."</p>
+                <div class="club-post__badges">
+                  <span class="club-chip club-chip--streak">67 dias streak</span>
+                  <span class="club-chip club-chip--dim">espírito 92 ↑</span>
+                </div>
+                <div class="club-post__acoes">
+                  <button data-club-msg="Camila Neves" data-club-sub="score 85 · cultivada">💬 mensagem</button>
+                  <button data-club-gesto="🌱 plantar" data-club-alvo="Camila">🌱 plantar</button>
+                  <button data-club-gesto="○ salvo" data-club-alvo="Camila">○ salvar</button>
+                </div>
+              </article>
+            </div>
+
+            <!-- PANE: ENCONTROS -->
+            <div class="club-pane" data-club-pane="encontros">
+              <div class="club-intro">
+                <span class="club-badge-top">encontros presenciais</span>
+                <h2 class="jsec-title">criados por <em>portadores.</em></h2>
+                <p class="club-sub">qualquer assinante pode participar.</p>
+              </div>
+
+              <article class="club-enc" data-club-gesto="✦ presença confirmada · corrida" data-club-alvo="ibirapuera, sáb 26 abr">
+                <div class="club-enc__hero" style="background:linear-gradient(145deg, rgba(232,168,124,0.25), rgba(232,168,124,0.04))">
+                  <span>🌅</span>
+                </div>
+                <div class="club-enc__body">
+                  <div class="club-enc__tipo">corrida</div>
+                  <h3 class="club-enc__titulo">corrida ao amanhecer, ibirapuera</h3>
+                  <div class="club-enc__meta">
+                    <span>◷ sáb · 26 abr · 06h30</span>
+                    <span>◎ portão 3</span>
+                  </div>
+                  <div class="club-enc__org">
+                    <div class="club-av club-av--sm"><img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=48&h=48&fit=crop&crop=face" alt=""/></div>
+                    <div>
+                      <strong>Rodrigo Alves</strong>
+                      <small class="club-post__selo--enraizado">🌳 enraizado</small>
+                    </div>
+                    <span class="club-vagas">4 de 8</span>
+                  </div>
+                </div>
+              </article>
+
+              <article class="club-enc" data-club-gesto="✦ presença confirmada · silêncio coletivo" data-club-alvo="trianon, dom 27 abr">
+                <div class="club-enc__hero" style="background:linear-gradient(145deg, rgba(168,156,200,0.28), rgba(168,156,200,0.04))">
+                  <span>🧘</span>
+                </div>
+                <div class="club-enc__body">
+                  <div class="club-enc__tipo">meditação</div>
+                  <h3 class="club-enc__titulo">silêncio coletivo, 20 minutos</h3>
+                  <div class="club-enc__meta">
+                    <span>◷ dom · 27 abr · 07h00</span>
+                    <span>◎ parque trianon</span>
+                  </div>
+                  <div class="club-enc__org">
+                    <div class="club-av club-av--sm"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=48&h=48&fit=crop&crop=face" alt=""/></div>
+                    <div>
+                      <strong>Mariana Costa</strong>
+                      <small class="club-post__selo--portador">✦ portador</small>
+                    </div>
+                    <span class="club-vagas">2 de 6</span>
+                  </div>
+                </div>
+              </article>
+
+              <article class="club-enc" data-club-gesto="✦ presença confirmada · mesa de portadores" data-club-alvo="vila madalena, sex 02 mai">
+                <div class="club-enc__hero" style="background:linear-gradient(145deg, rgba(212,184,150,0.22), rgba(212,184,150,0.04))">
+                  <span>🍵</span>
+                </div>
+                <div class="club-enc__body">
+                  <div class="club-enc__tipo">jantar</div>
+                  <h3 class="club-enc__titulo">mesa de portadores, culinária funcional</h3>
+                  <div class="club-enc__meta">
+                    <span>◷ sex · 02 mai · 19h30</span>
+                    <span>◎ vila madalena</span>
+                  </div>
+                  <div class="club-enc__org">
+                    <div class="club-av club-av--sm"><img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=48&h=48&fit=crop&crop=face" alt=""/></div>
+                    <div>
+                      <strong>Camila Neves</strong>
+                      <small class="club-post__selo--cultivado">🌿 cultivada</small>
+                    </div>
+                    <span class="club-vagas">6 de 10</span>
+                  </div>
+                </div>
+              </article>
+            </div>
+
+            <!-- PANE: MEU SELO -->
+            <div class="club-pane" data-club-pane="selo">
+              <div class="club-selo-head">
+                <div class="club-selo-av">
+                  <img src="circa-logo.png" alt=""/>
+                </div>
+                <h3 class="club-selo-nome">Gabriel Heringer</h3>
+                <span class="club-badge-top">✦ portador circa</span>
+                <div class="club-selo-stats">
+                  <div><b>91</b><small>score</small></div>
+                  <div><b>187</b><small>dias</small></div>
+                  <div><b>3</b><small>convites</small></div>
+                </div>
+              </div>
+
+              <div class="club-selo-bloco">
+                <p class="club-selo-lbl">seus 3 convites · 90 dias grátis</p>
+
+                <div class="club-conv">
+                  <div class="club-av club-av--sm"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=72&h=72&fit=crop&crop=face" alt=""/></div>
+                  <div class="club-conv__info">
+                    <strong>Amanda</strong>
+                    <small>dia 38 de 90 · score atual 74</small>
+                    <i class="club-conv__bar"><u style="width:42%"></u></i>
+                  </div>
+                  <span class="club-conv__dias">52d</span>
+                </div>
+
+                <div class="club-conv">
+                  <div class="club-av club-av--sm"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=72&h=72&fit=crop&crop=face" alt=""/></div>
+                  <div class="club-conv__info">
+                    <strong>Pedro</strong>
+                    <small>dia 71 de 90 · score atual 81 ↑</small>
+                    <i class="club-conv__bar"><u style="width:79%; background:linear-gradient(90deg,#8FA87C,#C3D5AA)"></u></i>
+                  </div>
+                  <span class="club-conv__dias" style="color:#8FA87C">19d</span>
+                </div>
+
+                <button class="club-conv club-conv--empty" data-club-gesto="🌱 convite gerado" data-club-alvo="pronto pra enviar">
+                  <div class="club-conv__plus">+</div>
+                  <div class="club-conv__info">
+                    <strong>slot disponível</strong>
+                    <small>toque pra convidar alguém</small>
+                  </div>
+                  <span class="club-conv__dias" style="color:var(--accent)">convidar →</span>
+                </button>
+
+                <div class="club-rec">
+                  <p class="club-rec__lbl">recompensa acumulada</p>
+                  <p class="club-rec__txt">Pedro atingiu 70+, você ganha <strong>1 mês grátis</strong> em breve. 🎉</p>
+                </div>
+              </div>
+
+              <div class="club-selo-bloco">
+                <p class="club-selo-lbl">hierarquia do selo</p>
+
+                <div class="club-tier is-on">
+                  <span class="club-tier__icon">✦</span>
+                  <div class="club-tier__info">
+                    <strong>portador circa</strong>
+                    <small>score 90+ · 180 dias · todas dim 7+</small>
+                  </div>
+                  <span class="club-tier__tag">você</span>
+                </div>
+                <div class="club-tier">
+                  <span class="club-tier__icon">🌳</span>
+                  <div class="club-tier__info">
+                    <strong>enraizado</strong>
+                    <small>score 90+ · 90 dias</small>
+                  </div>
+                </div>
+                <div class="club-tier">
+                  <span class="club-tier__icon">🌿</span>
+                  <div class="club-tier__info">
+                    <strong>cultivado</strong>
+                    <small>score 85+ · 60 dias</small>
+                  </div>
+                </div>
+                <div class="club-tier">
+                  <span class="club-tier__icon">🌱</span>
+                  <div class="club-tier__info">
+                    <strong>florescendo</strong>
+                    <small>score 80+ · 30 dias</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div><!-- /club-panes -->
+        </section>
+
+        <!-- 11. ANTERIORMENTE -->
+        <section class="jsec is-below" data-index="10" data-label="30 dias">
           <div class="j-chip"><i></i><span>anteriormente no circa</span></div>
           <p class="jsec-eye">30 dias atrás</p>
           <h2 class="jsec-title">você era <em>outro.</em></h2>
@@ -2793,6 +3098,22 @@
 
       </div>
 
+      <!-- modal de mensagem do club (sobrepõe tudo dentro da jornada) -->
+      <div class="club-modal" id="club-modal" aria-hidden="true">
+        <div class="club-modal__backdrop" data-club-close></div>
+        <div class="club-modal__panel">
+          <div class="club-modal__grab"></div>
+          <h4 class="club-modal__titulo" id="club-modal-titulo">mensagem</h4>
+          <p class="club-modal__sub" id="club-modal-sub">portador circa</p>
+          <textarea class="club-modal__input" id="club-modal-input" placeholder="escreva sua mensagem…" rows="4"></textarea>
+          <button class="btn btn--primary btn--full" id="club-modal-send">enviar mensagem</button>
+          <button class="btn btn--text btn--full" data-club-close>cancelar</button>
+        </div>
+      </div>
+
+      <!-- toast de gestos -->
+      <div class="club-toast" id="club-toast" aria-live="polite"></div>
+
       <!-- nav inferior interna da jornada -->
       <nav class="jornada__nav" role="tablist">
         <button class="j-nav-item is-active" data-j-goto="0" aria-label="hoje">
@@ -2816,7 +3137,11 @@
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5"/><path d="M12 8v4l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
           <span>roda</span>
         </button>
-        <button class="j-nav-item" data-j-goto="9" aria-label="30 dias">
+        <button class="j-nav-item" data-j-goto="9" aria-label="club">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="4"/><path d="M17 11a4 4 0 1 0 0-8"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/></svg>
+          <span>club</span>
+        </button>
+        <button class="j-nav-item" data-j-goto="10" aria-label="30 dias">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5"/><path d="M12 8v4M12 16h.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
           <span>30d</span>
         </button>

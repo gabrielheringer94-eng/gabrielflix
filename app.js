@@ -4125,8 +4125,8 @@ function renderObGoalWheel() {
   }
 
   // ═══ sons de transição ═══
-  // 10 notas pra 10 seções (score/ritual/corpo/mente/pausa/espírito/insights/exames/roda/30d)
-  const NOTAS_J = [329.63, 369.99, 392.00, 440.00, 493.88, 523.25, 587.33, 622.25, 659.25, 698.46];
+  // 11 notas pra 11 seções (score/ritual/corpo/mente/pausa/espírito/insights/exames/roda/club/30d)
+  const NOTAS_J = [329.63, 369.99, 392.00, 440.00, 493.88, 523.25, 587.33, 622.25, 659.25, 739.99, 698.46];
   function tocarNotaJ(idx) {
     try {
       const AC = window.AudioContext || window.webkitAudioContext;
@@ -4172,8 +4172,9 @@ function renderObGoalWheel() {
   }
 
   function updateJornadaNav() {
-    // section index → índice do botão na nav (hoje=0, insights=1, circa-som=2, exames=3, roda=4, 30d=5)
-    const navMap = { 0: 0, 6: 1, 7: 3, 8: 4, 9: 5 };
+    // section index → índice do botão na nav
+    // nav: [hoje(0), insights(1), circa-som(2), exames(3), roda(4), club(5), 30d(6)]
+    const navMap = { 0: 0, 6: 1, 7: 3, 8: 4, 9: 5, 10: 6 };
     const navIdx = navMap[current];
     document.querySelectorAll('.j-nav-item').forEach((b, i) => {
       b.classList.toggle('is-active', i === navIdx);
@@ -5883,6 +5884,161 @@ function abrirPerfil() {
     _origOpen();
     setTimeout(() => {
       try { atualizarJornadaComLogs(); } catch (e) {}
+      try { clubDesenharMiniRodas(); } catch (e) {}
     }, 80);
   };
+})();
+
+// ═════════════════════════════════════════════════════════
+// CLUB CIRCA · tabs, filtros, modal, toast, mini rodas
+// ═════════════════════════════════════════════════════════
+(function () {
+  // tabs
+  document.querySelectorAll('#j-club .club-tab').forEach((tab) => {
+    tab.addEventListener('click', () => {
+      const kind = tab.dataset.clubTab;
+      document.querySelectorAll('#j-club .club-tab').forEach((t) => t.classList.toggle('is-on', t === tab));
+      document.querySelectorAll('#j-club .club-pane').forEach((p) => p.classList.toggle('is-on', p.dataset.clubPane === kind));
+      try { hap(6); } catch (e) {}
+      // redesenha mini rodas quando volta pro feed
+      if (kind === 'feed') setTimeout(clubDesenharMiniRodas, 80);
+    });
+  });
+
+  // filtros de selo
+  document.querySelectorAll('#j-club .club-filtro').forEach((f) => {
+    f.addEventListener('click', () => {
+      const tipo = f.dataset.clubFiltro;
+      document.querySelectorAll('#j-club .club-filtro').forEach((x) => x.classList.toggle('is-on', x === f));
+      document.querySelectorAll('#j-club .club-post').forEach((p) => {
+        p.style.display = (tipo === 'todos' || p.dataset.selo === tipo) ? '' : 'none';
+      });
+      try { hap(4); } catch (e) {}
+    });
+  });
+
+  // mensagem a portador
+  document.querySelectorAll('[data-club-msg]').forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const nome = btn.dataset.clubMsg;
+      const sub = btn.dataset.clubSub || '';
+      document.getElementById('club-modal-titulo').textContent = 'mensagem para ' + nome;
+      document.getElementById('club-modal-sub').textContent = sub;
+      document.getElementById('club-modal-input').value = '';
+      document.getElementById('club-modal').classList.add('is-open');
+      document.getElementById('club-modal').setAttribute('aria-hidden', 'false');
+      try { hap(8); } catch (er) {}
+    });
+  });
+
+  // fechar modal
+  document.querySelectorAll('[data-club-close]').forEach((el) => {
+    el.addEventListener('click', () => {
+      document.getElementById('club-modal').classList.remove('is-open');
+      document.getElementById('club-modal').setAttribute('aria-hidden', 'true');
+    });
+  });
+
+  // enviar mensagem
+  const sendBtn = document.getElementById('club-modal-send');
+  if (sendBtn) sendBtn.addEventListener('click', () => {
+    const txt = document.getElementById('club-modal-input').value.trim();
+    if (!txt) { clubToast('✕', 'escreva algo antes de enviar'); return; }
+    document.getElementById('club-modal').classList.remove('is-open');
+    document.getElementById('club-modal').setAttribute('aria-hidden', 'true');
+    try { hap(14); } catch (e) {}
+    clubToast('💬', 'mensagem enviada');
+  });
+
+  // gestos (plantar, salvar, confirmar presença, etc)
+  document.addEventListener('click', (e) => {
+    const g = e.target.closest('[data-club-gesto]');
+    if (!g) return;
+    // ignora se está dentro do modal fechado ou não visível
+    if (!document.getElementById('j-club')) return;
+    e.stopPropagation();
+    const icon = g.dataset.clubGesto || '';
+    const alvo = g.dataset.clubAlvo || '';
+    const splitAt = icon.indexOf(' ');
+    const emoji = splitAt > 0 ? icon.slice(0, splitAt) : icon;
+    const texto = alvo || (splitAt > 0 ? icon.slice(splitAt + 1) : '');
+    try { hap(8); } catch (er) {}
+    clubToast(emoji, texto);
+  });
+
+  function clubToast(icon, texto) {
+    const t = document.getElementById('club-toast');
+    if (!t) return;
+    t.textContent = `${icon}  ${texto}`;
+    t.classList.add('is-on');
+    clearTimeout(clubToast._t);
+    clubToast._t = setTimeout(() => { t.classList.remove('is-on'); }, 2800);
+  }
+})();
+
+// mini rodas nos cards do club (canvas 70x70)
+function clubDesenharMiniRodas() {
+  const configs = [
+    { dims: [94, 91, 90, 88, 86], cor: '#D4B896' }, // portador · champanhe
+    { dims: [91, 88, 82, 87, 85], cor: '#8FA87C' }, // enraizado · verde
+    { dims: [92, 89, 84, 79, 76], cor: '#A89CC8' }, // cultivado · lavanda
+  ];
+  document.querySelectorAll('#j-club canvas[data-club-roda]').forEach((canvas) => {
+    const idx = parseInt(canvas.dataset.clubRoda, 10);
+    const cfg = configs[idx];
+    if (!cfg) return;
+    const ctx = canvas.getContext('2d');
+    const W = canvas.width, H = canvas.height;
+    const cx = W / 2, cy = H / 2;
+    const maxR = W * 0.38;
+    const n = cfg.dims.length;
+    ctx.clearRect(0, 0, W, H);
+    // anéis de grade
+    for (let r = 1; r <= 3; r++) {
+      ctx.beginPath();
+      ctx.arc(cx, cy, maxR * r / 3, 0, Math.PI * 2);
+      ctx.strokeStyle = 'rgba(212,184,150,0.1)';
+      ctx.lineWidth = 0.5;
+      ctx.stroke();
+    }
+    // polígono
+    ctx.beginPath();
+    cfg.dims.forEach((v, i) => {
+      const ang = (i / n) * Math.PI * 2 - Math.PI / 2;
+      const r = maxR * (v / 100);
+      const x = cx + Math.cos(ang) * r;
+      const y = cy + Math.sin(ang) * r;
+      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    });
+    ctx.closePath();
+    const cor = cfg.cor;
+    const r2 = parseInt(cor.slice(1, 3), 16);
+    const g2 = parseInt(cor.slice(3, 5), 16);
+    const b2 = parseInt(cor.slice(5, 7), 16);
+    ctx.fillStyle = `rgba(${r2},${g2},${b2},0.14)`;
+    ctx.fill();
+    ctx.strokeStyle = `rgba(${r2},${g2},${b2},0.6)`;
+    ctx.lineWidth = 1.2;
+    ctx.stroke();
+    // pontos
+    cfg.dims.forEach((v, i) => {
+      const ang = (i / n) * Math.PI * 2 - Math.PI / 2;
+      const r = maxR * (v / 100);
+      ctx.beginPath();
+      ctx.arc(cx + Math.cos(ang) * r, cy + Math.sin(ang) * r, 2.5, 0, Math.PI * 2);
+      ctx.fillStyle = cor;
+      ctx.fill();
+    });
+  });
+}
+
+// desenha também quando a seção club fica visível (via IntersectionObserver)
+(function () {
+  const club = document.getElementById('j-club');
+  if (!club) return;
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach((e) => { if (e.isIntersecting) clubDesenharMiniRodas(); });
+  }, { threshold: 0.2 });
+  obs.observe(club);
 })();
