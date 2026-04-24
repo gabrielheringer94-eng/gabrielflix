@@ -3743,6 +3743,8 @@ function obFlowFiltered() {
   return OB_FLOW.filter((s) => {
     if (s === 32 && g !== 'man')   return false;
     if (s === 33 && g !== 'woman') return false;
+    // step 4: seletor de ciclo menstrual · só faz sentido pra mulher/outro
+    if (s === 4  && g === 'man')   return false;
     return true;
   });
 }
@@ -3757,7 +3759,15 @@ function nextStep() {
   const flow = obFlowFiltered();
   const idx = flow.indexOf(obStep);
   if (idx >= 0 && idx < flow.length - 1) {
-    obStep = flow[idx + 1];
+    const newStep = flow[idx + 1];
+    // se vamos entrar na 1ª pergunta fisio (step 5) sem trilha definida,
+    // define baseado no gênero (homem pula o step 4, precisa de default)
+    if (newStep === 5 && !fisioTrilha) {
+      const g = obCurrentGender();
+      fisioTrilha = (g === 'man') ? 'masculina' : 'feminina';
+      fisioScores = {};
+    }
+    obStep = newStep;
     renderObStep();
     hap(6);
   }
