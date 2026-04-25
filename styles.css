@@ -2361,12 +2361,18 @@ body.fundo-on .wlc-fundo { display: block; }
 .welcome > .wlc-tela { position: relative; z-index: 2; }
 .welcome > .wlc-top { z-index: 3; background: transparent; }
 
-/* onboarding também transparente quando body.fundo-on · canvas vaza */
+/* onboarding com bg quase transparente (fallback dark warm) quando body.fundo-on · canvas vaza por baixo
+   o gradient sutil garante que enquanto o canvas faz warming up no primeiro frame,
+   a tela não fica 100% preta · o canvas mistura por cima quando começa a pintar */
 body.fundo-on .onboard {
-  background: transparent !important;
+  background:
+    radial-gradient(1200px 800px at 50% 0%, rgba(212, 184, 150, 0.04), transparent 60%),
+    rgba(8, 5, 2, 0.4) !important;
 }
 body.fundo-on .onboard .ob-top {
-  background: transparent !important;
+  background: rgba(8, 5, 2, 0.55) !important;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 /* header fixo */

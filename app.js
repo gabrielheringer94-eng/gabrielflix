@@ -1403,10 +1403,12 @@ function maybeStopWlcFundo() {
 function startWlcFundo() {
   const canvas = document.getElementById('wlc-fundo');
   if (!canvas) return;
-  // marca body.fundo-on pra revelar canvas + tornar overlays transparentes
+  // marca body.fundo-on pra revelar canvas + dar bg de fallback aos overlays
   document.body.classList.add('fundo-on');
   if (wlcFundoRAF) return; // já rodando
   const ctx = canvas.getContext('2d');
+  // força reflow pra garantir dimensões corretas após o display:block
+  void canvas.offsetWidth;
 
   // 4 blobs em paleta Circa champanhe (não gold)
   // R G B = #D4B896 → 212,184,150 / #E8C9A0 → 232,201,160 / #E8A87C → 232,168,124 / #F5EEE6 → 245,238,230
@@ -1460,10 +1462,12 @@ function startWlcFundo() {
   // resize listener (limpo ao parar)
   if (!canvas.dataset.resizeBound) {
     window.addEventListener('resize', () => {
-      if (welcomeEl && welcomeEl.classList.contains('is-open')) resize();
+      if (fundoFlowAtivo()) resize();
     });
     canvas.dataset.resizeBound = '1';
   }
+  // RAF inicial · primeiro frame em ~16ms · enquanto isso o bg de fallback
+  // do .onboard (rgba 8,5,2,0.4 + radial sutil champanhe) cobre a tela escura
   wlcFundoRAF = requestAnimationFrame(frame);
 }
 
@@ -4984,9 +4988,10 @@ function renderObGoalWheel() {
   if (jRefazer) jRefazer.addEventListener('click', () => {
     try { hap(10); } catch (e) {}
     if (typeof window.closeJornada === 'function') window.closeJornada();
+    // espera o fade completo da jornada (400ms transition + 50ms buffer) antes de abrir
     setTimeout(() => {
       if (typeof openOnboard === 'function') openOnboard();
-    }, 240);
+    }, 480);
   });
 
   // cards de exames · abrem os sheets existentes do Circa
