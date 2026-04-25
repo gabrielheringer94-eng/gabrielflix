@@ -1366,6 +1366,8 @@ function openWelcome() {
   document.body.style.overflow = 'hidden';
   // sempre começa na tela 1 ao abrir
   wlcIrPara(1);
+  // liga o fundo vivo
+  if (typeof startWlcFundo === 'function') startWlcFundo();
 }
 function closeWelcome() {
   if (!welcomeEl) return;
@@ -1373,6 +1375,86 @@ function closeWelcome() {
   welcomeEl.setAttribute('aria-hidden', 'true');
   document.body.style.overflow = '';
   try { localStorage.setItem('circa_welcome_seen', '1'); } catch (e) {}
+  // pausa o fundo vivo (perf)
+  if (typeof stopWlcFundo === 'function') stopWlcFundo();
+}
+
+// ═════════════════════════════════════════
+// FUNDO VIVO DO WELCOME · 4 blobs em champanhe Circa
+// ═════════════════════════════════════════
+let wlcFundoRAF = null;
+let wlcFundoT   = 0;
+
+function startWlcFundo() {
+  const canvas = document.getElementById('wlc-fundo');
+  if (!canvas) return;
+  if (wlcFundoRAF) return; // já rodando
+  const ctx = canvas.getContext('2d');
+
+  // 4 blobs em paleta Circa champanhe (não gold)
+  // R G B = #D4B896 → 212,184,150 / #E8C9A0 → 232,201,160 / #E8A87C → 232,168,124 / #F5EEE6 → 245,238,230
+  const BLOBS = [
+    { rx: 0.20, ry: 0.22, baseR: 0.55, px: 0.0, py: 0.5,  spx: 0.9, spy: 0.7,  cor: '212,184,150', op: 0.085 },
+    { rx: 0.80, ry: 0.70, baseR: 0.45, px: 1.3, py: 1.9,  spx: 0.7, spy: 0.55, cor: '232,201,160', op: 0.055 },
+    { rx: 0.55, ry: 0.45, baseR: 0.38, px: 2.2, py: 0.8,  spx: 1.1, spy: 0.9,  cor: '232,168,124', op: 0.040 },
+    { rx: 0.15, ry: 0.75, baseR: 0.30, px: 0.7, py: 2.4,  spx: 0.6, spy: 1.2,  cor: '245,238,230', op: 0.025 },
+  ];
+
+  function resize() {
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const rect = canvas.getBoundingClientRect();
+    canvas.width  = Math.max(1, rect.width  * dpr);
+    canvas.height = Math.max(1, rect.height * dpr);
+    canvas.dataset.dpr = String(dpr);
+  }
+
+  function frame() {
+    if (!welcomeEl || !welcomeEl.classList.contains('is-open')) {
+      wlcFundoRAF = null;
+      return;
+    }
+    wlcFundoT += 0.003;
+    const W = canvas.width, H = canvas.height;
+    ctx.clearRect(0, 0, W, H);
+
+    BLOBS.forEach((b) => {
+      const r  = Math.min(W, H) * b.baseR * (1 + 0.018 * Math.sin(wlcFundoT * 0.8 + b.px));
+      const cx = W * b.rx + Math.sin(wlcFundoT * b.spx + b.px) * W * 0.06;
+      const cy = H * b.ry + Math.cos(wlcFundoT * b.spy + b.py) * H * 0.06;
+      const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, r);
+      grad.addColorStop(0,   `rgba(${b.cor},${b.op})`);
+      grad.addColorStop(0.5, `rgba(${b.cor},${b.op * 0.4})`);
+      grad.addColorStop(1,   `rgba(${b.cor},0)`);
+      ctx.beginPath();
+      ctx.ellipse(
+        cx, cy, r,
+        r * (0.85 + 0.12 * Math.sin(wlcFundoT * 0.6 + b.py)),
+        wlcFundoT * 0.05,
+        0, Math.PI * 2
+      );
+      ctx.fillStyle = grad;
+      ctx.fill();
+    });
+
+    wlcFundoRAF = requestAnimationFrame(frame);
+  }
+
+  resize();
+  // resize listener (limpo ao parar)
+  if (!canvas.dataset.resizeBound) {
+    window.addEventListener('resize', () => {
+      if (welcomeEl && welcomeEl.classList.contains('is-open')) resize();
+    });
+    canvas.dataset.resizeBound = '1';
+  }
+  wlcFundoRAF = requestAnimationFrame(frame);
+}
+
+function stopWlcFundo() {
+  if (wlcFundoRAF) {
+    cancelAnimationFrame(wlcFundoRAF);
+    wlcFundoRAF = null;
+  }
 }
 
 // ───── WELCOME FLOW · 3 telas (respira → frases → confirmação) ─────

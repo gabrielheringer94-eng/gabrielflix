@@ -2326,16 +2326,14 @@ button.hero:active { transform: scale(0.985); }
    WELCOME · 3 telas (respira / frases / confirmação)
    tokens Circa (Fraunces + Inter + champanhe)
    tratamento Apple Liquid Glass nos cards e CTAs
+   fundo vivo: canvas animado com blobs champanhe
    ═════════════════════════════════════════ */
 .welcome {
   position: fixed;
   inset: 0;
   z-index: 120;
   display: none;
-  background:
-    radial-gradient(1200px 800px at 50% -10%, rgba(212, 184, 150, 0.10), transparent 60%),
-    radial-gradient(700px 500px at 90% 100%, rgba(123, 139, 184, 0.06), transparent 65%),
-    var(--bg);
+  background: var(--bg);
   overflow: hidden;
   flex-direction: column;
   max-width: 440px;
@@ -2343,6 +2341,21 @@ button.hero:active { transform: scale(0.985); }
   inset-inline: 0;
 }
 .welcome.is-open { display: flex; }
+
+/* canvas do fundo vivo · atrás de tudo */
+.wlc-fundo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  display: block;
+}
+/* z-index do conteúdo acima do canvas */
+.welcome > .wlc-top,
+.welcome > .wlc-tela { position: relative; z-index: 2; }
+.welcome > .wlc-top { z-index: 3; }
 
 /* header fixo */
 .wlc-top {
