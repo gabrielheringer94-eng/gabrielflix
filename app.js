@@ -1,11 +1,21 @@
 /* ───── Circa prototype interactions ───── */
 
 // ═════════════════════════════════════════
+// FAILSAFE · força apple-mode no body imediatamente
+// previne flash do design v0 caso a classe não tenha sido aplicada no HTML
+// ═════════════════════════════════════════
+(function () {
+  if (document.body && !document.body.classList.contains('apple-mode')) {
+    document.body.classList.add('apple-mode');
+  }
+})();
+
+// ═════════════════════════════════════════
 // DATA RESET · zera todos os dados uma vez nesta versão
 // pra começar do zero e medir da linha de base
 // ═════════════════════════════════════════
 (function () {
-  const RESET_VERSION = 'v3-clean-2026-04-24';
+  const RESET_VERSION = 'v4-apple-2026-04-25';
   try {
     const current = localStorage.getItem('circa_data_version');
     if (current !== RESET_VERSION) {
@@ -2130,20 +2140,27 @@ refreshNameDependents = function() { _refreshOrig(); renderActionDeck(); };
 const homePull = document.getElementById('home-pull');
 if (homePull) homePull.addEventListener('click', () => { openQd(); hap(10); });
 
-// swipe up na metade inferior da home abre o drawer
-let suStartY = 0, suStartX = 0, suTrack = false;
+// swipe up na home pra abrir o drawer · ESTREITADO pra não interferir no scroll-to-top
+// só ativa nos últimos 12% da tela (zona muito perto do bottom edge)
+// e exige um movimento mais consistente
+let suStartY = 0, suStartX = 0, suStartT = 0, suTrack = false;
 window.addEventListener('touchstart', (e) => {
   if (!e.touches[0]) return;
   const homeActive = document.querySelector('.screen--home.is-active');
   if (!homeActive) return;
-  const drawerOpen = document.getElementById('qd').classList.contains('is-open');
+  const qdEl = document.getElementById('qd');
+  const drawerOpen = qdEl && qdEl.classList.contains('is-open');
   const anySheetOpen = document.querySelector('.sheet.is-open');
-  if (drawerOpen || anySheetOpen) return;
+  const jornadaOpen = document.querySelector('.jornada.is-open');
+  if (drawerOpen || anySheetOpen || jornadaOpen) return;
+  // só ativa nos últimos 12% (antes era 35%) · evita conflito com scroll normal
   const y = e.touches[0].clientY;
-  // só ativa no terço inferior da tela
-  if (y < window.innerHeight * 0.65) return;
+  if (y < window.innerHeight * 0.88) return;
+  // só pega 1 dedo
+  if (e.touches.length > 1) return;
   suStartY = y;
   suStartX = e.touches[0].clientX;
+  suStartT = Date.now();
   suTrack = true;
 }, { passive: true });
 
@@ -2151,11 +2168,15 @@ window.addEventListener('touchmove', (e) => {
   if (!suTrack || !e.touches[0]) return;
   const dy = e.touches[0].clientY - suStartY;
   const dx = Math.abs(e.touches[0].clientX - suStartX);
-  if (dy < -60 && dx < 40) {
+  const dt = Date.now() - suStartT;
+  // exige swipe mais decisivo: 80px em até 350ms (gesto deliberado, não scroll)
+  if (dy < -80 && dx < 30 && dt < 350) {
     suTrack = false;
     openQd();
     hap(12);
   }
+  // se passou de 400ms sem atingir, desiste · libera o scroll
+  if (dt > 400) suTrack = false;
 }, { passive: true });
 
 window.addEventListener('touchend', () => { suTrack = false; }, { passive: true });

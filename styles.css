@@ -41,7 +41,13 @@ html {
   height: auto !important;
   max-height: none !important;
   -webkit-text-size-adjust: 100%;
-  scroll-behavior: smooth;
+  /* scroll-behavior: smooth REMOVIDO · estava causando lag ao voltar pro topo
+     o smooth é programático (window.scrollTo), o user scroll fica nativo agora */
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain;
+}
+body {
+  -webkit-overflow-scrolling: touch;
 }
 html, body {
   background: var(--bg);

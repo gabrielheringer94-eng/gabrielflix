@@ -22,8 +22,12 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,400&family=Inter:wght@400;500;600&display=swap" />
-  <link rel="stylesheet" href="styles.css" />
-  <link rel="stylesheet" href="apple.css" />
+  <!-- cache-bust agressivo: muda v sempre que houver mudança visual -->
+  <link rel="stylesheet" href="styles.css?v=20260425-c" />
+  <link rel="stylesheet" href="apple.css?v=20260425-c" />
+  <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="pragma" content="no-cache" />
+  <meta http-equiv="expires" content="0" />
 </head>
 <body class="apple-mode">
   <!-- ───────── SPLASH · logo Circa ao abrir o app ───────── -->
@@ -3175,6 +3179,6 @@
     </nav>
   </div>
 
-  <script src="app.js"></script>
+  <script src="app.js?v=20260425-c"></script>
 </body>
 </html>

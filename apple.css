@@ -58,8 +58,19 @@
   50%      { transform: scale(1.06); opacity: 1;    }
 }
 
-/* esconde o ring v1 quando estiver no apple-mode E houver ring-apple ativo */
-.apple-mode .hero.has-apple-rings .ring { display: none; }
+/* esconde o ring v1/v0 IMEDIATAMENTE em apple-mode (sem esperar JS injetar o novo)
+   evita flash do design antigo enquanto o JS roda */
+.apple-mode .hero .ring,
+.apple-mode .hero > svg.ring,
+.apple-mode .hero-stage .ring {
+  display: none !important;
+  visibility: hidden !important;
+}
+/* mostra explicitamente o apple ring quando ele existir */
+.apple-mode .hero .ring-apple {
+  display: block !important;
+  visibility: visible !important;
+}
 
 /* SVG dos 3 anéis (renderizado via JS) */
 .apple-mode .ring-apple {
@@ -501,4 +512,45 @@
   .apple-mode .card:hover,
   .apple-mode .lab-card:hover,
   .apple-mode .j-card:hover { transform: none !important; }
+}
+
+/* ───── perf no mobile · reduz blur agressivo (GPU travada com 24-32px)
+   mantém o efeito mas diminui custo, scroll fica fluido ───── */
+@media (max-width: 480px), (hover: none) and (pointer: coarse) {
+  .apple-mode .card,
+  .apple-mode .lab-card,
+  .apple-mode .insight-card,
+  .apple-mode .j-card,
+  .apple-mode .j-insight,
+  .apple-mode .j-lab-card,
+  .apple-mode .j-antes-box,
+  .apple-mode .treino-semana-item,
+  .apple-mode .ref-item {
+    backdrop-filter: blur(14px) saturate(140%);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+  }
+  .apple-mode .tabbar {
+    backdrop-filter: blur(18px) saturate(150%);
+    -webkit-backdrop-filter: blur(18px) saturate(150%);
+  }
+  .apple-mode .hero-context,
+  .apple-mode .dims li,
+  .apple-mode .hero-delta-line {
+    backdrop-filter: blur(12px) saturate(130%);
+    -webkit-backdrop-filter: blur(12px) saturate(130%);
+  }
+  .apple-mode .sheet__panel {
+    backdrop-filter: blur(20px) saturate(150%);
+    -webkit-backdrop-filter: blur(20px) saturate(150%);
+  }
+  /* tilt 3D no hover só desktop · mobile não usa hover */
+  .apple-mode .card:hover,
+  .apple-mode .lab-card:hover,
+  .apple-mode .insight-card:hover,
+  .apple-mode .j-card:hover,
+  .apple-mode .j-lab-card:hover,
+  .apple-mode .treino-semana-item:hover,
+  .apple-mode .ref-item:hover {
+    transform: none !important;
+  }
 }
