@@ -2326,14 +2326,30 @@ button.hero:active { transform: scale(0.985); }
    WELCOME · 3 telas (respira / frases / confirmação)
    tokens Circa (Fraunces + Inter + champanhe)
    tratamento Apple Liquid Glass nos cards e CTAs
-   fundo vivo: canvas animado com blobs champanhe
+   fundo vivo GLOBAL durante todo o fluxo de welcome+onboarding
    ═════════════════════════════════════════ */
+
+/* canvas do fundo vivo · ABSOLUTE GLOBAL · cobre toda a viewport
+   só visível quando welcome ou onboarding estão abertos */
+.wlc-fundo {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 115;            /* acima do app · abaixo do welcome (120) e onboarding (122) */
+  pointer-events: none;
+  display: none;           /* só aparece quando body.fundo-on */
+  background: var(--bg);   /* fallback enquanto canvas pinta */
+}
+body.fundo-on .wlc-fundo { display: block; }
+
+/* welcome agora é transparente · canvas vaza por trás do conteúdo */
 .welcome {
   position: fixed;
   inset: 0;
   z-index: 120;
   display: none;
-  background: var(--bg);
+  background: transparent;
   overflow: hidden;
   flex-direction: column;
   max-width: 440px;
@@ -2341,21 +2357,17 @@ button.hero:active { transform: scale(0.985); }
   inset-inline: 0;
 }
 .welcome.is-open { display: flex; }
-
-/* canvas do fundo vivo · atrás de tudo */
-.wlc-fundo {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
-  pointer-events: none;
-  display: block;
-}
-/* z-index do conteúdo acima do canvas */
 .welcome > .wlc-top,
 .welcome > .wlc-tela { position: relative; z-index: 2; }
-.welcome > .wlc-top { z-index: 3; }
+.welcome > .wlc-top { z-index: 3; background: transparent; }
+
+/* onboarding também transparente quando body.fundo-on · canvas vaza */
+body.fundo-on .onboard {
+  background: transparent !important;
+}
+body.fundo-on .onboard .ob-top {
+  background: transparent !important;
+}
 
 /* header fixo */
 .wlc-top {

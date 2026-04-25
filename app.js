@@ -1366,7 +1366,7 @@ function openWelcome() {
   document.body.style.overflow = 'hidden';
   // sempre começa na tela 1 ao abrir
   wlcIrPara(1);
-  // liga o fundo vivo
+  // liga o fundo vivo global
   if (typeof startWlcFundo === 'function') startWlcFundo();
 }
 function closeWelcome() {
@@ -1375,8 +1375,8 @@ function closeWelcome() {
   welcomeEl.setAttribute('aria-hidden', 'true');
   document.body.style.overflow = '';
   try { localStorage.setItem('circa_welcome_seen', '1'); } catch (e) {}
-  // pausa o fundo vivo (perf)
-  if (typeof stopWlcFundo === 'function') stopWlcFundo();
+  // só desliga se onboarding também não estiver aberto
+  if (typeof maybeStopWlcFundo === 'function') maybeStopWlcFundo();
 }
 
 // ═════════════════════════════════════════
@@ -1385,9 +1385,26 @@ function closeWelcome() {
 let wlcFundoRAF = null;
 let wlcFundoT   = 0;
 
+function fundoFlowAtivo() {
+  // ativo se welcome OU onboarding estiverem abertos
+  const w = welcomeEl && welcomeEl.classList.contains('is-open');
+  const o = document.getElementById('onboard');
+  const oOpen = o && o.classList.contains('is-open');
+  return w || oOpen;
+}
+
+function maybeStopWlcFundo() {
+  // só para se nem welcome nem onboarding estiverem abertos
+  if (!fundoFlowAtivo() && typeof stopWlcFundo === 'function') {
+    stopWlcFundo();
+  }
+}
+
 function startWlcFundo() {
   const canvas = document.getElementById('wlc-fundo');
   if (!canvas) return;
+  // marca body.fundo-on pra revelar canvas + tornar overlays transparentes
+  document.body.classList.add('fundo-on');
   if (wlcFundoRAF) return; // já rodando
   const ctx = canvas.getContext('2d');
 
@@ -1409,7 +1426,7 @@ function startWlcFundo() {
   }
 
   function frame() {
-    if (!welcomeEl || !welcomeEl.classList.contains('is-open')) {
+    if (!fundoFlowAtivo()) {
       wlcFundoRAF = null;
       return;
     }
@@ -1455,6 +1472,7 @@ function stopWlcFundo() {
     cancelAnimationFrame(wlcFundoRAF);
     wlcFundoRAF = null;
   }
+  document.body.classList.remove('fundo-on');
 }
 
 // ───── WELCOME FLOW · 3 telas (respira → frases → confirmação) ─────
@@ -3865,12 +3883,16 @@ function openOnboard() {
   onboard.setAttribute('aria-hidden', 'false');
   document.body.style.overflow = 'hidden';
   hap(12);
+  // mantém o fundo vivo rodando durante todo o onboarding
+  if (typeof startWlcFundo === 'function') startWlcFundo();
 }
 
 function closeOnboard() {
   onboard.classList.remove('is-open');
   onboard.setAttribute('aria-hidden', 'true');
   document.body.style.overflow = '';
+  // só desliga o fundo se welcome também não estiver aberto
+  if (typeof maybeStopWlcFundo === 'function') maybeStopWlcFundo();
   // ao fechar onboarding, abre a jornada pra entrar direto na experiência
   setTimeout(() => {
     if (typeof window.openJornada === 'function') window.openJornada();
