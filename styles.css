@@ -2336,7 +2336,7 @@ button.hero:active { transform: scale(0.985); }
   inset: 0;
   width: 100%;
   height: 100%;
-  z-index: 115;            /* acima do app · abaixo do welcome (120) e onboarding (122) */
+  z-index: 95;             /* acima do app, ABAIXO do onboarding (100), welcome (120), jornada (200) */
   pointer-events: none;
   display: none;           /* só aparece quando body.fundo-on */
   background: var(--bg);   /* fallback enquanto canvas pinta */
