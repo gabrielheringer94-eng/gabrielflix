@@ -3955,7 +3955,9 @@ function renderObStep() {
 
 // fluxo explícito pra permitir branching por gênero
 // insere 31 (gênero), 32 (homem), 33 (mulher) entre step 1 e step 2
-const OB_FLOW = [1, 31, 32, 33, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26];
+// SUBSTITUI o quiz antigo (12-20) pelo flow do temperamento (41-47):
+// 5 cenários (41-45) + processando (46) + revelação (47)
+const OB_FLOW = [1, 31, 32, 33, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 41, 42, 43, 44, 45, 46, 47, 21, 22, 23, 24, 25, 26];
 
 function obCurrentGender() {
   try { return localStorage.getItem('circa_gender') || null; } catch (e) { return null; }
@@ -6625,3 +6627,298 @@ function clubDesenharMiniRodas() {
     };
   }
 })();
+
+// ═════════════════════════════════════════════════════════
+// TEMPERAMENTO · 5 cenários + processando + revelação
+// substitui o quiz antigo de perfil (steps 12-20) com algo mais elegante
+// ═════════════════════════════════════════════════════════
+const TEMPERAMENTOS = {
+  corrente: {
+    nome: 'corrente',
+    cor:  '232,201,160', // E8C9A0
+    manifesto: 'você é o que se move,<br/>o que conecta,<br/>o que abre caminho onde havia parede.',
+    detalhes: [
+      { n: 'I',   t: 'sua <strong>energia vem do encontro</strong>. você se acende com gente, com novidade, com o mundo.' },
+      { n: 'II',  t: 'no esforço, você precisa de <strong>variedade</strong>. mesma rotina te apaga. mudança te acende.' },
+      { n: 'III', t: 'no espírito, é o <strong>convívio</strong> que te toca. uma conversa boa vale uma meditação.' },
+    ],
+    chamado: '"vou te lembrar, sempre, que parar também é movimento."',
+  },
+  brasa: {
+    nome: 'brasa',
+    cor:  '232,168,124', // E8A87C
+    manifesto: 'você é o que arde,<br/>o que constrói,<br/>o que transforma intenção em forma.',
+    detalhes: [
+      { n: 'I',   t: 'sua <strong>energia vem do propósito</strong>. você se move pelo que precisa existir, não pelo que é fácil.' },
+      { n: 'II',  t: 'na frustração, você <strong>age</strong>. transforma dor em produção, refaz com mais força.' },
+      { n: 'III', t: 'no espírito, é a <strong>conquista</strong> que te toca. realizar algo difícil é seu sagrado.' },
+    ],
+    chamado: '"vou te lembrar, sempre, que o que não é construído também tem valor."',
+  },
+  raiz: {
+    nome: 'raiz',
+    cor:  '168,156,200', // A89CC8
+    manifesto: 'você é o que aprofunda,<br/>o que sente,<br/>o que entende antes de agir.',
+    detalhes: [
+      { n: 'I',   t: 'sua <strong>energia vem do silêncio</strong>. você se restaura no recolhimento, não no estímulo.' },
+      { n: 'II',  t: 'na frustração, você <strong>processa antes de mover</strong>. precisa sentir pra entender, e entender pra agir.' },
+      { n: 'III', t: 'no espírito, é a <strong>contemplação</strong> que te toca. um pôr do sol, um silêncio profundo.' },
+    ],
+    chamado: '"vou te lembrar, sempre, que sentir não precisa custar tanto."',
+  },
+  mare: {
+    nome: 'maré',
+    cor:  '123,139,184', // 7B8BB8
+    manifesto: 'você é o que volta,<br/>o que sustenta,<br/>o que dura quando outros se cansam.',
+    detalhes: [
+      { n: 'I',   t: 'sua <strong>energia vem do ritmo</strong>. você sustenta o que outros começam e abandonam.' },
+      { n: 'II',  t: 'na frustração, você <strong>contém e segue</strong>. evita confronto, mas não desiste do plano.' },
+      { n: 'III', t: 'no espírito, é a <strong>presença</strong> que te toca. uma rotina simples cumprida em paz.' },
+    ],
+    chamado: '"vou te lembrar, sempre, que mover também é cuidar."',
+  },
+};
+
+const temprScore = { corrente: 0, brasa: 0, raiz: 0, mare: 0 };
+let temprProcRAF = null;
+let temprRevRAF  = null;
+
+(function () {
+  // wiring das opções dos 5 cenários
+  document.querySelectorAll('.tempr-opcao[data-temp]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const cen  = parseInt(btn.dataset.cen, 10);
+      const temp = btn.dataset.temp;
+
+      // primeiro cenário: reseta o score
+      if (cen === 1) {
+        Object.keys(temprScore).forEach((k) => { temprScore[k] = 0; });
+      }
+
+      // visual: marca selecionada
+      const slide = btn.closest('.tempr-slide');
+      if (slide) slide.querySelectorAll('.tempr-opcao').forEach((o) => o.classList.remove('is-sel'));
+      btn.classList.add('is-sel');
+
+      // pontua
+      temprScore[temp] = (temprScore[temp] || 0) + 1;
+      try { hap(8); } catch (e) {}
+
+      // auto-avança após 450ms
+      setTimeout(() => {
+        if (typeof nextStep === 'function') nextStep();
+        // após nextStep, obStep já mudou · dispara processing/reveal nas steps certas
+        if (typeof obStep !== 'undefined') {
+          if (obStep === 46) setTimeout(temprStartProc, 100);
+          if (obStep === 47) setTimeout(temprRender, 200);
+        }
+      }, 450);
+    });
+  });
+
+  // botão final (continuar) na tela de revelação
+  const continuar = document.getElementById('tempr-rev-continuar');
+  if (continuar) continuar.addEventListener('click', () => {
+    // para o RAF antes de sair
+    if (temprRevRAF) cancelAnimationFrame(temprRevRAF);
+    if (typeof nextStep === 'function') nextStep();
+  });
+})();
+
+// processando · 3 anéis girando + núcleo pulsante
+function temprStartProc() {
+  const canvas = document.getElementById('tempr-proc-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  const cx = W / 2, cy = H / 2;
+  let t = 0;
+
+  function draw() {
+    t += 0.03;
+    ctx.clearRect(0, 0, W, H);
+    // 3 anéis
+    for (let i = 0; i < 3; i++) {
+      const r = 28 + i * 10;
+      const phase = t + i * 1.2;
+      ctx.beginPath();
+      ctx.arc(cx, cy, r, phase, phase + Math.PI * 0.7);
+      ctx.strokeStyle = `rgba(212, 184, 150, ${0.5 - i * 0.1})`;
+      ctx.lineWidth = 1.5;
+      ctx.lineCap = 'round';
+      ctx.stroke();
+    }
+    // núcleo pulsante
+    const pulse = 1 + Math.sin(t * 1.5) * 0.18;
+    const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, 18 * pulse);
+    grad.addColorStop(0, 'rgba(232, 201, 160, 0.7)');
+    grad.addColorStop(1, 'rgba(232, 201, 160, 0)');
+    ctx.beginPath();
+    ctx.arc(cx, cy, 18 * pulse, 0, Math.PI * 2);
+    ctx.fillStyle = grad;
+    ctx.fill();
+    temprProcRAF = requestAnimationFrame(draw);
+  }
+  draw();
+
+  // status rotating
+  const statusEl = document.getElementById('tempr-proc-status');
+  const statuses = ['compondo o retrato', 'cruzando os sinais', 'lendo o ritmo', 'revelando'];
+  let idx = 0;
+  const it = setInterval(() => {
+    idx++;
+    if (idx >= statuses.length || !statusEl) { clearInterval(it); return; }
+    statusEl.innerHTML = statuses[idx] + '<span class="tempr-dot">.</span><span class="tempr-dot">.</span><span class="tempr-dot">.</span>';
+  }, 800);
+
+  // auto avança após 3.5s
+  setTimeout(() => {
+    if (temprProcRAF) cancelAnimationFrame(temprProcRAF);
+    temprProcRAF = null;
+    if (typeof nextStep === 'function') nextStep();
+  }, 3500);
+}
+
+// revelação · monta UI + anima canvas conforme temperamento dominante
+function temprRender() {
+  if (temprRevRAF) cancelAnimationFrame(temprRevRAF);
+
+  // determinar dominante e secundário
+  const ord = Object.entries(temprScore).sort((a, b) => b[1] - a[1]);
+  const dom = ord[0][0];
+  const sec = ord[1][0];
+
+  const T  = TEMPERAMENTOS[dom];
+  const Ts = TEMPERAMENTOS[sec];
+
+  // salva no localStorage
+  try {
+    localStorage.setItem('circa_temperamento', dom);
+    localStorage.setItem('circa_temperamento_secundario', sec);
+    localStorage.setItem('circa_temperamento_score', JSON.stringify(temprScore));
+  } catch (e) {}
+
+  // popula UI
+  const nome = document.getElementById('tempr-rev-nome');
+  if (nome) nome.textContent = T.nome;
+  const man = document.getElementById('tempr-rev-manifesto');
+  if (man) man.innerHTML = T.manifesto;
+  const secNome = document.getElementById('tempr-rev-sec-nome');
+  if (secNome) secNome.textContent = Ts.nome;
+  const secDot = document.getElementById('tempr-rev-sec-dot');
+  if (secDot) secDot.className = 'tempr-rev-sec-dot ' + sec;
+  const cham = document.getElementById('tempr-rev-chamado-txt');
+  if (cham) cham.textContent = T.chamado;
+  const det = document.getElementById('tempr-rev-detalhes');
+  if (det) {
+    det.innerHTML = T.detalhes.map((d) => `
+      <div class="tempr-rev-traco">
+        <span class="tempr-rev-traco-icon">${d.n}</span>
+        <p class="tempr-rev-traco-txt">${d.t}</p>
+      </div>
+    `).join('');
+  }
+
+  // anima canvas conforme tipo
+  temprDrawElemento(dom, T.cor);
+}
+
+function temprDrawElemento(tipo, cor) {
+  const canvas = document.getElementById('tempr-rev-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  const cx = W / 2, cy = H / 2;
+  let t = 0;
+
+  function frame() {
+    t += 0.012;
+    ctx.clearRect(0, 0, W, H);
+
+    // glow base universal
+    const glow = ctx.createRadialGradient(cx, cy, 0, cx, cy, 75);
+    glow.addColorStop(0, `rgba(${cor},0.22)`);
+    glow.addColorStop(1, `rgba(${cor},0)`);
+    ctx.beginPath();
+    ctx.arc(cx, cy, 75, 0, Math.PI * 2);
+    ctx.fillStyle = glow;
+    ctx.fill();
+
+    if (tipo === 'corrente') {
+      // ondas concêntricas expandindo
+      for (let i = 0; i < 4; i++) {
+        const offset = (t * 0.4 + i * 0.6) % 1;
+        ctx.beginPath();
+        ctx.arc(cx, cy, 18 + offset * 48, 0, Math.PI * 2);
+        ctx.strokeStyle = `rgba(${cor},${0.6 * (1 - offset)})`;
+        ctx.lineWidth = 1.6 - offset * 0.8;
+        ctx.stroke();
+      }
+    } else if (tipo === 'brasa') {
+      // blob orgânico pulsante
+      const pulso = 1 + Math.sin(t * 1.5) * 0.08;
+      ctx.beginPath();
+      for (let k = 0; k <= 80; k++) {
+        const ang = (k / 80) * Math.PI * 2;
+        let r = 40 * pulso;
+        for (let h = 1; h <= 3; h++) {
+          r += 40 * 0.05 * Math.sin(ang * h * 0.8 + t * 1.2 * (h % 2 === 0 ? 1 : -0.6)) / h;
+        }
+        const x = cx + Math.cos(ang) * r;
+        const y = cy + Math.sin(ang) * r;
+        k === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+      }
+      ctx.closePath();
+      const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, 44);
+      grad.addColorStop(0, `rgba(${cor},0.85)`);
+      grad.addColorStop(1, `rgba(${cor},0.25)`);
+      ctx.fillStyle = grad;
+      ctx.fill();
+    } else if (tipo === 'raiz') {
+      // núcleo denso + raios sutis
+      ctx.beginPath();
+      ctx.arc(cx, cy, 38, 0, Math.PI * 2);
+      const grad = ctx.createRadialGradient(cx, cy - 12, 5, cx, cy, 40);
+      grad.addColorStop(0, `rgba(${cor},0.7)`);
+      grad.addColorStop(1, `rgba(${cor},0.2)`);
+      ctx.fillStyle = grad;
+      ctx.fill();
+      // núcleo pulsante
+      ctx.beginPath();
+      ctx.arc(cx, cy, 12 + Math.sin(t * 0.6) * 1.5, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${cor},0.95)`;
+      ctx.fill();
+      // raios
+      for (let i = 0; i < 8; i++) {
+        const ang = (i / 8) * Math.PI * 2 + t * 0.08;
+        const len = 14 + Math.sin(t + i) * 4;
+        ctx.beginPath();
+        ctx.moveTo(cx + Math.cos(ang) * 42, cy + Math.sin(ang) * 42);
+        ctx.lineTo(cx + Math.cos(ang) * (42 + len), cy + Math.sin(ang) * (42 + len));
+        ctx.strokeStyle = `rgba(${cor},0.4)`;
+        ctx.lineWidth = 1.2;
+        ctx.lineCap = 'round';
+        ctx.stroke();
+      }
+    } else if (tipo === 'mare') {
+      // ondas senoidais paralelas
+      ctx.lineWidth = 1.6;
+      for (let off = -2; off <= 2; off++) {
+        ctx.beginPath();
+        for (let x = cx - 56; x <= cx + 56; x += 2) {
+          const y = cy + off * 9 + Math.sin((x - cx) * 0.13 + t * 1.2 + off * 0.4) * 6;
+          x === cx - 56 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+        }
+        ctx.globalAlpha = 1 - Math.abs(off) * 0.3;
+        ctx.strokeStyle = `rgba(${cor},0.7)`;
+        ctx.stroke();
+      }
+      ctx.globalAlpha = 1;
+    }
+
+    temprRevRAF = requestAnimationFrame(frame);
+  }
+  frame();
+}
+
+// trigger via click handlers já fica no IIFE acima · sem necessidade de monkey-patch

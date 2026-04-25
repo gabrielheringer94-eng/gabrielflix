@@ -23,8 +23,8 @@
   <link rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,400&family=Inter:wght@400;500;600&display=swap" />
   <!-- cache-bust agressivo: muda v sempre que houver mudança visual -->
-  <link rel="stylesheet" href="styles.css?v=20260425-g" />
-  <link rel="stylesheet" href="apple.css?v=20260425-g" />
+  <link rel="stylesheet" href="styles.css?v=20260425-h" />
+  <link rel="stylesheet" href="apple.css?v=20260425-h" />
   <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="pragma" content="no-cache" />
   <meta http-equiv="expires" content="0" />
@@ -479,6 +479,112 @@
         </div>
 
         <button class="btn btn--primary btn--full ob-next">continuar</button>
+      </div>
+
+      <!-- ═════ TEMPERAMENTO · 5 cenários + processamento + revelação ═════ -->
+
+      <!-- 41 · cenário 1 · rotina -->
+      <div class="ob-slide tempr-slide" data-step="41">
+        <p class="tempr-eyebrow"><span class="tempr-num">cenário 1</span> · rotina</p>
+        <h1 class="tempr-pergunta">você acordou ontem sem energia e pulou o treino. hoje está bem.<br/>o que <em>faz?</em></h1>
+        <div class="tempr-opcoes">
+          <button class="tempr-opcao" data-temp="brasa"    data-cen="1"><span>"treino agora pra recuperar o que perdi."</span></button>
+          <button class="tempr-opcao" data-temp="mare"     data-cen="1"><span>"sigo o plano de hoje, ontem ficou pra trás."</span></button>
+          <button class="tempr-opcao" data-temp="raiz"     data-cen="1"><span>"escuto o corpo um pouco mais antes de decidir."</span></button>
+          <button class="tempr-opcao" data-temp="corrente" data-cen="1"><span>"aproveito que tô bem e treino mais forte."</span></button>
+        </div>
+      </div>
+
+      <!-- 42 · cenário 2 · decisão -->
+      <div class="ob-slide tempr-slide" data-step="42">
+        <p class="tempr-eyebrow"><span class="tempr-num">cenário 2</span> · decisão</p>
+        <h1 class="tempr-pergunta">você combinou consigo dormir cedo hoje. amigos chamam pra um jantar de última hora. você <em>vai?</em></h1>
+        <div class="tempr-opcoes">
+          <button class="tempr-opcao" data-temp="corrente" data-cen="2"><span>"vou, durmo cedo amanhã."</span></button>
+          <button class="tempr-opcao" data-temp="brasa"    data-cen="2"><span>"não vou, combinei comigo, isso vale."</span></button>
+          <button class="tempr-opcao" data-temp="mare"     data-cen="2"><span>"vou se for até as 22h, com horário pra sair."</span></button>
+          <button class="tempr-opcao" data-temp="raiz"     data-cen="2"><span>"fico em dúvida, peso o que sinto, decido na hora."</span></button>
+        </div>
+      </div>
+
+      <!-- 43 · cenário 3 · frustração -->
+      <div class="ob-slide tempr-slide" data-step="43">
+        <p class="tempr-eyebrow"><span class="tempr-num">cenário 3</span> · frustração</p>
+        <h1 class="tempr-pergunta">você trabalhou semanas num projeto. o feedback foi <em>duro.</em> você sente:</h1>
+        <div class="tempr-opcoes">
+          <button class="tempr-opcao" data-temp="brasa"    data-cen="3"><span>"raiva, quero refazer agora, melhor ainda."</span></button>
+          <button class="tempr-opcao" data-temp="raiz"     data-cen="3"><span>"peso, preciso processar antes de qualquer coisa."</span></button>
+          <button class="tempr-opcao" data-temp="corrente" data-cen="3"><span>"distração, preciso sair, mudar o ar."</span></button>
+          <button class="tempr-opcao" data-temp="mare"     data-cen="3"><span>"silêncio, fico quieto, depois sigo o plano."</span></button>
+        </div>
+      </div>
+
+      <!-- 44 · cenário 4 · espírito -->
+      <div class="ob-slide tempr-slide" data-step="44">
+        <p class="tempr-eyebrow"><span class="tempr-num">cenário 4</span> · espírito</p>
+        <h1 class="tempr-pergunta">o que mais te <em>toca</em> quando você para de verdade?</h1>
+        <div class="tempr-opcoes">
+          <button class="tempr-opcao" data-temp="corrente" data-cen="4"><span>"uma conversa boa, encontrar alguém certo."</span></button>
+          <button class="tempr-opcao" data-temp="brasa"    data-cen="4"><span>"uma realização sua, ter feito algo difícil."</span></button>
+          <button class="tempr-opcao" data-temp="raiz"     data-cen="4"><span>"silêncio profundo, natureza, pôr do sol."</span></button>
+          <button class="tempr-opcao" data-temp="mare"     data-cen="4"><span>"uma rotina simples cumprida em paz."</span></button>
+        </div>
+      </div>
+
+      <!-- 45 · cenário 5 · tempo livre -->
+      <div class="ob-slide tempr-slide" data-step="45">
+        <p class="tempr-eyebrow"><span class="tempr-num">cenário 5</span> · tempo livre</p>
+        <h1 class="tempr-pergunta">final de semana sem agenda. é manhã de sábado. o que você <em>sente?</em></h1>
+        <div class="tempr-opcoes">
+          <button class="tempr-opcao" data-temp="corrente" data-cen="5"><span>"possibilidade, mil opções, energia pra começar."</span></button>
+          <button class="tempr-opcao" data-temp="brasa"    data-cen="5"><span>"oportunidade, lista de coisas pra adiantar."</span></button>
+          <button class="tempr-opcao" data-temp="raiz"     data-cen="5"><span>"alívio, finalmente posso parar e sentir."</span></button>
+          <button class="tempr-opcao" data-temp="mare"     data-cen="5"><span>"paz, nada precisa ser feito, isso já é bom."</span></button>
+        </div>
+      </div>
+
+      <!-- 46 · processando · 3 anéis girando + status -->
+      <div class="ob-slide tempr-slide tempr-proc-slide" data-step="46">
+        <div class="tempr-proc">
+          <div class="tempr-proc-orbe">
+            <canvas id="tempr-proc-canvas" width="120" height="120"></canvas>
+          </div>
+          <h2 class="tempr-proc-titulo">a circa está<br/><em>te lendo.</em></h2>
+          <p class="tempr-proc-status" id="tempr-proc-status">
+            compondo o retrato<span class="tempr-dot">.</span><span class="tempr-dot">.</span><span class="tempr-dot">.</span>
+          </p>
+        </div>
+      </div>
+
+      <!-- 47 · revelação · temperamento dominante + secundário + manifesto + traços + chamado -->
+      <div class="ob-slide tempr-slide tempr-rev-slide" data-step="47">
+        <div class="tempr-rev">
+          <p class="tempr-rev-eyebrow">você é</p>
+
+          <div class="tempr-rev-elemento">
+            <canvas id="tempr-rev-canvas" width="160" height="160"></canvas>
+          </div>
+
+          <h2 class="tempr-rev-nome" id="tempr-rev-nome">raiz</h2>
+
+          <p class="tempr-rev-manifesto" id="tempr-rev-manifesto">
+            você é o que aprofunda,<br/>o que sente,<br/>o que entende antes de agir.
+          </p>
+
+          <div class="tempr-rev-secundario">
+            <span class="tempr-rev-sec-dot" id="tempr-rev-sec-dot"></span>
+            <span>com toques de <em id="tempr-rev-sec-nome">brasa</em></span>
+          </div>
+
+          <div class="tempr-rev-detalhes" id="tempr-rev-detalhes"></div>
+
+          <div class="tempr-rev-chamado">
+            <p class="tempr-rev-chamado-eye">o chamado da circa pra você</p>
+            <p class="tempr-rev-chamado-txt" id="tempr-rev-chamado-txt">"vou te lembrar, sempre, que sentir não precisa custar tanto."</p>
+          </div>
+
+          <button class="btn btn--primary btn--full ob-next" id="tempr-rev-continuar">continuar</button>
+        </div>
       </div>
 
       <!-- 14 · corpo + rotina -->
@@ -3222,6 +3328,6 @@
     </nav>
   </div>
 
-  <script src="app.js?v=20260425-g"></script>
+  <script src="app.js?v=20260425-h"></script>
 </body>
 </html>
