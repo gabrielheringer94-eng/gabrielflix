@@ -238,77 +238,116 @@
         <div class="ob-gender">
           <button class="ob-gender__card" data-gender="man" aria-label="homem">
             <div class="ob-gender__ilus">
-              <svg viewBox="0 0 100 120" width="80" height="96" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <svg viewBox="0 0 120 140" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                 <defs>
-                  <radialGradient id="obGenManFace" cx="40%" cy="38%" r="62%">
-                    <stop offset="0%" stop-color="#F5E8C0"/>
-                    <stop offset="100%" stop-color="#D4B896"/>
+                  <!-- aurora atrás da silhueta · sutil -->
+                  <radialGradient id="auraMan" cx="50%" cy="45%" r="55%">
+                    <stop offset="0%"  stop-color="#9BAAD4" stop-opacity="0.32"/>
+                    <stop offset="50%" stop-color="#7B8BB8" stop-opacity="0.10"/>
+                    <stop offset="100%" stop-color="#7B8BB8" stop-opacity="0"/>
                   </radialGradient>
-                  <linearGradient id="obGenManShirt" x1="50%" y1="0%" x2="50%" y2="100%">
-                    <stop offset="0%" stop-color="#7B8BB8"/>
-                    <stop offset="100%" stop-color="#5A6A95"/>
+                  <!-- gradient do corpo · azul masculino apple-style -->
+                  <linearGradient id="bodyMan" x1="50%" y1="0%" x2="50%" y2="100%">
+                    <stop offset="0%"  stop-color="#B5C4E4"/>
+                    <stop offset="55%" stop-color="#7B8BB8"/>
+                    <stop offset="100%" stop-color="#4A5A85"/>
+                  </linearGradient>
+                  <!-- highlight superior · simula luz -->
+                  <linearGradient id="hiMan" x1="50%" y1="0%" x2="50%" y2="100%">
+                    <stop offset="0%"  stop-color="#FFFFFF" stop-opacity="0.22"/>
+                    <stop offset="60%" stop-color="#FFFFFF" stop-opacity="0"/>
                   </linearGradient>
                 </defs>
-                <!-- cabeça -->
-                <circle cx="50" cy="36" r="22" fill="url(#obGenManFace)"/>
-                <!-- cabelo curto -->
-                <path d="M32 26 Q38 16 50 14 Q64 16 68 26 Q68 30 64 32 Q58 22 50 22 Q42 22 36 32 Q32 30 32 26 Z" fill="#5A3F1E"/>
-                <!-- olhos -->
-                <circle cx="43" cy="38" r="1.5" fill="#3A2610"/>
-                <circle cx="57" cy="38" r="1.5" fill="#3A2610"/>
-                <!-- sorriso -->
-                <path d="M44 46 Q50 50 56 46" stroke="#3A2610" stroke-width="1.3" fill="none" stroke-linecap="round"/>
-                <!-- camiseta -->
-                <path d="M26 108 Q26 80 42 70 L58 70 Q74 80 74 108 Z" fill="url(#obGenManShirt)"/>
-                <!-- pescoço -->
-                <rect x="44" y="56" width="12" height="14" fill="url(#obGenManFace)"/>
+
+                <!-- aura -->
+                <circle cx="60" cy="60" r="52" fill="url(#auraMan)"/>
+
+                <!-- silhueta abstrata: cabeça + ombros (sem rosto, estilo Apple Health) -->
+                <g>
+                  <!-- cabeça -->
+                  <circle cx="60" cy="44" r="16" fill="url(#bodyMan)"/>
+                  <!-- ombros + tronco em forma orgânica -->
+                  <path d="M30 130
+                           C30 100, 42 82, 50 78
+                           L70 78
+                           C78 82, 90 100, 90 130 Z"
+                        fill="url(#bodyMan)"/>
+                  <!-- highlight no topo da cabeça (luz vinda de cima) -->
+                  <circle cx="60" cy="44" r="16" fill="url(#hiMan)"/>
+                </g>
               </svg>
-              <div class="ob-gender__symbol" style="color:#7B8BB8">♂</div>
             </div>
-            <span class="ob-gender__label">homem</span>
+            <div class="ob-gender__sigil" data-gender="man">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="10" cy="14" r="5"/>
+                <path d="M14 10 L20 4 M16 4 L20 4 L20 8"/>
+              </svg>
+              <span>homem</span>
+            </div>
           </button>
 
           <button class="ob-gender__card" data-gender="woman" aria-label="mulher">
             <div class="ob-gender__ilus">
-              <svg viewBox="0 0 100 120" width="80" height="96" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <svg viewBox="0 0 120 140" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                 <defs>
-                  <radialGradient id="obGenWomFace" cx="40%" cy="38%" r="62%">
-                    <stop offset="0%" stop-color="#F5E8C0"/>
-                    <stop offset="100%" stop-color="#D4B896"/>
+                  <radialGradient id="auraWom" cx="50%" cy="45%" r="55%">
+                    <stop offset="0%"  stop-color="#D6BFD2" stop-opacity="0.32"/>
+                    <stop offset="50%" stop-color="#C4A5C0" stop-opacity="0.10"/>
+                    <stop offset="100%" stop-color="#C4A5C0" stop-opacity="0"/>
                   </radialGradient>
-                  <linearGradient id="obGenWomShirt" x1="50%" y1="0%" x2="50%" y2="100%">
-                    <stop offset="0%" stop-color="#C4A5C0"/>
-                    <stop offset="100%" stop-color="#9A7A96"/>
+                  <linearGradient id="bodyWom" x1="50%" y1="0%" x2="50%" y2="100%">
+                    <stop offset="0%"  stop-color="#E8D2E4"/>
+                    <stop offset="55%" stop-color="#C4A5C0"/>
+                    <stop offset="100%" stop-color="#7E5F7A"/>
+                  </linearGradient>
+                  <linearGradient id="hiWom" x1="50%" y1="0%" x2="50%" y2="100%">
+                    <stop offset="0%"  stop-color="#FFFFFF" stop-opacity="0.22"/>
+                    <stop offset="60%" stop-color="#FFFFFF" stop-opacity="0"/>
                   </linearGradient>
                 </defs>
-                <!-- cabelo traseiro (atrás da cabeça) -->
-                <path d="M28 30 Q28 52 32 72 L32 90 Q36 80 40 66 Q38 48 40 34 Z" fill="#5A3F1E"/>
-                <path d="M72 30 Q72 52 68 72 L68 90 Q64 80 60 66 Q62 48 60 34 Z" fill="#5A3F1E"/>
-                <!-- cabeça -->
-                <circle cx="50" cy="38" r="22" fill="url(#obGenWomFace)"/>
-                <!-- franja/cabelo superior -->
-                <path d="M30 30 Q38 14 50 13 Q62 14 70 30 Q70 34 66 36 Q60 26 50 26 Q40 26 34 36 Q30 34 30 30 Z" fill="#5A3F1E"/>
-                <!-- olhos (cílios longos) -->
-                <circle cx="43" cy="40" r="1.5" fill="#3A2610"/>
-                <circle cx="57" cy="40" r="1.5" fill="#3A2610"/>
-                <path d="M40 38 L41 37 M58 37 L59 38" stroke="#3A2610" stroke-width="0.8" stroke-linecap="round"/>
-                <!-- sorriso -->
-                <path d="M44 48 Q50 52 56 48" stroke="#3A2610" stroke-width="1.3" fill="none" stroke-linecap="round"/>
-                <!-- blusa -->
-                <path d="M26 108 Q26 80 42 72 L58 72 Q74 80 74 108 Z" fill="url(#obGenWomShirt)"/>
-                <!-- decote V -->
-                <path d="M42 72 L50 84 L58 72 Z" fill="url(#obGenWomFace)"/>
-                <!-- pescoço -->
-                <rect x="44" y="58" width="12" height="14" fill="url(#obGenWomFace)"/>
+
+                <!-- aura -->
+                <circle cx="60" cy="60" r="52" fill="url(#auraWom)"/>
+
+                <!-- silhueta abstrata · ligeiramente diferente nos ombros (mais arredondado) + sugestão de cabelo -->
+                <g>
+                  <!-- cabelo · sombra suave atrás -->
+                  <path d="M40 36
+                           C40 22, 50 14, 60 14
+                           C70 14, 80 22, 80 36
+                           L82 76
+                           L78 76
+                           C75 50, 65 44, 60 44
+                           C55 44, 45 50, 42 76
+                           L38 76 Z"
+                        fill="url(#bodyWom)" opacity="0.55"/>
+                  <!-- cabeça -->
+                  <circle cx="60" cy="44" r="15" fill="url(#bodyWom)"/>
+                  <!-- ombros + tronco com decote V sutil -->
+                  <path d="M30 130
+                           C30 100, 40 84, 50 80
+                           L56 92 L60 88 L64 92 L70 80
+                           C80 84, 90 100, 90 130 Z"
+                        fill="url(#bodyWom)"/>
+                  <!-- highlight -->
+                  <circle cx="60" cy="44" r="15" fill="url(#hiWom)"/>
+                </g>
               </svg>
-              <div class="ob-gender__symbol" style="color:#C4A5C0">♀</div>
             </div>
-            <span class="ob-gender__label">mulher</span>
+            <div class="ob-gender__sigil" data-gender="woman">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="9" r="5"/>
+                <path d="M12 14 L12 22 M9 18 L15 18"/>
+              </svg>
+              <span>mulher</span>
+            </div>
           </button>
 
           <button class="ob-gender__card ob-gender__card--alt" data-gender="outro" aria-label="prefiro não informar">
-            <span class="ob-gender__symbol" style="color:var(--fg-muted); font-size: 24px;">⚬</span>
-            <span class="ob-gender__label">prefiro não informar</span>
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true">
+              <path d="M5 12h14"/>
+            </svg>
+            <span>prefiro não informar</span>
           </button>
         </div>
 
