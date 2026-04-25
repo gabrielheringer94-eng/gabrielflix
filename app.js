@@ -6312,3 +6312,115 @@ function clubDesenharMiniRodas() {
   }, { threshold: 0.2 });
   obs.observe(club);
 })();
+
+// ═════════════════════════════════════════════════════════
+// APPLE MODE · 3 anéis concêntricos no hero (Apple Activity)
+// gold (overall) · blue (sono) · orange (treino)
+// ═════════════════════════════════════════════════════════
+(function () {
+  if (!document.body.classList.contains('apple-mode')) return;
+
+  const RINGS = [
+    // {color, percent, radius, stroke, gradId}
+    { id: 'rGold',   pct: 78, r: 108, w: 16, c1: '#E8C9A0', c2: '#B89572' }, // overall
+    { id: 'rBlue',   pct: 65, r: 84,  w: 14, c1: '#9BAAD4', c2: '#7B8BB8' }, // sono
+    { id: 'rOrange', pct: 84, r: 60,  w: 13, c1: '#F4BE94', c2: '#E8A87C' }, // treino
+  ];
+
+  function buildAppleRings(svg) {
+    if (!svg || svg.dataset.appleRings === '1') return;
+    svg.dataset.appleRings = '1';
+
+    // pega/cria <defs>
+    let defs = svg.querySelector('defs');
+    if (!defs) {
+      defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+      svg.insertBefore(defs, svg.firstChild);
+    }
+
+    // adiciona gradientes únicos pros 3 anéis (ids únicos por svg)
+    const uid = Math.random().toString(36).slice(2, 8);
+    RINGS.forEach((ring, i) => {
+      const gradId = `${ring.id}-${uid}`;
+      ring._gradId = gradId;
+      // se já existe (re-render), pula
+      if (defs.querySelector('#' + gradId)) return;
+      const grad = document.createElementNS('http://www.w3.org/2000/svg', 'linearGradient');
+      grad.setAttribute('id', gradId);
+      grad.setAttribute('x1', '0%'); grad.setAttribute('y1', '0%');
+      grad.setAttribute('x2', '100%'); grad.setAttribute('y2', '100%');
+      grad.innerHTML = `
+        <stop offset="0%" stop-color="${ring.c1}"/>
+        <stop offset="100%" stop-color="${ring.c2}"/>
+      `;
+      defs.appendChild(grad);
+    });
+
+    // grupo dos anéis com rotate -90 (começa às 12h)
+    let group = svg.querySelector('.apple-rings-group');
+    if (!group) {
+      group = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+      group.setAttribute('class', 'apple-rings-group');
+      group.setAttribute('transform', 'rotate(-90 120 120)');
+      svg.appendChild(group);
+    }
+
+    RINGS.forEach((ring, i) => {
+      const C = 2 * Math.PI * ring.r;
+      const dash = (ring.pct / 100) * C;
+
+      // track (background do anel)
+      const track = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      track.setAttribute('class', 'arc-track');
+      track.setAttribute('cx', '120'); track.setAttribute('cy', '120');
+      track.setAttribute('r', String(ring.r));
+      track.setAttribute('stroke', `url(#${ring._gradId})`);
+      track.setAttribute('stroke-width', String(ring.w));
+      group.appendChild(track);
+
+      // fill (preenchimento animado)
+      const fill = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      fill.setAttribute('class', 'arc-fill');
+      fill.setAttribute('cx', '120'); fill.setAttribute('cy', '120');
+      fill.setAttribute('r', String(ring.r));
+      fill.setAttribute('stroke', `url(#${ring._gradId})`);
+      fill.setAttribute('stroke-width', String(ring.w));
+      fill.setAttribute('stroke-dasharray', `${dash.toFixed(1)} ${C.toFixed(1)}`);
+      fill.setAttribute('data-ring', String(i));
+      // cor pro drop-shadow do CSS via currentColor
+      fill.style.color = ring.c1;
+      group.appendChild(fill);
+    });
+
+    // marca o hero pra esconder o ring v1
+    const hero = svg.closest('.hero');
+    if (hero) hero.classList.add('has-apple-rings');
+  }
+
+  function aplicarAneisApple() {
+    document.querySelectorAll('.hero .ring').forEach((oldRing) => {
+      const svg = oldRing.cloneNode(false);
+      svg.removeAttribute('class');
+      svg.setAttribute('class', 'ring-apple');
+      svg.setAttribute('viewBox', '0 0 240 240');
+      svg.setAttribute('width', '100%');
+      svg.setAttribute('height', '100%');
+      // injeta dentro do mesmo .hero (irmão do .ring antigo)
+      const hero = oldRing.closest('.hero');
+      if (!hero || hero.querySelector('.ring-apple')) return;
+      // insere antes do ring antigo
+      hero.insertBefore(svg, oldRing);
+      buildAppleRings(svg);
+    });
+  }
+
+  // tenta agora · roda de novo quando jornada abre (hero novo)
+  aplicarAneisApple();
+  const _origOpen2 = window.openJornada;
+  if (typeof _origOpen2 === 'function') {
+    window.openJornada = function () {
+      _origOpen2();
+      setTimeout(aplicarAneisApple, 100);
+    };
+  }
+})();

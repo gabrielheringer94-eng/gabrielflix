@@ -1,0 +1,504 @@
+/* ═══════════════════════════════════════════════════════════
+   apple.css — Apple-like Liquid Glass layer pra Circa
+   Ativa quando <body class="apple-mode">
+   Adaptado das classes do design handoff (.c-*) pras classes
+   reais do Circa (.hero, .card, .tabbar, .dims, .hero-context, etc)
+   Preserva: champanhe (#D4B896), bg dark warm, Fraunces serif
+   ═══════════════════════════════════════════════════════════ */
+
+.apple-mode {
+  /* SF Pro stack (iOS nativo, fallback Inter) */
+  --sans-apple: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Inter', sans-serif;
+  /* Spring easings (UISpring approximations) */
+  --spring-soft:  cubic-bezier(0.34, 1.56, 0.64, 1);
+  --spring-snap:  cubic-bezier(0.50, 1.60, 0.40, 1);
+  --spring-glide: cubic-bezier(0.22, 1.00, 0.36, 1);
+  /* Glass tokens */
+  --glass-bg:             rgba(28, 26, 24, 0.50);
+  --glass-bg-strong:      rgba(34, 31, 28, 0.65);
+  --glass-border:         rgba(255, 255, 255, 0.08);
+  --glass-border-strong:  rgba(255, 255, 255, 0.14);
+  --glass-highlight:      rgba(255, 255, 255, 0.06);
+}
+
+.apple-mode,
+.apple-mode .app,
+.apple-mode .screen {
+  font-family: var(--sans-apple);
+}
+
+/* ───── ambient backdrop · gold + cool aurora ───── */
+.apple-mode::before {
+  content: '';
+  position: fixed; inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(900px 600px at 50% -10%, rgba(212, 184, 150, 0.10), transparent 60%),
+    radial-gradient(600px 400px at 90% 110%, rgba(123, 139, 184, 0.06), transparent 65%),
+    radial-gradient(500px 400px at -10% 50%, rgba(168, 156, 200, 0.04), transparent 70%);
+}
+.apple-mode .app { position: relative; z-index: 1; }
+
+/* ───── HERO · 3 anéis concêntricos Apple Activity ───── */
+.apple-mode .hero {
+  width: 280px; height: 280px;
+  max-width: 80vw; max-height: 80vw;
+}
+.apple-mode .hero::before {
+  inset: -28%;
+  background:
+    radial-gradient(circle at 50% 45%, rgba(212, 184, 150, 0.32) 0%, rgba(212, 184, 150, 0.08) 35%, transparent 65%),
+    radial-gradient(circle at 50% 80%, rgba(232, 168, 124, 0.10) 0%, transparent 50%);
+  filter: blur(24px);
+  animation: appleHaloPulse 6s var(--spring-glide) infinite;
+}
+@keyframes appleHaloPulse {
+  0%, 100% { transform: scale(1);    opacity: 0.85; }
+  50%      { transform: scale(1.06); opacity: 1;    }
+}
+
+/* esconde o ring v1 quando estiver no apple-mode E houver ring-apple ativo */
+.apple-mode .hero.has-apple-rings .ring { display: none; }
+
+/* SVG dos 3 anéis (renderizado via JS) */
+.apple-mode .ring-apple {
+  width: 100%; height: 100%;
+  transform: rotate(-90deg);
+  overflow: visible;
+}
+.apple-mode .ring-apple .arc-track {
+  fill: none;
+  opacity: 0.16;
+}
+.apple-mode .ring-apple .arc-fill {
+  fill: none;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 8px currentColor);
+  animation: appleArcIn 1.4s var(--spring-glide) both;
+}
+.apple-mode .ring-apple .arc-fill[data-ring="0"] { animation-delay: 0s;     }
+.apple-mode .ring-apple .arc-fill[data-ring="1"] { animation-delay: 0.12s;  }
+.apple-mode .ring-apple .arc-fill[data-ring="2"] { animation-delay: 0.24s;  }
+@keyframes appleArcIn {
+  from { stroke-dasharray: 0 9999; opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* score number · 122px Fraunces */
+.apple-mode .hero__value {
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: 122px !important;
+  letter-spacing: -0.05em;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 0 28px rgba(212, 184, 150, 0.18);
+  animation: appleNumRise 1.4s var(--spring-soft) both,
+             breathe 5.5s ease-in-out 0s infinite;
+}
+@keyframes appleNumRise {
+  0%   { opacity: 0; transform: scale(0.92) translateY(8px); }
+  60%  { opacity: 1; }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* narrative · editorial 26px Fraunces com gold gradient em <em> */
+.apple-mode .hero-narrative {
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: 26px;
+  line-height: 1.18;
+  letter-spacing: -0.025em;
+  max-width: 18ch;
+  margin: 18px auto 12px;
+}
+.apple-mode .hero-narrative em,
+.apple-mode .display em,
+.apple-mode .card__title em,
+.apple-mode .jsec-title em,
+.apple-mode .jsec-q em {
+  background: linear-gradient(180deg, #E8C9A0, #B89572);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-style: italic;
+  text-shadow: none;
+}
+
+/* delta line · glass capsule */
+.apple-mode .hero-delta-line {
+  font-family: var(--sans-apple);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  font-variant-numeric: tabular-nums;
+  padding: 6px 12px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 999px;
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.apple-mode .hero-delta-line b {
+  font-family: var(--serif);
+  font-weight: 400;
+}
+.apple-mode .hero-link {
+  color: var(--fg-muted);
+  font-weight: 500;
+  border-bottom-color: transparent;
+}
+.apple-mode .hero-link:hover { color: var(--accent); }
+
+/* ───── DIMS · pills inline com glass ───── */
+.apple-mode .dims {
+  display: flex !important;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+  margin: 8px -4px 22px;
+  padding: 4px;
+  background: none;
+  border: none;
+  list-style: none;
+}
+.apple-mode .dims li {
+  display: inline-flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 7px !important;
+  padding: 8px 14px !important;
+  background: var(--glass-bg) !important;
+  border: 1px solid var(--glass-border) !important;
+  border-radius: 999px !important;
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  font-family: var(--sans-apple);
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: none;
+  color: var(--fg);
+}
+.apple-mode .dims .dot {
+  width: 7px !important;
+  height: 7px !important;
+  box-shadow: 0 0 8px var(--c, var(--accent)), 0 0 14px var(--c, var(--accent)) !important;
+}
+
+/* ───── HERO CONTEXT · glass capsule ───── */
+.apple-mode .hero-context {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 0 !important;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 22px;
+  padding: 6px 14px;
+  margin: 0 0 18px;
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+}
+.apple-mode .hero-context .hc-item {
+  border: none !important;
+  background: none !important;
+  padding: 12px 0 !important;
+  border-bottom: 1px solid var(--glass-border);
+}
+.apple-mode .hero-context .hc-item:last-child { border-bottom: none !important; }
+.apple-mode .hero-context strong {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 19px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ───── divider ───── */
+.apple-mode .divider {
+  background: linear-gradient(90deg, transparent, var(--glass-border-strong), transparent);
+  margin: 8px 0 18px;
+  height: 1px;
+}
+
+/* ───── CARDS · Liquid Glass + tilt 3D no hover ───── */
+.apple-mode .card,
+.apple-mode .lab-card,
+.apple-mode .upload-card,
+.apple-mode .insight-card,
+.apple-mode .j-card,
+.apple-mode .j-insight,
+.apple-mode .j-lab-card,
+.apple-mode .j-antes-box,
+.apple-mode .treino-semana-item,
+.apple-mode .ref-item {
+  background:
+    linear-gradient(180deg, var(--glass-highlight), transparent 35%),
+    var(--glass-bg) !important;
+  border: 1px solid var(--glass-border) !important;
+  border-radius: 28px !important;
+  padding: 22px !important;
+  backdrop-filter: blur(24px) saturate(150%);
+  -webkit-backdrop-filter: blur(24px) saturate(150%);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.04) inset,
+    0 -1px 0 rgba(0, 0, 0, 0.4) inset,
+    0 18px 40px rgba(0, 0, 0, 0.35) !important;
+  transition: transform 0.5s var(--spring-glide),
+              box-shadow 0.5s var(--spring-glide),
+              border-color 0.3s !important;
+  transform-style: preserve-3d;
+}
+.apple-mode .card:hover,
+.apple-mode .lab-card:hover,
+.apple-mode .insight-card:hover,
+.apple-mode .j-card:hover,
+.apple-mode .j-lab-card:hover,
+.apple-mode .treino-semana-item:hover,
+.apple-mode .ref-item:hover {
+  transform: perspective(1200px) rotateX(2deg) translateY(-2px);
+  border-color: var(--glass-border-strong) !important;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.06) inset,
+    0 -1px 0 rgba(0, 0, 0, 0.4) inset,
+    0 28px 60px rgba(0, 0, 0, 0.5),
+    0 0 40px rgba(212, 184, 150, 0.06) !important;
+}
+
+/* ajustes pra cards menores manterem o look mas com radius proporcional */
+.apple-mode .ref-item { padding: 14px 16px !important; border-radius: 18px !important; }
+.apple-mode .treino-semana-item { padding: 14px 16px !important; border-radius: 18px !important; }
+.apple-mode .j-insight { padding: 16px 18px !important; border-radius: 18px !important; }
+
+/* eyebrow · gold dot smaller */
+.apple-mode .eyebrow,
+.apple-mode .jsec-eye {
+  font-family: var(--sans-apple);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.apple-mode .eyebrow::before,
+.apple-mode .jsec-eye::before {
+  content: '';
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+}
+
+/* card titles · 28px Fraunces editorial */
+.apple-mode .card__title,
+.apple-mode .jsec-title,
+.apple-mode .jsec-q {
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: 28px;
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+  margin-bottom: 8px;
+}
+.apple-mode .card__body,
+.apple-mode .card__meta,
+.apple-mode .j-insight-text {
+  font-family: var(--sans-apple);
+  font-size: 14px;
+  line-height: 1.5;
+  letter-spacing: -0.005em;
+  color: var(--fg-muted);
+}
+
+/* ───── BUTTONS · Apple capsule ───── */
+.apple-mode .btn,
+.apple-mode .j-btn,
+.apple-mode .j-ver-detalhes {
+  font-family: var(--sans-apple);
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: -0.01em;
+  border-radius: 999px !important;
+  padding: 14px 20px;
+  text-transform: none;
+  transition: transform 0.3s var(--spring-snap),
+              background 0.2s,
+              box-shadow 0.3s;
+}
+.apple-mode .btn--primary {
+  background: linear-gradient(180deg, #E8C9A0, #C4A07A) !important;
+  color: #1A1410 !important;
+  border: none !important;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.30) inset,
+    0 -1px 0 rgba(0, 0, 0, 0.15) inset,
+    0 8px 24px rgba(212, 184, 150, 0.18) !important;
+}
+.apple-mode .btn--primary:active { transform: scale(0.97); }
+.apple-mode .btn--text { color: var(--fg-muted); font-weight: 500; }
+.apple-mode .btn--ghost {
+  background: var(--glass-bg) !important;
+  border: 1px solid var(--glass-border) !important;
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+}
+
+/* ───── TABBAR · floating Liquid Glass pill ───── */
+.apple-mode .tabbar {
+  position: fixed !important;
+  left: 50%; bottom: 20px;
+  transform: translateX(-50%);
+  width: auto;
+  max-width: calc(100% - 24px);
+  padding: 5px 6px !important;
+  background: rgba(28, 26, 24, 0.62) !important;
+  border: 1px solid var(--glass-border-strong) !important;
+  border-radius: 999px !important;
+  backdrop-filter: blur(28px) saturate(160%);
+  -webkit-backdrop-filter: blur(28px) saturate(160%);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.08) inset,
+    0 -1px 0 rgba(0, 0, 0, 0.35) inset,
+    0 16px 40px rgba(0, 0, 0, 0.5) !important;
+  display: flex !important;
+  gap: 0 !important;
+  height: auto !important;
+  z-index: 60;
+}
+.apple-mode .tab {
+  flex: none !important;
+  padding: 8px 9px !important;
+  min-width: 0 !important;
+  border-radius: 999px !important;
+  transition: background 0.3s var(--spring-glide), color 0.2s !important;
+  border: none;
+  color: var(--fg-muted);
+}
+.apple-mode .tab.is-active {
+  background: rgba(212, 184, 150, 0.18) !important;
+  color: var(--accent) !important;
+  padding-left: 12px !important;
+  padding-right: 14px !important;
+}
+.apple-mode .tab span {
+  font-size: 9.5px !important;
+  font-family: var(--sans-apple) !important;
+  letter-spacing: -0.005em;
+  display: none !important;
+}
+.apple-mode .tab.is-active span { display: inline !important; }
+
+/* nudge das telas pra liberar espaço da tabbar flutuante */
+.apple-mode .screen { padding-bottom: 110px !important; }
+
+/* nav interna da jornada também ganha o tratamento */
+.apple-mode .jornada__nav {
+  background: rgba(28, 26, 24, 0.62) !important;
+  border: 1px solid var(--glass-border-strong) !important;
+  border-top: 1px solid var(--glass-border-strong) !important;
+  border-radius: 0 !important;
+  backdrop-filter: blur(28px) saturate(160%);
+  -webkit-backdrop-filter: blur(28px) saturate(160%);
+}
+
+/* ───── WHEEL · softer + glow ───── */
+.apple-mode .wheel__ring  { stroke: rgba(255, 255, 255, 0.06); }
+.apple-mode .wheel__spoke { stroke: rgba(255, 255, 255, 0.05); }
+.apple-mode .wheel__shape {
+  filter: drop-shadow(0 0 24px rgba(212, 184, 150, 0.4));
+  stroke: var(--accent);
+  stroke-width: 1.2;
+}
+.apple-mode .wheel__handle {
+  fill: var(--accent);
+  filter: drop-shadow(0 0 10px var(--accent));
+}
+.apple-mode .wheel__label {
+  font-family: var(--sans-apple);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  fill: var(--fg-muted);
+  text-transform: none;
+}
+
+/* ───── DISPLAY · apple.com scale ───── */
+.apple-mode .display,
+.apple-mode .display--sm {
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: 44px;
+  line-height: 1.04;
+  letter-spacing: -0.035em;
+}
+.apple-mode .display--sm { font-size: 28px; }
+.apple-mode .lead {
+  font-family: var(--sans-apple);
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--fg-muted);
+  letter-spacing: -0.005em;
+  max-width: 32ch;
+}
+
+/* ───── SHEETS · Liquid Glass panel ───── */
+.apple-mode .sheet__panel {
+  background: var(--glass-bg-strong) !important;
+  border: 1px solid var(--glass-border-strong) !important;
+  border-radius: 28px 28px 0 0 !important;
+  backdrop-filter: blur(32px) saturate(160%);
+  -webkit-backdrop-filter: blur(32px) saturate(160%);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.06) inset,
+    0 -16px 40px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* ───── jornada hero (score + dimensões) ganha tratamento Apple também ───── */
+.apple-mode .jsec .hero { width: 280px !important; height: 280px !important; max-width: 80vw; }
+.apple-mode .jsec-tripe .jt b { font-family: var(--serif); font-weight: 400; font-size: 16px; }
+
+/* selo de cera no apple-mode mantém como é (já é premium) */
+.apple-mode .wax-seal { filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.5)); }
+
+/* ───── SLIDERS (humor screen) ───── */
+.apple-mode .slider__track {
+  background: var(--glass-bg) !important;
+  border: 1px solid var(--glass-border) !important;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-radius: 999px !important;
+}
+
+/* ───── markers (exames) ───── */
+.apple-mode .marker {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-family: var(--sans-apple);
+  font-size: 11px;
+  font-weight: 500;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+.apple-mode .stat b {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 28px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+/* ───── reduced motion ───── */
+@media (prefers-reduced-motion: reduce) {
+  .apple-mode .hero::before,
+  .apple-mode .hero__value,
+  .apple-mode .ring-apple .arc-fill { animation: none !important; }
+  .apple-mode .card:hover,
+  .apple-mode .lab-card:hover,
+  .apple-mode .j-card:hover { transform: none !important; }
+}
