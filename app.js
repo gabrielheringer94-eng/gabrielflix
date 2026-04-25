@@ -1348,14 +1348,14 @@ document.querySelectorAll('.btn, .quick__item').forEach((b) => {
 // WELCOME · primeira visita (pré-onboarding)
 // ═════════════════════════════════════════
 const welcomeEl = document.getElementById('welcome');
-const welcomeStart = document.getElementById('welcome-start');
-const welcomeSkip  = document.getElementById('welcome-skip');
 
 function openWelcome() {
   if (!welcomeEl) return;
   welcomeEl.classList.add('is-open');
   welcomeEl.setAttribute('aria-hidden', 'false');
   document.body.style.overflow = 'hidden';
+  // sempre começa na tela 1 ao abrir
+  wlcIrPara(1);
 }
 function closeWelcome() {
   if (!welcomeEl) return;
@@ -1365,8 +1365,79 @@ function closeWelcome() {
   try { localStorage.setItem('circa_welcome_seen', '1'); } catch (e) {}
 }
 
-if (welcomeStart) welcomeStart.addEventListener('click', () => { closeWelcome(); openOnboard(); hap(15); });
-if (welcomeSkip)  welcomeSkip.addEventListener('click', () => { closeWelcome(); hap(8); });
+// ───── WELCOME FLOW · 3 telas (respira → frases → confirmação) ─────
+let wlcTelaAtual = 1;
+
+function wlcIrPara(n) {
+  const telas = welcomeEl ? welcomeEl.querySelectorAll('.wlc-tela') : [];
+  if (!telas.length) return;
+  const atual = welcomeEl.querySelector(`.wlc-tela[data-wlc="${wlcTelaAtual}"]`);
+  const prox  = welcomeEl.querySelector(`.wlc-tela[data-wlc="${n}"]`);
+  if (!atual || !prox) return;
+  if (atual === prox) return;
+
+  atual.classList.remove('is-active');
+  atual.classList.add('is-leaving');
+  setTimeout(() => atual.classList.remove('is-leaving'), 700);
+  prox.classList.add('is-active');
+  wlcTelaAtual = n;
+
+  // header: progresso + step
+  const fill = document.getElementById('wlc-prog-fill');
+  const step = document.getElementById('wlc-step');
+  const map = { 1: ['33%', '1 / 3'], 2: ['66%', '2 / 3'], 3: ['100%', '3 / 3'] };
+  if (map[n]) {
+    if (fill) fill.style.width = map[n][0];
+    if (step) step.textContent = map[n][1];
+  }
+  try { hap(8); } catch (e) {}
+}
+
+// botões "estou pronto" / "voltar"
+document.querySelectorAll('[data-wlc-go]').forEach((b) => {
+  b.addEventListener('click', () => {
+    const n = parseInt(b.dataset.wlcGo, 10);
+    if (!isNaN(n)) wlcIrPara(n);
+  });
+});
+
+// seleção de frase na tela 2 → preenche tela 3 e avança
+document.querySelectorAll('.wlc-frase').forEach((card) => {
+  card.addEventListener('click', () => {
+    const frase = card.dataset.frase || '';
+    const dim   = card.dataset.dim || '';
+    document.querySelectorAll('.wlc-frase').forEach((c) => {
+      c.classList.remove('is-sel');
+      c.classList.add('is-faded');
+    });
+    card.classList.remove('is-faded');
+    card.classList.add('is-sel');
+
+    const eco = document.getElementById('wlc-confirm-eco');
+    const dimEl = document.getElementById('wlc-confirm-dim');
+    if (eco)  eco.textContent = '"' + frase + '"';
+    if (dimEl) dimEl.textContent = dim;
+
+    // salva escolha
+    try {
+      localStorage.setItem('circa_welcome_frase', frase);
+      localStorage.setItem('circa_welcome_dim', dim);
+    } catch (e) {}
+
+    try { hap(12); } catch (e) {}
+    setTimeout(() => wlcIrPara(3), 550);
+  });
+});
+
+// "entrar na circa" → fecha welcome + abre onboarding
+const wlcEntrar = document.getElementById('wlc-entrar');
+if (wlcEntrar) wlcEntrar.addEventListener('click', () => {
+  closeWelcome();
+  setTimeout(() => {
+    if (typeof openOnboard === 'function') openOnboard();
+  }, 250);
+  try { hap(15); } catch (e) {}
+});
 
 try {
   if (!localStorage.getItem('circa_welcome_seen')) {

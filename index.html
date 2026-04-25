@@ -60,52 +60,98 @@
     </div>
   </div>
 
-  <!-- ───────── WELCOME · primeira visita ───────── -->
+  <!-- ───────── WELCOME · 3 telas (respira → frases → confirmação) ───────── -->
   <div class="welcome" id="welcome" aria-hidden="true">
-    <div class="welcome__inner">
-      <div class="welcome__brand">
-        <img src="circa-logo.png" alt="Circa" width="40" height="40" />
-        <span>circa</span>
+    <!-- header fixo com logo + progresso -->
+    <header class="wlc-top">
+      <div class="wlc-brand">
+        <span class="wlc-logo-dot"><i></i></span>
+        <span class="wlc-logo-txt">circa</span>
+        <span class="wlc-step" id="wlc-step">1 / 3</span>
       </div>
+      <div class="wlc-prog"><i id="wlc-prog-fill" style="width:33%"></i></div>
+    </header>
 
-      <span class="eyebrow">registrar hoje muda amanhã</span>
-      <h1 class="display">o que você<br/><em>ganha</em></h1>
+    <!-- TELA 1 · respira -->
+    <section class="wlc-tela is-active" data-wlc="1">
+      <div class="wlc-respira">
+        <div class="wlc-orbe">
+          <span class="wlc-orbe-halo"></span>
+          <span class="wlc-orbe-inner"></span>
+        </div>
+        <p class="wlc-eye">antes de começar</p>
+        <h1 class="display">respira<em>.</em></h1>
+        <p class="lead">o circa não é mais um app de metas.<br/>é o único que te conhece de verdade.</p>
+      </div>
+      <button class="btn btn--primary btn--full wlc-cta" data-wlc-go="2">estou pronto</button>
+    </section>
 
-      <ul class="ganhos">
-        <li>
-          <span class="ganho-num" style="--c:#7B8BB8">48<i>min</i></span>
-          <div class="ganho-body">
-            <strong>a mais de sono por noite</strong>
-            <span>em 7 dias de check-in contínuo</span>
-          </div>
-        </li>
-        <li>
-          <span class="ganho-num" style="--c:#E8A87C">31<i>%</i></span>
-          <div class="ganho-body">
-            <strong>menos ansiedade em 3 semanas</strong>
-            <span>quem registra humor + treino + sono juntos</span>
-          </div>
-        </li>
-        <li>
-          <span class="ganho-num" style="--c:#A88AE8">2,4<i>×</i></span>
-          <div class="ganho-body">
-            <strong>mais dias bons por mês</strong>
-            <span>corpo · mente · espírito juntos</span>
-          </div>
-        </li>
-        <li>
-          <span class="ganho-num" style="--c:#D4B896">21<i>d</i></span>
-          <div class="ganho-body">
-            <strong>pros insights aparecerem</strong>
-            <span>quanto mais registra, mais preciso o espelho fica</span>
-          </div>
-        </li>
-      </ul>
+    <!-- TELA 2 · frases -->
+    <section class="wlc-tela" data-wlc="2">
+      <div class="wlc-frases">
+        <p class="wlc-eye">passo 2 de 3</p>
+        <h1 class="display">qual dessas frases<br/>te <em>encontra</em> hoje?</h1>
+        <p class="lead">não existe resposta certa, só a sua.</p>
 
-      <p class="welcome__time">60 segundos por dia · sem formulário</p>
-      <button class="btn btn--primary btn--full" id="welcome-start">começar agora</button>
-      <button class="btn btn--text btn--full" id="welcome-skip">pular por ora</button>
-    </div>
+        <div class="wlc-frase-list">
+          <button class="wlc-frase" data-frase="sinto que perdi o fio." data-dim="energia vital">
+            <p class="wlc-frase__txt">"sinto que perdi o fio."</p>
+            <div class="wlc-frase__freq">
+              <i class="wlc-bar"><u style="width:68%"></u></i>
+              <span>frequente</span>
+            </div>
+          </button>
+
+          <button class="wlc-frase" data-frase="estou bem, mas poderia estar melhor." data-dim="equilíbrio">
+            <p class="wlc-frase__txt">"estou bem, mas poderia estar melhor."</p>
+            <div class="wlc-frase__freq">
+              <i class="wlc-bar"><u style="width:82%"></u></i>
+              <span>muito frequente</span>
+            </div>
+          </button>
+
+          <button class="wlc-frase" data-frase="não sei o que está errado, mas algo está." data-dim="mente">
+            <p class="wlc-frase__txt">"não sei o que está errado, mas algo está."</p>
+            <div class="wlc-frase__freq">
+              <i class="wlc-bar"><u style="width:55%"></u></i>
+              <span>comum</span>
+            </div>
+          </button>
+
+          <button class="wlc-frase" data-frase="quero construir algo que dure." data-dim="longevidade">
+            <p class="wlc-frase__txt">"quero construir algo que dure."</p>
+            <div class="wlc-frase__freq">
+              <i class="wlc-bar"><u style="width:44%"></u></i>
+              <span>incomum</span>
+            </div>
+          </button>
+
+          <button class="wlc-frase" data-frase="estou pronto pra começar de verdade." data-dim="corpo">
+            <p class="wlc-frase__txt">"estou pronto pra começar de verdade."</p>
+            <div class="wlc-frase__freq">
+              <i class="wlc-bar"><u style="width:38%"></u></i>
+              <span>incomum</span>
+            </div>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- TELA 3 · confirmação -->
+    <section class="wlc-tela" data-wlc="3">
+      <div class="wlc-confirm">
+        <div class="wlc-orbe wlc-orbe--check">
+          <span class="wlc-check">◎</span>
+        </div>
+        <h1 class="display">entendido.<br/>vamos começar<br/>por <em id="wlc-confirm-dim">aí</em>.</h1>
+        <p class="lead">o circa vai adaptar a sua jornada a partir de hoje.</p>
+        <blockquote class="wlc-eco" id="wlc-confirm-eco"></blockquote>
+      </div>
+      <div class="wlc-confirm-actions">
+        <button class="btn btn--primary btn--full" id="wlc-entrar">entrar na circa</button>
+        <button class="btn btn--text btn--full" data-wlc-go="2">voltar</button>
+      </div>
+    </section>
   </div>
 
   <!-- ───────── ONBOARDING OVERLAY ───────── -->
