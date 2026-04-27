@@ -2221,7 +2221,30 @@ function runAction(kind) {
   if (kind === 'workout')  openEsportePicker();
   if (kind === 'water200') { const m = document.querySelector('[data-add="200"]'); if (m) m.click(); }
   if (kind === 'water500') { const m = document.querySelector('[data-add="500"]'); if (m) m.click(); }
-  if (kind === 'ateMeal')  { const track = document.getElementById('action-track'); const active = track && track.children[ACTION_INDEX]; if (active) active.style.opacity = '0.55'; }
+  if (kind === 'ateMeal')  {
+    // persiste registro de refeição com data · alimenta histórico no log + comparações semanais
+    try {
+      const arr = JSON.parse(localStorage.getItem('circa_log_refeicao') || '[]');
+      const now = new Date();
+      const h = now.getHours();
+      let tipo = 'lanche';
+      if (h >= 5 && h < 11) tipo = 'café';
+      else if (h >= 11 && h < 15) tipo = 'almoço';
+      else if (h >= 15 && h < 18) tipo = 'lanche';
+      else if (h >= 18 && h < 23) tipo = 'jantar';
+      const card = ACTION_CARDS[ACTION_INDEX] || {};
+      const desc = (card.body || '').replace(/<[^>]+>/g, '').trim() || 'refeição';
+      arr.push({ ts: now.toISOString(), tipo, desc });
+      // limita o array a 90 dias pra não inchar o localStorage
+      const ms90 = 90 * 86400000;
+      const cutoff = Date.now() - ms90;
+      const trimmed = arr.filter((r) => new Date(r.ts).getTime() >= cutoff);
+      localStorage.setItem('circa_log_refeicao', JSON.stringify(trimmed));
+    } catch (e) {}
+    const track = document.getElementById('action-track');
+    const active = track && track.children[ACTION_INDEX];
+    if (active) active.style.opacity = '0.55';
+  }
   if (kind === 'swapMeal') { alert('troca de refeição, vem em breve'); }
 }
 
@@ -3957,7 +3980,7 @@ function renderObStep() {
 // insere 31 (gênero), 32 (homem), 33 (mulher) entre step 1 e step 2
 // SUBSTITUI o quiz antigo (12-20) pelo flow do temperamento (41-47):
 // 5 cenários (41-45) + processando (46) + revelação (47)
-const OB_FLOW = [1, 31, 32, 33, 2, 3, 5, 6, 7, 8, 9, 10, 11, 41, 42, 43, 44, 45, 46, 47, 21, 22, 23, 24, 25, 26];
+const OB_FLOW = [1, 31, 32, 33, 41, 42, 43, 44, 45, 46, 47, 21, 22, 23, 24, 25, 26];
 
 function obCurrentGender() {
   try { return localStorage.getItem('circa_gender') || null; } catch (e) { return null; }
@@ -3983,13 +4006,7 @@ function nextStep() {
   const idx = flow.indexOf(obStep);
   if (idx >= 0 && idx < flow.length - 1) {
     const newStep = flow[idx + 1];
-    // step 4 (seletor de ciclo) foi removido · trilha agora sempre vem do gênero
-    // homem → masculina · mulher/outro → feminina
-    if (newStep === 5 && !fisioTrilha) {
-      const g = obCurrentGender();
-      fisioTrilha = (g === 'man') ? 'masculina' : 'feminina';
-      fisioScores = {};
-    }
+    // fisio quiz (steps 5-11) removido do onboarding · trilha não é mais necessária
     obStep = newStep;
     renderObStep();
     hap(6);
@@ -7136,6 +7153,119 @@ function temprDrawElemento(tipo, cor) {
         render();
       });
     }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+
+// ═════════════════════════════════════════════════════════════════════════
+// LOG · sheet com abas em standby (insights, club) + meu histórico
+// (sono, treino, humor, comida, água) por data
+// ═════════════════════════════════════════════════════════════════════════
+(function logSheetModule() {
+  function readArr(key) {
+    try { return JSON.parse(localStorage.getItem(key) || '[]'); }
+    catch (e) { return []; }
+  }
+
+  function fmtDataHora(iso) {
+    try {
+      const d = new Date(iso);
+      const dd = String(d.getDate()).padStart(2,'0');
+      const mm = String(d.getMonth() + 1).padStart(2,'0');
+      const hh = String(d.getHours()).padStart(2,'0');
+      const mi = String(d.getMinutes()).padStart(2,'0');
+      return `${dd}/${mm} · ${hh}:${mi}`;
+    } catch (e) { return '—'; }
+  }
+
+  function renderHist() {
+    const el = document.getElementById('log-hist');
+    if (!el) return;
+
+    const sono     = readArr('circa_log_sono');
+    const treino   = readArr('circa_workout_log');
+    const humor    = readArr('circa_log_humor');
+    const refeicao = readArr('circa_log_refeicao');
+
+    const items = [];
+    sono.slice(-5).reverse().forEach((r) => items.push({
+      cor: '#7B8BB8',
+      lbl: 'sono',
+      meta: r.horas != null ? `${r.horas}h` : (r.qualidade || '—'),
+      ts: r.ts || r.data || r.date || null,
+    }));
+    treino.slice(-5).reverse().forEach((r) => items.push({
+      cor: '#E8A87C',
+      lbl: 'treino',
+      meta: (r.tipo || r.modalidade || r.esporte || '—') + (r.duracao ? ` · ${r.duracao}min` : ''),
+      ts: r.ts || r.data || r.date || null,
+    }));
+    humor.slice(-5).reverse().forEach((r) => items.push({
+      cor: '#D4B896',
+      lbl: 'humor',
+      meta: r.valor != null ? `${r.valor}/10` : (r.label || '—'),
+      ts: r.ts || r.data || r.date || null,
+    }));
+    refeicao.slice(-5).reverse().forEach((r) => items.push({
+      cor: '#8FA87C',
+      lbl: 'comida',
+      meta: r.tipo || '—',
+      ts: r.ts || r.data || r.date || null,
+    }));
+
+    if (items.length === 0) {
+      el.innerHTML = `<div class="log-hist-empty">nada registrado ainda. registre teu primeiro item no card 'hoje' e ele aparece aqui.</div>`;
+      return;
+    }
+
+    items.sort((a, b) => {
+      const ta = a.ts ? new Date(a.ts).getTime() : 0;
+      const tb = b.ts ? new Date(b.ts).getTime() : 0;
+      return tb - ta;
+    });
+
+    el.innerHTML = items.slice(0, 12).map((it) => `
+      <div class="log-hist-item">
+        <span class="log-hist-item__lbl"><i style="background:${it.cor}"></i>${it.lbl}</span>
+        <span class="log-hist-item__meta"><strong>${it.meta}</strong><br>${fmtDataHora(it.ts)}</span>
+      </div>
+    `).join('');
+  }
+
+  function openLogSheet() {
+    if (typeof openSheet === 'function') openSheet('sheet-log');
+    renderHist();
+  }
+
+  function init() {
+    const btn = document.getElementById('j-nav-log');
+    if (btn) {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        openLogSheet();
+        if (typeof hap === 'function') hap(8);
+      });
+    }
+    // os 'log-row' navegam pra views da jornada (insights = 6, club = 9)
+    document.querySelectorAll('[data-log-goto]').forEach((row) => {
+      row.addEventListener('click', () => {
+        const idx = parseInt(row.dataset.logGoto, 10);
+        if (typeof closeSheet === 'function') closeSheet();
+        if (typeof window.openJornada === 'function') {
+          window.openJornada();
+          setTimeout(() => {
+            const target = document.querySelector(`.j-nav-item[data-j-goto="${idx}"]`);
+            if (target) target.click();
+          }, 100);
+        }
+        if (typeof hap === 'function') hap(8);
+      });
+    });
   }
 
   if (document.readyState === 'loading') {

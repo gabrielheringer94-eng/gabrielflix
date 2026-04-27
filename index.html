@@ -23,8 +23,8 @@
   <link rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,400&family=Inter:wght@400;500;600&display=swap" />
   <!-- cache-bust agressivo: muda v sempre que houver mudança visual -->
-  <link rel="stylesheet" href="styles.css?v=20260427-a" />
-  <link rel="stylesheet" href="apple.css?v=20260427-a" />
+  <link rel="stylesheet" href="styles.css?v=20260427-b" />
+  <link rel="stylesheet" href="apple.css?v=20260427-b" />
   <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="pragma" content="no-cache" />
   <meta http-equiv="expires" content="0" />
@@ -550,59 +550,7 @@
       </div>
 
       <!-- 12 · roda hoje -->
-      <div class="ob-slide" data-step="2">
-        <h1 class="display">como tá<br/>tua vida<br/>hoje?</h1>
-        <p class="lead">arrasta cada área. sem julgamento, só um mapa.</p>
-
-        <div class="ob-wheel-wrap">
-          <svg id="ob-wheel" viewBox="-160 -160 320 320" class="wheel">
-            <defs>
-              <radialGradient id="obWheelFill" cx="50%" cy="50%" r="50%">
-                <stop offset="0%" stop-color="#D4B896" stop-opacity="0.45"/>
-                <stop offset="100%" stop-color="#D4B896" stop-opacity="0.08"/>
-              </radialGradient>
-            </defs>
-            <circle r="130" class="wheel__ring"/>
-            <circle r="100" class="wheel__ring"/>
-            <circle r="70"  class="wheel__ring"/>
-            <circle r="40"  class="wheel__ring"/>
-            <g id="ob-wheel-spokes"></g>
-            <polygon id="ob-wheel-shape" class="wheel__shape" fill="url(#obWheelFill)"/>
-            <g id="ob-wheel-handles"></g>
-            <g id="ob-wheel-labels"></g>
-          </svg>
-        </div>
-
-        <button class="btn btn--primary btn--full ob-next">continuar</button>
-      </div>
-
-      <!-- 13 · roda meta -->
-      <div class="ob-slide" data-step="3">
-        <h1 class="display">e daqui a<br/>3 meses?</h1>
-        <p class="lead">arrasta pra onde quer chegar. a linha clara é onde você tá hoje.</p>
-
-        <div class="ob-wheel-wrap">
-          <svg id="ob-wheel-goal" viewBox="-160 -160 320 320" class="wheel">
-            <defs>
-              <radialGradient id="obWheelGoalFill" cx="50%" cy="50%" r="50%">
-                <stop offset="0%" stop-color="#E8C9A0" stop-opacity="0.55"/>
-                <stop offset="100%" stop-color="#E8C9A0" stop-opacity="0.1"/>
-              </radialGradient>
-            </defs>
-            <circle r="130" class="wheel__ring"/>
-            <circle r="100" class="wheel__ring"/>
-            <circle r="70"  class="wheel__ring"/>
-            <circle r="40"  class="wheel__ring"/>
-            <g id="ob-wheel-goal-spokes"></g>
-            <polygon id="ob-wheel-ghost" class="wheel__ghost"/>
-            <polygon id="ob-wheel-goal-shape" class="wheel__shape wheel__shape--goal" fill="url(#obWheelGoalFill)"/>
-            <g id="ob-wheel-goal-handles"></g>
-            <g id="ob-wheel-goal-labels"></g>
-          </svg>
-        </div>
-
-        <button class="btn btn--primary btn--full ob-next">continuar</button>
-      </div>
+      <!-- mapa da vida (steps 2 e 3) removido do onboarding · agora vive na aba 'roda' do app -->
 
       <!-- ═════ TEMPERAMENTO · 5 cenários + processamento + revelação ═════ -->
 
@@ -765,16 +713,9 @@
         <button class="btn btn--primary btn--full ob-next">continuar</button>
       </div>
 
-      <!-- 16-21 · 6 perguntas fisiológicas (renderizadas por JS com base na trilha) -->
-      <div class="ob-slide fisio-question" data-step="5" data-fqindex="0"></div>
-      <div class="ob-slide fisio-question" data-step="6" data-fqindex="1"></div>
-      <div class="ob-slide fisio-question" data-step="7" data-fqindex="2"></div>
-      <div class="ob-slide fisio-question" data-step="8" data-fqindex="3"></div>
-      <div class="ob-slide fisio-question" data-step="9" data-fqindex="4"></div>
-      <div class="ob-slide fisio-question" data-step="10" data-fqindex="5"></div>
+      <!-- fisio quiz (steps 5-10) e resultado 'perfil a descobrir' (step 11) removidos do onboarding ·
+           perguntas clínicas (cortisol/estrogênio/etc) saem por enquanto · vamos coletar depois por outro caminho -->
 
-      <!-- 22 · resultado fisiológico -->
-      <div class="ob-slide fisio-result" data-step="11"></div>
 
       <!-- 23 · comida -->
       <div class="ob-slide" data-step="22">
@@ -2257,6 +2198,53 @@
       </div>
     </div>
 
+    <!-- ───────── MODAL · LOG (acesso a abas em standby + meu histórico) ───────── -->
+    <div class="sheet" id="sheet-log" aria-hidden="true">
+      <div class="sheet__backdrop" data-close></div>
+      <div class="sheet__panel" role="dialog" aria-label="log e histórico">
+        <div class="sheet__grab"></div>
+
+        <div class="sheet__head">
+          <span class="eyebrow">log</span>
+          <h2 class="display display--sm">teu registro<br/>e <em>arquivos</em>.</h2>
+          <p class="lead lead--sm">acessa o que ficou de fora do rodapé e revisa o que registrou.</p>
+        </div>
+
+        <!-- abas em standby -->
+        <div class="sheet__section log-standby">
+          <span class="eyebrow">abas em standby</span>
+          <button class="log-row" data-log-goto="6">
+            <span class="log-row__icon">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+            </span>
+            <span class="log-row__txt">
+              <strong>insights</strong>
+              <small>padrões detectados pela IA ao longo dos dias</small>
+            </span>
+            <svg class="log-row__chev" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 5l7 7-7 7"/></svg>
+          </button>
+          <button class="log-row" data-log-goto="9">
+            <span class="log-row__icon">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="4"/><path d="M17 11a4 4 0 1 0 0-8"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/></svg>
+            </span>
+            <span class="log-row__txt">
+              <strong>club</strong>
+              <small>círculo da circa, em breve</small>
+            </span>
+            <svg class="log-row__chev" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+
+        <!-- meu histórico -->
+        <div class="sheet__section log-historico">
+          <span class="eyebrow">meu histórico</span>
+          <div class="log-hist" id="log-hist"></div>
+        </div>
+
+        <button class="btn btn--ghost btn--full" data-close>fechar</button>
+      </div>
+    </div>
+
     <!-- ───────── MODAL · ritual semanal ───────── -->
     <div class="sheet" id="sheet-ritual" aria-hidden="true">
       <div class="sheet__backdrop" data-close></div>
@@ -3390,46 +3378,15 @@
       <div class="club-toast" id="club-toast" aria-live="polite"></div>
 
       <!-- nav inferior interna da jornada -->
-      <nav class="jornada__nav" role="tablist">
+      <!-- nav redesenhada · 5 itens · insights e club ficam em standby (acessíveis via 'log') · ícone C circa removido -->
+      <nav class="jornada__nav jornada__nav--5" role="tablist">
         <button class="j-nav-item is-active" data-j-goto="0" aria-label="hoje">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M3 12L12 4l9 8M5 10v9a1 1 0 001 1h4v-5h4v5h4a1 1 0 001-1v-9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           <span>hoje</span>
         </button>
-        <button class="j-nav-item" data-j-goto="6" aria-label="insights">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <span>insights</span>
-        </button>
-        <button class="j-nav-circa" id="j-nav-circa" aria-label="circa">
-          <span class="j-nav-circa__icon">
-            <svg class="wax-seal wax-seal--sm" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <defs>
-                <radialGradient id="waxBodyNav" cx="36%" cy="30%" r="72%">
-                  <stop offset="0%"  stop-color="#FAE9C8"/>
-                  <stop offset="22%" stop-color="#EDD9A6"/>
-                  <stop offset="55%" stop-color="#C9A97E"/>
-                  <stop offset="82%" stop-color="#7A5A2E"/>
-                  <stop offset="100%" stop-color="#3A2610"/>
-                </radialGradient>
-                <linearGradient id="waxCNav" x1="28%" y1="22%" x2="72%" y2="78%">
-                  <stop offset="0%"  stop-color="#F5E8C0"/>
-                  <stop offset="55%" stop-color="#C9A97E"/>
-                  <stop offset="100%" stop-color="#5A3F1E"/>
-                </linearGradient>
-              </defs>
-              <path d="M60 4 C72 4 82 9 91 16 C101 22 109 30 113 42 C117 52 117 64 114 75 C110 87 103 97 92 104 C83 111 72 115 60 115 C48 115 36 112 27 106 C16 99 8 88 5 76 C2 65 3 52 8 41 C13 30 21 20 32 13 C41 7 50 4 60 4 Z"
-                    fill="url(#waxBodyNav)"/>
-              <circle cx="60" cy="60" r="48" fill="none" stroke="rgba(58,38,16,0.5)" stroke-width="1.2"/>
-              <circle cx="60" cy="60" r="42" fill="none" stroke="rgba(58,38,16,0.7)" stroke-width="0.9" stroke-dasharray="1.5 3"/>
-              <text x="60" y="60" text-anchor="middle" dominant-baseline="central"
-                    font-family="'Fraunces','Instrument Serif',Georgia,serif"
-                    font-size="58" font-weight="400"
-                    fill="rgba(40,24,8,0.75)" transform="translate(1.4,1.8)">C</text>
-              <text x="60" y="60" text-anchor="middle" dominant-baseline="central"
-                    font-family="'Fraunces','Instrument Serif',Georgia,serif"
-                    font-size="58" font-weight="400"
-                    fill="url(#waxCNav)">C</text>
-            </svg>
-          </span>
+        <button class="j-nav-item" id="j-nav-log" aria-label="log">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h10"/><circle cx="19" cy="18" r="1.6" fill="currentColor"/></svg>
+          <span>log</span>
         </button>
         <button class="j-nav-item" data-j-goto="7" aria-label="exames">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6v4l5 10a3 3 0 0 1-2.7 4.3H10.7A3 3 0 0 1 8 17l5-10V3"/><path d="M9.5 13h5"/></svg>
@@ -3438,10 +3395,6 @@
         <button class="j-nav-item" data-j-goto="8" aria-label="roda">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5"/><path d="M12 8v4l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
           <span>roda</span>
-        </button>
-        <button class="j-nav-item" data-j-goto="9" aria-label="club">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="4"/><path d="M17 11a4 4 0 1 0 0-8"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/></svg>
-          <span>club</span>
         </button>
         <button class="j-nav-item" data-j-goto="10" aria-label="30 dias">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5"/><path d="M12 8v4M12 16h.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
@@ -3499,6 +3452,6 @@
     </nav>
   </div>
 
-  <script src="app.js?v=20260427-a"></script>
+  <script src="app.js?v=20260427-b"></script>
 </body>
 </html>
