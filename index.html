@@ -23,8 +23,8 @@
   <link rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,400&family=Inter:wght@400;500;600&display=swap" />
   <!-- cache-bust agressivo: muda v sempre que houver mudança visual -->
-  <link rel="stylesheet" href="styles.css?v=20260425-i" />
-  <link rel="stylesheet" href="apple.css?v=20260425-i" />
+  <link rel="stylesheet" href="styles.css?v=20260426-b" />
+  <link rel="stylesheet" href="apple.css?v=20260426-b" />
   <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="pragma" content="no-cache" />
   <meta http-equiv="expires" content="0" />
@@ -765,22 +765,6 @@
         <button class="btn btn--primary btn--full ob-next">continuar</button>
       </div>
 
-      <!-- 4 · calibração fisiológica · pergunta inicial (chips) · só aparece pra mulher/outro -->
-      <div class="ob-slide fisio-intro" data-step="4" data-gender-skip="man">
-        <span class="eyebrow">calibração fisiológica</span>
-        <h1 class="display">como tá sua<br/>relação com<br/>o <em>ciclo</em>?</h1>
-        <p class="lead">um tap define o ritmo do teu corpo pro app.</p>
-
-        <div class="ob-chips fisio-chips">
-          <button class="ob-chip" data-trilha="feminina">ciclo regular</button>
-          <button class="ob-chip" data-trilha="feminina">ciclo irregular</button>
-          <button class="ob-chip" data-trilha="transicao">parei há pouco tempo</button>
-          <button class="ob-chip" data-trilha="transicao">parei há anos</button>
-        </div>
-
-        <p class="micro-note">ciclo hormonal muda tudo, humor, sono, treino, nutrição. 6 perguntinhas em seguida · ~2 min.</p>
-      </div>
-
       <!-- 16-21 · 6 perguntas fisiológicas (renderizadas por JS com base na trilha) -->
       <div class="ob-slide fisio-question" data-step="5" data-fqindex="0"></div>
       <div class="ob-slide fisio-question" data-step="6" data-fqindex="1"></div>
@@ -1401,6 +1385,62 @@
           análise automática por IA · evolução de marcadores ao longo do tempo · alertas de desvio · sugestões semanais integradas a treino, comida, sono e roda da vida.
         </p>
       </div>
+    </section>
+
+    <!-- ───────── MEU CICLO (gated · só aparece pra circa_gender = woman) ───────── -->
+    <section class="screen screen--cycle" data-screen="cycle">
+      <header class="top">
+        <span class="top__greet">meu ciclo</span>
+      </header>
+
+      <article class="card cyc-hero">
+        <span class="eyebrow" id="cyc-fase-eyebrow">fase folicular</span>
+        <h2 class="cyc-numero" id="cyc-numero">14</h2>
+        <p class="cyc-legenda" id="cyc-legenda">dias até a próxima menstruação</p>
+      </article>
+
+      <article class="card">
+        <header class="cyc-cal-head">
+          <button class="cyc-cal-nav" data-cyc-nav="-1" aria-label="mês anterior">‹</button>
+          <span class="cyc-cal-mes" id="cyc-mes-nome">abril 2026</span>
+          <button class="cyc-cal-nav" data-cyc-nav="1" aria-label="próximo mês">›</button>
+        </header>
+        <div class="cyc-grid" id="cyc-grid"></div>
+        <div class="cyc-leg">
+          <span class="cyc-leg-item"><i class="cyc-leg-dot cyc-leg-dot--m"></i>menstruação</span>
+          <span class="cyc-leg-item"><i class="cyc-leg-dot cyc-leg-dot--f"></i>fértil</span>
+          <span class="cyc-leg-item"><i class="cyc-leg-dot cyc-leg-dot--o"></i>ovulação</span>
+        </div>
+      </article>
+
+      <article class="card">
+        <span class="eyebrow">próximos ciclos</span>
+        <div class="cyc-prox" id="cyc-prox"></div>
+      </article>
+
+      <article class="card">
+        <span class="eyebrow">ajustes</span>
+        <div class="cyc-ajuste-row">
+          <label for="cyc-data" class="cyc-ajuste-label">início do último ciclo</label>
+          <input type="date" id="cyc-data" class="cyc-input">
+        </div>
+        <div class="cyc-ajuste-row">
+          <span class="cyc-ajuste-label">duração do ciclo</span>
+          <div class="cyc-stepper">
+            <button class="cyc-stp-btn" data-cyc-stp="cycle:-1" aria-label="diminuir duração do ciclo">−</button>
+            <span class="cyc-stp-val"><span id="cyc-cycle-val">28</span> dias</span>
+            <button class="cyc-stp-btn" data-cyc-stp="cycle:1" aria-label="aumentar duração do ciclo">+</button>
+          </div>
+        </div>
+        <div class="cyc-ajuste-row">
+          <span class="cyc-ajuste-label">duração da menstruação</span>
+          <div class="cyc-stepper">
+            <button class="cyc-stp-btn" data-cyc-stp="period:-1" aria-label="diminuir duração da menstruação">−</button>
+            <span class="cyc-stp-val"><span id="cyc-period-val">5</span> dias</span>
+            <button class="cyc-stp-btn" data-cyc-stp="period:1" aria-label="aumentar duração da menstruação">+</button>
+          </div>
+        </div>
+      </article>
     </section>
 
     <!-- ───────── MODAL · score breakdown ───────── -->
@@ -3435,6 +3475,14 @@
         </svg>
         <span>humor</span>
       </button>
+      <button class="tab tab--cycle" data-target="cycle" aria-label="meu ciclo">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="12" cy="12" r="9"/>
+          <path d="M12 3a9 9 0 0 1 0 18" fill="currentColor" fill-opacity="0.22"/>
+          <circle cx="12" cy="12" r="2.5" fill="currentColor"/>
+        </svg>
+        <span>ciclo</span>
+      </button>
       <button class="tab" data-target="labs" aria-label="exames">
         <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
           <path d="M9 3h6v4l5 10a3 3 0 0 1-2.7 4.3H10.7A3 3 0 0 1 8 17l5-10V3"/>
@@ -3451,6 +3499,6 @@
     </nav>
   </div>
 
-  <script src="app.js?v=20260425-i"></script>
+  <script src="app.js?v=20260426-b"></script>
 </body>
 </html>

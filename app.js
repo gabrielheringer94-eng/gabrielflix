@@ -3957,7 +3957,7 @@ function renderObStep() {
 // insere 31 (gênero), 32 (homem), 33 (mulher) entre step 1 e step 2
 // SUBSTITUI o quiz antigo (12-20) pelo flow do temperamento (41-47):
 // 5 cenários (41-45) + processando (46) + revelação (47)
-const OB_FLOW = [1, 31, 32, 33, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 41, 42, 43, 44, 45, 46, 47, 21, 22, 23, 24, 25, 26];
+const OB_FLOW = [1, 31, 32, 33, 2, 3, 5, 6, 7, 8, 9, 10, 11, 41, 42, 43, 44, 45, 46, 47, 21, 22, 23, 24, 25, 26];
 
 function obCurrentGender() {
   try { return localStorage.getItem('circa_gender') || null; } catch (e) { return null; }
@@ -3968,8 +3968,6 @@ function obFlowFiltered() {
   return OB_FLOW.filter((s) => {
     if (s === 32 && g !== 'man')   return false;
     if (s === 33 && g !== 'woman') return false;
-    // step 4: seletor de ciclo menstrual · só faz sentido pra mulher/outro
-    if (s === 4  && g === 'man')   return false;
     return true;
   });
 }
@@ -3985,8 +3983,8 @@ function nextStep() {
   const idx = flow.indexOf(obStep);
   if (idx >= 0 && idx < flow.length - 1) {
     const newStep = flow[idx + 1];
-    // se vamos entrar na 1ª pergunta fisio (step 5) sem trilha definida,
-    // define baseado no gênero (homem pula o step 4, precisa de default)
+    // step 4 (seletor de ciclo) foi removido · trilha agora sempre vem do gênero
+    // homem → masculina · mulher/outro → feminina
     if (newStep === 5 && !fisioTrilha) {
       const g = obCurrentGender();
       fisioTrilha = (g === 'man') ? 'masculina' : 'feminina';
@@ -6922,3 +6920,227 @@ function temprDrawElemento(tipo, cor) {
 }
 
 // trigger via click handlers já fica no IIFE acima · sem necessidade de monkey-patch
+
+// ═════════════════════════════════════════════════════════════════════════
+// MEU CICLO · screen menstrual gated p/ circa_gender = woman
+// estado em localStorage.circa_cycle: { inicio, cycle, period }
+// ═════════════════════════════════════════════════════════════════════════
+(function cycleModule() {
+  const ESTADO = { inicio: null, cycle: 28, period: 5, mesView: null };
+  const MESES = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+  const MESES_ABV = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+  const DOW = ['D','S','T','Q','Q','S','S'];
+  const MS_DIA = 86400000;
+
+  function loadState() {
+    try {
+      const raw = localStorage.getItem('circa_cycle');
+      if (raw) {
+        const d = JSON.parse(raw);
+        if (d.inicio) ESTADO.inicio = new Date(d.inicio);
+        if (d.cycle) ESTADO.cycle = d.cycle;
+        if (d.period) ESTADO.period = d.period;
+      }
+    } catch (e) {}
+    if (!ESTADO.inicio) {
+      const d = new Date(); d.setDate(d.getDate() - 14); d.setHours(0,0,0,0);
+      ESTADO.inicio = d;
+    }
+    const m = new Date(); m.setDate(1); m.setHours(0,0,0,0);
+    ESTADO.mesView = m;
+  }
+
+  function saveState() {
+    try {
+      localStorage.setItem('circa_cycle', JSON.stringify({
+        inicio: ESTADO.inicio.toISOString(),
+        cycle: ESTADO.cycle,
+        period: ESTADO.period,
+      }));
+    } catch (e) {}
+  }
+
+  function diff(a, b) { return Math.floor((b - a) / MS_DIA); }
+
+  function diaCiclo(data) {
+    let d = diff(ESTADO.inicio, data);
+    while (d < 0) d += ESTADO.cycle;
+    return d % ESTADO.cycle;
+  }
+
+  function classify(data) {
+    const d = diaCiclo(data);
+    const ovu = ESTADO.cycle - 14;
+    if (d < ESTADO.period) return 'm';
+    if (d === ovu) return 'o';
+    if (d >= ovu - 5 && d <= ovu + 1) return 'f';
+    return null;
+  }
+
+  function fase() {
+    const hoje = new Date(); hoje.setHours(0,0,0,0);
+    const d = diaCiclo(hoje);
+    const ovu = ESTADO.cycle - 14;
+    if (d < ESTADO.period) return { id: 'menstruacao', nome: 'menstruação' };
+    if (d === ovu) return { id: 'ovulacao', nome: 'ovulação' };
+    if (d >= ovu - 5 && d <= ovu + 1) return { id: 'fertil', nome: 'janela fértil' };
+    if (d < ovu) return { id: 'folicular', nome: 'fase folicular' };
+    return { id: 'lutea', nome: 'fase lútea' };
+  }
+
+  function diasProx() {
+    const hoje = new Date(); hoje.setHours(0,0,0,0);
+    const d = diaCiclo(hoje);
+    if (d < ESTADO.period) return ESTADO.period - d;
+    return ESTADO.cycle - d;
+  }
+
+  function proximos(n) {
+    const hoje = new Date(); hoje.setHours(0,0,0,0);
+    const out = [];
+    const p = new Date(ESTADO.inicio);
+    while (p <= hoje) p.setDate(p.getDate() + ESTADO.cycle);
+    for (let i = 0; i < n; i++) {
+      out.push(new Date(p));
+      p.setDate(p.getDate() + ESTADO.cycle);
+    }
+    return out;
+  }
+
+  function render() {
+    const numEl = document.getElementById('cyc-numero');
+    if (!numEl) return;
+
+    const f = fase();
+    document.getElementById('cyc-fase-eyebrow').textContent = f.nome;
+    const d = diasProx();
+    numEl.textContent = d;
+    document.getElementById('cyc-legenda').textContent = f.id === 'menstruacao'
+      ? (d === 1 ? 'último dia da menstruação' : `${d} dias até o fim`)
+      : (d === 1 ? 'dia até a próxima menstruação' : 'dias até a próxima menstruação');
+
+    const mes = ESTADO.mesView;
+    document.getElementById('cyc-mes-nome').textContent = `${MESES[mes.getMonth()]} ${mes.getFullYear()}`;
+    const grid = document.getElementById('cyc-grid');
+    grid.innerHTML = '';
+    DOW.forEach((d) => {
+      const el = document.createElement('div');
+      el.className = 'cyc-dow';
+      el.textContent = d;
+      grid.appendChild(el);
+    });
+
+    const primeiro = new Date(mes.getFullYear(), mes.getMonth(), 1);
+    const ultimo = new Date(mes.getFullYear(), mes.getMonth() + 1, 0);
+    const offset = primeiro.getDay();
+    const total = ultimo.getDate();
+    const hoje = new Date(); hoje.setHours(0,0,0,0);
+    const mesAnt = new Date(mes.getFullYear(), mes.getMonth(), 0).getDate();
+
+    for (let i = offset - 1; i >= 0; i--) {
+      const el = document.createElement('div');
+      el.className = 'cyc-dia is-out';
+      el.textContent = mesAnt - i;
+      grid.appendChild(el);
+    }
+    for (let day = 1; day <= total; day++) {
+      const dt = new Date(mes.getFullYear(), mes.getMonth(), day); dt.setHours(0,0,0,0);
+      const c = classify(dt);
+      const isHoje = dt.getTime() === hoje.getTime();
+      const el = document.createElement('div');
+      let cls = 'cyc-dia';
+      if (c === 'm') cls += ' is-m';
+      else if (c === 'f') cls += ' is-f';
+      else if (c === 'o') cls += ' is-o';
+      if (isHoje) cls += ' is-today';
+      el.className = cls;
+      el.textContent = day;
+      grid.appendChild(el);
+    }
+    const sobra = (7 - ((offset + total) % 7)) % 7;
+    for (let i = 1; i <= sobra; i++) {
+      const el = document.createElement('div');
+      el.className = 'cyc-dia is-out';
+      el.textContent = i;
+      grid.appendChild(el);
+    }
+
+    const prox = proximos(3);
+    document.getElementById('cyc-prox').innerHTML = prox.map((p) => `
+      <div class="cyc-prox-card">
+        <div class="cyc-prox-mes">${MESES_ABV[p.getMonth()]}</div>
+        <div class="cyc-prox-dia">${p.getDate()}</div>
+      </div>
+    `).join('');
+
+    const dataEl = document.getElementById('cyc-data');
+    const yyyy = ESTADO.inicio.getFullYear();
+    const mm = String(ESTADO.inicio.getMonth() + 1).padStart(2, '0');
+    const dd = String(ESTADO.inicio.getDate()).padStart(2, '0');
+    dataEl.value = `${yyyy}-${mm}-${dd}`;
+    document.getElementById('cyc-cycle-val').textContent = ESTADO.cycle;
+    document.getElementById('cyc-period-val').textContent = ESTADO.period;
+  }
+
+  function init() {
+    const tab = document.querySelector('[data-target="cycle"]');
+    if (!tab) return;
+    let isWoman = false;
+    try { isWoman = localStorage.getItem('circa_gender') === 'woman'; } catch (e) {}
+    if (!isWoman) return;
+
+    document.body.classList.add('is-woman');
+    const tabbar = document.querySelector('.tabbar');
+    if (tabbar) {
+      tabbar.classList.remove('tabbar--5');
+      tabbar.classList.add('tabbar--6');
+    }
+
+    loadState();
+    render();
+
+    document.querySelectorAll('[data-cyc-nav]').forEach((b) => {
+      b.addEventListener('click', () => {
+        const dir = parseInt(b.dataset.cycNav, 10);
+        ESTADO.mesView.setMonth(ESTADO.mesView.getMonth() + dir);
+        render();
+        if (typeof hap === 'function') hap(6);
+      });
+    });
+    document.querySelectorAll('[data-cyc-stp]').forEach((b) => {
+      b.addEventListener('click', () => {
+        const [field, deltaStr] = b.dataset.cycStp.split(':');
+        const delta = parseInt(deltaStr, 10);
+        if (field === 'cycle') {
+          const v = ESTADO.cycle + delta;
+          if (v < 21 || v > 40) return;
+          ESTADO.cycle = v;
+        } else {
+          const v = ESTADO.period + delta;
+          if (v < 2 || v > 10) return;
+          ESTADO.period = v;
+        }
+        saveState();
+        render();
+        if (typeof hap === 'function') hap(6);
+      });
+    });
+    const dataInput = document.getElementById('cyc-data');
+    if (dataInput) {
+      dataInput.addEventListener('change', () => {
+        if (!dataInput.value) return;
+        const [y, m, d] = dataInput.value.split('-').map(Number);
+        const dt = new Date(y, m - 1, d); dt.setHours(0,0,0,0);
+        ESTADO.inicio = dt;
+        saveState();
+        render();
+      });
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
