@@ -2362,9 +2362,10 @@ body.fundo-on .wlc-fundo { display: block; }
   inset-inline: 0;
 }
 .welcome.is-open { display: flex; }
-.welcome > .wlc-top,
-.welcome > .wlc-tela { position: relative; z-index: 2; }
-.welcome > .wlc-top { z-index: 3; background: transparent; }
+/* wlc-top fica no fluxo normal (header). wlc-tela usa position:absolute (definido em .wlc-tela)
+   pra preencher top:70px → bottom:0. NÃO sobrescrever position aqui — só z-index. */
+.welcome > .wlc-top { position: relative; z-index: 3; background: transparent; }
+.welcome > .wlc-tela { z-index: 2; }
 
 /* onboarding com bg quase transparente (fallback dark warm) quando body.fundo-on · canvas vaza por baixo
    o gradient sutil garante que enquanto o canvas faz warming up no primeiro frame,
