@@ -23,8 +23,8 @@
   <link rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,400&family=Inter:wght@400;500;600&display=swap" />
   <!-- cache-bust agressivo: muda v sempre que houver mudança visual -->
-  <link rel="stylesheet" href="styles.css?v=20260427-b" />
-  <link rel="stylesheet" href="apple.css?v=20260427-b" />
+  <link rel="stylesheet" href="styles.css?v=20260425-j" />
+  <link rel="stylesheet" href="apple.css?v=20260425-j" />
   <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="pragma" content="no-cache" />
   <meta http-equiv="expires" content="0" />
@@ -240,6 +240,73 @@
         <p class="lead">isso ajuda o circa a adequar perguntas de saúde, corpo e rotina ao teu contexto.</p>
 
         <div class="ob-gender">
+          <!-- data network biométrico decorativo · atrás dos cards -->
+          <svg class="ob-gender__network" viewBox="0 0 380 480" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <defs>
+              <linearGradient id="netLine" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%"  stop-color="#D4B896" stop-opacity="0.18"/>
+                <stop offset="50%" stop-color="#E8C9A0" stop-opacity="0.32"/>
+                <stop offset="100%" stop-color="#D4B896" stop-opacity="0.14"/>
+              </linearGradient>
+            </defs>
+
+            <!-- linhas conectando nós · canto superior direito -->
+            <g stroke="url(#netLine)" stroke-width="0.6" fill="none">
+              <path d="M280 60 L340 90 L360 130 L320 170 L355 215 L310 255 L350 300"/>
+              <path d="M280 60 L320 170"/>
+              <path d="M340 90 L355 215"/>
+              <path d="M320 170 L310 255"/>
+              <path d="M355 215 L350 300"/>
+            </g>
+            <!-- linhas canto inferior esquerdo -->
+            <g stroke="url(#netLine)" stroke-width="0.5" fill="none" opacity="0.7">
+              <path d="M22 360 L60 400 L40 440"/>
+              <path d="M22 360 L40 440"/>
+            </g>
+
+            <!-- nós (dots) -->
+            <g fill="#E8C9A0">
+              <circle cx="280" cy="60"  r="2" opacity="0.6"/>
+              <circle cx="340" cy="90"  r="1.6" opacity="0.5"/>
+              <circle cx="360" cy="130" r="2" opacity="0.6"/>
+              <circle cx="320" cy="170" r="2.2" opacity="0.7"/>
+              <circle cx="355" cy="215" r="1.8" opacity="0.55"/>
+              <circle cx="310" cy="255" r="1.6" opacity="0.5"/>
+              <circle cx="350" cy="300" r="2" opacity="0.6"/>
+              <circle cx="22"  cy="360" r="1.6" opacity="0.5"/>
+              <circle cx="60"  cy="400" r="2" opacity="0.6"/>
+              <circle cx="40"  cy="440" r="1.6" opacity="0.5"/>
+            </g>
+
+            <!-- ícones biométricos sutis · cor champanhe stroke -->
+            <g stroke="#D4B896" stroke-width="1" fill="none" opacity="0.45" stroke-linecap="round" stroke-linejoin="round">
+              <!-- lua · top right -->
+              <path d="M268 56 a4.5 4.5 0 1 0 4.5 4.5 a3.5 3.5 0 0 1 -4.5 -4.5 z"/>
+              <!-- cérebro · sketchy -->
+              <g transform="translate(335 86)">
+                <path d="M0 4 c-2 -2 -2 -5 0 -5 c0 -3 4 -3 4 -1 c3 -2 6 0 5 3 c2 1 1 4 -1 4 c0 3 -4 3 -5 1 c-2 1 -4 0 -3 -2 z"/>
+              </g>
+              <!-- batimento · linha onda -->
+              <path d="M340 215 L348 215 L351 209 L355 221 L358 215 L370 215" opacity="0.55"/>
+              <!-- escala/balança -->
+              <g transform="translate(295 250)" stroke-width="0.9">
+                <line x1="0" y1="2" x2="12" y2="2"/>
+                <line x1="6" y1="0" x2="6" y2="6"/>
+                <path d="M2 2 L0 5 L4 5 Z"/>
+                <path d="M10 2 L8 5 L12 5 Z"/>
+              </g>
+            </g>
+
+            <!-- métricas / labels finos · tabular-nums vibe -->
+            <g fill="#D4B896" font-family="'Inter', -apple-system, sans-serif" font-size="7" font-weight="500" letter-spacing="0.5" opacity="0.55">
+              <text x="248" y="62">100%</text>
+              <text x="248" y="71" font-size="6" opacity="0.7">193 rem</text>
+              <text x="248" y="220">81 pfal</text>
+              <text x="285" y="305">50 m</text>
+              <text x="6" y="356">39</text>
+            </g>
+          </svg>
+
           <button class="ob-gender__card" data-gender="man" aria-label="homem">
             <div class="ob-gender__ilus">
               <svg viewBox="0 0 200 220" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -250,27 +317,27 @@
                     <stop offset="55%" stop-color="#7C5E4C"/>
                     <stop offset="100%" stop-color="#4A352A"/>
                   </radialGradient>
-                  <!-- cabelo afro · 2 tons orgânicos -->
-                  <radialGradient id="afroM" cx="40%" cy="30%" r="70%">
-                    <stop offset="0%"  stop-color="#3F2E25"/>
-                    <stop offset="60%" stop-color="#241A14"/>
-                    <stop offset="100%" stop-color="#0E0A07"/>
+                  <!-- cabelo afro CURTO · 2 tons orgânicos -->
+                  <radialGradient id="afroM" cx="40%" cy="32%" r="65%">
+                    <stop offset="0%"  stop-color="#4A382C"/>
+                    <stop offset="55%" stop-color="#2A1E16"/>
+                    <stop offset="100%" stop-color="#120C08"/>
                   </radialGradient>
-                  <!-- terno sage green · matte clay -->
-                  <linearGradient id="ternoM" x1="50%" y1="0%" x2="50%" y2="100%">
+                  <!-- suéter sage green · matte clay knit -->
+                  <linearGradient id="suetM" x1="50%" y1="0%" x2="50%" y2="100%">
                     <stop offset="0%"  stop-color="#A8BDB0"/>
                     <stop offset="40%" stop-color="#8FA89B"/>
                     <stop offset="100%" stop-color="#5C7268"/>
                   </linearGradient>
-                  <!-- sombra interior do terno (lapelas) -->
-                  <linearGradient id="ternoShadowM" x1="50%" y1="0%" x2="50%" y2="100%">
-                    <stop offset="0%"  stop-color="#3F4E47"/>
-                    <stop offset="100%" stop-color="#2C3833"/>
+                  <!-- decote V do suéter (sombra) -->
+                  <linearGradient id="suetVM" x1="50%" y1="0%" x2="50%" y2="100%">
+                    <stop offset="0%"  stop-color="#5A6E64"/>
+                    <stop offset="100%" stop-color="#3F4E47"/>
                   </linearGradient>
-                  <!-- camisa creme -->
+                  <!-- camisa interna escura (vislumbre no V) -->
                   <linearGradient id="camisaM" x1="50%" y1="0%" x2="50%" y2="100%">
-                    <stop offset="0%"  stop-color="#F0EAD6"/>
-                    <stop offset="100%" stop-color="#D8CFB6"/>
+                    <stop offset="0%"  stop-color="#2A2520"/>
+                    <stop offset="100%" stop-color="#1A1612"/>
                   </linearGradient>
                   <!-- halo glassmorphism atrás do busto -->
                   <radialGradient id="haloM" cx="50%" cy="42%" r="58%">
@@ -293,7 +360,7 @@
                 <!-- halo glassmorphism atrás do busto -->
                 <ellipse cx="100" cy="100" rx="92" ry="92" fill="url(#haloM)"/>
 
-                <!-- pedestal base · pedra ardósia + friso dourado champanhe -->
+                <!-- pedestal · ardósia + friso champanhe duplo -->
                 <ellipse cx="100" cy="205" rx="58" ry="6" fill="#1A1F25" opacity="0.65"/>
                 <ellipse cx="100" cy="200" rx="58" ry="9" fill="url(#baseM)"/>
                 <ellipse cx="100" cy="195" rx="58" ry="3" fill="none"
@@ -301,46 +368,56 @@
                 <ellipse cx="100" cy="195" rx="58" ry="3" fill="none"
                          stroke="#E8C9A0" stroke-width="0.4" opacity="0.5"/>
 
-                <!-- terno · lapelas em sombra -->
-                <path d="M38 195
-                         Q38 152 56 132
-                         L78 124
-                         L122 124
-                         L144 132
-                         Q162 152 162 195 Z"
-                      fill="url(#ternoM)"/>
-                <!-- lapelas do terno (sombra interna) -->
-                <path d="M78 124 L100 152 L122 124 L100 142 Z" fill="url(#ternoShadowM)"/>
-
-                <!-- camisa V creme -->
-                <path d="M86 124 L100 144 L114 124 L100 138 Z" fill="url(#camisaM)"/>
+                <!-- suéter · ombros arredondados, sem lapelas -->
+                <path d="M40 195
+                         Q40 154 60 134
+                         L82 128
+                         L118 128
+                         L140 134
+                         Q160 154 160 195 Z"
+                      fill="url(#suetM)"/>
+                <!-- decote V do suéter -->
+                <path d="M86 128 L100 156 L114 128 Z" fill="url(#suetVM)"/>
+                <!-- vislumbre da camisa interna no V -->
+                <path d="M91 128 L100 144 L109 128 Z" fill="url(#camisaM)"/>
 
                 <!-- pescoço -->
-                <path d="M88 110 L88 128 Q100 135 112 128 L112 110 Z" fill="url(#skinM)"/>
+                <path d="M88 112 L88 130 Q100 137 112 130 L112 112 Z" fill="url(#skinM)"/>
 
-                <!-- afro · cabelo grande arredondado, 2 camadas pra textura -->
-                <ellipse cx="100" cy="56" rx="44" ry="38" fill="url(#afroM)"/>
-                <ellipse cx="86"  cy="48" rx="14" ry="13" fill="url(#afroM)" opacity="0.85"/>
-                <ellipse cx="114" cy="48" rx="14" ry="13" fill="url(#afroM)" opacity="0.85"/>
-                <ellipse cx="100" cy="38" rx="20" ry="11" fill="url(#afroM)" opacity="0.9"/>
+                <!-- afro CURTO · cropped, mais próximo do crânio -->
+                <!-- base do volume superior -->
+                <ellipse cx="100" cy="58" rx="34" ry="22" fill="url(#afroM)"/>
+                <!-- volume central · curls visíveis -->
+                <ellipse cx="100" cy="48" rx="28" ry="14" fill="url(#afroM)"/>
+                <!-- texture bumps pra parecer curls -->
+                <circle cx="78"  cy="56" r="6"  fill="url(#afroM)" opacity="0.85"/>
+                <circle cx="122" cy="56" r="6"  fill="url(#afroM)" opacity="0.85"/>
+                <circle cx="86"  cy="42" r="5"  fill="url(#afroM)" opacity="0.8"/>
+                <circle cx="100" cy="38" r="6"  fill="url(#afroM)" opacity="0.9"/>
+                <circle cx="115" cy="42" r="5"  fill="url(#afroM)" opacity="0.8"/>
 
                 <!-- rosto -->
-                <ellipse cx="100" cy="84" rx="28" ry="32" fill="url(#skinM)"/>
+                <ellipse cx="100" cy="86" rx="28" ry="32" fill="url(#skinM)"/>
 
-                <!-- afro sobreposto sutil (cobre topo da testa) -->
-                <ellipse cx="100" cy="62" rx="32" ry="18" fill="url(#afroM)" opacity="0.95"/>
+                <!-- linha do cabelo · começa na testa -->
+                <path d="M72 70 Q100 60 128 70 Q126 76 100 76 Q74 76 72 70 Z"
+                      fill="url(#afroM)" opacity="0.95"/>
 
                 <!-- olhos · pontos discretos -->
-                <ellipse cx="91"  cy="84" rx="2" ry="2.5" fill="#1F1814"/>
-                <ellipse cx="109" cy="84" rx="2" ry="2.5" fill="#1F1814"/>
+                <ellipse cx="91"  cy="86" rx="2" ry="2.5" fill="#1F1814"/>
+                <ellipse cx="109" cy="86" rx="2" ry="2.5" fill="#1F1814"/>
+
+                <!-- sobrancelhas sutis -->
+                <path d="M86 80 Q91 78 96 80" stroke="#1F1814" stroke-width="1" fill="none" stroke-linecap="round" opacity="0.7"/>
+                <path d="M104 80 Q109 78 114 80" stroke="#1F1814" stroke-width="1" fill="none" stroke-linecap="round" opacity="0.7"/>
 
                 <!-- sorriso suave -->
-                <path d="M91 99 Q100 105 109 99" stroke="#3A2E26" stroke-width="1.4"
+                <path d="M91 102 Q100 108 109 102" stroke="#3A2E26" stroke-width="1.4"
                       fill="none" stroke-linecap="round" opacity="0.55"/>
 
-                <!-- highlight clay sutil na bochecha · luz difusa estúdio -->
-                <ellipse cx="92" cy="76" rx="9" ry="6" fill="url(#hiClayM)"/>
-                <!-- highlight no terno (ombro esq) -->
+                <!-- highlight clay sutil na bochecha · luz difusa -->
+                <ellipse cx="92" cy="78" rx="9" ry="6" fill="url(#hiClayM)"/>
+                <!-- highlight no suéter (ombro esq) -->
                 <ellipse cx="68" cy="160" rx="14" ry="9" fill="#FFFFFF" opacity="0.06"/>
               </svg>
             </div>
@@ -357,45 +434,53 @@
             <div class="ob-gender__ilus">
               <svg viewBox="0 0 200 220" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                 <defs>
-                  <radialGradient id="skinW" cx="38%" cy="32%" r="68%">
-                    <stop offset="0%"  stop-color="#A88876"/>
-                    <stop offset="55%" stop-color="#7C5E4C"/>
-                    <stop offset="100%" stop-color="#4A352A"/>
+                  <!-- pele clara · porcelana quente, matte clay -->
+                  <radialGradient id="skinW" cx="38%" cy="30%" r="68%">
+                    <stop offset="0%"  stop-color="#FAE3D2"/>
+                    <stop offset="55%" stop-color="#E5BFA2"/>
+                    <stop offset="100%" stop-color="#A0775E"/>
                   </radialGradient>
+                  <!-- cabelo castanho · 2 tons orgânicos -->
                   <radialGradient id="hairW" cx="40%" cy="32%" r="70%">
-                    <stop offset="0%"  stop-color="#3F2E25"/>
-                    <stop offset="60%" stop-color="#241A14"/>
-                    <stop offset="100%" stop-color="#0E0A07"/>
+                    <stop offset="0%"  stop-color="#7B5638"/>
+                    <stop offset="55%" stop-color="#4E3622"/>
+                    <stop offset="100%" stop-color="#241910"/>
                   </radialGradient>
-                  <!-- blusa creme/blush · matte clay -->
-                  <linearGradient id="blusaW" x1="50%" y1="0%" x2="50%" y2="100%">
-                    <stop offset="0%"  stop-color="#F0DED1"/>
-                    <stop offset="50%" stop-color="#D9BFAE"/>
-                    <stop offset="100%" stop-color="#9B7765"/>
+                  <!-- gola alta bege-rosado · matte knit -->
+                  <linearGradient id="golaW" x1="50%" y1="0%" x2="50%" y2="100%">
+                    <stop offset="0%"  stop-color="#EBD5C3"/>
+                    <stop offset="50%" stop-color="#D5B6A2"/>
+                    <stop offset="100%" stop-color="#8A6B5A"/>
                   </linearGradient>
-                  <linearGradient id="blusaShadowW" x1="50%" y1="0%" x2="50%" y2="100%">
-                    <stop offset="0%"  stop-color="#7A5C4D"/>
-                    <stop offset="100%" stop-color="#54403A"/>
+                  <linearGradient id="golaShadowW" x1="50%" y1="0%" x2="50%" y2="100%">
+                    <stop offset="0%"  stop-color="#9F7E6C"/>
+                    <stop offset="100%" stop-color="#6E5648"/>
                   </linearGradient>
+                  <!-- halo blush -->
                   <radialGradient id="haloW" cx="50%" cy="42%" r="58%">
-                    <stop offset="0%"  stop-color="#E5C7B6" stop-opacity="0.22"/>
-                    <stop offset="55%" stop-color="#C49B86" stop-opacity="0.08"/>
-                    <stop offset="100%" stop-color="#C49B86" stop-opacity="0"/>
+                    <stop offset="0%"  stop-color="#EBD5C3" stop-opacity="0.22"/>
+                    <stop offset="55%" stop-color="#D5B6A2" stop-opacity="0.08"/>
+                    <stop offset="100%" stop-color="#D5B6A2" stop-opacity="0"/>
                   </radialGradient>
                   <linearGradient id="baseW" x1="50%" y1="0%" x2="50%" y2="100%">
                     <stop offset="0%"  stop-color="#6A7682"/>
                     <stop offset="100%" stop-color="#3A434E"/>
                   </linearGradient>
-                  <radialGradient id="hiClayW" cx="42%" cy="30%" r="38%">
-                    <stop offset="0%"  stop-color="#FFFFFF" stop-opacity="0.18"/>
+                  <radialGradient id="hiClayW" cx="42%" cy="28%" r="38%">
+                    <stop offset="0%"  stop-color="#FFFFFF" stop-opacity="0.22"/>
                     <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
                   </radialGradient>
+                  <!-- gradient pra brincos dourados (drop) -->
+                  <linearGradient id="brincoW" x1="50%" y1="0%" x2="50%" y2="100%">
+                    <stop offset="0%"  stop-color="#F5E8C0"/>
+                    <stop offset="100%" stop-color="#B89572"/>
+                  </linearGradient>
                 </defs>
 
                 <!-- halo -->
                 <ellipse cx="100" cy="100" rx="92" ry="92" fill="url(#haloW)"/>
 
-                <!-- pedestal -->
+                <!-- pedestal · mesma ardósia + friso champanhe -->
                 <ellipse cx="100" cy="205" rx="58" ry="6" fill="#1A1F25" opacity="0.65"/>
                 <ellipse cx="100" cy="200" rx="58" ry="9" fill="url(#baseW)"/>
                 <ellipse cx="100" cy="195" rx="58" ry="3" fill="none"
@@ -403,62 +488,95 @@
                 <ellipse cx="100" cy="195" rx="58" ry="3" fill="none"
                          stroke="#E8C9A0" stroke-width="0.4" opacity="0.5"/>
 
-                <!-- cabelo trançado/locs caindo até os ombros · 2 caudas atrás -->
-                <path d="M58 60
-                         Q56 110 62 160
-                         Q66 170 72 175
-                         L72 130
-                         Q70 90 76 60 Z"
+                <!-- mechas laterais caindo dos lados (cabelo solto além do coque) -->
+                <path d="M68 76
+                         Q60 110 64 145
+                         Q66 158 72 168
+                         L78 165
+                         Q74 130 78 96
+                         Z"
+                      fill="url(#hairW)" opacity="0.92"/>
+                <path d="M132 76
+                         Q140 110 136 145
+                         Q134 158 128 168
+                         L122 165
+                         Q126 130 122 96
+                         Z"
+                      fill="url(#hairW)" opacity="0.92"/>
+
+                <!-- gola alta · sobe até o queixo -->
+                <path d="M40 195
+                         Q40 156 58 138
+                         L78 132
+                         L122 132
+                         L142 138
+                         Q160 156 160 195 Z"
+                      fill="url(#golaW)"/>
+                <!-- topo da gola (cilindro fechado no pescoço) -->
+                <path d="M82 132
+                         Q82 122 88 116
+                         L112 116
+                         Q118 122 118 132
+                         Z"
+                      fill="url(#golaW)"/>
+                <!-- sombra interna sutil da gola -->
+                <ellipse cx="100" cy="120" rx="16" ry="3" fill="url(#golaShadowW)" opacity="0.6"/>
+
+                <!-- pescoço (parcialmente coberto pela gola) -->
+                <path d="M90 110 L90 118 Q100 122 110 118 L110 110 Z" fill="url(#skinW)"/>
+
+                <!-- COQUE alto volumoso · pirâmide arredondada acima da cabeça -->
+                <!-- base do coque (envolve topo do crânio) -->
+                <ellipse cx="100" cy="48" rx="28" ry="14" fill="url(#hairW)"/>
+                <!-- corpo principal do coque -->
+                <ellipse cx="100" cy="32" rx="26" ry="20" fill="url(#hairW)"/>
+                <!-- topo arredondado -->
+                <ellipse cx="100" cy="22" rx="20" ry="14" fill="url(#hairW)"/>
+                <!-- volume central -->
+                <ellipse cx="100" cy="28" rx="18" ry="22" fill="url(#hairW)" opacity="0.95"/>
+                <!-- twists/textura sutil no coque -->
+                <path d="M86 22 Q92 14 100 18 Q108 14 114 22" stroke="#5C3F2A" stroke-width="0.8" fill="none" stroke-linecap="round" opacity="0.5"/>
+                <path d="M88 36 Q98 30 112 36" stroke="#5C3F2A" stroke-width="0.8" fill="none" stroke-linecap="round" opacity="0.4"/>
+
+                <!-- testa/franja · linha do cabelo subindo pro coque -->
+                <path d="M76 64
+                         Q80 56 100 54
+                         Q120 56 124 64
+                         Q120 72 100 72
+                         Q80 72 76 64 Z"
                       fill="url(#hairW)" opacity="0.95"/>
-                <path d="M142 60
-                         Q144 110 138 160
-                         Q134 170 128 175
-                         L128 130
-                         Q130 90 124 60 Z"
-                      fill="url(#hairW)" opacity="0.95"/>
 
-                <!-- blusa · ombros mais arredondados + decote V -->
-                <path d="M38 195
-                         Q38 150 58 130
-                         L80 122
-                         L120 122
-                         L142 130
-                         Q162 150 162 195 Z"
-                      fill="url(#blusaW)"/>
-                <!-- decote V profundo -->
-                <path d="M80 122 L100 158 L120 122 L100 144 Z" fill="url(#blusaShadowW)"/>
+                <!-- rosto · oval clara -->
+                <ellipse cx="100" cy="88" rx="26" ry="30" fill="url(#skinW)"/>
 
-                <!-- pescoço -->
-                <path d="M88 108 L88 130 Q100 138 112 130 L112 108 Z" fill="url(#skinW)"/>
-
-                <!-- cabelo · topo (afro puff/coily volume) -->
-                <ellipse cx="100" cy="48" rx="42" ry="32" fill="url(#hairW)"/>
-                <ellipse cx="86"  cy="42" rx="14" ry="12" fill="url(#hairW)" opacity="0.9"/>
-                <ellipse cx="114" cy="42" rx="14" ry="12" fill="url(#hairW)" opacity="0.9"/>
-
-                <!-- rosto -->
-                <ellipse cx="100" cy="84" rx="26" ry="32" fill="url(#skinW)"/>
-
-                <!-- testa · cabelo cobrindo levemente (franja) -->
-                <ellipse cx="100" cy="58" rx="28" ry="14" fill="url(#hairW)" opacity="0.95"/>
-
-                <!-- olhos -->
-                <ellipse cx="92"  cy="86" rx="2" ry="2.5" fill="#1F1814"/>
-                <ellipse cx="108" cy="86" rx="2" ry="2.5" fill="#1F1814"/>
+                <!-- olhos · castanhos suaves -->
+                <ellipse cx="92"  cy="86" rx="2" ry="2.5" fill="#3D2A1B"/>
+                <ellipse cx="108" cy="86" rx="2" ry="2.5" fill="#3D2A1B"/>
                 <!-- cílios sutis -->
-                <path d="M89 84 L88 83 M111 83 L112 84" stroke="#1F1814" stroke-width="0.8" stroke-linecap="round"/>
+                <path d="M88 83 L89 82 M111 82 L112 83" stroke="#1F1814" stroke-width="0.8" stroke-linecap="round" opacity="0.8"/>
+                <!-- sobrancelhas finas -->
+                <path d="M86 80 Q92 78 96 80" stroke="#5C3F2A" stroke-width="0.9" fill="none" stroke-linecap="round" opacity="0.7"/>
+                <path d="M104 80 Q108 78 114 80" stroke="#5C3F2A" stroke-width="0.9" fill="none" stroke-linecap="round" opacity="0.7"/>
+
+                <!-- nariz sutil (sombra) -->
+                <path d="M100 90 Q97 96 100 99 Q103 96 100 90" stroke="#A0775E" stroke-width="0.6" fill="none" opacity="0.4"/>
 
                 <!-- sorriso -->
-                <path d="M91 100 Q100 106 109 100" stroke="#3A2E26" stroke-width="1.4"
-                      fill="none" stroke-linecap="round" opacity="0.55"/>
+                <path d="M93 102 Q100 108 107 102" stroke="#A36F58" stroke-width="1.4"
+                      fill="none" stroke-linecap="round" opacity="0.7"/>
 
-                <!-- brincos · pontos dourados sutis -->
-                <circle cx="76" cy="92" r="1.6" fill="#D4B896" opacity="0.85"/>
-                <circle cx="124" cy="92" r="1.6" fill="#D4B896" opacity="0.85"/>
+                <!-- BRINCOS dourados · drops com glow -->
+                <g>
+                  <ellipse cx="74" cy="96" rx="2.2" ry="3" fill="url(#brincoW)"/>
+                  <circle cx="74" cy="96" r="3.5" fill="none" stroke="#D4B896" stroke-width="0.4" opacity="0.5"/>
+                  <ellipse cx="126" cy="96" rx="2.2" ry="3" fill="url(#brincoW)"/>
+                  <circle cx="126" cy="96" r="3.5" fill="none" stroke="#D4B896" stroke-width="0.4" opacity="0.5"/>
+                </g>
 
-                <!-- highlight clay -->
-                <ellipse cx="92" cy="78" rx="9" ry="6" fill="url(#hiClayW)"/>
-                <ellipse cx="68" cy="158" rx="14" ry="9" fill="#FFFFFF" opacity="0.06"/>
+                <!-- highlight clay sutil bochecha -->
+                <ellipse cx="92" cy="80" rx="9" ry="6" fill="url(#hiClayW)"/>
+                <!-- highlight gola (ombro esq) -->
+                <ellipse cx="68" cy="160" rx="14" ry="9" fill="#FFFFFF" opacity="0.08"/>
               </svg>
             </div>
             <div class="ob-gender__sigil" data-gender="woman">
@@ -550,7 +668,59 @@
       </div>
 
       <!-- 12 · roda hoje -->
-      <!-- mapa da vida (steps 2 e 3) removido do onboarding · agora vive na aba 'roda' do app -->
+      <div class="ob-slide" data-step="2">
+        <h1 class="display">como tá<br/>tua vida<br/>hoje?</h1>
+        <p class="lead">arrasta cada área. sem julgamento, só um mapa.</p>
+
+        <div class="ob-wheel-wrap">
+          <svg id="ob-wheel" viewBox="-160 -160 320 320" class="wheel">
+            <defs>
+              <radialGradient id="obWheelFill" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#D4B896" stop-opacity="0.45"/>
+                <stop offset="100%" stop-color="#D4B896" stop-opacity="0.08"/>
+              </radialGradient>
+            </defs>
+            <circle r="130" class="wheel__ring"/>
+            <circle r="100" class="wheel__ring"/>
+            <circle r="70"  class="wheel__ring"/>
+            <circle r="40"  class="wheel__ring"/>
+            <g id="ob-wheel-spokes"></g>
+            <polygon id="ob-wheel-shape" class="wheel__shape" fill="url(#obWheelFill)"/>
+            <g id="ob-wheel-handles"></g>
+            <g id="ob-wheel-labels"></g>
+          </svg>
+        </div>
+
+        <button class="btn btn--primary btn--full ob-next">continuar</button>
+      </div>
+
+      <!-- 13 · roda meta -->
+      <div class="ob-slide" data-step="3">
+        <h1 class="display">e daqui a<br/>3 meses?</h1>
+        <p class="lead">arrasta pra onde quer chegar. a linha clara é onde você tá hoje.</p>
+
+        <div class="ob-wheel-wrap">
+          <svg id="ob-wheel-goal" viewBox="-160 -160 320 320" class="wheel">
+            <defs>
+              <radialGradient id="obWheelGoalFill" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#E8C9A0" stop-opacity="0.55"/>
+                <stop offset="100%" stop-color="#E8C9A0" stop-opacity="0.1"/>
+              </radialGradient>
+            </defs>
+            <circle r="130" class="wheel__ring"/>
+            <circle r="100" class="wheel__ring"/>
+            <circle r="70"  class="wheel__ring"/>
+            <circle r="40"  class="wheel__ring"/>
+            <g id="ob-wheel-goal-spokes"></g>
+            <polygon id="ob-wheel-ghost" class="wheel__ghost"/>
+            <polygon id="ob-wheel-goal-shape" class="wheel__shape wheel__shape--goal" fill="url(#obWheelGoalFill)"/>
+            <g id="ob-wheel-goal-handles"></g>
+            <g id="ob-wheel-goal-labels"></g>
+          </svg>
+        </div>
+
+        <button class="btn btn--primary btn--full ob-next">continuar</button>
+      </div>
 
       <!-- ═════ TEMPERAMENTO · 5 cenários + processamento + revelação ═════ -->
 
@@ -713,9 +883,32 @@
         <button class="btn btn--primary btn--full ob-next">continuar</button>
       </div>
 
-      <!-- fisio quiz (steps 5-10) e resultado 'perfil a descobrir' (step 11) removidos do onboarding ·
-           perguntas clínicas (cortisol/estrogênio/etc) saem por enquanto · vamos coletar depois por outro caminho -->
+      <!-- 4 · calibração fisiológica · pergunta inicial (chips) · só aparece pra mulher/outro -->
+      <div class="ob-slide fisio-intro" data-step="4" data-gender-skip="man">
+        <span class="eyebrow">calibração fisiológica</span>
+        <h1 class="display">como tá sua<br/>relação com<br/>o <em>ciclo</em>?</h1>
+        <p class="lead">um tap define o ritmo do teu corpo pro app.</p>
 
+        <div class="ob-chips fisio-chips">
+          <button class="ob-chip" data-trilha="feminina">ciclo regular</button>
+          <button class="ob-chip" data-trilha="feminina">ciclo irregular</button>
+          <button class="ob-chip" data-trilha="transicao">parei há pouco tempo</button>
+          <button class="ob-chip" data-trilha="transicao">parei há anos</button>
+        </div>
+
+        <p class="micro-note">ciclo hormonal muda tudo, humor, sono, treino, nutrição. 6 perguntinhas em seguida · ~2 min.</p>
+      </div>
+
+      <!-- 16-21 · 6 perguntas fisiológicas (renderizadas por JS com base na trilha) -->
+      <div class="ob-slide fisio-question" data-step="5" data-fqindex="0"></div>
+      <div class="ob-slide fisio-question" data-step="6" data-fqindex="1"></div>
+      <div class="ob-slide fisio-question" data-step="7" data-fqindex="2"></div>
+      <div class="ob-slide fisio-question" data-step="8" data-fqindex="3"></div>
+      <div class="ob-slide fisio-question" data-step="9" data-fqindex="4"></div>
+      <div class="ob-slide fisio-question" data-step="10" data-fqindex="5"></div>
+
+      <!-- 22 · resultado fisiológico -->
+      <div class="ob-slide fisio-result" data-step="11"></div>
 
       <!-- 23 · comida -->
       <div class="ob-slide" data-step="22">
@@ -1326,62 +1519,6 @@
           análise automática por IA · evolução de marcadores ao longo do tempo · alertas de desvio · sugestões semanais integradas a treino, comida, sono e roda da vida.
         </p>
       </div>
-    </section>
-
-    <!-- ───────── MEU CICLO (gated · só aparece pra circa_gender = woman) ───────── -->
-    <section class="screen screen--cycle" data-screen="cycle">
-      <header class="top">
-        <span class="top__greet">meu ciclo</span>
-      </header>
-
-      <article class="card cyc-hero">
-        <span class="eyebrow" id="cyc-fase-eyebrow">fase folicular</span>
-        <h2 class="cyc-numero" id="cyc-numero">14</h2>
-        <p class="cyc-legenda" id="cyc-legenda">dias até a próxima menstruação</p>
-      </article>
-
-      <article class="card">
-        <header class="cyc-cal-head">
-          <button class="cyc-cal-nav" data-cyc-nav="-1" aria-label="mês anterior">‹</button>
-          <span class="cyc-cal-mes" id="cyc-mes-nome">abril 2026</span>
-          <button class="cyc-cal-nav" data-cyc-nav="1" aria-label="próximo mês">›</button>
-        </header>
-        <div class="cyc-grid" id="cyc-grid"></div>
-        <div class="cyc-leg">
-          <span class="cyc-leg-item"><i class="cyc-leg-dot cyc-leg-dot--m"></i>menstruação</span>
-          <span class="cyc-leg-item"><i class="cyc-leg-dot cyc-leg-dot--f"></i>fértil</span>
-          <span class="cyc-leg-item"><i class="cyc-leg-dot cyc-leg-dot--o"></i>ovulação</span>
-        </div>
-      </article>
-
-      <article class="card">
-        <span class="eyebrow">próximos ciclos</span>
-        <div class="cyc-prox" id="cyc-prox"></div>
-      </article>
-
-      <article class="card">
-        <span class="eyebrow">ajustes</span>
-        <div class="cyc-ajuste-row">
-          <label for="cyc-data" class="cyc-ajuste-label">início do último ciclo</label>
-          <input type="date" id="cyc-data" class="cyc-input">
-        </div>
-        <div class="cyc-ajuste-row">
-          <span class="cyc-ajuste-label">duração do ciclo</span>
-          <div class="cyc-stepper">
-            <button class="cyc-stp-btn" data-cyc-stp="cycle:-1" aria-label="diminuir duração do ciclo">−</button>
-            <span class="cyc-stp-val"><span id="cyc-cycle-val">28</span> dias</span>
-            <button class="cyc-stp-btn" data-cyc-stp="cycle:1" aria-label="aumentar duração do ciclo">+</button>
-          </div>
-        </div>
-        <div class="cyc-ajuste-row">
-          <span class="cyc-ajuste-label">duração da menstruação</span>
-          <div class="cyc-stepper">
-            <button class="cyc-stp-btn" data-cyc-stp="period:-1" aria-label="diminuir duração da menstruação">−</button>
-            <span class="cyc-stp-val"><span id="cyc-period-val">5</span> dias</span>
-            <button class="cyc-stp-btn" data-cyc-stp="period:1" aria-label="aumentar duração da menstruação">+</button>
-          </div>
-        </div>
-      </article>
     </section>
 
     <!-- ───────── MODAL · score breakdown ───────── -->
@@ -2192,53 +2329,6 @@
             <li><i class="pull-dot pull-dot--up"></i>terça e quinta bateram a meta, foram dias de deep work</li>
             <li><i class="s-dot"></i>hipótese: você hidrata melhor sentado que em movimento. considere garrafa visível no treino.</li>
           </ul>
-        </div>
-
-        <button class="btn btn--ghost btn--full" data-close>fechar</button>
-      </div>
-    </div>
-
-    <!-- ───────── MODAL · LOG (acesso a abas em standby + meu histórico) ───────── -->
-    <div class="sheet" id="sheet-log" aria-hidden="true">
-      <div class="sheet__backdrop" data-close></div>
-      <div class="sheet__panel" role="dialog" aria-label="log e histórico">
-        <div class="sheet__grab"></div>
-
-        <div class="sheet__head">
-          <span class="eyebrow">log</span>
-          <h2 class="display display--sm">teu registro<br/>e <em>arquivos</em>.</h2>
-          <p class="lead lead--sm">acessa o que ficou de fora do rodapé e revisa o que registrou.</p>
-        </div>
-
-        <!-- abas em standby -->
-        <div class="sheet__section log-standby">
-          <span class="eyebrow">abas em standby</span>
-          <button class="log-row" data-log-goto="6">
-            <span class="log-row__icon">
-              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
-            </span>
-            <span class="log-row__txt">
-              <strong>insights</strong>
-              <small>padrões detectados pela IA ao longo dos dias</small>
-            </span>
-            <svg class="log-row__chev" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 5l7 7-7 7"/></svg>
-          </button>
-          <button class="log-row" data-log-goto="9">
-            <span class="log-row__icon">
-              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="4"/><path d="M17 11a4 4 0 1 0 0-8"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/></svg>
-            </span>
-            <span class="log-row__txt">
-              <strong>club</strong>
-              <small>círculo da circa, em breve</small>
-            </span>
-            <svg class="log-row__chev" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 5l7 7-7 7"/></svg>
-          </button>
-        </div>
-
-        <!-- meu histórico -->
-        <div class="sheet__section log-historico">
-          <span class="eyebrow">meu histórico</span>
-          <div class="log-hist" id="log-hist"></div>
         </div>
 
         <button class="btn btn--ghost btn--full" data-close>fechar</button>
@@ -3378,15 +3468,46 @@
       <div class="club-toast" id="club-toast" aria-live="polite"></div>
 
       <!-- nav inferior interna da jornada -->
-      <!-- nav redesenhada · 5 itens · insights e club ficam em standby (acessíveis via 'log') · ícone C circa removido -->
-      <nav class="jornada__nav jornada__nav--5" role="tablist">
+      <nav class="jornada__nav" role="tablist">
         <button class="j-nav-item is-active" data-j-goto="0" aria-label="hoje">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M3 12L12 4l9 8M5 10v9a1 1 0 001 1h4v-5h4v5h4a1 1 0 001-1v-9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           <span>hoje</span>
         </button>
-        <button class="j-nav-item" id="j-nav-log" aria-label="log">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h10"/><circle cx="19" cy="18" r="1.6" fill="currentColor"/></svg>
-          <span>log</span>
+        <button class="j-nav-item" data-j-goto="6" aria-label="insights">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span>insights</span>
+        </button>
+        <button class="j-nav-circa" id="j-nav-circa" aria-label="circa">
+          <span class="j-nav-circa__icon">
+            <svg class="wax-seal wax-seal--sm" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <defs>
+                <radialGradient id="waxBodyNav" cx="36%" cy="30%" r="72%">
+                  <stop offset="0%"  stop-color="#FAE9C8"/>
+                  <stop offset="22%" stop-color="#EDD9A6"/>
+                  <stop offset="55%" stop-color="#C9A97E"/>
+                  <stop offset="82%" stop-color="#7A5A2E"/>
+                  <stop offset="100%" stop-color="#3A2610"/>
+                </radialGradient>
+                <linearGradient id="waxCNav" x1="28%" y1="22%" x2="72%" y2="78%">
+                  <stop offset="0%"  stop-color="#F5E8C0"/>
+                  <stop offset="55%" stop-color="#C9A97E"/>
+                  <stop offset="100%" stop-color="#5A3F1E"/>
+                </linearGradient>
+              </defs>
+              <path d="M60 4 C72 4 82 9 91 16 C101 22 109 30 113 42 C117 52 117 64 114 75 C110 87 103 97 92 104 C83 111 72 115 60 115 C48 115 36 112 27 106 C16 99 8 88 5 76 C2 65 3 52 8 41 C13 30 21 20 32 13 C41 7 50 4 60 4 Z"
+                    fill="url(#waxBodyNav)"/>
+              <circle cx="60" cy="60" r="48" fill="none" stroke="rgba(58,38,16,0.5)" stroke-width="1.2"/>
+              <circle cx="60" cy="60" r="42" fill="none" stroke="rgba(58,38,16,0.7)" stroke-width="0.9" stroke-dasharray="1.5 3"/>
+              <text x="60" y="60" text-anchor="middle" dominant-baseline="central"
+                    font-family="'Fraunces','Instrument Serif',Georgia,serif"
+                    font-size="58" font-weight="400"
+                    fill="rgba(40,24,8,0.75)" transform="translate(1.4,1.8)">C</text>
+              <text x="60" y="60" text-anchor="middle" dominant-baseline="central"
+                    font-family="'Fraunces','Instrument Serif',Georgia,serif"
+                    font-size="58" font-weight="400"
+                    fill="url(#waxCNav)">C</text>
+            </svg>
+          </span>
         </button>
         <button class="j-nav-item" data-j-goto="7" aria-label="exames">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6v4l5 10a3 3 0 0 1-2.7 4.3H10.7A3 3 0 0 1 8 17l5-10V3"/><path d="M9.5 13h5"/></svg>
@@ -3395,6 +3516,10 @@
         <button class="j-nav-item" data-j-goto="8" aria-label="roda">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5"/><path d="M12 8v4l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
           <span>roda</span>
+        </button>
+        <button class="j-nav-item" data-j-goto="9" aria-label="club">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="4"/><path d="M17 11a4 4 0 1 0 0-8"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/></svg>
+          <span>club</span>
         </button>
         <button class="j-nav-item" data-j-goto="10" aria-label="30 dias">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5"/><path d="M12 8v4M12 16h.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
@@ -3428,14 +3553,6 @@
         </svg>
         <span>humor</span>
       </button>
-      <button class="tab tab--cycle" data-target="cycle" aria-label="meu ciclo">
-        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5">
-          <circle cx="12" cy="12" r="9"/>
-          <path d="M12 3a9 9 0 0 1 0 18" fill="currentColor" fill-opacity="0.22"/>
-          <circle cx="12" cy="12" r="2.5" fill="currentColor"/>
-        </svg>
-        <span>ciclo</span>
-      </button>
       <button class="tab" data-target="labs" aria-label="exames">
         <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
           <path d="M9 3h6v4l5 10a3 3 0 0 1-2.7 4.3H10.7A3 3 0 0 1 8 17l5-10V3"/>
@@ -3452,6 +3569,6 @@
     </nav>
   </div>
 
-  <script src="app.js?v=20260427-b"></script>
+  <script src="app.js?v=20260425-j"></script>
 </body>
 </html>
