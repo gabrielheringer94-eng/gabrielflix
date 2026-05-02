@@ -1855,30 +1855,37 @@ button.hero:active { transform: scale(0.985); }
    STEP 1 · FOCO PRINCIPAL · 3 cards visuais com PNGs
    performance · sono (centro destacado) · estresse
    ═════════════════════════════════════════ */
+/* GRID fixo 1fr 1fr 1fr · cada coluna não recalcula no hover · cards "vizinhos" nunca se movem */
 .foco-cards {
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  align-items: stretch;
+  justify-items: stretch;
   gap: 10px;
   margin: 18px 0 8px;
 }
 .foco-card {
-  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 10px;
   padding: 14px 10px;
-  height: 200px;
+  height: 220px;
   border-radius: 22px;
   background:
     linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.015)),
     rgba(20,18,16,0.55);
   border: 1px solid rgba(212,184,150,0.18);
   cursor: pointer;
-  transition: all 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  transform-origin: center bottom;
+  transition:
+    transform     0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color  0.35s ease,
+    box-shadow    0.45s ease,
+    opacity       0.35s ease;
   position: relative;
   overflow: hidden;
+  width: 100%;   /* preenche a coluna */
 }
 .foco-card::after {
   content: "";
@@ -1888,32 +1895,32 @@ button.hero:active { transform: scale(0.985); }
   background: radial-gradient(120% 60% at 50% 0%, rgba(212,184,150,0.08), transparent 60%);
   pointer-events: none;
 }
-/* default: sono central é o destaque · transferível pro hovered */
+/* default: sono central é o destaque · scale + glow (não muda largura/coluna) */
 .foco-card--center {
-  flex: 1.35;
-  height: 240px;
+  transform: scale(1.08);
   border-color: rgba(212,184,150,0.36);
   box-shadow:
     0 0 0 1px rgba(212,184,150,0.12),
     0 18px 38px rgba(0,0,0,0.45),
     0 0 36px rgba(212,184,150,0.10);
+  z-index: 2;   /* sobressai por cima dos vizinhos quando escala */
 }
-/* qualquer card sob hover assume o destaque (mesmo size + glow do sono) */
+/* qualquer card sob hover assume o destaque · só scale + glow, layout não mexe */
 @media (hover: hover) {
   .foco-cards:hover .foco-card--center:not(:hover) {
-    flex: 1;
-    height: 200px;
+    transform: scale(1);
     border-color: rgba(212,184,150,0.18);
     box-shadow: none;
+    z-index: 1;
   }
   .foco-cards .foco-card:hover {
-    flex: 1.35;
-    height: 240px;
+    transform: scale(1.08);
     border-color: rgba(212,184,150,0.36);
     box-shadow:
       0 0 0 1px rgba(212,184,150,0.12),
       0 18px 38px rgba(0,0,0,0.45),
       0 0 36px rgba(212,184,150,0.10);
+    z-index: 2;
   }
   /* cards laterais ganham um leve fade quando outro card é o protagonista */
   .foco-cards:hover .foco-card:not(:hover) {
@@ -1965,11 +1972,9 @@ button.hero:active { transform: scale(0.985); }
     color: var(--accent);
     letter-spacing: 0.05em;
   }
-  /* lift sutil no card hovered (já não conflita com o flex change) */
-  .foco-card:hover { transform: translateY(-3px); }
 }
+/* selecionado (após click) · combina com qualquer scale (default ou hover) */
 .foco-card.is-on {
-  transform: translateY(-3px) scale(1.02);
   border-color: rgba(212,184,150,0.55);
   box-shadow:
     0 0 0 1px rgba(212,184,150,0.25),
