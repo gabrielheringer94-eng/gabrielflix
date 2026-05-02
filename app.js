@@ -1451,34 +1451,30 @@ function startWlcFundo() {
   // força reflow pra garantir dimensões corretas após o display:block
   void canvas.offsetWidth;
 
-  // 7 ONDAS senoidais empilhadas verticalmente (mar/vento/natureza)
+  // 4 RIBBONS de seda · cada uma com várias fitas finas paralelas (efeito cristalino)
   //   verde sage   #6C8A7A → 108,138,122
   //   verde mato   #4A6B5A → 74,107,90
   //   verde musgo  #5A7864 → 90,120,100
-  //   verde-oliva  #8C9A6E → 140,154,110 (transição p/ ouro)
+  //   verde-oliva  #8C9A6E → 140,154,110
   //   ouro champ   #D4B896 → 212,184,150
   //   ouro warm    #E8C9A0 → 232,201,160
-  //   creme glow   #F5EEE6 → 245,238,230
-  // y     = posição vertical base (fração da altura)
-  // amp   = amplitude da senoide principal (fração da altura)
-  // freq  = nº de ciclos por largura (1.3 = ~1.3 cristas atravessando a tela)
-  // harm  = frequência da harmônica (dá forma orgânica, não senoide pura)
-  // phase = offset inicial pra dessincronizar
-  // speed = velocidade de drift (radianos por unidade de tempo)
-  // thick = espessura do traço (fração da altura)
-  // op    = opacidade
-  const WAVES = [
-    // 3 verdes (presença principal)
-    { y: 0.16, amp: 0.040, freq: 1.3, harm: 2.7, harmAmp: 0.012, phase: 0.0, speed: 0.55, thick: 0.16, cor: '108,138,122', op: 0.22 },
-    { y: 0.30, amp: 0.052, freq: 1.5, harm: 2.3, harmAmp: 0.015, phase: 1.4, speed: 0.42, thick: 0.18, cor: '74,107,90',   op: 0.20 },
-    { y: 0.44, amp: 0.038, freq: 1.7, harm: 2.9, harmAmp: 0.010, phase: 2.2, speed: 0.62, thick: 0.16, cor: '90,120,100',  op: 0.18 },
-    // 1 verde-oliva (ponte verde→ouro)
-    { y: 0.56, amp: 0.048, freq: 1.4, harm: 2.5, harmAmp: 0.013, phase: 0.7, speed: 0.50, thick: 0.18, cor: '140,154,110', op: 0.14 },
-    // 2 douradas (acentos)
-    { y: 0.68, amp: 0.044, freq: 1.6, harm: 2.6, harmAmp: 0.012, phase: 1.9, speed: 0.70, thick: 0.16, cor: '212,184,150', op: 0.13 },
-    { y: 0.80, amp: 0.050, freq: 1.5, harm: 2.4, harmAmp: 0.012, phase: 0.4, speed: 0.38, thick: 0.14, cor: '232,201,160', op: 0.10 },
-    // 1 creme tênue (luz refletindo)
-    { y: 0.92, amp: 0.028, freq: 1.8, harm: 2.8, harmAmp: 0.008, phase: 2.6, speed: 0.55, thick: 0.10, cor: '245,238,230', op: 0.07 },
+  // y       = posição vertical base
+  // amp     = amplitude da senoide principal
+  // freq    = nº de ciclos por largura
+  // harm    = frequência da harmônica (forma orgânica)
+  // strands = número de fitas dentro da ribbon (mais fitas = ribbon mais densa/3D)
+  // spread  = abertura vertical da ribbon (fração da altura)
+  // fanAmp  = quanto a ribbon abre/fecha ao longo do x (efeito ribbon torcendo)
+  // speed   = velocidade de drift da fase
+  // op      = opacidade BASE de cada fita (fitas centrais ficam mais opacas, bordas mais fracas)
+  const RIBBONS = [
+    // 2 verdes principais
+    { y: 0.30, amp: 0.10, freq: 1.30, harm: 2.6, harmAmp: 0.025, phase: 0.0, speed: 0.45, strands: 14, spread: 0.055, fanAmp: 0.7, cor: '108,138,122', op: 0.045 },
+    { y: 0.55, amp: 0.12, freq: 1.45, harm: 2.4, harmAmp: 0.030, phase: 1.4, speed: 0.55, strands: 14, spread: 0.065, fanAmp: 0.8, cor: '74,107,90',   op: 0.055 },
+    // 1 verde-oliva (ponte)
+    { y: 0.72, amp: 0.09, freq: 1.40, harm: 2.7, harmAmp: 0.022, phase: 2.1, speed: 0.50, strands: 12, spread: 0.045, fanAmp: 0.6, cor: '140,154,110', op: 0.038 },
+    // 1 dourada (acento)
+    { y: 0.85, amp: 0.08, freq: 1.55, harm: 2.5, harmAmp: 0.020, phase: 0.7, speed: 0.62, strands: 10, spread: 0.040, fanAmp: 0.5, cor: '212,184,150', op: 0.034 },
   ];
 
   function resize() {
@@ -1494,54 +1490,76 @@ function startWlcFundo() {
       wlcFundoRAF = null;
       return;
     }
-    // tempo principal · ritmo de mar
-    wlcFundoT += 0.004;
+    // tempo principal · ritmo natural
+    wlcFundoT += 0.005;
     const W = canvas.width, H = canvas.height;
     ctx.clearRect(0, 0, W, H);
 
-    // BASE TINT · verde profundo lavando todo o canvas (ambient)
+    // BASE TINT · verde profundo lavando o canvas (ambient · reduzido -20%)
     const baseGrad = ctx.createLinearGradient(0, 0, 0, H);
-    baseGrad.addColorStop(0,   'rgba(40, 60, 50, 0.14)');
-    baseGrad.addColorStop(0.5, 'rgba(50, 72, 60, 0.08)');
-    baseGrad.addColorStop(1,   'rgba(38, 52, 44, 0.16)');
+    baseGrad.addColorStop(0,   'rgba(40, 60, 50, 0.10)');
+    baseGrad.addColorStop(0.5, 'rgba(50, 72, 60, 0.06)');
+    baseGrad.addColorStop(1,   'rgba(38, 52, 44, 0.12)');
     ctx.fillStyle = baseGrad;
     ctx.fillRect(0, 0, W, H);
 
     // VENTO global · respiração vertical da paisagem inteira
-    const ventoY = Math.sin(wlcFundoT * 0.35) * 0.018 * H;
+    const ventoY = Math.sin(wlcFundoT * 0.30) * 0.015 * H;
 
-    WAVES.forEach((w, i) => {
-      ctx.save();
+    // ADDITIVE BLEND · onde fitas se cruzam, luz se soma (efeito cristal/seda)
+    ctx.globalCompositeOperation = 'lighter';
 
-      // banda da onda · stroke grosso + shadowBlur dá borda macia (glow)
-      ctx.lineWidth   = w.thick * H;
-      ctx.lineCap     = 'round';
-      ctx.lineJoin    = 'round';
-      ctx.strokeStyle = `rgba(${w.cor}, ${w.op})`;
-      ctx.shadowColor = `rgba(${w.cor}, ${w.op})`;
-      ctx.shadowBlur  = w.thick * H * 0.55;
+    RIBBONS.forEach((r, i) => {
+      // fase progride no tempo (ribbon flui horizontalmente)
+      const phaseT     = r.phase + wlcFundoT * r.speed;
+      // amplitude respira ±15% · ondas vivas
+      const ampNow     = r.amp     * (1 + 0.15 * Math.sin(wlcFundoT * 0.30 + i * 0.7));
+      const harmAmpNow = r.harmAmp * (1 + 0.20 * Math.cos(wlcFundoT * 0.42 + i * 0.5));
 
-      // fase progride no tempo (drift horizontal · velocidade própria)
-      const phaseT = w.phase + wlcFundoT * w.speed;
-      // amplitude respira lentamente (±18% · cada onda no seu ciclo)
-      const ampNow     = w.amp     * (1 + 0.18 * Math.sin(wlcFundoT * 0.30 + i * 0.7));
-      const harmAmpNow = w.harmAmp * (1 + 0.22 * Math.cos(wlcFundoT * 0.42 + i * 0.5));
+      const N = r.strands;
+      for (let k = 0; k < N; k++) {
+        // ki ∈ [-0.5, 0.5] · posição da fita dentro da ribbon
+        const ki = (N === 1) ? 0 : (k / (N - 1)) - 0.5;
+        // fitas centrais mais densas/opacas, bordas mais fracas (efeito 3D/profundidade)
+        const center = 1 - 2 * Math.abs(ki); // 0 na borda, 1 no centro
+        const strandOp = r.op * (0.35 + 0.65 * center);
 
-      // desenha a senoide como path · 80 segmentos = curva suave
-      ctx.beginPath();
-      const segs = 80;
-      for (let s = 0; s <= segs; s++) {
-        const tx = s / segs;
-        const x  = tx * W;
-        const y  = w.y * H + ventoY
-          + ampNow     * H * Math.sin(w.freq * 2 * Math.PI * tx + phaseT)
-          + harmAmpNow * H * Math.sin(w.harm * 2 * Math.PI * tx + phaseT * 1.4 + i * 0.5);
-        if (s === 0) ctx.moveTo(x, y);
-        else         ctx.lineTo(x, y);
+        ctx.save();
+        ctx.lineWidth   = 0.9 + center * 0.6; // 0.9 → 1.5 px (centro mais grosso)
+        ctx.lineCap     = 'round';
+        ctx.strokeStyle = `rgba(${r.cor}, ${strandOp})`;
+        ctx.shadowColor = `rgba(${r.cor}, ${strandOp * 1.6})`;
+        ctx.shadowBlur  = 6 + center * 6; // 6 → 12 px
+
+        ctx.beginPath();
+        const segs = 100;
+        for (let s = 0; s <= segs; s++) {
+          const tx = s / segs;
+          const x  = tx * W;
+
+          // forma base da ribbon: senoide + harmônica (mar)
+          const baseY = ampNow     * H * Math.sin(r.freq * 2 * Math.PI * tx + phaseT)
+                      + harmAmpNow * H * Math.sin(r.harm * 2 * Math.PI * tx + phaseT * 1.3 + i * 0.5);
+
+          // FAN: a ribbon abre e fecha ao longo do x, criando torção 3D
+          //   onde fan é alto, fitas se afastam · onde é baixo, se juntam (efeito perspectiva)
+          const fan = 1 + r.fanAmp * Math.sin(2 * Math.PI * tx * 0.65 + phaseT * 0.55 + ki * 1.5);
+          const strandOffset = ki * r.spread * H * fan;
+
+          // micro-tremor por fita (cada uma com fase ligeiramente própria · efeito tecido)
+          const microWavy = Math.sin(r.freq * 2 * Math.PI * tx + phaseT + ki * 0.4) * 0.004 * H;
+
+          const y = r.y * H + ventoY + baseY + strandOffset + microWavy;
+          if (s === 0) ctx.moveTo(x, y);
+          else         ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+        ctx.restore();
       }
-      ctx.stroke();
-      ctx.restore();
     });
+
+    // restaura blend mode pra source-over (default)
+    ctx.globalCompositeOperation = 'source-over';
 
     wlcFundoRAF = requestAnimationFrame(frame);
   }
