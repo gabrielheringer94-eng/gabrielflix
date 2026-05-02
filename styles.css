@@ -1891,10 +1891,13 @@ button.hero:active { transform: scale(0.985); }
   gap: 14px;
   padding: 22px 18px 20px;
   border-radius: 24px;
+  /* glass adaptativo · sem fundo opaco que recorte rectangulo contra bg colorido */
   background:
-    linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.015)),
-    rgba(20,18,16,0.55);
-  border: 1px solid rgba(212,184,150,0.18);
+    linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.015));
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  /* borda muito sutil · só o suficiente pra delimitar sem cortar */
+  border: 1px solid rgba(255,255,255,0.06);
   cursor: pointer;
   /* CSS variables · JS atualiza estes na scroll · efeito wheel */
   --wheel-scale: 1;
@@ -1976,13 +1979,13 @@ button.hero:active { transform: scale(0.985); }
   max-width: 180px;
 }
 
-/* selecionado · após click */
+/* selecionado · após click · borda dourada mais discreta + halo suave */
 .ob-swiper__card.is-on {
-  border-color: rgba(212,184,150,0.55);
+  border-color: rgba(212,184,150,0.30);
   box-shadow:
-    0 0 0 1px rgba(212,184,150,0.28),
-    0 22px 42px rgba(0,0,0,0.5),
-    0 0 44px rgba(212,184,150,0.16);
+    0 0 0 1px rgba(212,184,150,0.16),
+    0 18px 36px rgba(0,0,0,0.35),
+    0 0 44px rgba(212,184,150,0.14);
 }
 .ob-swiper__card.is-on .ob-swiper__title { color: var(--accent-hi, #E8C9A0); }
 .ob-swiper__card.is-on .ob-swiper__art   { filter: drop-shadow(0 0 22px rgba(232,201,160,0.32)); }

@@ -1451,7 +1451,7 @@ function startWlcFundo() {
   // força reflow pra garantir dimensões corretas após o display:block
   void canvas.offsetWidth;
 
-  // 7 blobs · paleta verde-mata + dourado champanhe (mar/vento/natureza)
+  // 7 ONDAS senoidais empilhadas verticalmente (mar/vento/natureza)
   //   verde sage   #6C8A7A → 108,138,122
   //   verde mato   #4A6B5A → 74,107,90
   //   verde musgo  #5A7864 → 90,120,100
@@ -1459,18 +1459,26 @@ function startWlcFundo() {
   //   ouro champ   #D4B896 → 212,184,150
   //   ouro warm    #E8C9A0 → 232,201,160
   //   creme glow   #F5EEE6 → 245,238,230
-  const BLOBS = [
-    // 3 verdes (presença principal · opacidade alta)
-    { rx: 0.18, ry: 0.25, baseR: 0.72, px: 0.0, py: 0.5,  spx: 0.42, spy: 0.32, cor: '108,138,122', op: 0.36 },
-    { rx: 0.78, ry: 0.18, baseR: 0.58, px: 1.4, py: 1.7,  spx: 0.38, spy: 0.41, cor: '74,107,90',   op: 0.34 },
-    { rx: 0.55, ry: 0.82, baseR: 0.65, px: 2.3, py: 0.9,  spx: 0.46, spy: 0.30, cor: '90,120,100',  op: 0.30 },
+  // y     = posição vertical base (fração da altura)
+  // amp   = amplitude da senoide principal (fração da altura)
+  // freq  = nº de ciclos por largura (1.3 = ~1.3 cristas atravessando a tela)
+  // harm  = frequência da harmônica (dá forma orgânica, não senoide pura)
+  // phase = offset inicial pra dessincronizar
+  // speed = velocidade de drift (radianos por unidade de tempo)
+  // thick = espessura do traço (fração da altura)
+  // op    = opacidade
+  const WAVES = [
+    // 3 verdes (presença principal)
+    { y: 0.16, amp: 0.040, freq: 1.3, harm: 2.7, harmAmp: 0.012, phase: 0.0, speed: 0.55, thick: 0.16, cor: '108,138,122', op: 0.22 },
+    { y: 0.30, amp: 0.052, freq: 1.5, harm: 2.3, harmAmp: 0.015, phase: 1.4, speed: 0.42, thick: 0.18, cor: '74,107,90',   op: 0.20 },
+    { y: 0.44, amp: 0.038, freq: 1.7, harm: 2.9, harmAmp: 0.010, phase: 2.2, speed: 0.62, thick: 0.16, cor: '90,120,100',  op: 0.18 },
     // 1 verde-oliva (ponte verde→ouro)
-    { rx: 0.32, ry: 0.62, baseR: 0.50, px: 0.8, py: 2.1,  spx: 0.40, spy: 0.36, cor: '140,154,110', op: 0.22 },
-    // 2 douradas (acentos · vento que cruza)
-    { rx: 0.85, ry: 0.45, baseR: 0.52, px: 1.9, py: 1.2,  spx: 0.52, spy: 0.28, cor: '212,184,150', op: 0.20 },
-    { rx: 0.10, ry: 0.85, baseR: 0.42, px: 2.6, py: 0.4,  spx: 0.44, spy: 0.36, cor: '232,201,160', op: 0.16 },
-    // 1 creme tênue (luz refletindo · respira lento)
-    { rx: 0.50, ry: 0.30, baseR: 0.36, px: 1.1, py: 2.6,  spx: 0.26, spy: 0.46, cor: '245,238,230', op: 0.10 },
+    { y: 0.56, amp: 0.048, freq: 1.4, harm: 2.5, harmAmp: 0.013, phase: 0.7, speed: 0.50, thick: 0.18, cor: '140,154,110', op: 0.14 },
+    // 2 douradas (acentos)
+    { y: 0.68, amp: 0.044, freq: 1.6, harm: 2.6, harmAmp: 0.012, phase: 1.9, speed: 0.70, thick: 0.16, cor: '212,184,150', op: 0.13 },
+    { y: 0.80, amp: 0.050, freq: 1.5, harm: 2.4, harmAmp: 0.012, phase: 0.4, speed: 0.38, thick: 0.14, cor: '232,201,160', op: 0.10 },
+    // 1 creme tênue (luz refletindo)
+    { y: 0.92, amp: 0.028, freq: 1.8, harm: 2.8, harmAmp: 0.008, phase: 2.6, speed: 0.55, thick: 0.10, cor: '245,238,230', op: 0.07 },
   ];
 
   function resize() {
@@ -1486,60 +1494,53 @@ function startWlcFundo() {
       wlcFundoRAF = null;
       return;
     }
-    // tempo principal · ritmo natural (perceptível mas calmo)
-    wlcFundoT += 0.0035;
+    // tempo principal · ritmo de mar
+    wlcFundoT += 0.004;
     const W = canvas.width, H = canvas.height;
     ctx.clearRect(0, 0, W, H);
 
-    // BASE TINT · verde profundo subtilíssimo lavando todo o canvas
-    //   dá presença ambiente · evita que blobs sumam contra o bg quase preto
+    // BASE TINT · verde profundo lavando todo o canvas (ambient)
     const baseGrad = ctx.createLinearGradient(0, 0, 0, H);
-    baseGrad.addColorStop(0,   'rgba(40, 60, 50, 0.18)');
-    baseGrad.addColorStop(0.5, 'rgba(50, 72, 60, 0.10)');
-    baseGrad.addColorStop(1,   'rgba(38, 52, 44, 0.20)');
+    baseGrad.addColorStop(0,   'rgba(40, 60, 50, 0.14)');
+    baseGrad.addColorStop(0.5, 'rgba(50, 72, 60, 0.08)');
+    baseGrad.addColorStop(1,   'rgba(38, 52, 44, 0.16)');
     ctx.fillStyle = baseGrad;
     ctx.fillRect(0, 0, W, H);
 
-    // VENTO GLOBAL · drift horizontal/vertical aplicado sobre todos os blobs
-    //   vento1: período longo (perceptível), vento2: harmônica média pra micro-deriva
-    const ventoX = Math.sin(wlcFundoT * 0.55) * 0.045 + Math.sin(wlcFundoT * 1.7) * 0.012;
-    const ventoY = Math.cos(wlcFundoT * 0.41) * 0.034 + Math.sin(wlcFundoT * 1.1) * 0.010;
+    // VENTO global · respiração vertical da paisagem inteira
+    const ventoY = Math.sin(wlcFundoT * 0.35) * 0.018 * H;
 
-    BLOBS.forEach((b, i) => {
-      // ONDA: composição de 2 frequências dá movimento orgânico (mar)
-      //   amplitude maior pra ser perceptível · frequência base + harmônica dessincronizada
-      const ondaX = Math.sin(wlcFundoT * b.spx + b.px) * 0.14
-                  + Math.sin(wlcFundoT * b.spx * 2.7 + b.px * 1.3) * 0.045;
-      const ondaY = Math.cos(wlcFundoT * b.spy + b.py) * 0.12
-                  + Math.cos(wlcFundoT * b.spy * 2.3 + b.py * 1.7) * 0.038;
+    WAVES.forEach((w, i) => {
+      ctx.save();
 
-      // raio respira (escala 1 ± 6%) — pulsação lenta + harmônica sutil
-      const pulse = 1
-        + 0.06 * Math.sin(wlcFundoT * 0.55 + b.px)
-        + 0.02 * Math.sin(wlcFundoT * 1.6 + b.py * 0.8);
-      const r = Math.min(W, H) * b.baseR * pulse;
+      // banda da onda · stroke grosso + shadowBlur dá borda macia (glow)
+      ctx.lineWidth   = w.thick * H;
+      ctx.lineCap     = 'round';
+      ctx.lineJoin    = 'round';
+      ctx.strokeStyle = `rgba(${w.cor}, ${w.op})`;
+      ctx.shadowColor = `rgba(${w.cor}, ${w.op})`;
+      ctx.shadowBlur  = w.thick * H * 0.55;
 
-      // posição final = base + onda própria + vento global (compartilhado)
-      const cx = W * (b.rx + ondaX + ventoX);
-      const cy = H * (b.ry + ondaY + ventoY);
+      // fase progride no tempo (drift horizontal · velocidade própria)
+      const phaseT = w.phase + wlcFundoT * w.speed;
+      // amplitude respira lentamente (±18% · cada onda no seu ciclo)
+      const ampNow     = w.amp     * (1 + 0.18 * Math.sin(wlcFundoT * 0.30 + i * 0.7));
+      const harmAmpNow = w.harmAmp * (1 + 0.22 * Math.cos(wlcFundoT * 0.42 + i * 0.5));
 
-      // gradient com 4 stops · centro mais denso · borda dissolve suavemente
-      const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, r);
-      grad.addColorStop(0,    `rgba(${b.cor},${b.op})`);
-      grad.addColorStop(0.35, `rgba(${b.cor},${b.op * 0.7})`);
-      grad.addColorStop(0.7,  `rgba(${b.cor},${b.op * 0.3})`);
-      grad.addColorStop(1,    `rgba(${b.cor},0)`);
-
-      // elipse com proporções vivas (sopro vertical) + rotação muito lenta
+      // desenha a senoide como path · 80 segmentos = curva suave
       ctx.beginPath();
-      ctx.ellipse(
-        cx, cy, r,
-        r * (0.72 + 0.24 * Math.sin(wlcFundoT * 0.5 + b.py)),
-        wlcFundoT * 0.05 + i * 0.25,
-        0, Math.PI * 2
-      );
-      ctx.fillStyle = grad;
-      ctx.fill();
+      const segs = 80;
+      for (let s = 0; s <= segs; s++) {
+        const tx = s / segs;
+        const x  = tx * W;
+        const y  = w.y * H + ventoY
+          + ampNow     * H * Math.sin(w.freq * 2 * Math.PI * tx + phaseT)
+          + harmAmpNow * H * Math.sin(w.harm * 2 * Math.PI * tx + phaseT * 1.4 + i * 0.5);
+        if (s === 0) ctx.moveTo(x, y);
+        else         ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+      ctx.restore();
     });
 
     wlcFundoRAF = requestAnimationFrame(frame);
