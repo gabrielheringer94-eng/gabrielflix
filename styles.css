@@ -2859,18 +2859,21 @@ button.hero:active { transform: scale(0.985); }
    ═════════════════════════════════════════ */
 
 /* canvas do fundo vivo · ABSOLUTE GLOBAL · cobre toda a viewport
-   só visível quando welcome ou onboarding estão abertos */
+   ATIVO SEMPRE no apple-mode · z-index 0 (atrás do app content) pra dar
+   continuidade visual entre welcome/onboarding/home — ribbons em todo o app */
 .wlc-fundo {
   position: fixed;
   inset: 0;
   width: 100%;
   height: 100%;
-  z-index: 95;             /* acima do app, ABAIXO do onboarding (100), welcome (120), jornada (200) */
+  z-index: 0;              /* atrás do app(1), welcome(120), onboard(100), jornada(200) */
   pointer-events: none;
   display: none;           /* só aparece quando body.fundo-on */
   background: var(--bg);   /* fallback enquanto canvas pinta */
 }
 body.fundo-on .wlc-fundo { display: block; }
+/* apple-mode liga sempre por padrão (mesmo sem welcome/onboarding aberto) */
+body.apple-mode .wlc-fundo { display: block; }
 
 /* welcome agora é transparente · canvas vaza por trás do conteúdo */
 .welcome {

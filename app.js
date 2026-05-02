@@ -1427,7 +1427,10 @@ let wlcFundoRAF = null;
 let wlcFundoT   = 0;
 
 function fundoFlowAtivo() {
-  // ativo se welcome OU onboarding estiverem abertos
+  // SEMPRE ativo em apple-mode · ribbons como bg ambiente em todo o app
+  // (welcome, onboarding, home, jornada) pra dar continuidade visual
+  if (document.body && document.body.classList.contains('apple-mode')) return true;
+  // fallback (se apple-mode não estiver ativo): mantém comportamento antigo
   const w = welcomeEl && welcomeEl.classList.contains('is-open');
   const o = document.getElementById('onboard');
   const oOpen = o && o.classList.contains('is-open');
@@ -1435,7 +1438,7 @@ function fundoFlowAtivo() {
 }
 
 function maybeStopWlcFundo() {
-  // só para se nem welcome nem onboarding estiverem abertos
+  // em apple-mode nunca para · canvas roda enquanto a tab estiver visível
   if (!fundoFlowAtivo() && typeof stopWlcFundo === 'function') {
     stopWlcFundo();
   }
@@ -5426,6 +5429,23 @@ function renderObGoalWheel() {
 
   // segurança: clique em qualquer lugar fecha antes
   splash.addEventListener('click', esconderSplash);
+})();
+
+// ═════════════════════════════════════════════════════════
+// FUNDO VIVO · liga no boot pra apple-mode (sempre ativo)
+// dá continuidade visual entre welcome/onboarding/home
+// ═════════════════════════════════════════════════════════
+(function () {
+  function bootFundo() {
+    if (!document.body || !document.body.classList.contains('apple-mode')) return;
+    if (typeof startWlcFundo === 'function') startWlcFundo();
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', bootFundo);
+  } else {
+    // delay 100ms pra garantir que canvas já tem dimensões
+    setTimeout(bootFundo, 100);
+  }
 })();
 
 // ═════════════════════════════════════════════════════════
