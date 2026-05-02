@@ -15,7 +15,7 @@
 // pra começar do zero e medir da linha de base
 // ═════════════════════════════════════════
 (function () {
-  const RESET_VERSION = 'v4-apple-2026-04-25';
+  const RESET_VERSION = 'v5-2026-05-02-a';
   try {
     const current = localStorage.getItem('circa_data_version');
     if (current !== RESET_VERSION) {
@@ -6864,35 +6864,55 @@ let temprProcRAF = null;
 let temprRevRAF  = null;
 
 (function () {
-  // wiring das opções dos 5 cenários
+  // memória da seleção atual por cenário · permite trocar de opção sem inflar score
+  const temprSelByCen = {};   // { 1: 'brasa', 2: 'corrente', ... }
+
+  // wiring das opções dos 5 cenários · agora SEM auto-advance
+  // (cards portrait num swiper precisam ser navegáveis · usuário clica em "continuar" pra avançar)
   document.querySelectorAll('.tempr-opcao[data-temp]').forEach((btn) => {
     btn.addEventListener('click', () => {
       const cen  = parseInt(btn.dataset.cen, 10);
       const temp = btn.dataset.temp;
 
-      // primeiro cenário: reseta o score
-      if (cen === 1) {
+      // primeiro cenário · primeiro click: reseta tudo
+      if (cen === 1 && !temprSelByCen[1]) {
         Object.keys(temprScore).forEach((k) => { temprScore[k] = 0; });
       }
 
-      // visual: marca selecionada
+      // se já havia uma seleção pra este cenário, remove o ponto antigo
+      const prev = temprSelByCen[cen];
+      if (prev) {
+        temprScore[prev] = Math.max(0, (temprScore[prev] || 0) - 1);
+      }
+
+      // visual: marca selecionada (single-select dentro do slide)
       const slide = btn.closest('.tempr-slide');
-      if (slide) slide.querySelectorAll('.tempr-opcao').forEach((o) => o.classList.remove('is-sel'));
-      btn.classList.add('is-sel');
+      if (slide) slide.querySelectorAll('.tempr-opcao').forEach((o) => o.classList.remove('is-on', 'is-sel'));
+      btn.classList.add('is-on');
 
-      // pontua
+      // pontua novo
       temprScore[temp] = (temprScore[temp] || 0) + 1;
-      try { hap(8); } catch (e) {}
+      temprSelByCen[cen] = temp;
 
-      // auto-avança após 450ms
+      // habilita continuar
+      if (slide) {
+        const next = slide.querySelector('.ob-next');
+        if (next) next.disabled = false;
+      }
+      try { hap(8); } catch (e) {}
+    });
+  });
+
+  // dispatch das telas processing (46) e reveal (47) · roda depois que o std .ob-next
+  // handler chamou nextStep · timeout pequeno pra ordem das ações no event loop
+  document.querySelectorAll('.tempr-slide .ob-next').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      if (btn.disabled) return;
       setTimeout(() => {
-        if (typeof nextStep === 'function') nextStep();
-        // após nextStep, obStep já mudou · dispara processing/reveal nas steps certas
-        if (typeof obStep !== 'undefined') {
-          if (obStep === 46) setTimeout(temprStartProc, 100);
-          if (obStep === 47) setTimeout(temprRender, 200);
-        }
-      }, 450);
+        if (typeof obStep === 'undefined') return;
+        if (obStep === 46) setTimeout(temprStartProc, 100);
+        if (obStep === 47) setTimeout(temprRender, 200);
+      }, 30);
     });
   });
 

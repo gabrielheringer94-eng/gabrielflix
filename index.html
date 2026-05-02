@@ -23,11 +23,47 @@
   <link rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,400&family=Inter:wght@400;500;600&display=swap" />
   <!-- cache-bust agressivo: muda v sempre que houver mudança visual -->
-  <link rel="stylesheet" href="styles.css?v=20260502-f" />
-  <link rel="stylesheet" href="apple.css?v=20260502-f" />
+  <link rel="stylesheet" href="styles.css?v=20260502-g" />
+  <link rel="stylesheet" href="apple.css?v=20260502-g" />
   <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="pragma" content="no-cache" />
   <meta http-equiv="expires" content="0" />
+  <!-- ═════════════════════════════════════════════════════════
+       FAILSAFE INLINE · roda ANTES de tudo
+       garante apple-mode + esconde ring v0 mesmo se apple.css/app.js
+       vierem do cache numa versão antiga (PWA standalone agressivo)
+       ═════════════════════════════════════════════════════════ -->
+  <style>
+    /* esconde imediatamente o ring v0 (bom: roda inline, sem depender de apple.css) */
+    body.apple-mode .hero .ring,
+    body.apple-mode .hero > svg.ring,
+    body.apple-mode .hero-stage .ring { display: none !important; }
+  </style>
+  <script>
+    // 1. força apple-mode no <html> e (quando body existir) no body, antes do paint
+    (function () {
+      try { document.documentElement.classList.add('apple-mode'); } catch (e) {}
+      var apply = function () {
+        if (document.body && !document.body.classList.contains('apple-mode')) {
+          document.body.classList.add('apple-mode');
+        }
+      };
+      if (document.body) apply();
+      else document.addEventListener('DOMContentLoaded', apply, { once: true });
+    })();
+    // 2. wipe localStorage circa_* se versão antiga (welcome reabre, dados zeram)
+    (function () {
+      var V = 'v5-2026-05-02-a';
+      try {
+        if (localStorage.getItem('circa_data_version') !== V) {
+          Object.keys(localStorage).forEach(function (k) {
+            if (k.indexOf('circa_') === 0) localStorage.removeItem(k);
+          });
+          localStorage.setItem('circa_data_version', V);
+        }
+      } catch (e) {}
+    })();
+  </script>
 </head>
 <body class="apple-mode">
 
@@ -619,60 +655,80 @@
       <div class="ob-slide tempr-slide" data-step="41">
         <p class="tempr-eyebrow"><span class="tempr-num">cenário 1</span> · rotina</p>
         <h1 class="tempr-pergunta">você acordou ontem sem energia e pulou o treino. hoje está bem.<br/>o que <em>faz?</em></h1>
-        <div class="tempr-opcoes">
-          <button class="tempr-opcao" data-temp="brasa"    data-cen="1"><span>"treino agora pra recuperar o que perdi."</span></button>
-          <button class="tempr-opcao" data-temp="mare"     data-cen="1"><span>"sigo o plano de hoje, ontem ficou pra trás."</span></button>
-          <button class="tempr-opcao" data-temp="raiz"     data-cen="1"><span>"escuto o corpo um pouco mais antes de decidir."</span></button>
-          <button class="tempr-opcao" data-temp="corrente" data-cen="1"><span>"aproveito que tô bem e treino mais forte."</span></button>
+        <div class="ob-swiper ob-swiper--tempr" data-swiper="t41">
+          <div class="ob-swiper__track">
+            <button class="ob-swiper__card tempr-opcao" data-temp="brasa"    data-cen="1"><span>"treino agora pra recuperar o que perdi."</span></button>
+            <button class="ob-swiper__card tempr-opcao" data-temp="mare"     data-cen="1"><span>"sigo o plano de hoje, ontem ficou pra trás."</span></button>
+            <button class="ob-swiper__card tempr-opcao" data-temp="raiz"     data-cen="1"><span>"escuto o corpo um pouco mais antes de decidir."</span></button>
+            <button class="ob-swiper__card tempr-opcao" data-temp="corrente" data-cen="1"><span>"aproveito que tô bem e treino mais forte."</span></button>
+          </div>
+          <div class="ob-swiper__dots" aria-hidden="true"></div>
         </div>
+        <button class="btn btn--primary btn--full ob-next" disabled>continuar</button>
       </div>
 
       <!-- 42 · cenário 2 · decisão -->
       <div class="ob-slide tempr-slide" data-step="42">
         <p class="tempr-eyebrow"><span class="tempr-num">cenário 2</span> · decisão</p>
         <h1 class="tempr-pergunta">você combinou consigo dormir cedo hoje. amigos chamam pra um jantar de última hora. você <em>vai?</em></h1>
-        <div class="tempr-opcoes">
-          <button class="tempr-opcao" data-temp="corrente" data-cen="2"><span>"vou, durmo cedo amanhã."</span></button>
-          <button class="tempr-opcao" data-temp="brasa"    data-cen="2"><span>"não vou, combinei comigo, isso vale."</span></button>
-          <button class="tempr-opcao" data-temp="mare"     data-cen="2"><span>"vou se for até as 22h, com horário pra sair."</span></button>
-          <button class="tempr-opcao" data-temp="raiz"     data-cen="2"><span>"fico em dúvida, peso o que sinto, decido na hora."</span></button>
+        <div class="ob-swiper ob-swiper--tempr" data-swiper="t42">
+          <div class="ob-swiper__track">
+            <button class="ob-swiper__card tempr-opcao" data-temp="corrente" data-cen="2"><span>"vou, durmo cedo amanhã."</span></button>
+            <button class="ob-swiper__card tempr-opcao" data-temp="brasa"    data-cen="2"><span>"não vou, combinei comigo, isso vale."</span></button>
+            <button class="ob-swiper__card tempr-opcao" data-temp="mare"     data-cen="2"><span>"vou se for até as 22h, com horário pra sair."</span></button>
+            <button class="ob-swiper__card tempr-opcao" data-temp="raiz"     data-cen="2"><span>"fico em dúvida, peso o que sinto, decido na hora."</span></button>
+          </div>
+          <div class="ob-swiper__dots" aria-hidden="true"></div>
         </div>
+        <button class="btn btn--primary btn--full ob-next" disabled>continuar</button>
       </div>
 
       <!-- 43 · cenário 3 · frustração -->
       <div class="ob-slide tempr-slide" data-step="43">
         <p class="tempr-eyebrow"><span class="tempr-num">cenário 3</span> · frustração</p>
         <h1 class="tempr-pergunta">você trabalhou semanas num projeto. o feedback foi <em>duro.</em> você sente:</h1>
-        <div class="tempr-opcoes">
-          <button class="tempr-opcao" data-temp="brasa"    data-cen="3"><span>"raiva, quero refazer agora, melhor ainda."</span></button>
-          <button class="tempr-opcao" data-temp="raiz"     data-cen="3"><span>"peso, preciso processar antes de qualquer coisa."</span></button>
-          <button class="tempr-opcao" data-temp="corrente" data-cen="3"><span>"distração, preciso sair, mudar o ar."</span></button>
-          <button class="tempr-opcao" data-temp="mare"     data-cen="3"><span>"silêncio, fico quieto, depois sigo o plano."</span></button>
+        <div class="ob-swiper ob-swiper--tempr" data-swiper="t43">
+          <div class="ob-swiper__track">
+            <button class="ob-swiper__card tempr-opcao" data-temp="brasa"    data-cen="3"><span>"raiva, quero refazer agora, melhor ainda."</span></button>
+            <button class="ob-swiper__card tempr-opcao" data-temp="raiz"     data-cen="3"><span>"peso, preciso processar antes de qualquer coisa."</span></button>
+            <button class="ob-swiper__card tempr-opcao" data-temp="corrente" data-cen="3"><span>"distração, preciso sair, mudar o ar."</span></button>
+            <button class="ob-swiper__card tempr-opcao" data-temp="mare"     data-cen="3"><span>"silêncio, fico quieto, depois sigo o plano."</span></button>
+          </div>
+          <div class="ob-swiper__dots" aria-hidden="true"></div>
         </div>
+        <button class="btn btn--primary btn--full ob-next" disabled>continuar</button>
       </div>
 
       <!-- 44 · cenário 4 · espírito -->
       <div class="ob-slide tempr-slide" data-step="44">
         <p class="tempr-eyebrow"><span class="tempr-num">cenário 4</span> · espírito</p>
         <h1 class="tempr-pergunta">o que mais te <em>toca</em> quando você para de verdade?</h1>
-        <div class="tempr-opcoes">
-          <button class="tempr-opcao" data-temp="corrente" data-cen="4"><span>"uma conversa boa, encontrar alguém certo."</span></button>
-          <button class="tempr-opcao" data-temp="brasa"    data-cen="4"><span>"uma realização sua, ter feito algo difícil."</span></button>
-          <button class="tempr-opcao" data-temp="raiz"     data-cen="4"><span>"silêncio profundo, natureza, pôr do sol."</span></button>
-          <button class="tempr-opcao" data-temp="mare"     data-cen="4"><span>"uma rotina simples cumprida em paz."</span></button>
+        <div class="ob-swiper ob-swiper--tempr" data-swiper="t44">
+          <div class="ob-swiper__track">
+            <button class="ob-swiper__card tempr-opcao" data-temp="corrente" data-cen="4"><span>"uma conversa boa, encontrar alguém certo."</span></button>
+            <button class="ob-swiper__card tempr-opcao" data-temp="brasa"    data-cen="4"><span>"uma realização sua, ter feito algo difícil."</span></button>
+            <button class="ob-swiper__card tempr-opcao" data-temp="raiz"     data-cen="4"><span>"silêncio profundo, natureza, pôr do sol."</span></button>
+            <button class="ob-swiper__card tempr-opcao" data-temp="mare"     data-cen="4"><span>"uma rotina simples cumprida em paz."</span></button>
+          </div>
+          <div class="ob-swiper__dots" aria-hidden="true"></div>
         </div>
+        <button class="btn btn--primary btn--full ob-next" disabled>continuar</button>
       </div>
 
       <!-- 45 · cenário 5 · tempo livre -->
       <div class="ob-slide tempr-slide" data-step="45">
         <p class="tempr-eyebrow"><span class="tempr-num">cenário 5</span> · tempo livre</p>
         <h1 class="tempr-pergunta">final de semana sem agenda. é manhã de sábado. o que você <em>sente?</em></h1>
-        <div class="tempr-opcoes">
-          <button class="tempr-opcao" data-temp="corrente" data-cen="5"><span>"possibilidade, mil opções, energia pra começar."</span></button>
-          <button class="tempr-opcao" data-temp="brasa"    data-cen="5"><span>"oportunidade, lista de coisas pra adiantar."</span></button>
-          <button class="tempr-opcao" data-temp="raiz"     data-cen="5"><span>"alívio, finalmente posso parar e sentir."</span></button>
-          <button class="tempr-opcao" data-temp="mare"     data-cen="5"><span>"paz, nada precisa ser feito, isso já é bom."</span></button>
+        <div class="ob-swiper ob-swiper--tempr" data-swiper="t45">
+          <div class="ob-swiper__track">
+            <button class="ob-swiper__card tempr-opcao" data-temp="corrente" data-cen="5"><span>"possibilidade, mil opções, energia pra começar."</span></button>
+            <button class="ob-swiper__card tempr-opcao" data-temp="brasa"    data-cen="5"><span>"oportunidade, lista de coisas pra adiantar."</span></button>
+            <button class="ob-swiper__card tempr-opcao" data-temp="raiz"     data-cen="5"><span>"alívio, finalmente posso parar e sentir."</span></button>
+            <button class="ob-swiper__card tempr-opcao" data-temp="mare"     data-cen="5"><span>"paz, nada precisa ser feito, isso já é bom."</span></button>
+          </div>
+          <div class="ob-swiper__dots" aria-hidden="true"></div>
         </div>
+        <button class="btn btn--primary btn--full ob-next" disabled>continuar</button>
       </div>
 
       <!-- 46 · processando · 3 anéis girando + status -->
@@ -3534,6 +3590,6 @@
     </nav>
   </div>
 
-  <script src="app.js?v=20260502-f"></script>
+  <script src="app.js?v=20260502-g"></script>
 </body>
 </html>

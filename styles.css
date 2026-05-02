@@ -2022,6 +2022,33 @@ button.hero:active { transform: scale(0.985); }
   background: linear-gradient(270deg, var(--bg, #0F0E0D) 0%, transparent 100%);
 }
 
+/* ───── modifier .ob-swiper--tempr · cards do quiz de temperamento ─────
+   text-only · italic Fraunces · centralizado · sem ícone (cada quote é o conteúdo) */
+.ob-swiper--tempr .ob-swiper__card {
+  padding: 28px 22px;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  text-align: center;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.015) 30%, transparent 60%),
+    rgba(20,18,16,0.55);
+}
+.ob-swiper--tempr .ob-swiper__card span {
+  display: block;
+  font-family: var(--serif);
+  font-size: 17px;
+  line-height: 1.45;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--fg);
+  letter-spacing: -0.005em;
+  max-width: 100%;
+}
+.ob-swiper--tempr .ob-swiper__card.is-on span {
+  color: var(--accent-hi, #E8C9A0);
+}
+
 /* ═════════════════════════════════════════
    STEP 1 · FOCO PRINCIPAL · 3 cards visuais com PNGs
    performance · sono (centro destacado) · estresse
@@ -2841,9 +2868,11 @@ body.fundo-on .wlc-fundo { display: block; }
   inset-inline: 0;
 }
 .welcome.is-open { display: flex; }
-.welcome > .wlc-top,
-.welcome > .wlc-tela { position: relative; z-index: 2; }
-.welcome > .wlc-top { z-index: 3; background: transparent; }
+/* fix: só .wlc-top fica relative (header no flow); .wlc-tela mantém position:absolute
+   herdada do bloco principal (linha ~2948) pra ocupar do top:70px ao bottom:0 e dar
+   espaço pra display + lead + CTA · sem isso a tela colapsa em ~152px e clipa o resto */
+.welcome > .wlc-top  { position: relative; z-index: 3; background: transparent; }
+.welcome > .wlc-tela { z-index: 2; }
 
 /* onboarding com bg quase transparente (fallback dark warm) quando body.fundo-on · canvas vaza por baixo
    o gradient sutil garante que enquanto o canvas faz warming up no primeiro frame,
@@ -7821,59 +7850,9 @@ select {
   color: transparent;
 }
 
-/* opções · cards minimalistas com glass treatment */
-.tempr-opcoes {
-  display: flex;
-  flex-direction: column;
-  gap: 9px;
-}
-.tempr-opcao {
-  position: relative;
-  padding: 16px 18px;
-  border: 1px solid rgba(212, 184, 150, 0.1);
-  border-radius: 14px;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.03), transparent 35%),
-    rgba(28, 26, 24, 0.5);
-  backdrop-filter: blur(16px) saturate(140%);
-  -webkit-backdrop-filter: blur(16px) saturate(140%);
-  cursor: pointer;
-  text-align: left;
-  overflow: hidden;
-  transition: all 0.28s cubic-bezier(0.22, 1, 0.36, 1);
-  font-family: var(--serif);
-}
-.tempr-opcao::before {
-  content: '';
-  position: absolute;
-  left: 0; top: 0; bottom: 0;
-  width: 2px;
-  background: transparent;
-  border-radius: 2px 0 0 2px;
-  transition: background 0.25s ease;
-}
-.tempr-opcao:hover {
-  border-color: rgba(212, 184, 150, 0.3);
-  transform: translateX(2px);
-}
-.tempr-opcao:hover::before { background: rgba(212, 184, 150, 0.45); }
-.tempr-opcao.is-sel {
-  border-color: rgba(212, 184, 150, 0.55);
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.05), transparent 35%),
-    rgba(212, 184, 150, 0.08);
-}
-.tempr-opcao.is-sel::before { background: var(--accent); }
-.tempr-opcao span {
-  display: block;
-  font-family: var(--serif);
-  font-size: 16px;
-  font-weight: 300;
-  font-style: italic;
-  color: var(--fg);
-  line-height: 1.45;
-  letter-spacing: -0.005em;
-}
+/* opções de temperamento · agora servidas via .ob-swiper.ob-swiper--tempr · ver bloco
+   na seção OB-SWIPER (steps 32, 33, 23, 41-45) · regras antigas .tempr-opcoes /
+   .tempr-opcao (stack vertical · landscape) removidas em prol do swiper portrait wheel */
 
 /* === processando === */
 .tempr-proc-slide {
