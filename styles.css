@@ -1864,7 +1864,7 @@ button.hero:active { transform: scale(0.985); }
 .ob-swiper__track {
   display: flex;
   gap: 12px;
-  padding: 8px 24px 14px;
+  padding: 18px 24px 24px;        /* extra top/bottom pra acomodar rotação 3D sem cortar */
   overflow-x: auto;
   overflow-y: hidden;
   scroll-snap-type: x mandatory;
@@ -1872,6 +1872,9 @@ button.hero:active { transform: scale(0.985); }
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior-x: contain;
+  /* perspectiva 3D · ativa o efeito wheel */
+  perspective: 1200px;
+  perspective-origin: 50% 50%;
 }
 .ob-swiper__track::-webkit-scrollbar { display: none; }
 
@@ -1893,15 +1896,30 @@ button.hero:active { transform: scale(0.985); }
     rgba(20,18,16,0.55);
   border: 1px solid rgba(212,184,150,0.18);
   cursor: pointer;
+  /* CSS variables · JS atualiza estes na scroll · efeito wheel */
+  --wheel-scale: 1;
+  --wheel-rotate: 0deg;
+  --wheel-z: 0px;
+  --hover-y: 0px;
+  transform-origin: center center;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  transform:
+    translateY(var(--hover-y))
+    translateZ(var(--wheel-z))
+    rotateY(var(--wheel-rotate))
+    scale(var(--wheel-scale));
   transition:
-    transform     0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    transform     0.18s cubic-bezier(0.22, 1, 0.36, 1),
     border-color  0.35s ease,
-    box-shadow    0.45s ease;
+    box-shadow    0.45s ease,
+    opacity       0.18s ease;
   position: relative;
   overflow: hidden;
   text-align: center;
   font-family: var(--sans);
   color: inherit;
+  will-change: transform, opacity;
 }
 .ob-swiper__card::after {
   content: "";
@@ -1954,10 +1972,10 @@ button.hero:active { transform: scale(0.985); }
 .ob-swiper__card.is-on .ob-swiper__title { color: var(--accent-hi, #E8C9A0); }
 .ob-swiper__card.is-on .ob-swiper__art   { filter: drop-shadow(0 0 22px rgba(232,201,160,0.32)); }
 
-/* hover desktop · sutilmente eleva sem competir com o card centrado */
+/* hover desktop · sutilmente eleva sem competir com a transformação wheel */
 @media (hover: hover) {
   .ob-swiper__card:hover {
-    transform: translateY(-3px);
+    --hover-y: -4px;
     border-color: rgba(212,184,150,0.32);
   }
 }

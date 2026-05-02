@@ -4128,15 +4128,57 @@ document.querySelectorAll('.ob-slide[data-step="32"] .ob-card, .ob-slide[data-st
       });
     }
 
+    // efeito wheel · cada card ganha rotateY + scale + translateZ + opacity em função da
+    // distância do centro do track · cards laterais "viram a cara" pro centro como se a
+    // pessoa estivesse girando uma roda virtual de cards
+    function applyWheelTransforms() {
+      const tRect = track.getBoundingClientRect();
+      const tCenter = tRect.left + tRect.width / 2;
+      const half = tRect.width / 2;
+      cards.forEach((card) => {
+        const cRect = card.getBoundingClientRect();
+        const cCenter = cRect.left + cRect.width / 2;
+        const offset = cCenter - tCenter;
+        // ratio: 0 no centro, ±1 quando o card está a meia-largura do track de distância
+        const ratio = offset / (half * 0.62);
+        const clamped = Math.max(-1.6, Math.min(1.6, ratio));
+        const absR = Math.abs(clamped);
+        // scale: 1.0 no centro, 0.7 nas pontas
+        const scale  = 1 - Math.min(0.30, absR * 0.22);
+        // rotateY: 0 no centro, ±36° nas pontas (faces voltadas pro centro)
+        const rotate = clamped * -34;
+        // translateZ: cards laterais recuam no eixo Z (efeito de profundidade)
+        const tz     = -absR * 90;
+        // opacity: 1 no centro, ~0.4 nas pontas
+        const op     = 1 - Math.min(0.55, absR * 0.4);
+        card.style.setProperty('--wheel-scale',  scale.toFixed(3));
+        card.style.setProperty('--wheel-rotate', rotate.toFixed(2) + 'deg');
+        card.style.setProperty('--wheel-z',      tz.toFixed(1) + 'px');
+        card.style.opacity = op.toFixed(3);
+      });
+    }
+
     // sync no scroll (rAF-throttled pra performance)
     let raf = null;
     track.addEventListener('scroll', () => {
       if (raf) return;
       raf = requestAnimationFrame(() => {
         updateActiveDot();
+        applyWheelTransforms();
         raf = null;
       });
     });
+    // aplica também no resize (largura do track muda)
+    window.addEventListener('resize', () => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        applyWheelTransforms();
+        raf = null;
+      });
+    });
+
+    // primeira aplicação · garante o estado inicial
+    requestAnimationFrame(applyWheelTransforms);
 
     // recalcula quando o slide do swiper fica visível (display:none → flex)
     // observa mudanças de visibilidade do .ob-slide pai
@@ -4145,9 +4187,12 @@ document.querySelectorAll('.ob-slide[data-step="32"] .ob-card, .ob-slide[data-st
       const io = new IntersectionObserver((entries) => {
         entries.forEach((e) => {
           if (e.isIntersecting && e.target.classList.contains('is-active')) {
-            // garante dot 0 ativo + scroll no início
+            // garante dot 0 ativo + scroll no início + wheel transform recalculado
             track.scrollTo({ left: 0, behavior: 'auto' });
-            updateActiveDot();
+            requestAnimationFrame(() => {
+              updateActiveDot();
+              applyWheelTransforms();
+            });
           }
         });
       }, { threshold: 0.5 });
