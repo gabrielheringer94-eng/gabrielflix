@@ -1468,13 +1468,13 @@ function startWlcFundo() {
   // speed   = velocidade de drift da fase
   // op      = opacidade BASE de cada fita (fitas centrais ficam mais opacas, bordas mais fracas)
   const RIBBONS = [
-    // 2 verdes principais
-    { y: 0.30, amp: 0.10, freq: 1.30, harm: 2.6, harmAmp: 0.025, phase: 0.0, speed: 0.45, strands: 12, spread: 0.055, fanAmp: 0.7, cor: '108,138,122', op: 0.16 },
-    { y: 0.55, amp: 0.12, freq: 1.45, harm: 2.4, harmAmp: 0.030, phase: 1.4, speed: 0.55, strands: 12, spread: 0.065, fanAmp: 0.8, cor: '74,107,90',   op: 0.18 },
+    // 2 verdes principais (+10%)
+    { y: 0.30, amp: 0.10, freq: 1.30, harm: 2.6, harmAmp: 0.025, phase: 0.0, speed: 0.45, strands: 12, spread: 0.055, fanAmp: 0.7, cor: '108,138,122', op: 0.176 },
+    { y: 0.55, amp: 0.12, freq: 1.45, harm: 2.4, harmAmp: 0.030, phase: 1.4, speed: 0.55, strands: 12, spread: 0.065, fanAmp: 0.8, cor: '74,107,90',   op: 0.198 },
     // 1 verde-oliva (ponte)
-    { y: 0.72, amp: 0.09, freq: 1.40, harm: 2.7, harmAmp: 0.022, phase: 2.1, speed: 0.50, strands: 10, spread: 0.045, fanAmp: 0.6, cor: '140,154,110', op: 0.13 },
+    { y: 0.72, amp: 0.09, freq: 1.40, harm: 2.7, harmAmp: 0.022, phase: 2.1, speed: 0.50, strands: 10, spread: 0.045, fanAmp: 0.6, cor: '140,154,110', op: 0.143 },
     // 1 dourada (acento)
-    { y: 0.85, amp: 0.08, freq: 1.55, harm: 2.5, harmAmp: 0.020, phase: 0.7, speed: 0.62, strands: 10, spread: 0.040, fanAmp: 0.5, cor: '212,184,150', op: 0.12 },
+    { y: 0.85, amp: 0.08, freq: 1.55, harm: 2.5, harmAmp: 0.020, phase: 0.7, speed: 0.62, strands: 10, spread: 0.040, fanAmp: 0.5, cor: '212,184,150', op: 0.132 },
   ];
 
   function resize() {
@@ -1495,11 +1495,11 @@ function startWlcFundo() {
     const W = canvas.width, H = canvas.height;
     ctx.clearRect(0, 0, W, H);
 
-    // BASE TINT · verde profundo lavando o canvas (ambient · reduzido -20%)
+    // BASE TINT · verde profundo lavando o canvas (+10% intensity)
     const baseGrad = ctx.createLinearGradient(0, 0, 0, H);
-    baseGrad.addColorStop(0,   'rgba(40, 60, 50, 0.10)');
-    baseGrad.addColorStop(0.5, 'rgba(50, 72, 60, 0.06)');
-    baseGrad.addColorStop(1,   'rgba(38, 52, 44, 0.12)');
+    baseGrad.addColorStop(0,   'rgba(40, 60, 50, 0.110)');
+    baseGrad.addColorStop(0.5, 'rgba(50, 72, 60, 0.066)');
+    baseGrad.addColorStop(1,   'rgba(38, 52, 44, 0.132)');
     ctx.fillStyle = baseGrad;
     ctx.fillRect(0, 0, W, H);
 
