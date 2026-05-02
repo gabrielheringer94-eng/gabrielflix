@@ -23,8 +23,8 @@
   <link rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,400&family=Inter:wght@400;500;600&display=swap" />
   <!-- cache-bust agressivo: muda v sempre que houver mudança visual -->
-  <link rel="stylesheet" href="styles.css?v=20260502-h" />
-  <link rel="stylesheet" href="apple.css?v=20260502-h" />
+  <link rel="stylesheet" href="styles.css?v=20260502-i" />
+  <link rel="stylesheet" href="apple.css?v=20260502-i" />
   <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="pragma" content="no-cache" />
   <meta http-equiv="expires" content="0" />
@@ -476,80 +476,43 @@
         <div class="ob-swiper" data-swiper="w33">
           <div class="ob-swiper__track">
             <button class="ob-swiper__card ob-card" data-val="ciclo">
-              <div class="ob-swiper__art">
-                <!-- 3 luas (fases do ciclo) -->
-                <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true">
-                  <circle cx="22" cy="50" r="11"/>
-                  <path d="M50 39 a11 11 0 1 0 0 22 a8 8 0 0 1 0 -22 z" fill="currentColor" opacity="0.55"/>
-                  <circle cx="78" cy="50" r="11" fill="currentColor" opacity="0.85"/>
-                  <path d="M22 27 Q50 19 78 27" opacity="0.4"/>
-                  <path d="M22 73 Q50 81 78 73" opacity="0.4"/>
-                </svg>
+              <div class="ob-swiper__art ob-swiper__art--png">
+                <img src="assets/onboarding/ciclo_menstrual.png" alt="" loading="lazy" decoding="async"/>
               </div>
               <span class="ob-swiper__title">ciclo<br/>menstrual</span>
               <span class="ob-swiper__body">cólica, humor, TPM, fase fértil.</span>
             </button>
 
             <button class="ob-swiper__card ob-card" data-val="hormonal">
-              <div class="ob-swiper__art">
-                <!-- balança / equilíbrio -->
-                <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <line x1="50" y1="22" x2="50" y2="78"/>
-                  <line x1="28" y1="38" x2="72" y2="38"/>
-                  <path d="M28 38 L20 56 L36 56 Z" fill="currentColor" fill-opacity="0.18"/>
-                  <path d="M72 38 L64 56 L80 56 Z" fill="currentColor" fill-opacity="0.18"/>
-                  <ellipse cx="50" cy="78" rx="12" ry="2.5" fill="currentColor" opacity="0.5"/>
-                  <circle cx="50" cy="22" r="3" fill="currentColor"/>
-                </svg>
+              <div class="ob-swiper__art ob-swiper__art--png">
+                <img src="assets/onboarding/equilibrio_hormonal.png" alt="" loading="lazy" decoding="async"/>
               </div>
               <span class="ob-swiper__title">equilíbrio<br/>hormonal</span>
               <span class="ob-swiper__body">tireoide, estrogênio, cabelo, pele.</span>
             </button>
 
             <button class="ob-swiper__card ob-card" data-val="estresse">
-              <div class="ob-swiper__art">
-                <!-- onda mental + nó (estresse) -->
-                <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <path d="M18 56 Q30 42 42 56 T66 56 T82 56" opacity="0.7"/>
-                  <path d="M18 68 Q30 54 42 68 T66 68 T82 68" opacity="0.45"/>
-                  <circle cx="50" cy="34" r="14" opacity="0.85"/>
-                  <path d="M44 32 Q50 26 56 32 Q50 38 44 32 Z" fill="currentColor" opacity="0.4"/>
-                </svg>
+              <div class="ob-swiper__art ob-swiper__art--png">
+                <img src="assets/onboarding/equilibrio_mental.png" alt="" loading="lazy" decoding="async"/>
               </div>
-              <span class="ob-swiper__title">estresse e<br/>ansiedade</span>
-              <span class="ob-swiper__body">carga mental, exaustão, oscilação.</span>
+              <span class="ob-swiper__title">equilíbrio<br/>mental</span>
+              <span class="ob-swiper__body">presença, foco, regulação emocional.</span>
             </button>
 
             <button class="ob-swiper__card ob-card" data-val="peso">
-              <div class="ob-swiper__art">
-                <!-- silhueta corporal -->
-                <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <circle cx="50" cy="24" r="9"/>
-                  <path d="M36 42 Q50 36 64 42 L62 60 Q56 64 50 64 Q44 64 38 60 Z"/>
-                  <path d="M40 60 L36 84"/>
-                  <path d="M60 60 L64 84"/>
-                  <path d="M44 84 L40 84"/>
-                  <path d="M56 84 L60 84"/>
-                  <ellipse cx="50" cy="52" rx="12" ry="3" opacity="0.4"/>
-                </svg>
+              <div class="ob-swiper__art ob-swiper__art--png">
+                <img src="assets/onboarding/composicao_corporal.png" alt="" loading="lazy" decoding="async"/>
               </div>
               <span class="ob-swiper__title">composição<br/>corporal</span>
               <span class="ob-swiper__body">gordura, retenção, corpo por dentro.</span>
             </button>
 
             <button class="ob-swiper__card ob-card" data-val="fertilidade">
-              <div class="ob-swiper__art">
-                <!-- broto / flor de longevidade -->
-                <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <path d="M50 80 L50 46"/>
-                  <path d="M50 46 Q34 38 30 24 Q44 26 50 46" fill="currentColor" fill-opacity="0.18"/>
-                  <path d="M50 46 Q66 38 70 24 Q56 26 50 46" fill="currentColor" fill-opacity="0.18"/>
-                  <circle cx="50" cy="46" r="4" fill="currentColor" opacity="0.8"/>
-                  <path d="M30 80 Q50 76 70 80" opacity="0.55"/>
-                </svg>
+              <div class="ob-swiper__art ob-swiper__art--png">
+                <img src="assets/onboarding/longevidade.png" alt="" loading="lazy" decoding="async"/>
               </div>
-              <span class="ob-swiper__title">fertilidade e<br/>longevidade</span>
-              <span class="ob-swiper__body">fase ovariana, prevenção, futuro.</span>
+              <span class="ob-swiper__title">longevidade</span>
+              <span class="ob-swiper__body">prevenção, vitalidade, futuro do corpo.</span>
             </button>
           </div>
           <div class="ob-swiper__dots" aria-hidden="true"></div>
@@ -3590,6 +3553,6 @@
     </nav>
   </div>
 
-  <script src="app.js?v=20260502-h"></script>
+  <script src="app.js?v=20260502-i"></script>
 </body>
 </html>
