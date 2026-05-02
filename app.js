@@ -1469,12 +1469,12 @@ function startWlcFundo() {
   // op      = opacidade BASE de cada fita (fitas centrais ficam mais opacas, bordas mais fracas)
   const RIBBONS = [
     // 2 verdes principais
-    { y: 0.30, amp: 0.10, freq: 1.30, harm: 2.6, harmAmp: 0.025, phase: 0.0, speed: 0.45, strands: 14, spread: 0.055, fanAmp: 0.7, cor: '108,138,122', op: 0.045 },
-    { y: 0.55, amp: 0.12, freq: 1.45, harm: 2.4, harmAmp: 0.030, phase: 1.4, speed: 0.55, strands: 14, spread: 0.065, fanAmp: 0.8, cor: '74,107,90',   op: 0.055 },
+    { y: 0.30, amp: 0.10, freq: 1.30, harm: 2.6, harmAmp: 0.025, phase: 0.0, speed: 0.45, strands: 12, spread: 0.055, fanAmp: 0.7, cor: '108,138,122', op: 0.16 },
+    { y: 0.55, amp: 0.12, freq: 1.45, harm: 2.4, harmAmp: 0.030, phase: 1.4, speed: 0.55, strands: 12, spread: 0.065, fanAmp: 0.8, cor: '74,107,90',   op: 0.18 },
     // 1 verde-oliva (ponte)
-    { y: 0.72, amp: 0.09, freq: 1.40, harm: 2.7, harmAmp: 0.022, phase: 2.1, speed: 0.50, strands: 12, spread: 0.045, fanAmp: 0.6, cor: '140,154,110', op: 0.038 },
+    { y: 0.72, amp: 0.09, freq: 1.40, harm: 2.7, harmAmp: 0.022, phase: 2.1, speed: 0.50, strands: 10, spread: 0.045, fanAmp: 0.6, cor: '140,154,110', op: 0.13 },
     // 1 dourada (acento)
-    { y: 0.85, amp: 0.08, freq: 1.55, harm: 2.5, harmAmp: 0.020, phase: 0.7, speed: 0.62, strands: 10, spread: 0.040, fanAmp: 0.5, cor: '212,184,150', op: 0.034 },
+    { y: 0.85, amp: 0.08, freq: 1.55, harm: 2.5, harmAmp: 0.020, phase: 0.7, speed: 0.62, strands: 10, spread: 0.040, fanAmp: 0.5, cor: '212,184,150', op: 0.12 },
   ];
 
   function resize() {
@@ -1506,9 +1506,8 @@ function startWlcFundo() {
     // VENTO global · respiração vertical da paisagem inteira
     const ventoY = Math.sin(wlcFundoT * 0.30) * 0.015 * H;
 
-    // ADDITIVE BLEND · onde fitas se cruzam, luz se soma (efeito cristal/seda)
-    ctx.globalCompositeOperation = 'lighter';
-
+    // source-over (default) · empilhamento normal · fitas centrais mais opacas
+    //   evita additive 'lighter' que estava resultando em quase invisível em dark bg
     RIBBONS.forEach((r, i) => {
       // fase progride no tempo (ribbon flui horizontalmente)
       const phaseT     = r.phase + wlcFundoT * r.speed;
@@ -1520,16 +1519,16 @@ function startWlcFundo() {
       for (let k = 0; k < N; k++) {
         // ki ∈ [-0.5, 0.5] · posição da fita dentro da ribbon
         const ki = (N === 1) ? 0 : (k / (N - 1)) - 0.5;
-        // fitas centrais mais densas/opacas, bordas mais fracas (efeito 3D/profundidade)
+        // fitas centrais mais densas, bordas só ligeiramente mais fracas (60-100% range)
         const center = 1 - 2 * Math.abs(ki); // 0 na borda, 1 no centro
-        const strandOp = r.op * (0.35 + 0.65 * center);
+        const strandOp = r.op * (0.60 + 0.40 * center);
 
         ctx.save();
-        ctx.lineWidth   = 0.9 + center * 0.6; // 0.9 → 1.5 px (centro mais grosso)
+        ctx.lineWidth   = 1.1 + center * 0.7; // 1.1 → 1.8 px (centro mais grosso)
         ctx.lineCap     = 'round';
         ctx.strokeStyle = `rgba(${r.cor}, ${strandOp})`;
-        ctx.shadowColor = `rgba(${r.cor}, ${strandOp * 1.6})`;
-        ctx.shadowBlur  = 6 + center * 6; // 6 → 12 px
+        ctx.shadowColor = `rgba(${r.cor}, ${strandOp})`;
+        ctx.shadowBlur  = 8 + center * 8; // 8 → 16 px (centro com glow maior)
 
         ctx.beginPath();
         const segs = 100;
@@ -1542,11 +1541,10 @@ function startWlcFundo() {
                       + harmAmpNow * H * Math.sin(r.harm * 2 * Math.PI * tx + phaseT * 1.3 + i * 0.5);
 
           // FAN: a ribbon abre e fecha ao longo do x, criando torção 3D
-          //   onde fan é alto, fitas se afastam · onde é baixo, se juntam (efeito perspectiva)
           const fan = 1 + r.fanAmp * Math.sin(2 * Math.PI * tx * 0.65 + phaseT * 0.55 + ki * 1.5);
           const strandOffset = ki * r.spread * H * fan;
 
-          // micro-tremor por fita (cada uma com fase ligeiramente própria · efeito tecido)
+          // micro-tremor por fita
           const microWavy = Math.sin(r.freq * 2 * Math.PI * tx + phaseT + ki * 0.4) * 0.004 * H;
 
           const y = r.y * H + ventoY + baseY + strandOffset + microWavy;
@@ -1557,9 +1555,6 @@ function startWlcFundo() {
         ctx.restore();
       }
     });
-
-    // restaura blend mode pra source-over (default)
-    ctx.globalCompositeOperation = 'source-over';
 
     wlcFundoRAF = requestAnimationFrame(frame);
   }
