@@ -1460,17 +1460,17 @@ function startWlcFundo() {
   //   ouro warm    #E8C9A0 → 232,201,160
   //   creme glow   #F5EEE6 → 245,238,230
   const BLOBS = [
-    // 3 verdes (presença principal · opacidade maior)
-    { rx: 0.18, ry: 0.25, baseR: 0.62, px: 0.0, py: 0.5,  spx: 0.32, spy: 0.24, cor: '108,138,122', op: 0.140 },
-    { rx: 0.78, ry: 0.18, baseR: 0.48, px: 1.4, py: 1.7,  spx: 0.28, spy: 0.31, cor: '74,107,90',   op: 0.130 },
-    { rx: 0.55, ry: 0.82, baseR: 0.55, px: 2.3, py: 0.9,  spx: 0.36, spy: 0.22, cor: '90,120,100',  op: 0.105 },
+    // 3 verdes (presença principal · opacidade alta)
+    { rx: 0.18, ry: 0.25, baseR: 0.72, px: 0.0, py: 0.5,  spx: 0.42, spy: 0.32, cor: '108,138,122', op: 0.36 },
+    { rx: 0.78, ry: 0.18, baseR: 0.58, px: 1.4, py: 1.7,  spx: 0.38, spy: 0.41, cor: '74,107,90',   op: 0.34 },
+    { rx: 0.55, ry: 0.82, baseR: 0.65, px: 2.3, py: 0.9,  spx: 0.46, spy: 0.30, cor: '90,120,100',  op: 0.30 },
     // 1 verde-oliva (ponte verde→ouro)
-    { rx: 0.32, ry: 0.62, baseR: 0.40, px: 0.8, py: 2.1,  spx: 0.30, spy: 0.27, cor: '140,154,110', op: 0.075 },
+    { rx: 0.32, ry: 0.62, baseR: 0.50, px: 0.8, py: 2.1,  spx: 0.40, spy: 0.36, cor: '140,154,110', op: 0.22 },
     // 2 douradas (acentos · vento que cruza)
-    { rx: 0.85, ry: 0.45, baseR: 0.42, px: 1.9, py: 1.2,  spx: 0.42, spy: 0.20, cor: '212,184,150', op: 0.070 },
-    { rx: 0.10, ry: 0.85, baseR: 0.32, px: 2.6, py: 0.4,  spx: 0.34, spy: 0.28, cor: '232,201,160', op: 0.055 },
+    { rx: 0.85, ry: 0.45, baseR: 0.52, px: 1.9, py: 1.2,  spx: 0.52, spy: 0.28, cor: '212,184,150', op: 0.20 },
+    { rx: 0.10, ry: 0.85, baseR: 0.42, px: 2.6, py: 0.4,  spx: 0.44, spy: 0.36, cor: '232,201,160', op: 0.16 },
     // 1 creme tênue (luz refletindo · respira lento)
-    { rx: 0.50, ry: 0.30, baseR: 0.28, px: 1.1, py: 2.6,  spx: 0.18, spy: 0.36, cor: '245,238,230', op: 0.028 },
+    { rx: 0.50, ry: 0.30, baseR: 0.36, px: 1.1, py: 2.6,  spx: 0.26, spy: 0.46, cor: '245,238,230', op: 0.10 },
   ];
 
   function resize() {
@@ -1486,47 +1486,56 @@ function startWlcFundo() {
       wlcFundoRAF = null;
       return;
     }
-    // tempo principal mais lento · respira como o mar
-    wlcFundoT += 0.0018;
+    // tempo principal · ritmo natural (perceptível mas calmo)
+    wlcFundoT += 0.0035;
     const W = canvas.width, H = canvas.height;
     ctx.clearRect(0, 0, W, H);
 
-    // VENTO GLOBAL · drift horizontal lento aplicado sobre todos os blobs
-    //   vento1: período longo (~30s), vento2: harmônica curta pra micro-tremor
-    const ventoX = Math.sin(wlcFundoT * 0.45) * 0.018 + Math.sin(wlcFundoT * 1.3) * 0.005;
-    const ventoY = Math.cos(wlcFundoT * 0.31) * 0.014 + Math.sin(wlcFundoT * 0.9) * 0.004;
+    // BASE TINT · verde profundo subtilíssimo lavando todo o canvas
+    //   dá presença ambiente · evita que blobs sumam contra o bg quase preto
+    const baseGrad = ctx.createLinearGradient(0, 0, 0, H);
+    baseGrad.addColorStop(0,   'rgba(40, 60, 50, 0.18)');
+    baseGrad.addColorStop(0.5, 'rgba(50, 72, 60, 0.10)');
+    baseGrad.addColorStop(1,   'rgba(38, 52, 44, 0.20)');
+    ctx.fillStyle = baseGrad;
+    ctx.fillRect(0, 0, W, H);
+
+    // VENTO GLOBAL · drift horizontal/vertical aplicado sobre todos os blobs
+    //   vento1: período longo (perceptível), vento2: harmônica média pra micro-deriva
+    const ventoX = Math.sin(wlcFundoT * 0.55) * 0.045 + Math.sin(wlcFundoT * 1.7) * 0.012;
+    const ventoY = Math.cos(wlcFundoT * 0.41) * 0.034 + Math.sin(wlcFundoT * 1.1) * 0.010;
 
     BLOBS.forEach((b, i) => {
       // ONDA: composição de 2 frequências dá movimento orgânico (mar)
-      //   frequência base lenta + harmônica média + offset por blob (px/py) pra dessincronizar
-      const ondaX = Math.sin(wlcFundoT * b.spx + b.px) * 0.075
-                  + Math.sin(wlcFundoT * b.spx * 2.7 + b.px * 1.3) * 0.022;
-      const ondaY = Math.cos(wlcFundoT * b.spy + b.py) * 0.065
-                  + Math.cos(wlcFundoT * b.spy * 2.3 + b.py * 1.7) * 0.018;
+      //   amplitude maior pra ser perceptível · frequência base + harmônica dessincronizada
+      const ondaX = Math.sin(wlcFundoT * b.spx + b.px) * 0.14
+                  + Math.sin(wlcFundoT * b.spx * 2.7 + b.px * 1.3) * 0.045;
+      const ondaY = Math.cos(wlcFundoT * b.spy + b.py) * 0.12
+                  + Math.cos(wlcFundoT * b.spy * 2.3 + b.py * 1.7) * 0.038;
 
-      // raio respira (escala 1 ± 3.5%) — pulsação lenta + harmônica sutil
+      // raio respira (escala 1 ± 6%) — pulsação lenta + harmônica sutil
       const pulse = 1
-        + 0.035 * Math.sin(wlcFundoT * 0.5 + b.px)
-        + 0.012 * Math.sin(wlcFundoT * 1.4 + b.py * 0.8);
+        + 0.06 * Math.sin(wlcFundoT * 0.55 + b.px)
+        + 0.02 * Math.sin(wlcFundoT * 1.6 + b.py * 0.8);
       const r = Math.min(W, H) * b.baseR * pulse;
 
       // posição final = base + onda própria + vento global (compartilhado)
       const cx = W * (b.rx + ondaX + ventoX);
       const cy = H * (b.ry + ondaY + ventoY);
 
-      // gradient com 3 stops · borda dissolve suavemente
+      // gradient com 4 stops · centro mais denso · borda dissolve suavemente
       const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, r);
       grad.addColorStop(0,    `rgba(${b.cor},${b.op})`);
-      grad.addColorStop(0.45, `rgba(${b.cor},${b.op * 0.55})`);
-      grad.addColorStop(0.8,  `rgba(${b.cor},${b.op * 0.18})`);
+      grad.addColorStop(0.35, `rgba(${b.cor},${b.op * 0.7})`);
+      grad.addColorStop(0.7,  `rgba(${b.cor},${b.op * 0.3})`);
       grad.addColorStop(1,    `rgba(${b.cor},0)`);
 
       // elipse com proporções vivas (sopro vertical) + rotação muito lenta
       ctx.beginPath();
       ctx.ellipse(
         cx, cy, r,
-        r * (0.78 + 0.18 * Math.sin(wlcFundoT * 0.4 + b.py)),
-        wlcFundoT * 0.03 + i * 0.25,
+        r * (0.72 + 0.24 * Math.sin(wlcFundoT * 0.5 + b.py)),
+        wlcFundoT * 0.05 + i * 0.25,
         0, Math.PI * 2
       );
       ctx.fillStyle = grad;
