@@ -4053,11 +4053,12 @@ obCloseBtn && obCloseBtn.addEventListener('click', closeOnboard);
 })();
 
 // cards genéricos dos steps 32 e 33 (perguntas de perfil por gênero)
+// usa is-on (consistente com step 1, step 23 e .ob-swiper__card.is-on no CSS)
 document.querySelectorAll('.ob-slide[data-step="32"] .ob-card, .ob-slide[data-step="33"] .ob-card').forEach((card) => {
   card.addEventListener('click', () => {
-    const siblings = card.parentElement.querySelectorAll('.ob-card');
-    siblings.forEach((x) => x.classList.toggle('is-sel', x === card));
     const slide = card.closest('.ob-slide');
+    slide.querySelectorAll('.ob-card').forEach((c) => c.classList.remove('is-on'));
+    card.classList.add('is-on');
     const next = slide.querySelector('.ob-next');
     if (next) next.disabled = false;
     // salva perfil específico
@@ -4069,6 +4070,91 @@ document.querySelectorAll('.ob-slide[data-step="32"] .ob-card, .ob-slide[data-st
     try { hap(8); } catch (e) {}
   });
 });
+
+// ═══════════════════════════════════════════
+// OB-SWIPER engine · dots dinâmicos + sync scroll + click-to-scroll
+// detecta qualquer .ob-swiper na DOM (steps 32, 33, 23) e wira tudo
+// ═══════════════════════════════════════════
+(function () {
+  const swipers = document.querySelectorAll('.ob-swiper');
+  if (!swipers.length) return;
+
+  swipers.forEach((swiper) => {
+    const track = swiper.querySelector('.ob-swiper__track');
+    const dotsWrap = swiper.querySelector('.ob-swiper__dots');
+    if (!track || !dotsWrap) return;
+
+    const cards = Array.from(track.querySelectorAll('.ob-swiper__card'));
+    if (!cards.length) return;
+
+    // gera dots conforme o nº de cards
+    dotsWrap.innerHTML = '';
+    cards.forEach((_, i) => {
+      const d = document.createElement('button');
+      d.type = 'button';
+      d.className = 'ob-swiper__dot' + (i === 0 ? ' is-on' : '');
+      d.setAttribute('aria-label', 'opção ' + (i + 1));
+      d.dataset.idx = String(i);
+      d.addEventListener('click', () => scrollToCard(i));
+      dotsWrap.appendChild(d);
+    });
+
+    function scrollToCard(idx) {
+      const card = cards[idx];
+      if (!card) return;
+      const trackRect = track.getBoundingClientRect();
+      const cardRect = card.getBoundingClientRect();
+      const offset = cardRect.left - trackRect.left
+                   - (trackRect.width / 2)
+                   + (cardRect.width / 2)
+                   + track.scrollLeft;
+      track.scrollTo({ left: offset, behavior: 'smooth' });
+    }
+
+    function updateActiveDot() {
+      // qual card está mais próximo do centro do track?
+      const trackRect = track.getBoundingClientRect();
+      const center = trackRect.left + trackRect.width / 2;
+      let closestIdx = 0;
+      let closestDist = Infinity;
+      cards.forEach((card, i) => {
+        const rect = card.getBoundingClientRect();
+        const cardCenter = rect.left + rect.width / 2;
+        const dist = Math.abs(cardCenter - center);
+        if (dist < closestDist) { closestDist = dist; closestIdx = i; }
+      });
+      dotsWrap.querySelectorAll('.ob-swiper__dot').forEach((d, i) => {
+        d.classList.toggle('is-on', i === closestIdx);
+      });
+    }
+
+    // sync no scroll (rAF-throttled pra performance)
+    let raf = null;
+    track.addEventListener('scroll', () => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        updateActiveDot();
+        raf = null;
+      });
+    });
+
+    // recalcula quando o slide do swiper fica visível (display:none → flex)
+    // observa mudanças de visibilidade do .ob-slide pai
+    const slide = swiper.closest('.ob-slide');
+    if (slide && 'IntersectionObserver' in window) {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting && e.target.classList.contains('is-active')) {
+            // garante dot 0 ativo + scroll no início
+            track.scrollTo({ left: 0, behavior: 'auto' });
+            updateActiveDot();
+          }
+        });
+      }, { threshold: 0.5 });
+      io.observe(slide);
+    }
+  });
+})();
 
 // generic "continuar" forward
 document.querySelectorAll('.ob-next').forEach((btn) => {
