@@ -1451,13 +1451,26 @@ function startWlcFundo() {
   // força reflow pra garantir dimensões corretas após o display:block
   void canvas.offsetWidth;
 
-  // 4 blobs em paleta Circa champanhe (não gold)
-  // R G B = #D4B896 → 212,184,150 / #E8C9A0 → 232,201,160 / #E8A87C → 232,168,124 / #F5EEE6 → 245,238,230
+  // 7 blobs · paleta verde-mata + dourado champanhe (mar/vento/natureza)
+  //   verde sage   #6C8A7A → 108,138,122
+  //   verde mato   #4A6B5A → 74,107,90
+  //   verde musgo  #5A7864 → 90,120,100
+  //   verde-oliva  #8C9A6E → 140,154,110 (transição p/ ouro)
+  //   ouro champ   #D4B896 → 212,184,150
+  //   ouro warm    #E8C9A0 → 232,201,160
+  //   creme glow   #F5EEE6 → 245,238,230
   const BLOBS = [
-    { rx: 0.20, ry: 0.22, baseR: 0.55, px: 0.0, py: 0.5,  spx: 0.9, spy: 0.7,  cor: '212,184,150', op: 0.085 },
-    { rx: 0.80, ry: 0.70, baseR: 0.45, px: 1.3, py: 1.9,  spx: 0.7, spy: 0.55, cor: '232,201,160', op: 0.055 },
-    { rx: 0.55, ry: 0.45, baseR: 0.38, px: 2.2, py: 0.8,  spx: 1.1, spy: 0.9,  cor: '232,168,124', op: 0.040 },
-    { rx: 0.15, ry: 0.75, baseR: 0.30, px: 0.7, py: 2.4,  spx: 0.6, spy: 1.2,  cor: '245,238,230', op: 0.025 },
+    // 3 verdes (presença principal · opacidade maior)
+    { rx: 0.18, ry: 0.25, baseR: 0.62, px: 0.0, py: 0.5,  spx: 0.32, spy: 0.24, cor: '108,138,122', op: 0.140 },
+    { rx: 0.78, ry: 0.18, baseR: 0.48, px: 1.4, py: 1.7,  spx: 0.28, spy: 0.31, cor: '74,107,90',   op: 0.130 },
+    { rx: 0.55, ry: 0.82, baseR: 0.55, px: 2.3, py: 0.9,  spx: 0.36, spy: 0.22, cor: '90,120,100',  op: 0.105 },
+    // 1 verde-oliva (ponte verde→ouro)
+    { rx: 0.32, ry: 0.62, baseR: 0.40, px: 0.8, py: 2.1,  spx: 0.30, spy: 0.27, cor: '140,154,110', op: 0.075 },
+    // 2 douradas (acentos · vento que cruza)
+    { rx: 0.85, ry: 0.45, baseR: 0.42, px: 1.9, py: 1.2,  spx: 0.42, spy: 0.20, cor: '212,184,150', op: 0.070 },
+    { rx: 0.10, ry: 0.85, baseR: 0.32, px: 2.6, py: 0.4,  spx: 0.34, spy: 0.28, cor: '232,201,160', op: 0.055 },
+    // 1 creme tênue (luz refletindo · respira lento)
+    { rx: 0.50, ry: 0.30, baseR: 0.28, px: 1.1, py: 2.6,  spx: 0.18, spy: 0.36, cor: '245,238,230', op: 0.028 },
   ];
 
   function resize() {
@@ -1473,23 +1486,47 @@ function startWlcFundo() {
       wlcFundoRAF = null;
       return;
     }
-    wlcFundoT += 0.003;
+    // tempo principal mais lento · respira como o mar
+    wlcFundoT += 0.0018;
     const W = canvas.width, H = canvas.height;
     ctx.clearRect(0, 0, W, H);
 
-    BLOBS.forEach((b) => {
-      const r  = Math.min(W, H) * b.baseR * (1 + 0.018 * Math.sin(wlcFundoT * 0.8 + b.px));
-      const cx = W * b.rx + Math.sin(wlcFundoT * b.spx + b.px) * W * 0.06;
-      const cy = H * b.ry + Math.cos(wlcFundoT * b.spy + b.py) * H * 0.06;
+    // VENTO GLOBAL · drift horizontal lento aplicado sobre todos os blobs
+    //   vento1: período longo (~30s), vento2: harmônica curta pra micro-tremor
+    const ventoX = Math.sin(wlcFundoT * 0.45) * 0.018 + Math.sin(wlcFundoT * 1.3) * 0.005;
+    const ventoY = Math.cos(wlcFundoT * 0.31) * 0.014 + Math.sin(wlcFundoT * 0.9) * 0.004;
+
+    BLOBS.forEach((b, i) => {
+      // ONDA: composição de 2 frequências dá movimento orgânico (mar)
+      //   frequência base lenta + harmônica média + offset por blob (px/py) pra dessincronizar
+      const ondaX = Math.sin(wlcFundoT * b.spx + b.px) * 0.075
+                  + Math.sin(wlcFundoT * b.spx * 2.7 + b.px * 1.3) * 0.022;
+      const ondaY = Math.cos(wlcFundoT * b.spy + b.py) * 0.065
+                  + Math.cos(wlcFundoT * b.spy * 2.3 + b.py * 1.7) * 0.018;
+
+      // raio respira (escala 1 ± 3.5%) — pulsação lenta + harmônica sutil
+      const pulse = 1
+        + 0.035 * Math.sin(wlcFundoT * 0.5 + b.px)
+        + 0.012 * Math.sin(wlcFundoT * 1.4 + b.py * 0.8);
+      const r = Math.min(W, H) * b.baseR * pulse;
+
+      // posição final = base + onda própria + vento global (compartilhado)
+      const cx = W * (b.rx + ondaX + ventoX);
+      const cy = H * (b.ry + ondaY + ventoY);
+
+      // gradient com 3 stops · borda dissolve suavemente
       const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, r);
-      grad.addColorStop(0,   `rgba(${b.cor},${b.op})`);
-      grad.addColorStop(0.5, `rgba(${b.cor},${b.op * 0.4})`);
-      grad.addColorStop(1,   `rgba(${b.cor},0)`);
+      grad.addColorStop(0,    `rgba(${b.cor},${b.op})`);
+      grad.addColorStop(0.45, `rgba(${b.cor},${b.op * 0.55})`);
+      grad.addColorStop(0.8,  `rgba(${b.cor},${b.op * 0.18})`);
+      grad.addColorStop(1,    `rgba(${b.cor},0)`);
+
+      // elipse com proporções vivas (sopro vertical) + rotação muito lenta
       ctx.beginPath();
       ctx.ellipse(
         cx, cy, r,
-        r * (0.85 + 0.12 * Math.sin(wlcFundoT * 0.6 + b.py)),
-        wlcFundoT * 0.05,
+        r * (0.78 + 0.18 * Math.sin(wlcFundoT * 0.4 + b.py)),
+        wlcFundoT * 0.03 + i * 0.25,
         0, Math.PI * 2
       );
       ctx.fillStyle = grad;
