@@ -23,8 +23,8 @@
   <link rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,400&family=Inter:wght@400;500;600&display=swap" />
   <!-- cache-bust agressivo: muda v sempre que houver mudança visual -->
-  <link rel="stylesheet" href="styles.css?v=20260425-j" />
-  <link rel="stylesheet" href="apple.css?v=20260425-j" />
+  <link rel="stylesheet" href="styles.css?v=20260502-a" />
+  <link rel="stylesheet" href="apple.css?v=20260502-a" />
   <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="pragma" content="no-cache" />
   <meta http-equiv="expires" content="0" />
@@ -309,117 +309,7 @@
 
           <button class="ob-gender__card" data-gender="man" aria-label="homem">
             <div class="ob-gender__ilus">
-              <svg viewBox="0 0 200 220" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                <defs>
-                  <!-- pele · argila quente difusa, sem brilho metálico -->
-                  <radialGradient id="skinM" cx="38%" cy="32%" r="68%">
-                    <stop offset="0%"  stop-color="#A88876"/>
-                    <stop offset="55%" stop-color="#7C5E4C"/>
-                    <stop offset="100%" stop-color="#4A352A"/>
-                  </radialGradient>
-                  <!-- cabelo afro CURTO · 2 tons orgânicos -->
-                  <radialGradient id="afroM" cx="40%" cy="32%" r="65%">
-                    <stop offset="0%"  stop-color="#4A382C"/>
-                    <stop offset="55%" stop-color="#2A1E16"/>
-                    <stop offset="100%" stop-color="#120C08"/>
-                  </radialGradient>
-                  <!-- suéter sage green · matte clay knit -->
-                  <linearGradient id="suetM" x1="50%" y1="0%" x2="50%" y2="100%">
-                    <stop offset="0%"  stop-color="#A8BDB0"/>
-                    <stop offset="40%" stop-color="#8FA89B"/>
-                    <stop offset="100%" stop-color="#5C7268"/>
-                  </linearGradient>
-                  <!-- decote V do suéter (sombra) -->
-                  <linearGradient id="suetVM" x1="50%" y1="0%" x2="50%" y2="100%">
-                    <stop offset="0%"  stop-color="#5A6E64"/>
-                    <stop offset="100%" stop-color="#3F4E47"/>
-                  </linearGradient>
-                  <!-- camisa interna escura (vislumbre no V) -->
-                  <linearGradient id="camisaM" x1="50%" y1="0%" x2="50%" y2="100%">
-                    <stop offset="0%"  stop-color="#2A2520"/>
-                    <stop offset="100%" stop-color="#1A1612"/>
-                  </linearGradient>
-                  <!-- halo glassmorphism atrás do busto -->
-                  <radialGradient id="haloM" cx="50%" cy="42%" r="58%">
-                    <stop offset="0%"  stop-color="#A8BDB0" stop-opacity="0.22"/>
-                    <stop offset="55%" stop-color="#7A9277" stop-opacity="0.08"/>
-                    <stop offset="100%" stop-color="#7A9277" stop-opacity="0"/>
-                  </radialGradient>
-                  <!-- base ardósia · pedestal -->
-                  <linearGradient id="baseM" x1="50%" y1="0%" x2="50%" y2="100%">
-                    <stop offset="0%"  stop-color="#6A7682"/>
-                    <stop offset="100%" stop-color="#3A434E"/>
-                  </linearGradient>
-                  <!-- light highlight orgânico (não-metálico) -->
-                  <radialGradient id="hiClayM" cx="42%" cy="30%" r="38%">
-                    <stop offset="0%"  stop-color="#FFFFFF" stop-opacity="0.18"/>
-                    <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
-                  </radialGradient>
-                </defs>
-
-                <!-- halo glassmorphism atrás do busto -->
-                <ellipse cx="100" cy="100" rx="92" ry="92" fill="url(#haloM)"/>
-
-                <!-- pedestal · ardósia + friso champanhe duplo -->
-                <ellipse cx="100" cy="205" rx="58" ry="6" fill="#1A1F25" opacity="0.65"/>
-                <ellipse cx="100" cy="200" rx="58" ry="9" fill="url(#baseM)"/>
-                <ellipse cx="100" cy="195" rx="58" ry="3" fill="none"
-                         stroke="#D4B896" stroke-width="0.7" opacity="0.7"/>
-                <ellipse cx="100" cy="195" rx="58" ry="3" fill="none"
-                         stroke="#E8C9A0" stroke-width="0.4" opacity="0.5"/>
-
-                <!-- suéter · ombros arredondados, sem lapelas -->
-                <path d="M40 195
-                         Q40 154 60 134
-                         L82 128
-                         L118 128
-                         L140 134
-                         Q160 154 160 195 Z"
-                      fill="url(#suetM)"/>
-                <!-- decote V do suéter -->
-                <path d="M86 128 L100 156 L114 128 Z" fill="url(#suetVM)"/>
-                <!-- vislumbre da camisa interna no V -->
-                <path d="M91 128 L100 144 L109 128 Z" fill="url(#camisaM)"/>
-
-                <!-- pescoço -->
-                <path d="M88 112 L88 130 Q100 137 112 130 L112 112 Z" fill="url(#skinM)"/>
-
-                <!-- afro CURTO · cropped, mais próximo do crânio -->
-                <!-- base do volume superior -->
-                <ellipse cx="100" cy="58" rx="34" ry="22" fill="url(#afroM)"/>
-                <!-- volume central · curls visíveis -->
-                <ellipse cx="100" cy="48" rx="28" ry="14" fill="url(#afroM)"/>
-                <!-- texture bumps pra parecer curls -->
-                <circle cx="78"  cy="56" r="6"  fill="url(#afroM)" opacity="0.85"/>
-                <circle cx="122" cy="56" r="6"  fill="url(#afroM)" opacity="0.85"/>
-                <circle cx="86"  cy="42" r="5"  fill="url(#afroM)" opacity="0.8"/>
-                <circle cx="100" cy="38" r="6"  fill="url(#afroM)" opacity="0.9"/>
-                <circle cx="115" cy="42" r="5"  fill="url(#afroM)" opacity="0.8"/>
-
-                <!-- rosto -->
-                <ellipse cx="100" cy="86" rx="28" ry="32" fill="url(#skinM)"/>
-
-                <!-- linha do cabelo · começa na testa -->
-                <path d="M72 70 Q100 60 128 70 Q126 76 100 76 Q74 76 72 70 Z"
-                      fill="url(#afroM)" opacity="0.95"/>
-
-                <!-- olhos · pontos discretos -->
-                <ellipse cx="91"  cy="86" rx="2" ry="2.5" fill="#1F1814"/>
-                <ellipse cx="109" cy="86" rx="2" ry="2.5" fill="#1F1814"/>
-
-                <!-- sobrancelhas sutis -->
-                <path d="M86 80 Q91 78 96 80" stroke="#1F1814" stroke-width="1" fill="none" stroke-linecap="round" opacity="0.7"/>
-                <path d="M104 80 Q109 78 114 80" stroke="#1F1814" stroke-width="1" fill="none" stroke-linecap="round" opacity="0.7"/>
-
-                <!-- sorriso suave -->
-                <path d="M91 102 Q100 108 109 102" stroke="#3A2E26" stroke-width="1.4"
-                      fill="none" stroke-linecap="round" opacity="0.55"/>
-
-                <!-- highlight clay sutil na bochecha · luz difusa -->
-                <ellipse cx="92" cy="78" rx="9" ry="6" fill="url(#hiClayM)"/>
-                <!-- highlight no suéter (ombro esq) -->
-                <ellipse cx="68" cy="160" rx="14" ry="9" fill="#FFFFFF" opacity="0.06"/>
-              </svg>
+              <img src="assets/onboarding/busto-homem.png" alt="" width="200" height="220" loading="lazy" decoding="async"/>
             </div>
             <div class="ob-gender__sigil" data-gender="man">
               <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -432,152 +322,7 @@
 
           <button class="ob-gender__card" data-gender="woman" aria-label="mulher">
             <div class="ob-gender__ilus">
-              <svg viewBox="0 0 200 220" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                <defs>
-                  <!-- pele clara · porcelana quente, matte clay -->
-                  <radialGradient id="skinW" cx="38%" cy="30%" r="68%">
-                    <stop offset="0%"  stop-color="#FAE3D2"/>
-                    <stop offset="55%" stop-color="#E5BFA2"/>
-                    <stop offset="100%" stop-color="#A0775E"/>
-                  </radialGradient>
-                  <!-- cabelo castanho · 2 tons orgânicos -->
-                  <radialGradient id="hairW" cx="40%" cy="32%" r="70%">
-                    <stop offset="0%"  stop-color="#7B5638"/>
-                    <stop offset="55%" stop-color="#4E3622"/>
-                    <stop offset="100%" stop-color="#241910"/>
-                  </radialGradient>
-                  <!-- gola alta bege-rosado · matte knit -->
-                  <linearGradient id="golaW" x1="50%" y1="0%" x2="50%" y2="100%">
-                    <stop offset="0%"  stop-color="#EBD5C3"/>
-                    <stop offset="50%" stop-color="#D5B6A2"/>
-                    <stop offset="100%" stop-color="#8A6B5A"/>
-                  </linearGradient>
-                  <linearGradient id="golaShadowW" x1="50%" y1="0%" x2="50%" y2="100%">
-                    <stop offset="0%"  stop-color="#9F7E6C"/>
-                    <stop offset="100%" stop-color="#6E5648"/>
-                  </linearGradient>
-                  <!-- halo blush -->
-                  <radialGradient id="haloW" cx="50%" cy="42%" r="58%">
-                    <stop offset="0%"  stop-color="#EBD5C3" stop-opacity="0.22"/>
-                    <stop offset="55%" stop-color="#D5B6A2" stop-opacity="0.08"/>
-                    <stop offset="100%" stop-color="#D5B6A2" stop-opacity="0"/>
-                  </radialGradient>
-                  <linearGradient id="baseW" x1="50%" y1="0%" x2="50%" y2="100%">
-                    <stop offset="0%"  stop-color="#6A7682"/>
-                    <stop offset="100%" stop-color="#3A434E"/>
-                  </linearGradient>
-                  <radialGradient id="hiClayW" cx="42%" cy="28%" r="38%">
-                    <stop offset="0%"  stop-color="#FFFFFF" stop-opacity="0.22"/>
-                    <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
-                  </radialGradient>
-                  <!-- gradient pra brincos dourados (drop) -->
-                  <linearGradient id="brincoW" x1="50%" y1="0%" x2="50%" y2="100%">
-                    <stop offset="0%"  stop-color="#F5E8C0"/>
-                    <stop offset="100%" stop-color="#B89572"/>
-                  </linearGradient>
-                </defs>
-
-                <!-- halo -->
-                <ellipse cx="100" cy="100" rx="92" ry="92" fill="url(#haloW)"/>
-
-                <!-- pedestal · mesma ardósia + friso champanhe -->
-                <ellipse cx="100" cy="205" rx="58" ry="6" fill="#1A1F25" opacity="0.65"/>
-                <ellipse cx="100" cy="200" rx="58" ry="9" fill="url(#baseW)"/>
-                <ellipse cx="100" cy="195" rx="58" ry="3" fill="none"
-                         stroke="#D4B896" stroke-width="0.7" opacity="0.7"/>
-                <ellipse cx="100" cy="195" rx="58" ry="3" fill="none"
-                         stroke="#E8C9A0" stroke-width="0.4" opacity="0.5"/>
-
-                <!-- mechas laterais caindo dos lados (cabelo solto além do coque) -->
-                <path d="M68 76
-                         Q60 110 64 145
-                         Q66 158 72 168
-                         L78 165
-                         Q74 130 78 96
-                         Z"
-                      fill="url(#hairW)" opacity="0.92"/>
-                <path d="M132 76
-                         Q140 110 136 145
-                         Q134 158 128 168
-                         L122 165
-                         Q126 130 122 96
-                         Z"
-                      fill="url(#hairW)" opacity="0.92"/>
-
-                <!-- gola alta · sobe até o queixo -->
-                <path d="M40 195
-                         Q40 156 58 138
-                         L78 132
-                         L122 132
-                         L142 138
-                         Q160 156 160 195 Z"
-                      fill="url(#golaW)"/>
-                <!-- topo da gola (cilindro fechado no pescoço) -->
-                <path d="M82 132
-                         Q82 122 88 116
-                         L112 116
-                         Q118 122 118 132
-                         Z"
-                      fill="url(#golaW)"/>
-                <!-- sombra interna sutil da gola -->
-                <ellipse cx="100" cy="120" rx="16" ry="3" fill="url(#golaShadowW)" opacity="0.6"/>
-
-                <!-- pescoço (parcialmente coberto pela gola) -->
-                <path d="M90 110 L90 118 Q100 122 110 118 L110 110 Z" fill="url(#skinW)"/>
-
-                <!-- COQUE alto volumoso · pirâmide arredondada acima da cabeça -->
-                <!-- base do coque (envolve topo do crânio) -->
-                <ellipse cx="100" cy="48" rx="28" ry="14" fill="url(#hairW)"/>
-                <!-- corpo principal do coque -->
-                <ellipse cx="100" cy="32" rx="26" ry="20" fill="url(#hairW)"/>
-                <!-- topo arredondado -->
-                <ellipse cx="100" cy="22" rx="20" ry="14" fill="url(#hairW)"/>
-                <!-- volume central -->
-                <ellipse cx="100" cy="28" rx="18" ry="22" fill="url(#hairW)" opacity="0.95"/>
-                <!-- twists/textura sutil no coque -->
-                <path d="M86 22 Q92 14 100 18 Q108 14 114 22" stroke="#5C3F2A" stroke-width="0.8" fill="none" stroke-linecap="round" opacity="0.5"/>
-                <path d="M88 36 Q98 30 112 36" stroke="#5C3F2A" stroke-width="0.8" fill="none" stroke-linecap="round" opacity="0.4"/>
-
-                <!-- testa/franja · linha do cabelo subindo pro coque -->
-                <path d="M76 64
-                         Q80 56 100 54
-                         Q120 56 124 64
-                         Q120 72 100 72
-                         Q80 72 76 64 Z"
-                      fill="url(#hairW)" opacity="0.95"/>
-
-                <!-- rosto · oval clara -->
-                <ellipse cx="100" cy="88" rx="26" ry="30" fill="url(#skinW)"/>
-
-                <!-- olhos · castanhos suaves -->
-                <ellipse cx="92"  cy="86" rx="2" ry="2.5" fill="#3D2A1B"/>
-                <ellipse cx="108" cy="86" rx="2" ry="2.5" fill="#3D2A1B"/>
-                <!-- cílios sutis -->
-                <path d="M88 83 L89 82 M111 82 L112 83" stroke="#1F1814" stroke-width="0.8" stroke-linecap="round" opacity="0.8"/>
-                <!-- sobrancelhas finas -->
-                <path d="M86 80 Q92 78 96 80" stroke="#5C3F2A" stroke-width="0.9" fill="none" stroke-linecap="round" opacity="0.7"/>
-                <path d="M104 80 Q108 78 114 80" stroke="#5C3F2A" stroke-width="0.9" fill="none" stroke-linecap="round" opacity="0.7"/>
-
-                <!-- nariz sutil (sombra) -->
-                <path d="M100 90 Q97 96 100 99 Q103 96 100 90" stroke="#A0775E" stroke-width="0.6" fill="none" opacity="0.4"/>
-
-                <!-- sorriso -->
-                <path d="M93 102 Q100 108 107 102" stroke="#A36F58" stroke-width="1.4"
-                      fill="none" stroke-linecap="round" opacity="0.7"/>
-
-                <!-- BRINCOS dourados · drops com glow -->
-                <g>
-                  <ellipse cx="74" cy="96" rx="2.2" ry="3" fill="url(#brincoW)"/>
-                  <circle cx="74" cy="96" r="3.5" fill="none" stroke="#D4B896" stroke-width="0.4" opacity="0.5"/>
-                  <ellipse cx="126" cy="96" rx="2.2" ry="3" fill="url(#brincoW)"/>
-                  <circle cx="126" cy="96" r="3.5" fill="none" stroke="#D4B896" stroke-width="0.4" opacity="0.5"/>
-                </g>
-
-                <!-- highlight clay sutil bochecha -->
-                <ellipse cx="92" cy="80" rx="9" ry="6" fill="url(#hiClayW)"/>
-                <!-- highlight gola (ombro esq) -->
-                <ellipse cx="68" cy="160" rx="14" ry="9" fill="#FFFFFF" opacity="0.08"/>
-              </svg>
+              <img src="assets/onboarding/busto-mulher.png" alt="" width="200" height="220" loading="lazy" decoding="async"/>
             </div>
             <div class="ob-gender__sigil" data-gender="woman">
               <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -3569,6 +3314,6 @@
     </nav>
   </div>
 
-  <script src="app.js?v=20260425-j"></script>
+  <script src="app.js?v=20260502-a"></script>
 </body>
 </html>
