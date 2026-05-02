@@ -23,8 +23,8 @@
   <link rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,400&family=Inter:wght@400;500;600&display=swap" />
   <!-- cache-bust agressivo: muda v sempre que houver mudança visual -->
-  <link rel="stylesheet" href="styles.css?v=20260502-a" />
-  <link rel="stylesheet" href="apple.css?v=20260502-a" />
+  <link rel="stylesheet" href="styles.css?v=20260502-b" />
+  <link rel="stylesheet" href="apple.css?v=20260502-b" />
   <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="pragma" content="no-cache" />
   <meta http-equiv="expires" content="0" />
@@ -204,30 +204,24 @@
         <h1 class="display">o que você<br/>quer melhorar<br/><em>primeiro?</em></h1>
         <p class="lead">escolha teu foco principal. o circa adapta tudo a partir daí, da rotina aos insights.</p>
 
-        <div class="ob-cards">
-          <button class="ob-card" data-val="energia">
-            <span class="ob-card__title">mais energia</span>
-            <span class="ob-card__body">acordar disposto e render o dia inteiro.</span>
+        <div class="foco-cards">
+          <button class="foco-card ob-card" data-val="performance" aria-label="performance física">
+            <div class="foco-card__art">
+              <img src="assets/onboarding/foco-performance.png" alt="" width="240" height="240" loading="eager" decoding="async"/>
+            </div>
+            <span class="foco-card__title">performance<br/>física</span>
           </button>
-          <button class="ob-card" data-val="performance">
-            <span class="ob-card__title">performance física</span>
-            <span class="ob-card__body">treinar mais forte e recuperar melhor.</span>
+          <button class="foco-card foco-card--center ob-card" data-val="sono" aria-label="melhorar sono">
+            <div class="foco-card__art foco-card__art--breathe">
+              <img src="assets/onboarding/foco-sono.png" alt="" width="240" height="240" loading="eager" decoding="async"/>
+            </div>
+            <span class="foco-card__title">melhorar<br/>sono</span>
           </button>
-          <button class="ob-card" data-val="longevidade">
-            <span class="ob-card__title">longevidade e saúde</span>
-            <span class="ob-card__body">construir saúde pra durar décadas.</span>
-          </button>
-          <button class="ob-card" data-val="composicao">
-            <span class="ob-card__title">composição corporal</span>
-            <span class="ob-card__body">perder gordura sem perder músculo.</span>
-          </button>
-          <button class="ob-card" data-val="mental">
-            <span class="ob-card__title">equilíbrio mental</span>
-            <span class="ob-card__body">menos ansiedade, mais foco e clareza.</span>
-          </button>
-          <button class="ob-card" data-val="sono">
-            <span class="ob-card__title">dormir bem</span>
-            <span class="ob-card__body">pegar no sono rápido e acordar descansado.</span>
+          <button class="foco-card ob-card" data-val="estresse" aria-label="gerenciar estresse">
+            <div class="foco-card__art">
+              <img src="assets/onboarding/foco-estresse.png" alt="" width="240" height="240" loading="eager" decoding="async"/>
+            </div>
+            <span class="foco-card__title">gerenciar<br/>estresse</span>
           </button>
         </div>
 
@@ -410,6 +404,42 @@
         </div>
 
         <button class="btn btn--primary btn--full ob-next" disabled>continuar</button>
+      </div>
+
+      <!-- 1.8 · nível de atividade · pílula dourada com 3 figs · novo step 51 -->
+      <div class="ob-slide" data-step="51">
+        <h1 class="display">como você<br/>descreve seu<br/><em>nível de atividade?</em></h1>
+        <p class="lead">isso calibra a intensidade dos teus rituais e treinos.</p>
+
+        <div class="ativ-labels-top">
+          <span class="ativ-label" data-lvl="1">sedentário</span>
+          <span class="ativ-label" data-lvl="2">moderado</span>
+          <span class="ativ-label" data-lvl="3">atlético</span>
+        </div>
+
+        <div class="ativ-pill-wrap" data-active="2">
+          <div class="ativ-pill">
+            <div class="ativ-pill__glow"></div>
+          </div>
+          <div class="ativ-thumb"></div>
+          <button type="button" class="ativ-fig" data-lvl="1" aria-label="pouco movimento">
+            <img src="assets/onboarding/atividade-sed.png" alt="" loading="eager" decoding="async"/>
+          </button>
+          <button type="button" class="ativ-fig" data-lvl="2" aria-label="moderado">
+            <img src="assets/onboarding/atividade-mod.png" alt="" loading="eager" decoding="async"/>
+          </button>
+          <button type="button" class="ativ-fig" data-lvl="3" aria-label="intenso">
+            <img src="assets/onboarding/atividade-ath.png" alt="" loading="eager" decoding="async"/>
+          </button>
+        </div>
+
+        <div class="ativ-labels-base">
+          <span class="ativ-sublabel" data-lvl="1">pouco<br/>movimento</span>
+          <span></span>
+          <span class="ativ-sublabel" data-lvl="3">intenso</span>
+        </div>
+
+        <button class="btn btn--primary btn--full ob-next">continuar</button>
       </div>
 
       <!-- 12 · roda hoje -->
@@ -770,12 +800,9 @@
       <!-- 27 · bora -->
       <div class="ob-slide" data-step="26">
         <div class="ob-final">
-          <svg viewBox="0 0 80 80" width="72" height="72" fill="none" stroke="currentColor" stroke-width="1.2">
-            <circle cx="40" cy="40" r="34" opacity="0.3"/>
-            <circle cx="40" cy="40" r="26" opacity="0.55"/>
-            <circle cx="40" cy="40" r="18" opacity="0.8"/>
-            <circle cx="40" cy="40" r="6" fill="currentColor"/>
-          </svg>
+          <div class="score-gem-wrap">
+            <img class="score-gem" src="assets/onboarding/score-gem.png" alt="circa score" width="240" height="240" loading="eager" decoding="async"/>
+          </div>
           <h1 class="display">pronto,<br/>Gabriel.</h1>
           <p class="lead">teu primeiro check-in tá valendo. o mapa começa a se desenhar a partir de agora.</p>
         </div>
@@ -3314,6 +3341,6 @@
     </nav>
   </div>
 
-  <script src="app.js?v=20260502-a"></script>
+  <script src="app.js?v=20260502-b"></script>
 </body>
 </html>

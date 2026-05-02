@@ -3980,7 +3980,8 @@ function renderObStep() {
 // insere 31 (gênero), 32 (homem), 33 (mulher) entre step 1 e step 2
 // SUBSTITUI o quiz antigo (12-20) pelo flow do temperamento (41-47):
 // 5 cenários (41-45) + processando (46) + revelação (47)
-const OB_FLOW = [1, 31, 32, 33, 41, 42, 43, 44, 45, 46, 47, 21, 22, 23, 24, 25, 26];
+// step 51 · nível de atividade · pílula dourada com 3 figs · após gênero, antes do temperamento
+const OB_FLOW = [1, 31, 32, 33, 51, 41, 42, 43, 44, 45, 46, 47, 21, 22, 23, 24, 25, 26];
 
 function obCurrentGender() {
   try { return localStorage.getItem('circa_gender') || null; } catch (e) { return null; }
@@ -4077,15 +4078,48 @@ document.querySelectorAll('.ob-next').forEach((btn) => {
   });
 });
 
-// step 1 · motivação (single select)
+// step 1 · foco principal (single select) · 3 cards visuais com PNGs
 document.querySelectorAll('.ob-slide[data-step="1"] .ob-card').forEach((card) => {
   card.addEventListener('click', () => {
     document.querySelectorAll('.ob-slide[data-step="1"] .ob-card').forEach((c) => c.classList.remove('is-on'));
     card.classList.add('is-on');
     document.querySelector('.ob-slide[data-step="1"] .ob-next').disabled = false;
+    try { localStorage.setItem('circa_foco', card.dataset.val || ''); } catch (e) {}
     hap(8);
   });
 });
+
+// step 51 · nível de atividade · pílula dourada · clicar em fig troca o ativo
+(function () {
+  const wrap = document.querySelector('.ob-slide[data-step="51"] .ativ-pill-wrap');
+  if (!wrap) return;
+  // restaura último valor (default 2 = moderado)
+  let stored = 2;
+  try { stored = parseInt(localStorage.getItem('circa_atividade') || '2', 10); } catch (e) {}
+  if (![1,2,3].includes(stored)) stored = 2;
+  setActiv(stored);
+
+  function setActiv(lvl) {
+    wrap.dataset.active = String(lvl);
+    const pos = lvl === 1 ? '17%' : lvl === 3 ? '83%' : '50%';
+    const thumb = wrap.querySelector('.ativ-thumb');
+    const glow  = wrap.querySelector('.ativ-pill__glow');
+    if (thumb) thumb.style.setProperty('--thumb-pos', pos);
+    if (glow)  glow.style.setProperty('--glow-pos', pos);
+    try { localStorage.setItem('circa_atividade', String(lvl)); } catch (e) {}
+  }
+
+  wrap.querySelectorAll('.ativ-fig').forEach((fig) => {
+    fig.addEventListener('click', (e) => {
+      e.preventDefault();
+      const lvl = parseInt(fig.dataset.lvl, 10);
+      if ([1,2,3].includes(lvl)) {
+        setActiv(lvl);
+        hap(6);
+      }
+    });
+  });
+})();
 
 // step 14 · input de nome
 const obNameInput = document.getElementById('ob-name');
