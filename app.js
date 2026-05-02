@@ -1356,14 +1356,55 @@ document.querySelectorAll('.btn, .quick__item').forEach((b) => {
 
 // ═════════════════════════════════════════
 // WELCOME · primeira visita (pré-onboarding)
+//   modo 'full'    → 3 telas (respira → frases → confirmação) → onboarding
+//   modo 'breathe' → só respira personalizada com nome → app
 // ═════════════════════════════════════════
 const welcomeEl = document.getElementById('welcome');
 
-function openWelcome() {
+// saudação baseada na hora local
+function saudacaoCirca() {
+  const h = new Date().getHours();
+  if (h < 5)  return 'boa madrugada';
+  if (h < 12) return 'bom dia';
+  if (h < 18) return 'boa tarde';
+  return 'boa noite';
+}
+
+// textos da tela 1 (respira) — alterna entre full e breathe
+const WLC_TEXTS = {
+  full: {
+    eye:  'antes de começar',
+    lead: 'o circa não é mais um app de metas.<br/>é o único que te conhece de verdade.',
+    cta:  'estou pronto',
+  },
+  breathe: {
+    eye:  () => saudacaoCirca() + ', ' + (USER_NAME || 'gabriel').toLowerCase(),
+    lead: 'um instante,<br/>antes de continuar.',
+    cta:  'continuar',
+  },
+};
+
+function aplicarTextosWlc(mode) {
+  const t = WLC_TEXTS[mode] || WLC_TEXTS.full;
+  const tela1 = welcomeEl.querySelector('.wlc-tela[data-wlc="1"]');
+  if (!tela1) return;
+  const eye  = tela1.querySelector('.wlc-eye');
+  const lead = tela1.querySelector('.lead');
+  const cta  = tela1.querySelector('.wlc-cta');
+  if (eye)  eye.textContent  = (typeof t.eye  === 'function') ? t.eye()  : t.eye;
+  if (lead) lead.innerHTML   = (typeof t.lead === 'function') ? t.lead() : t.lead;
+  if (cta)  cta.textContent  = (typeof t.cta  === 'function') ? t.cta()  : t.cta;
+}
+
+function openWelcome(opts) {
   if (!welcomeEl) return;
+  const mode = (opts && opts.mode) || 'full';
+  welcomeEl.classList.toggle('is-breathe-only', mode === 'breathe');
   welcomeEl.classList.add('is-open');
   welcomeEl.setAttribute('aria-hidden', 'false');
   document.body.style.overflow = 'hidden';
+  // textos personalizados conforme o modo
+  aplicarTextosWlc(mode);
   // sempre começa na tela 1 ao abrir
   wlcIrPara(1);
   // liga o fundo vivo global
@@ -1510,6 +1551,11 @@ function wlcIrPara(n) {
 // botões "estou pronto" / "voltar"
 document.querySelectorAll('[data-wlc-go]').forEach((b) => {
   b.addEventListener('click', () => {
+    // breathe mode: CTA "continuar" só fecha welcome, não avança
+    if (welcomeEl && welcomeEl.classList.contains('is-breathe-only')) {
+      closeWelcome();
+      return;
+    }
     const n = parseInt(b.dataset.wlcGo, 10);
     if (!isNaN(n)) wlcIrPara(n);
   });
@@ -1553,11 +1599,15 @@ if (wlcEntrar) wlcEntrar.addEventListener('click', () => {
   try { hap(15); } catch (e) {}
 });
 
+// trigger de abertura
+//   primeira visita     → modo 'full' (3 telas + onboarding)
+//   visitas seguintes   → modo 'breathe' (só respira com saudação + nome)
 try {
-  if (!localStorage.getItem('circa_welcome_seen')) {
-    setTimeout(openWelcome, 400);
-  }
-} catch (e) {}
+  const seen = localStorage.getItem('circa_welcome_seen');
+  setTimeout(() => openWelcome({ mode: seen ? 'breathe' : 'full' }), 400);
+} catch (e) {
+  setTimeout(() => openWelcome({ mode: 'full' }), 400);
+}
 
 // ═════════════════════════════════════════
 // LOG DE TREINO · esporte picker + log adaptativo + confirmação

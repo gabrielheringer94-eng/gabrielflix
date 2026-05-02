@@ -2946,6 +2946,20 @@ body.fundo-on .onboard .ob-top {
   transition: width 1s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+/* ─────────────────────────────────────────
+   BREATHE-ONLY MODE
+   visitas após primeira: só tela respira com saudação personalizada
+   esconde indicadores de progresso (não há jornada de 3 passos aqui)
+   ───────────────────────────────────────── */
+.welcome.is-breathe-only .wlc-step,
+.welcome.is-breathe-only .wlc-prog {
+  display: none !important;
+}
+.welcome.is-breathe-only .wlc-top {
+  /* logo e nome circa permanecem · só some o counter/progress */
+  padding-bottom: 8px;
+}
+
 /* container das telas (absolute stacked) */
 .wlc-tela {
   position: absolute;
