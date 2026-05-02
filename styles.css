@@ -1888,6 +1888,7 @@ button.hero:active { transform: scale(0.985); }
   background: radial-gradient(120% 60% at 50% 0%, rgba(212,184,150,0.08), transparent 60%);
   pointer-events: none;
 }
+/* default: sono central é o destaque · transferível pro hovered */
 .foco-card--center {
   flex: 1.35;
   height: 240px;
@@ -1896,6 +1897,28 @@ button.hero:active { transform: scale(0.985); }
     0 0 0 1px rgba(212,184,150,0.12),
     0 18px 38px rgba(0,0,0,0.45),
     0 0 36px rgba(212,184,150,0.10);
+}
+/* qualquer card sob hover assume o destaque (mesmo size + glow do sono) */
+@media (hover: hover) {
+  .foco-cards:hover .foco-card--center:not(:hover) {
+    flex: 1;
+    height: 200px;
+    border-color: rgba(212,184,150,0.18);
+    box-shadow: none;
+  }
+  .foco-cards .foco-card:hover {
+    flex: 1.35;
+    height: 240px;
+    border-color: rgba(212,184,150,0.36);
+    box-shadow:
+      0 0 0 1px rgba(212,184,150,0.12),
+      0 18px 38px rgba(0,0,0,0.45),
+      0 0 36px rgba(212,184,150,0.10);
+  }
+  /* cards laterais ganham um leve fade quando outro card é o protagonista */
+  .foco-cards:hover .foco-card:not(:hover) {
+    opacity: 0.65;
+  }
 }
 .foco-card__art {
   flex: 1;
@@ -1930,7 +1953,21 @@ button.hero:active { transform: scale(0.985); }
   color: var(--accent);
   letter-spacing: 0.05em;
 }
-.foco-card:hover { transform: translateY(-2px); border-color: rgba(212,184,150,0.32); }
+/* título · transfere o destaque pro hovered */
+@media (hover: hover) {
+  .foco-cards:hover .foco-card--center:not(:hover) .foco-card__title {
+    font-size: 11px;
+    color: var(--fg-muted);
+    letter-spacing: 0.04em;
+  }
+  .foco-card:hover .foco-card__title {
+    font-size: 12px;
+    color: var(--accent);
+    letter-spacing: 0.05em;
+  }
+  /* lift sutil no card hovered (já não conflita com o flex change) */
+  .foco-card:hover { transform: translateY(-3px); }
+}
 .foco-card.is-on {
   transform: translateY(-3px) scale(1.02);
   border-color: rgba(212,184,150,0.55);
