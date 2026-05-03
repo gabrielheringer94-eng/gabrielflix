@@ -909,7 +909,7 @@ function attachHandle(grp) {
 }
 
 function getSvgPoint(ev) {
-  const t = ev.touches ? Ev.touches[0] : ev;
+  const t = ev.touches ? ev.touches[0] : ev;
   const pt = svg.createSVGPoint();
   pt.x = t.clientX;
   pt.y = t.clientY;
@@ -3293,7 +3293,7 @@ function renderRitualWheel() {
     const start = (ev) => { ev.preventDefault(); dragging = true; hap(6); };
     const move = (ev) => {
       if (!dragging) return;
-      const t = ev.touches ? Ev.touches[0] : ev;
+      const t = ev.touches ? ev.touches[0] : ev;
       const pt = rSvg.createSVGPoint();
       pt.x = t.clientX; pt.y = t.clientY;
       const ctm = rSvg.getScreenCTM();
@@ -4567,7 +4567,7 @@ function renderObWheel() {
     };
     const move = (ev) => {
       if (!dragging) return;
-      const t = ev.touches ? Ev.touches[0] : ev;
+      const t = ev.touches ? ev.touches[0] : ev;
       const pt = obSvg.createSVGPoint();
       pt.x = t.clientX; pt.y = t.clientY;
       const ctm = obSvg.getScreenCTM();
@@ -4661,7 +4661,7 @@ function renderObGoalWheel() {
     };
     const move = (ev) => {
       if (!dragging) return;
-      const t = ev.touches ? Ev.touches[0] : ev;
+      const t = ev.touches ? ev.touches[0] : ev;
       const pt = gSvg.createSVGPoint();
       pt.x = t.clientX; pt.y = t.clientY;
       const ctm = gSvg.getScreenCTM();
@@ -6303,7 +6303,7 @@ function calcularScoreDinamico() {
   const lastSono = d.sono[d.sono.length - 1];
   if (lastSono && lastSono.dur) {
     const m = lastSono.dur.match(/(\d+)h/);
-    const h = m ? ParseInt(m[1], 10) : 0;
+    const h = m ? parseInt(m[1], 10) : 0;
     if (h >= 7 && h <= 9) corpo += 18;
     else if (h >= 6) corpo += 8;
     else corpo -= 5;
@@ -6346,7 +6346,7 @@ function gerarInsightsDinamicos() {
   const lastSono = d.sono[d.sono.length - 1];
   if (lastSono) {
     const m = lastSono.dur && lastSono.dur.match(/(\d+)h\s*(\d+)min/);
-    const totalMin = m ? ParseInt(m[1], 10) * 60 + parseInt(m[2], 10) : 0;
+    const totalMin = m ? parseInt(m[1], 10) * 60 + parseInt(m[2], 10) : 0;
     if (totalMin > 0 && totalMin < 420) {
       ins.push({ tag: 'corpo', cor: '#7B8BB8', txt: `dormiu ${lastSono.dur}, abaixo da meta. Teu corpo tá pedindo 7h.` });
     } else if (totalMin >= 420 && totalMin <= 540) {
@@ -6652,7 +6652,7 @@ function renderPerfilSaude() {
     if (!sonoArr.length) return null;
     const mins = sonoArr.slice(-7).map(s => {
       const m = s.dur && s.dur.match(/(\d+)h\s*(\d+)min/);
-      return m ? ParseInt(m[1],10)*60 + parseInt(m[2],10) : 0;
+      return m ? parseInt(m[1],10)*60 + parseInt(m[2],10) : 0;
     }).filter(n => n > 0);
     if (!mins.length) return null;
     return Math.round(mins.reduce((a,b) => a+b, 0) / mins.length);
@@ -7204,7 +7204,7 @@ function temprRender() {
   const man = document.getElementById('tempr-rev-manifesto');
   if (man) man.innerHTML = T.manifesto;
   const secNome = document.getElementById('tempr-rev-sec-nome');
-  if (secNome) secNome.textContent = Ts.nome;
+  if (secNome) secNome.textContent = ts.nome;
   const secDot = document.getElementById('tempr-rev-sec-dot');
   if (secDot) secDot.className = 'tempr-rev-sec-dot ' + sec;
   const cham = document.getElementById('tempr-rev-chamado-txt');
