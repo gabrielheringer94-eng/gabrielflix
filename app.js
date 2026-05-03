@@ -7653,3 +7653,71 @@ function temprDrawElemento(tipo, cor) {
     init();
   }
 })();
+
+// ═════════════════════════════════════════════════════════
+// HOME ACTIONS · 5 cards editoriais que substituem o tabbar
+// click no card → openSheet(data-sheet)  · dots sync com scroll
+// ═════════════════════════════════════════════════════════
+(function () {
+  const wrap = document.querySelector('.home-actions');
+  if (!wrap) return;
+  const track = wrap.querySelector('.home-actions__track');
+  const dotsWrap = wrap.querySelector('.home-actions__dots');
+  if (!track || !dotsWrap) return;
+
+  const cards = Array.from(track.querySelectorAll('.home-action-card'));
+  if (!cards.length) return;
+
+  dotsWrap.innerHTML = '';
+  cards.forEach((_, i) => {
+    const d = document.createElement('button');
+    d.type = 'button';
+    d.className = 'home-actions__dot' + (i === 0 ? ' is-on' : '');
+    d.setAttribute('aria-label', 'card ' + (i + 1));
+    d.addEventListener('click', () => scrollToCard(i));
+    dotsWrap.appendChild(d);
+  });
+
+  function scrollToCard(idx) {
+    const card = cards[idx];
+    if (!card) return;
+    const tr = track.getBoundingClientRect();
+    const cr = card.getBoundingClientRect();
+    const offset = cr.left - tr.left - (tr.width / 2) + (cr.width / 2) + track.scrollLeft;
+    track.scrollTo({ left: offset, behavior: 'smooth' });
+  }
+
+  function updateActiveDot() {
+    const tr = track.getBoundingClientRect();
+    const center = tr.left + tr.width / 2;
+    let closestIdx = 0, closestDist = Infinity;
+    cards.forEach((card, i) => {
+      const r = card.getBoundingClientRect();
+      const cardCenter = r.left + r.width / 2;
+      const dist = Math.abs(cardCenter - center);
+      if (dist < closestDist) { closestDist = dist; closestIdx = i; }
+    });
+    dotsWrap.querySelectorAll('.home-actions__dot').forEach((d, i) => {
+      d.classList.toggle('is-on', i === closestIdx);
+    });
+  }
+
+  let raf = null;
+  track.addEventListener('scroll', () => {
+    if (raf) return;
+    raf = requestAnimationFrame(() => { updateActiveDot(); raf = null; });
+  });
+
+  cards.forEach((card) => {
+    card.addEventListener('click', (e) => {
+      e.preventDefault();
+      const sheetId = card.dataset.sheet;
+      if (sheetId && typeof openSheet === 'function') {
+        try { hap(8); } catch (er) {}
+        openSheet(sheetId);
+      }
+    });
+  });
+
+  requestAnimationFrame(updateActiveDot);
+})();
