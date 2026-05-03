@@ -5844,7 +5844,10 @@ body:not(.is-woman) [data-target="cycle"] { display: none; }
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
-  touch-action: none;
+  /* fix · era touch-action: none que bloqueava TUDO (pan-x, pan-y, gestos)
+     impedindo swipe entre seções E scroll-snap horizontal dos cards
+     agora pan-x pan-y deixa ambos passarem, sem permitir zoom (manipulation parcial) */
+  touch-action: pan-x pan-y;
   transition: opacity 400ms ease, visibility 0s linear 0s;
 }
 
