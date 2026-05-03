@@ -2895,11 +2895,12 @@ body.apple-mode .wlc-fundo { display: block; }
 .welcome > .wlc-top  { position: relative; z-index: 3; background: transparent; }
 .welcome > .wlc-tela { z-index: 2; }
 
-/* fix sobreposição · quando welcome está aberto, esconde .app (home) atrás
-   antes: home renderizava na z-index 1 e vazava através do welcome transparente
-   agora: app fica display:none e o welcome ocupa tela inteira sozinho · canvas fundo
-   continua visível pelo z-index 0 via body.apple-mode .wlc-fundo (regra mais abaixo) */
-body.welcome-open .app { display: none; }
+/* fix sobreposição · welcome E onboarding têm bg semi-transparente (deixa canvas vazar)
+   mas isso fazia o .app (home, z-index 1) também vazar visualmente · solução: esconde .app
+   via display:none enquanto qualquer overlay full-screen estiver ativo · canvas (z-index 0)
+   continua visível pelo apple-mode (regra mais abaixo) */
+body.welcome-open  .app,
+body.onboard-open  .app { display: none; }
 
 /* onboarding com bg quase transparente (fallback dark warm) quando body.fundo-on · canvas vaza por baixo
    o gradient sutil garante que enquanto o canvas faz warming up no primeiro frame,

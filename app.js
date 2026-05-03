@@ -1495,8 +1495,8 @@ function startWlcFundo() {
       wlcFundoRAF = null;
       return;
     }
-    // tempo principal · ritmo natural
-    wlcFundoT += 0.005;
+    // tempo principal · ritmo natural · +15% velocity (era 0.005, agora 0.00575)
+    wlcFundoT += 0.00575;
     const W = canvas.width, H = canvas.height;
     ctx.clearRect(0, 0, W, H);
 
@@ -4023,6 +4023,7 @@ function openOnboard() {
   renderObStep();
   onboard.classList.add('is-open');
   onboard.setAttribute('aria-hidden', 'false');
+  document.body.classList.add('onboard-open');   // esconde .app via CSS
   document.body.style.overflow = 'hidden';
   hap(12);
   // mantém o fundo vivo rodando durante todo o onboarding
@@ -4032,6 +4033,7 @@ function openOnboard() {
 function closeOnboard() {
   onboard.classList.remove('is-open');
   onboard.setAttribute('aria-hidden', 'true');
+  document.body.classList.remove('onboard-open');
   document.body.style.overflow = '';
   // só desliga o fundo se welcome também não estiver aberto
   if (typeof maybeStopWlcFundo === 'function') maybeStopWlcFundo();
