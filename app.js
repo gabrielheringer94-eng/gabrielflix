@@ -4338,13 +4338,51 @@ document.querySelectorAll('.ob-slide[data-step="1"] .ob-card').forEach((card) =>
 });
 
 // step 51 · nível de atividade · pílula dourada · clicar em fig troca o ativo
+// PNGs gender-aware: usa atividade_{fem|man}_{sed|mod|ath}.png quando gênero conhecido
+// fallback pro terracotta clay genérico (atividade-{sed|mod|ath}.png) pra 'outro' ou
+// até o user gerar todas as 6 variações Airbnb-style
 (function () {
   const wrap = document.querySelector('.ob-slide[data-step="51"] .ativ-pill-wrap');
   if (!wrap) return;
+
+  // PNGs disponíveis (Airbnb-style por gênero) · só os explicitamente listados aqui
+  // existem como arquivos · os que faltam caem no fallback automaticamente
+  const FIGS_AVAILABLE = {
+    fem: { sed: true, mod: true, ath: false },   // ath ainda não gerado
+    man: { sed: false, mod: true, ath: false },  // sed e ath ainda não gerados
+  };
+  const LVL_KEY = { 1: 'sed', 2: 'mod', 3: 'ath' };
+  // mapeia png path apropriado pro card lvl X dado o gênero atual
+  function pngForLvl(lvl) {
+    const g = (() => {
+      try { return localStorage.getItem('circa_gender'); } catch (e) { return null; }
+    })();
+    const variant = (g === 'man') ? 'man' : (g === 'woman' ? 'fem' : null);
+    const key = LVL_KEY[lvl];
+    if (variant && FIGS_AVAILABLE[variant] && FIGS_AVAILABLE[variant][key]) {
+      return `assets/onboarding/atividade_${variant}_${key}.png`;
+    }
+    // fallback: terracotta clay genérico
+    return `assets/onboarding/atividade-${key}.png`;
+  }
+
+  // aplica os 3 srcs corretos no init (e sempre que setActiv roda · barato)
+  function syncImgs() {
+    wrap.querySelectorAll('.ativ-fig').forEach((fig) => {
+      const lvl = parseInt(fig.dataset.lvl, 10);
+      const img = fig.querySelector('img');
+      if (img && [1,2,3].includes(lvl)) {
+        const newSrc = pngForLvl(lvl);
+        if (!img.src.endsWith(newSrc)) img.src = newSrc;
+      }
+    });
+  }
+
   // restaura último valor (default 2 = moderado)
   let stored = 2;
   try { stored = parseInt(localStorage.getItem('circa_atividade') || '2', 10); } catch (e) {}
   if (![1,2,3].includes(stored)) stored = 2;
+  syncImgs();
   setActiv(stored);
 
   function setActiv(lvl) {
@@ -4367,6 +4405,20 @@ document.querySelectorAll('.ob-slide[data-step="1"] .ob-card').forEach((card) =>
       }
     });
   });
+
+  // se o usuário muda gênero depois (volta no onboarding), re-sincroniza no próximo
+  // open do step 51 · listener no slide pra refresh automático
+  const slide = wrap.closest('.ob-slide');
+  if (slide && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting && e.target.classList.contains('is-active')) {
+          syncImgs();
+        }
+      });
+    }, { threshold: 0.5 });
+    io.observe(slide);
+  }
 })();
 
 // step 14 · input de nome
