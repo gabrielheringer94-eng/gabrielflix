@@ -1391,9 +1391,9 @@ function aplicarTextosWlc(mode) {
   const eye  = tela1.querySelector('.wlc-eye');
   const lead = tela1.querySelector('.lead');
   const cta  = tela1.querySelector('.wlc-cta');
-  if (eye)  eye.textContent  = (typeof t.eye  === 'function') ? T.eye()  : t.eye;
-  if (lead) lead.innerHTML   = (typeof t.lead === 'function') ? T.lead() : t.lead;
-  if (cta)  cta.textContent  = (typeof t.cta  === 'function') ? T.cta()  : t.cta;
+  if (eye)  eye.textContent  = (typeof t.eye  === 'function') ? t.eye()  : t.eye;
+  if (lead) lead.innerHTML   = (typeof t.lead === 'function') ? t.lead() : t.lead;
+  if (cta)  cta.textContent  = (typeof t.cta  === 'function') ? t.cta()  : t.cta;
 }
 
 function openWelcome(opts) {
@@ -4745,7 +4745,7 @@ function renderObGoalWheel() {
       const ry = b.r * (1 + p.amp * Math.cos(fundoT * p.spd * 60 + b.py));
       const cx = b.x + Math.sin(fundoT * p.spd * 30 + b.px) * W * 0.04;
       const cy = b.y + Math.cos(fundoT * p.spd * 25 + b.py) * H * 0.04;
-      const cor = bi === 0 ? P.c1 : bi === 1 ? P.c2 : p.c3;
+      const cor = bi === 0 ? p.c1 : bi === 1 ? p.c2 : p.c3;
       const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, rx);
       g.addColorStop(0, `rgba(${cor[0]},${cor[1]},${cor[2]},${cor[3]})`);
       g.addColorStop(1, `rgba(${cor[0]},${cor[1]},${cor[2]},0)`);
