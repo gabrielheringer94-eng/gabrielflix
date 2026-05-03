@@ -98,19 +98,19 @@ if (labOpen) {
 // ───── suplementos & medicamentos ─────
 // catálogo: nome curto + dose padrão + horário sugerido
 const SUPPS_CATALOG = {
-  creatina:    { nome: 'creatina',         dose: '5g',        timing: 'qualquer hora' },
-  whey:        { nome: 'whey protein',     dose: '30g',       timing: 'pós-treino' },
-  vitD:        { nome: 'vitamina D',       dose: '4000 UI',   timing: 'manhã com gordura' },
-  b12:         { nome: 'vitamina B12',     dose: '1000 mcg',  timing: 'manhã' },
-  omega3:      { nome: 'ômega 3',          dose: '2g',        timing: 'almoço' },
-  magnesio:    { nome: 'magnésio',         dose: '300mg',     timing: 'antes de dormir' },
-  multi:       { nome: 'multivitamínico',  dose: '1 cápsula', timing: 'manhã' },
-  folato:      { nome: 'folato',           dose: '400 mcg',   timing: 'manhã' },
-  anticonc:    { nome: 'anticoncepcional', dose: '1 comp.',   timing: 'mesma hora todo dia' },
-  antialerg:   { nome: 'antialérgico',     dose: '1 comp.',   timing: 'manhã' },
-  antihiper:   { nome: 'anti-hipertensivo',dose: '1 comp.',   timing: 'mesma hora todo dia' },
-  antidepres:  { nome: 'antidepressivo',   dose: '1 comp.',   timing: 'mesma hora todo dia' },
-  cafeina:     { nome: 'pre-treino',       dose: '1 dose',    timing: 'antes do treino' },
+  creatina:    { nome: 'Creatina',         dose: '5g',        timing: 'qualquer hora' },
+  whey:        { nome: 'Whey protein',     dose: '30g',       timing: 'pós-treino' },
+  vitD:        { nome: 'Vitamina D',       dose: '4000 UI',   timing: 'manhã com gordura' },
+  b12:         { nome: 'Vitamina B12',     dose: '1000 mcg',  timing: 'manhã' },
+  omega3:      { nome: 'Ômega 3',          dose: '2g',        timing: 'almoço' },
+  magnesio:    { nome: 'Magnésio',         dose: '300mg',     timing: 'antes de dormir' },
+  multi:       { nome: 'Multivitamínico',  dose: '1 cápsula', timing: 'manhã' },
+  folato:      { nome: 'Folato',           dose: '400 mcg',   timing: 'manhã' },
+  anticonc:    { nome: 'Anticoncepcional', dose: '1 comp.',   timing: 'mesma hora todo dia' },
+  antialerg:   { nome: 'Antialérgico',     dose: '1 comp.',   timing: 'manhã' },
+  antihiper:   { nome: 'Anti-hipertensivo',dose: '1 comp.',   timing: 'mesma hora todo dia' },
+  antidepres:  { nome: 'Antidepressivo',   dose: '1 comp.',   timing: 'mesma hora todo dia' },
+  cafeina:     { nome: 'Pre-treino',       dose: '1 dose',    timing: 'antes do treino' },
 };
 
 // estado: lista de keys que o usuário toma + status (true=tomou hoje)
@@ -271,7 +271,7 @@ if (trainingOpen) {
 
 // ───── treino por dia ─────
 const WEEK_WORKOUTS = {
-  seg: { day: 'seg', label: 'segunda', type: 'musculação', subtitle: 'peito & tríceps · 60min', status: 'done',
+  seg: { day: 'seg', label: 'Segunda', type: 'musculação', subtitle: 'Peito & tríceps · 60min', status: 'done',
          exercises: [
            { name: 'supino reto',        meta: '4 × 8 · 80kg' },
            { name: 'supino inclinado',   meta: '3 × 10 · 60kg' },
@@ -279,7 +279,7 @@ const WEEK_WORKOUTS = {
            { name: 'tríceps corda',      meta: '4 × 12 · 22kg' },
            { name: 'tríceps francês',    meta: '3 × 10 · 18kg' },
          ]},
-  ter: { day: 'ter', label: 'terça', type: 'musculação', subtitle: 'ombros & trapézio · 60min', status: 'done',
+  ter: { day: 'ter', label: 'Terça', type: 'musculação', subtitle: 'Ombros & trapézio · 60min', status: 'done',
          exercises: [
            { name: 'desenvolvimento',    meta: '4 × 8 · 24kg' },
            { name: 'elevação lateral',   meta: '4 × 12 · 10kg' },
@@ -287,7 +287,7 @@ const WEEK_WORKOUTS = {
            { name: 'encolhimento',       meta: '4 × 10 · 30kg' },
            { name: 'face pull',          meta: '3 × 15 · 20kg' },
          ]},
-  qua: { day: 'qua', label: 'quarta', type: 'musculação', subtitle: 'costas & bíceps · 60min', status: 'done',
+  qua: { day: 'qua', label: 'Quarta', type: 'musculação', subtitle: 'Costas & bíceps · 60min', status: 'done',
          exercises: [
            { name: 'puxada frontal',     meta: '4 × 10 · 55kg' },
            { name: 'remada curvada',     meta: '4 × 8 · 60kg' },
@@ -295,14 +295,14 @@ const WEEK_WORKOUTS = {
            { name: 'rosca direta',       meta: '4 × 10 · 16kg' },
            { name: 'rosca martelo',      meta: '3 × 12 · 14kg' },
          ]},
-  qui: { day: 'qui', label: 'quinta', type: 'descanso ativo', subtitle: 'mobilidade · 30min', status: 'rest',
+  qui: { day: 'qui', label: 'Quinta', type: 'descanso ativo', subtitle: 'Mobilidade · 30min', status: 'rest',
          exercises: [
            { name: 'cervical',           meta: '5 min' },
            { name: 'lombar',             meta: '10 min' },
            { name: 'quadril',            meta: '10 min' },
            { name: 'respiração',         meta: '5 min' },
          ]},
-  sex: { day: 'sex', label: 'sexta', type: 'musculação', subtitle: 'pernas · 75min', status: 'done',
+  sex: { day: 'sex', label: 'Sexta', type: 'musculação', subtitle: 'Pernas · 75min', status: 'done',
          exercises: [
            { name: 'agachamento livre',  meta: '5 × 6 · 100kg' },
            { name: 'leg press',          meta: '4 × 10 · 180kg' },
@@ -310,7 +310,7 @@ const WEEK_WORKOUTS = {
            { name: 'stiff',              meta: '4 × 10 · 70kg' },
            { name: 'panturrilha',        meta: '4 × 15 · 100kg' },
          ]},
-  sab: { day: 'sab', label: 'sábado', type: 'musculação', subtitle: 'abdome & core + cardio leve · 45min · hoje', status: 'today',
+  sab: { day: 'sab', label: 'Sábado', type: 'musculação', subtitle: 'Abdome & core + cardio leve · 45min · hoje', status: 'today',
          exercises: [
            { name: 'abdominal reto',     meta: '4 × 20' },
            { name: 'prancha',            meta: '3 × 60s' },
@@ -318,7 +318,7 @@ const WEEK_WORKOUTS = {
            { name: 'prancha lateral',    meta: '3 × 40s cada lado' },
            { name: 'esteira leve',       meta: '20 min · pace 6:30' },
          ]},
-  dom: { day: 'dom', label: 'domingo', type: 'descanso', subtitle: 'sem treino programado', status: 'rest',
+  dom: { day: 'dom', label: 'Domingo', type: 'descanso', subtitle: 'Sem treino programado', status: 'rest',
          exercises: []},
 };
 
@@ -331,16 +331,16 @@ function openDay(key) {
   currentDayKey = key;
   dayEditing = false;
 
-  document.getElementById('day-eyebrow').textContent = 'dia · ' + d.label;
+  document.getElementById('day-eyebrow').textContent = 'Dia · ' + d.label;
   document.getElementById('day-title').textContent = d.type;
   document.getElementById('day-subtitle').textContent = d.subtitle;
 
   const statusEl = document.getElementById('day-status');
   statusEl.className = 'day-status';
-  if (d.status === 'done')  { statusEl.textContent = 'feito'; statusEl.classList.add('is-done'); }
-  if (d.status === 'today') { statusEl.textContent = 'hoje · em aberto'; statusEl.classList.add('is-today'); }
-  if (d.status === 'plan')  { statusEl.textContent = 'planejado'; statusEl.classList.add('is-plan'); }
-  if (d.status === 'rest')  { statusEl.textContent = 'descanso'; statusEl.classList.add('is-rest'); }
+  if (d.status === 'done')  { statusEl.textContent = 'Feito'; statusEl.classList.add('is-done'); }
+  if (d.status === 'today') { statusEl.textContent = 'Hoje · em aberto'; statusEl.classList.add('is-today'); }
+  if (d.status === 'plan')  { statusEl.textContent = 'Planejado'; statusEl.classList.add('is-plan'); }
+  if (d.status === 'rest')  { statusEl.textContent = 'Descanso'; statusEl.classList.add('is-rest'); }
 
   renderDayExercises();
 
@@ -454,34 +454,34 @@ if (daySwapBtn && daySwap) {
 
 // apply swap
 const SWAP_TEMPLATES = {
-  'strength-upper': { type: 'força · superior', subtitle: 'peito, ombro, tríceps · 60min', status: 'plan',
+  'strength-upper': { type: 'força · superior', subtitle: 'Peito, ombro, tríceps · 60min', status: 'plan',
     exercises: [
       { name: 'supino reto',       meta: '4 × 8 · 80kg' },
       { name: 'desenvolvimento',   meta: '4 × 10 · 22kg' },
       { name: 'elevação lateral',  meta: '3 × 12 · 10kg' },
       { name: 'tríceps corda',     meta: '4 × 12 · 22kg' },
     ]},
-  'strength-lower': { type: 'força · inferior', subtitle: 'pernas, glúteo · 75min', status: 'plan',
+  'strength-lower': { type: 'força · inferior', subtitle: 'Pernas, glúteo · 75min', status: 'plan',
     exercises: [
       { name: 'agachamento',       meta: '5 × 6 · 100kg' },
       { name: 'leg press',         meta: '4 × 10 · 180kg' },
       { name: 'stiff',             meta: '4 × 10 · 70kg' },
       { name: 'panturrilha',       meta: '4 × 15 · 100kg' },
     ]},
-  cardio: { type: 'cardio', subtitle: 'corrida ou bike · 45min', status: 'plan',
+  cardio: { type: 'cardio', subtitle: 'Corrida ou bike · 45min', status: 'plan',
     exercises: [
       { name: 'aquecimento',       meta: '5 min' },
       { name: 'corrida steady',    meta: '35 min · pace 5:30' },
       { name: 'desaquecimento',    meta: '5 min' },
     ]},
-  mobility: { type: 'mobilidade', subtitle: 'alongamento + core · 30min', status: 'plan',
+  mobility: { type: 'mobilidade', subtitle: 'Alongamento + core · 30min', status: 'plan',
     exercises: [
       { name: 'cervical',          meta: '5 min' },
       { name: 'quadril',           meta: '10 min' },
       { name: 'core',              meta: '10 min' },
       { name: 'respiração',        meta: '5 min' },
     ]},
-  rest: { type: 'descanso', subtitle: 'recovery passivo', status: 'rest', exercises: [] },
+  rest: { type: 'descanso', subtitle: 'Recovery passivo', status: 'rest', exercises: [] },
 };
 
 document.querySelectorAll('.swap-opt').forEach((opt) => {
@@ -552,7 +552,7 @@ function updateWater() {
   if (waterStatus) {
     const delta = Math.round(((waterMl - waterGoal) / waterGoal) * 100);
     if (pct >= 95) {
-      waterStatus.textContent = 'meta batida · ✓';
+      waterStatus.textContent = 'Meta batida · ✓';
       waterStatus.className = 'water-status is-on';
     } else {
       waterStatus.textContent = Math.abs(delta) + '% abaixo da meta';
@@ -650,14 +650,14 @@ function renderWow() {
 
 // ───── área (roda) data + modal ─────
 const AREA_DETAILS = {
-  saude:    { title: 'saúde',         goal: 9, last: 'treino hoje · musculação 60min',           suggest: 'mantenha cadência. 3 treinos matinais essa semana.' },
-  carreira: { title: 'carreira',      goal: 9, last: '2h de deep work ontem',           suggest: 'bloqueia 90min amanhã cedo pro projeto X.' },
-  familia:  { title: 'família',       goal: 8, last: 'ligou pra mãe há 4 dias',         suggest: 'marca um almoço esse fim de semana.' },
-  relac:    { title: 'relações',      goal: 8, last: 'última refeição social há 9 dias', suggest: 'convida alguém pro jantar de sábado.' },
-  lazer:    { title: 'lazer',         goal: 7, last: 'nada logado essa semana',          suggest: 'tira 1h hoje pra algo que não é produtivo.' },
-  desenv:   { title: 'desenvolvimento', goal: 8, last: 'leu 20min ontem',                suggest: 'continua no mesmo livro, consistência > volume.' },
-  espirit:  { title: 'espírito',      goal: 7, last: 'última prática 12 dias atrás',     suggest: 'você marcou meditação como prática. 10min hoje?' },
-  financas: { title: 'finanças',      goal: 8, last: 'sem registro esse mês',            suggest: 'define esse mês onde tá a meta dos 30%.' },
+  saude:    { title: 'Saúde',         goal: 9, last: 'treino hoje · musculação 60min',           suggest: 'mantenha cadência. 3 treinos matinais essa semana.' },
+  carreira: { title: 'Carreira',      goal: 9, last: '2h de deep work ontem',           suggest: 'bloqueia 90min amanhã cedo pro projeto X.' },
+  familia:  { title: 'Família',       goal: 8, last: 'ligou pra mãe há 4 dias',         suggest: 'marca um almoço esse fim de semana.' },
+  relac:    { title: 'Relações',      goal: 8, last: 'última refeição social há 9 dias', suggest: 'convida alguém pro jantar de sábado.' },
+  lazer:    { title: 'Lazer',         goal: 7, last: 'nada logado essa semana',          suggest: 'tira 1h hoje pra algo que não é produtivo.' },
+  desenv:   { title: 'Desenvolvimento', goal: 8, last: 'leu 20min ontem',                suggest: 'continua no mesmo livro, consistência > volume.' },
+  espirit:  { title: 'Espírito',      goal: 7, last: 'última prática 12 dias atrás',     suggest: 'você marcou meditação como prática. 10min hoje?' },
+  financas: { title: 'Finanças',      goal: 8, last: 'sem registro esse mês',            suggest: 'define esse mês onde tá a meta dos 30%.' },
 };
 
 const AREA_HIST = {
@@ -675,7 +675,7 @@ function openArea(key) {
   const d = AREA_DETAILS[key];
   const a = AREAS.find((x) => x.key === key);
   if (!d || !a) return;
-  document.getElementById('area-eyebrow').textContent = 'área · ' + d.title;
+  document.getElementById('area-eyebrow').textContent = 'Área · ' + d.title;
   document.getElementById('area-title').textContent = d.title;
   document.getElementById('area-now').textContent = a.value;
   document.getElementById('area-goal').textContent = d.goal;
@@ -777,16 +777,16 @@ if (ppSkip) ppSkip.addEventListener('click', () => { closeSheet(); hap(8); });
 if (ppSave) ppSave.addEventListener('click', () => {
   ppSave.textContent = '✓';
   hap(15);
-  setTimeout(() => { closeSheet(); ppSave.textContent = 'salvar'; }, 500);
+  setTimeout(() => { closeSheet(); ppSave.textContent = 'Salvar'; }, 500);
 });
 
 // ───── roda da vida ─────
 const AREAS = [
-  { key: 'saude',   label: 'saúde',    value: 7 },
-  { key: 'familia', label: 'família',  value: 6 },
-  { key: 'relac',   label: 'relações', value: 5 },
-  { key: 'lazer',   label: 'lazer',    value: 4 },
-  { key: 'espirit', label: 'espírito', value: 7 },
+  { key: 'saude',   label: 'Saúde',    value: 7 },
+  { key: 'familia', label: 'Família',  value: 6 },
+  { key: 'relac',   label: 'Relações', value: 5 },
+  { key: 'lazer',   label: 'Lazer',    value: 4 },
+  { key: 'espirit', label: 'Espírito', value: 7 },
 ];
 
 const R_MAX = 130;
@@ -909,7 +909,7 @@ function attachHandle(grp) {
 }
 
 function getSvgPoint(ev) {
-  const t = ev.touches ? ev.touches[0] : ev;
+  const t = ev.touches ? Ev.touches[0] : ev;
   const pt = svg.createSVGPoint();
   pt.x = t.clientX;
   pt.y = t.clientY;
@@ -961,7 +961,7 @@ function setUserName(name) {
 function refreshNameDependents() {
   // saudação do topo
   const greet = document.querySelector('.screen--home .top__greet');
-  if (greet) greet.textContent = 'boa tarde, ' + USER_NAME;
+  if (greet) greet.textContent = 'Boa tarde, ' + USER_NAME;
   // título do humor
   const moodTitle = document.querySelector('.screen--mood .mood-intro .display');
   if (moodTitle) moodTitle.innerHTML = USER_NAME + ',<br/>como você<br/>está hoje?';
@@ -980,7 +980,7 @@ function stateWord(score) {
 
 function narrativePrefix(score, name) {
   // templates com nome no começo. "Parabéns" só aparece em scores altos.
-  if (score >= 90) return `${name}, parabéns, você tá <em id="hero-state-inline">voando</em>.`;
+  If (score >= 90) return `${name}, parabéns, você tá <em id="hero-state-inline">voando</em>.`;
   if (score >= 80) return `${name}, parabéns, você tá <em id="hero-state-inline">constante</em>.`;
   if (score >= 70) return `${name}, você tá <em id="hero-state-inline">em ritmo</em>.`;
   if (score >= 60) return `${name}, hoje tá <em id="hero-state-inline">aquecendo</em>.`;
@@ -990,10 +990,10 @@ function narrativePrefix(score, name) {
 
 function narrativeLine(score, humorContrib) {
   const h = humorContrib;
-  if (h >= 26) return 'humor alto puxou o dia. sono curto ainda pesa.';
-  if (h >= 22) return 'dia em ritmo. treino ajudou, sono puxou.';
-  if (h >= 16) return 'dia truncado. amanhã começa zerado.';
-  return 'humor baixo pesou. respira, amanhã refaz.';
+  if (h >= 26) return 'humor alto puxou o dia. Sono curto ainda pesa.';
+  if (h >= 22) return 'dia em ritmo. Treino ajudou, sono puxou.';
+  if (h >= 16) return 'dia truncado. Amanhã começa zerado.';
+  return 'humor baixo pesou. Respira, amanhã refaz.';
 }
 
 // ───── afirmações por faixa de score (6 buckets × 5 variações) ─────
@@ -1002,19 +1002,19 @@ const AFFIRMATIONS = [
   [
     'tudo bem não estar bem.',
     'se cuide agora, recupera depois.',
-    'corpo pede descanso. ouça.',
-    'liga pra alguém. toma água. dorme cedo.',
-    'amanhã você cuida. hoje só passa.',
+    'corpo pede descanso. Ouça.',
+    'liga pra alguém. Toma água. Dorme cedo.',
+    'amanhã você cuida. Hoje só passa.',
     'dia difícil, não dia ruim.',
   ],
   // 45-59 · atenção (acolhedor + convite à pausa)
   [
     'respira, amanhã refaz.',
-    'tá pedindo uma pausa. ouve.',
-    'nem todo dia é alto. faz parte do ritmo.',
+    'tá pedindo uma pausa. Ouve.',
+    'nem todo dia é alto. Faz parte do ritmo.',
     'amanhã começa sem culpa.',
-    'reconhece o que pesou. sem drama.',
-    'desacelera. sem pressa de virar o jogo.',
+    'reconhece o que pesou. Sem drama.',
+    'desacelera. Sem pressa de virar o jogo.',
   ],
   // 60-69 · aquecendo (realista, acolhedor)
   [
@@ -1028,7 +1028,7 @@ const AFFIRMATIONS = [
   // 70-79 · em ritmo (afirmativo, sem exagero)
   [
     'fluindo, sem drama.',
-    'tá no caminho. mantém.',
+    'tá no caminho. Mantém.',
     'pequenos ajustes e vira ótimo.',
     'sem grandes desvios, bom sinal.',
     'o ritmo tá teu.',
@@ -1040,14 +1040,14 @@ const AFFIRMATIONS = [
     'pequenos passos, grande caminho.',
     'tá no teu jogo.',
     'sólido, e sustentável.',
-    'dia redondo. guarda essa sensação.',
+    'dia redondo. Guarda essa sensação.',
     'o que tu faz de novo hoje, amanhã é hábito.',
   ],
   // 90+ · voando (celebrativo, lembra que é mérito)
   [
     'tu tá em casa hoje.',
-    'esse ritmo é teu. guarda.',
-    'dia de pico. aproveita o impulso.',
+    'esse ritmo é teu. Guarda.',
+    'dia de pico. Aproveita o impulso.',
     'quando funciona, funciona.',
     'consistência premiada.',
     'corpo e mente alinhados, saboreia.',
@@ -1214,39 +1214,39 @@ const MOOD_WORDS = {
 // definições detalhadas pra sheet de status (abre ao tapar na palavra)
 const STATUS_DEFS = {
   energy: {
-    title: 'energia',
+    title: 'Energia',
     hint:  'quanto teu corpo tem de bateria disponível pro dia.',
     levels: [
-      { desc: 'exausto. corpo pedindo pra parar. comum após madrugada, doença ou semanas seguidas de déficit.' },
-      { desc: 'bateria no fim. consegue funcionar, mas cada tarefa pesa. treino pesado hoje vai custar.' },
-      { desc: 'engrenando devagar. faz o essencial sem brilho extra. ritmo mínimo sustentável.' },
-      { desc: 'operando bem. dá conta do dia normal sem tropeço. treino moderado tranquilo.' },
-      { desc: 'disposto. sobra pra fazer o extra, treino sério, foco prolongado, decisões difíceis.' },
-      { desc: 'transbordando. dia com capacidade de alto rendimento em qualquer coisa que escolher.' },
+      { desc: 'Exausto. Corpo pedindo pra parar. Comum após madrugada, doença ou semanas seguidas de déficit.' },
+      { desc: 'Bateria no fim. Consegue funcionar, mas cada tarefa pesa. Treino pesado hoje vai custar.' },
+      { desc: 'Engrenando devagar. Faz o essencial sem brilho extra. Ritmo mínimo sustentável.' },
+      { desc: 'Operando bem. Dá conta do dia normal sem tropeço. Treino moderado tranquilo.' },
+      { desc: 'Disposto. Sobra pra fazer o extra, treino sério, foco prolongado, decisões difíceis.' },
+      { desc: 'Transbordando. Dia com capacidade de alto rendimento em qualquer coisa que escolher.' },
     ]
   },
   mood: {
-    title: 'humor',
+    title: 'Humor',
     hint:  'como você tá se sentindo emocionalmente agora.',
     levels: [
-      { desc: 'tristeza forte ou irritação difícil de controlar. dia pedindo cuidado extra, conversa, descanso, apoio.' },
-      { desc: 'pra baixo, apagado. nada empolga muito. dia tá pesando.' },
-      { desc: 'oscilando. alguns momentos bons, outros pesam. sensível a gatilho.' },
-      { desc: 'estável. nem pra cima nem pra baixo. neutro funcional.' },
-      { desc: 'satisfeito. dia com mais momentos bons que ruins. sensação de tá no lugar certo.' },
-      { desc: 'animado, leve, conectado. dia redondo emocionalmente, aproveita.' },
+      { desc: 'Tristeza forte ou irritação difícil de controlar. Dia pedindo cuidado extra, conversa, descanso, apoio.' },
+      { desc: 'Pra baixo, apagado. Nada empolga muito. Dia tá pesando.' },
+      { desc: 'Oscilando. Alguns momentos bons, outros pesam. Sensível a gatilho.' },
+      { desc: 'Estável. Nem pra cima nem pra baixo. Neutro funcional.' },
+      { desc: 'Satisfeito. Dia com mais momentos bons que ruins. Sensação de tá no lugar certo.' },
+      { desc: 'Animado, leve, conectado. Dia redondo emocionalmente, aproveita.' },
     ]
   },
   anx: {
-    title: 'ansiedade',
-    hint:  'quanto ruído mental tá atrapalhando o presente. aqui, menos é melhor.',
+    title: 'Ansiedade',
+    hint:  'quanto ruído mental tá atrapalhando o presente. Aqui, menos é melhor.',
     levels: [
-      { desc: 'presente, relaxado. mente sem ruído de fundo. estado ideal.' },
-      { desc: 'um alerta de fundo, mas sob controle. normal em dia de tarefa importante.' },
-      { desc: 'preocupação existe mas não atrapalha o que precisa ser feito.' },
-      { desc: 'começa a interferir, em decisões, sono, foco. atenção aqui.' },
-      { desc: 'corpo tenso, ruminação constante. custa executar tarefa básica. dia pesado.' },
-      { desc: 'sintomas físicos, pensamento acelerado, paralisia. procure apoio, não tem que passar sozinho.' },
+      { desc: 'Presente, relaxado. Mente sem ruído de fundo. Estado ideal.' },
+      { desc: 'Um alerta de fundo, mas sob controle. Normal em dia de tarefa importante.' },
+      { desc: 'Preocupação existe mas não atrapalha o que precisa ser feito.' },
+      { desc: 'Começa a interferir, em decisões, sono, foco. Atenção aqui.' },
+      { desc: 'Corpo tenso, ruminação constante. Custa executar tarefa básica. Dia pesado.' },
+      { desc: 'Sintomas físicos, pensamento acelerado, paralisia. Procure apoio, não tem que passar sozinho.' },
     ]
   },
 };
@@ -1324,7 +1324,7 @@ document.querySelectorAll('.screen--mood .btn--primary').forEach((btn) => {
     btn.textContent = '✓';
     setTimeout(() => {
       goTo('home');
-      btn.textContent = 'pronto';
+      btn.textContent = 'Pronto';
     }, 400);
   });
 });
@@ -1365,16 +1365,16 @@ const welcomeEl = document.getElementById('welcome');
 function saudacaoCirca() {
   const h = new Date().getHours();
   if (h < 5)  return 'boa madrugada';
-  if (h < 12) return 'bom dia';
-  if (h < 18) return 'boa tarde';
-  return 'boa noite';
+  if (h < 12) return 'Bom dia';
+  if (h < 18) return 'Boa tarde';
+  return 'Boa noite';
 }
 
 // textos da tela 1 (respira) — alterna entre full e breathe
 const WLC_TEXTS = {
   full: {
     eye:  'antes de começar',
-    lead: 'o circa não é mais um app de metas.<br/>é o único que te conhece de verdade.',
+    lead: 'o circa não é mais um app de metas.<br/>É o único que te conhece de verdade.',
     cta:  'estou pronto',
   },
   breathe: {
@@ -1391,9 +1391,9 @@ function aplicarTextosWlc(mode) {
   const eye  = tela1.querySelector('.wlc-eye');
   const lead = tela1.querySelector('.lead');
   const cta  = tela1.querySelector('.wlc-cta');
-  if (eye)  eye.textContent  = (typeof t.eye  === 'function') ? t.eye()  : t.eye;
-  if (lead) lead.innerHTML   = (typeof t.lead === 'function') ? t.lead() : t.lead;
-  if (cta)  cta.textContent  = (typeof t.cta  === 'function') ? t.cta()  : t.cta;
+  if (eye)  eye.textContent  = (typeof t.eye  === 'function') ? T.eye()  : t.eye;
+  if (lead) lead.innerHTML   = (typeof t.lead === 'function') ? T.lead() : t.lead;
+  if (cta)  cta.textContent  = (typeof t.cta  === 'function') ? T.cta()  : t.cta;
 }
 
 function openWelcome(opts) {
@@ -1590,7 +1590,7 @@ function stopWlcFundo() {
 let wlcTelaAtual = 1;
 
 function wlcIrPara(n) {
-  const telas = welcomeEl ? welcomeEl.querySelectorAll('.wlc-tela') : [];
+  const telas = welcomeEl ? WelcomeEl.querySelectorAll('.wlc-tela') : [];
   if (!telas.length) return;
   const atual = welcomeEl.querySelector(`.wlc-tela[data-wlc="${wlcTelaAtual}"]`);
   const prox  = welcomeEl.querySelector(`.wlc-tela[data-wlc="${n}"]`);
@@ -1682,11 +1682,11 @@ const MODALIDADES = {
   musculacao: {
     nome: 'Musculação', icon: '🏋️',
     campos: [
-      { id: 'duracao',  label: 'duração',      unit: 'min',     placeholder: '60' },
-      { id: 'series',   label: 'séries totais',unit: 'séries',  placeholder: '20' },
-      { id: 'carga',    label: 'carga média',  unit: 'kg',      placeholder: '40' },
+      { id: 'duracao',  label: 'Duração',      unit: 'min',     placeholder: '60' },
+      { id: 'series',   label: 'Séries totais',unit: 'séries',  placeholder: '20' },
+      { id: 'carga',    label: 'Carga média',  unit: 'kg',      placeholder: '40' },
     ],
-    msg: 'carga registrada. o Circa tá mapeando teu padrão de recuperação.',
+    msg: 'carga registrada. O Circa tá mapeando teu padrão de recuperação.',
     insights: [
       'treinos acima de 45min têm retorno decrescente, intensidade bate duração.',
       'você treina melhor em dias com mais de 7h de sono.',
@@ -1696,11 +1696,11 @@ const MODALIDADES = {
   corrida: {
     nome: 'Corrida', icon: '🏃',
     campos: [
-      { id: 'distancia', label: 'distância', unit: 'km',      placeholder: '5' },
-      { id: 'duracao',   label: 'tempo',     unit: 'min',     placeholder: '30' },
-      { id: 'pace',      label: 'pace médio',unit: 'min/km',  placeholder: '6.0' },
+      { id: 'distancia', label: 'Distância', unit: 'km',      placeholder: '5' },
+      { id: 'duracao',   label: 'Tempo',     unit: 'min',     placeholder: '30' },
+      { id: 'pace',      label: 'Pace médio',unit: 'min/km',  placeholder: '6.0' },
     ],
-    msg: 'km registrados. continua por 7 dias e os insights começam a aparecer.',
+    msg: 'km registrados. Continua por 7 dias e os insights começam a aparecer.',
     insights: [
       'corredores que registram pace melhoram 12% mais rápido.',
       'hidratação antes do treino impacta diretamente no teu pace.',
@@ -1710,10 +1710,10 @@ const MODALIDADES = {
   pilates: {
     nome: 'Pilates', icon: '🧘',
     campos: [
-      { id: 'duracao', label: 'duração', unit: 'min', placeholder: '50' },
-      { id: 'foco',    label: 'foco',    unit: '',    placeholder: 'core / mobilidade / força' },
+      { id: 'duracao', label: 'Duração', unit: 'min', placeholder: '50' },
+      { id: 'foco',    label: 'Foco',    unit: '',    placeholder: 'core / mobilidade / força' },
     ],
-    msg: 'pilates registrado. consistência aqui é o que gera transformação real.',
+    msg: 'pilates registrado. Consistência aqui é o que gera transformação real.',
     insights: [
       'pilates regular reduz dores lombares em até 36% em 8 semanas.',
       'combinar pilates com musculação maximiza mobilidade e força.',
@@ -1723,11 +1723,11 @@ const MODALIDADES = {
   ciclismo: {
     nome: 'Ciclismo', icon: '🚴',
     campos: [
-      { id: 'distancia', label: 'distância', unit: 'km',  placeholder: '20' },
-      { id: 'duracao',   label: 'tempo',     unit: 'min', placeholder: '60' },
-      { id: 'elevacao',  label: 'elevação',  unit: 'm',   placeholder: '200' },
+      { id: 'distancia', label: 'Distância', unit: 'km',  placeholder: '20' },
+      { id: 'duracao',   label: 'Tempo',     unit: 'min', placeholder: '60' },
+      { id: 'elevacao',  label: 'Elevação',  unit: 'm',   placeholder: '200' },
     ],
-    msg: 'pedal registrado. distância e elevação alimentam teu perfil fisiológico.',
+    msg: 'pedal registrado. Distância e elevação alimentam teu perfil fisiológico.',
     insights: [
       'ciclismo é excelente pra saúde cardiovascular com baixo impacto articular.',
       'pedalar em jejum acelera queima de gordura em treinos leves.',
@@ -1737,10 +1737,10 @@ const MODALIDADES = {
   beach_tennis: {
     nome: 'Beach Tennis', icon: '🎾',
     campos: [
-      { id: 'duracao', label: 'duração',     unit: 'min',  placeholder: '90' },
-      { id: 'sets',    label: 'sets jogados',unit: 'sets', placeholder: '3' },
+      { id: 'duracao', label: 'Duração',     unit: 'min',  placeholder: '90' },
+      { id: 'sets',    label: 'Sets jogados',unit: 'sets', placeholder: '3' },
     ],
-    msg: 'jogo registrado. beach tennis combina cardio + coordenação numa sessão.',
+    msg: 'jogo registrado. Beach tennis combina cardio + coordenação numa sessão.',
     insights: [
       'beach tennis combina cardio, coordenação e força em uma sessão.',
       'a areia aumenta em até 30% o gasto calórico vs quadra dura.',
@@ -1750,10 +1750,10 @@ const MODALIDADES = {
   yoga: {
     nome: 'Yoga', icon: '🌿',
     campos: [
-      { id: 'duracao', label: 'duração',     unit: 'min', placeholder: '60' },
-      { id: 'tipo',    label: 'tipo',        unit: '',    placeholder: 'hatha / vinyasa / yin' },
+      { id: 'duracao', label: 'Duração',     unit: 'min', placeholder: '60' },
+      { id: 'tipo',    label: 'Tipo',        unit: '',    placeholder: 'hatha / vinyasa / yin' },
     ],
-    msg: 'prática registrada. yoga é a dimensão que mais influencia o Espírito.',
+    msg: 'prática registrada. Yoga é a dimensão que mais influencia o Espírito.',
     insights: [
       'yoga regular reduz cortisol e melhora qualidade do sono.',
       'prática noturna de yin yoga é especialmente eficaz pra recuperação.',
@@ -1763,10 +1763,10 @@ const MODALIDADES = {
   natacao: {
     nome: 'Natação', icon: '🏊',
     campos: [
-      { id: 'metros',  label: 'metros nadados', unit: 'm',   placeholder: '1000' },
-      { id: 'duracao', label: 'tempo na água',  unit: 'min', placeholder: '40' },
+      { id: 'metros',  label: 'Metros nadados', unit: 'm',   placeholder: '1000' },
+      { id: 'duracao', label: 'Tempo na água',  unit: 'min', placeholder: '40' },
     ],
-    msg: 'treino registrado. natação é ótima pra recuperação ativa.',
+    msg: 'treino registrado. Natação é ótima pra recuperação ativa.',
     insights: [
       'natação é o esporte com menor impacto e maior benefício cardiovascular.',
       'treinar técnica em baixa velocidade gera mais resultado que volume.',
@@ -1776,10 +1776,10 @@ const MODALIDADES = {
   crossfit: {
     nome: 'Crossfit', icon: '⚡',
     campos: [
-      { id: 'duracao', label: 'duração do WOD', unit: 'min', placeholder: '45' },
-      { id: 'wod',     label: 'nome do WOD',   unit: '',    placeholder: 'Fran / Murph / custom' },
+      { id: 'duracao', label: 'Duração do WOD', unit: 'min', placeholder: '45' },
+      { id: 'wod',     label: 'Nome do WOD',   unit: '',    placeholder: 'Fran / Murph / custom' },
     ],
-    msg: 'WOD registrado. descansa bem, teu corpo tá trabalhando agora.',
+    msg: 'WOD registrado. Descansa bem, teu corpo tá trabalhando agora.',
     insights: [
       'crossfit de alta intensidade exige 48-72h de recuperação real.',
       'monitorar frequência cardíaca evita overtraining.',
@@ -1789,10 +1789,10 @@ const MODALIDADES = {
   caminhada: {
     nome: 'Caminhada', icon: '🚶',
     campos: [
-      { id: 'distancia', label: 'distância', unit: 'km',  placeholder: '3' },
-      { id: 'duracao',   label: 'duração',   unit: 'min', placeholder: '40' },
+      { id: 'distancia', label: 'Distância', unit: 'km',  placeholder: '3' },
+      { id: 'duracao',   label: 'Duração',   unit: 'min', placeholder: '40' },
     ],
-    msg: 'caminhada registrada. movimento consistente é o maior preditor de saúde.',
+    msg: 'caminhada registrada. Movimento consistente é o maior preditor de saúde.',
     insights: [
       '8.000 passos por dia reduz mortalidade cardiovascular em 51%.',
       'caminhada pós-refeição melhora glicemia e digestão.',
@@ -1802,10 +1802,10 @@ const MODALIDADES = {
   outro: {
     nome: 'Outro esporte', icon: '✦',
     campos: [
-      { id: 'duracao',     label: 'duração',     unit: 'min', placeholder: '60' },
-      { id: 'intensidade', label: 'intensidade', unit: '/10', placeholder: '7' },
+      { id: 'duracao',     label: 'Duração',     unit: 'min', placeholder: '60' },
+      { id: 'intensidade', label: 'Intensidade', unit: '/10', placeholder: '7' },
     ],
-    msg: 'treino registrado. continua e o Circa aprende o que funciona pra ti.',
+    msg: 'treino registrado. Continua e o Circa aprende o que funciona pra ti.',
     insights: [
       'qualquer movimento conta, o mais importante é a consistência.',
       'variar modalidades reduz risco de lesão por repetição.',
@@ -1815,10 +1815,10 @@ const MODALIDADES = {
   descanso: {
     nome: 'Dia de descanso', icon: '💤',
     campos: [
-      { id: 'sono',         label: 'horas de sono',            unit: 'h',   placeholder: '8' },
-      { id: 'recuperacao',  label: 'sensação de recuperação', unit: '/10', placeholder: '7' },
+      { id: 'sono',         label: 'Horas de sono',            unit: 'h',   placeholder: '8' },
+      { id: 'recuperacao',  label: 'Sensação de recuperação', unit: '/10', placeholder: '7' },
     ],
-    msg: 'descanso registrado. recuperação é metade do resultado.',
+    msg: 'descanso registrado. Recuperação é metade do resultado.',
     insights: [
       'descanso ativo é parte da performance, não o oposto dela.',
       'dias de descanso com boa recuperação geram adaptação muscular.',
@@ -1872,7 +1872,7 @@ function openLogTreino(sportKey) {
   const nomeFinal = sportKey === 'outro'
     ? (document.getElementById('esporte-outro-input').value || 'Outro esporte')
     : m.nome;
-  document.getElementById('log-t-eye').textContent = 'treino · hoje';
+  document.getElementById('log-t-eye').textContent = 'Treino · hoje';
   document.getElementById('log-t-nome').innerHTML = `${m.icon} ${nomeFinal}`;
   document.getElementById('log-t-data').textContent = new Date().toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' });
 
@@ -1942,8 +1942,8 @@ if (logPular) logPular.addEventListener('click', () => {
   setTimeout(() => {
     const t = document.getElementById('log-ok-title');
     const s = document.getElementById('log-ok-sub');
-    if (t) t.textContent = 'marcado como feito.';
-    if (s) s.textContent = 'sem detalhes, vale o compromisso';
+    if (t) t.textContent = 'Marcado como feito.';
+    if (s) s.textContent = 'Sem detalhes, vale o compromisso';
     openSheet('sheet-log-ok');
   }, 220);
   try { hap(10); } catch (e) {}
@@ -1977,8 +1977,8 @@ function salvarLogTreino() {
     esporte: esporteSel,
     sensacao: sensSel,
     intensidade: treinoIntensidade,
-    inicio: inicioEl ? inicioEl.value : null,
-    fim: fimEl ? fimEl.value : null,
+    inicio: inicioEl ? InicioEl.value : null,
+    fim: fimEl ? FimEl.value : null,
     duracaoMin: durMin,
     data: new Date().toISOString(),
   };
@@ -1991,7 +1991,7 @@ function salvarLogTreino() {
   } catch (e) {}
 
   // score simulado com base na sensação
-  const base = sensSel ? sensSel * 16 : 70;
+  const base = sensSel ? SensSel * 16 : 70;
   const corpo    = Math.min(100, base + Math.floor(Math.random() * 12));
   const mente    = Math.min(100, base - 5 + Math.floor(Math.random() * 15));
   const espirito = Math.min(100, base + 2 + Math.floor(Math.random() * 10));
@@ -2031,37 +2031,37 @@ function buildActionCards() {
       key: 'humor',
       eye: 'agora',
       title: `Como tá agora, ${name}?`,
-      body: 'um check-in rápido. sem drama, só honesto.',
+      body: 'Um check-in rápido. Sem drama, só honesto.',
       meta: '',
       iconSvg: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>',
-      ctaPrimary: { label: 'check-in', action: 'mood' },
+      ctaPrimary: { label: 'Check-in', action: 'mood' },
       ctaGhost: null,
     },
     {
       key: 'sono',
       eye: 'agora',
       title: `Como você dormiu, ${name}?`,
-      body: 'conta em 10 segundos. o Circa cruza com teu treino e tua cabeça.',
+      body: 'Conta em 10 segundos. O Circa cruza com teu treino e tua cabeça.',
       meta: '',
       iconSvg: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>',
-      ctaPrimary: { label: 'registrar sono', action: 'sleep' },
+      ctaPrimary: { label: 'Registrar sono', action: 'sleep' },
       ctaGhost: null,
     },
     {
       key: 'treino',
       eye: 'agora',
       title: 'Treinou? Conta aí.',
-      body: 'o que tu fez hoje, ou vai fazer, pro teu corpo?',
+      body: 'O que tu fez hoje, ou vai fazer, pro teu corpo?',
       meta: '',
       iconSvg: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="6"/><path d="M5 3v9M19 3v9"/></svg>',
-      ctaPrimary: { label: 'registrar treino', action: 'workout' },
+      ctaPrimary: { label: 'Registrar treino', action: 'workout' },
       ctaGhost: null,
     },
     {
       key: 'agua',
       eye: 'agora',
       title: 'Faltam 1L de água.',
-      body: 'teu corpo ainda tá pedindo. dá tempo de recuperar a meta.',
+      body: 'Teu corpo ainda tá pedindo. Dá tempo de recuperar a meta.',
       meta: '',
       iconSvg: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5s6 7 6 11.5a6 6 0 0 1-12 0c0-4.5 6-11.5 6-11.5z"/></svg>',
       ctaPrimary: { label: '+ 500 ml', action: 'water500' },
@@ -2071,11 +2071,11 @@ function buildActionCards() {
       key: 'refeicao',
       eye: 'próxima refeição',
       title: 'Almoça agora.',
-      body: 'frango grelhado, arroz, legumes. <strong>~650 kcal</strong>.',
-      meta: 'você treinou hoje. faltam 400 kcal pra fechar o dia.',
+      body: 'Frango grelhado, arroz, legumes. <strong>~650 kcal</strong>.',
+      meta: 'você treinou hoje. Faltam 400 kcal pra fechar o dia.',
       iconSvg: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v7a4 4 0 0 0 4 4h0v7M7 3v7M15 3c-1 2-2 4-2 7 0 2 1 3 2 3v8"/></svg>',
-      ctaPrimary: { label: 'comi', action: 'ateMeal' },
-      ctaGhost:   { label: 'troca', action: 'swapMeal' },
+      ctaPrimary: { label: 'Comi', action: 'ateMeal' },
+      ctaGhost:   { label: 'Troca', action: 'swapMeal' },
     },
   ];
 }
@@ -2536,7 +2536,7 @@ function detectarSinalComportamental() {
   const c = userContext();
   // sinais derivados dos dados (não das palavras)
   if (c.score_hoje < 50) return 'score_baixo';
-  // aqui entraria check de sono critico, isolamento, etc. quando tivermos dados reais
+  // aqui entraria check de sono critico, isolamento, etc. Quando tivermos dados reais
   return null;
 }
 
@@ -2555,7 +2555,7 @@ Texto corrido. Sem bullets, sem markdown, sem emojis.
 
 REGRA DE OURO, ABERTURA SEM AGENDA:
 Você nunca abre a conversa com dados ou insights.
-Você abre com presença pura: "estou aqui. quer conversar?"
+Você abre com presença pura: "estou aqui. Quer conversar?"
 Os dados entram depois, como resposta ao que a pessoa trouxe, nunca como pauta.`;
 
   const empatia = `COMO RESPONDER COM EMPATIA:
@@ -2569,7 +2569,7 @@ Nunca pule direto para soluções. Nunca ofereça menu de opções quando algué
 - Sono médio: ${c.sono_media} (meta ${c.sono_meta}), abaixo há semanas
 - Hidratação hoje: ${c.agua_hoje} de ${c.agua_meta}
 - Último esporte: ${c.ultimo_esporte || 'não registrado'}
-- Suplementos: ${c.suplementos.length ? c.suplementos.join(', ') : 'nenhum'}
+- Suplementos: ${c.suplementos.length ? C.suplementos.join(', ') : 'nenhum'}
 - Exames em atenção: homocisteína ${c.homocisteina}, ferritina ${c.ferritina}
 - Insight recente: ${c.insight_atual}
 - Padrão de queda: ${c.padrao_queda}`;
@@ -2626,12 +2626,12 @@ function userContext() {
 
 // abertura com PRESENÇA PURA, sem agenda, sem dados.
 // Os dados entram depois, só quando fizer sentido.
-function aberturaPersonalizada() {
+Function aberturaPersonalizada() {
   const c = userContext();
   const aberturas = [
-    { texto: `estou aqui, ${c.nome}. quer conversar?`, ctx: null },
-    { texto: `oi, ${c.nome}. como você tá?`,           ctx: null },
-    { texto: `${c.nome}, pode falar. estou ouvindo.`,   ctx: null },
+    { texto: `estou aqui, ${c.nome}. Quer conversar?`, ctx: null },
+    { texto: `oi, ${c.nome}. Como você tá?`,           ctx: null },
+    { texto: `${c.nome}, pode falar. Estou ouvindo.`,   ctx: null },
   ];
   return aberturas[Math.floor(Math.random() * aberturas.length)];
 }
@@ -2649,11 +2649,11 @@ const CHAT_OPCOES = [
 // CIRCA ORBE · canvas animado orgânico
 // ═════════════════════════════════════════
 const ORBE_ESTADOS = {
-  idle:        { label: 'presente',       speed: 0.4,  amplitude: 0.018, complexity: 3, colorSpeed: 0.003, opacity: 0.85 },
-  ouvindo:     { label: 'ouvindo…',       speed: 0.9,  amplitude: 0.032, complexity: 5, colorSpeed: 0.008, opacity: 0.92 },
-  pensando:    { label: 'pensando…',      speed: 1.6,  amplitude: 0.055, complexity: 8, colorSpeed: 0.018, opacity: 0.96 },
-  respondendo: { label: 'falando…',       speed: 2.2,  amplitude: 0.042, complexity: 6, colorSpeed: 0.012, opacity: 1.0  },
-  acolhendo:   { label: 'aqui contigo…',  speed: 0.6,  amplitude: 0.028, complexity: 4, colorSpeed: 0.005, opacity: 0.94 },
+  idle:        { label: 'Presente',       speed: 0.4,  amplitude: 0.018, complexity: 3, colorSpeed: 0.003, opacity: 0.85 },
+  ouvindo:     { label: 'Ouvindo…',       speed: 0.9,  amplitude: 0.032, complexity: 5, colorSpeed: 0.008, opacity: 0.92 },
+  pensando:    { label: 'Pensando…',      speed: 1.6,  amplitude: 0.055, complexity: 8, colorSpeed: 0.018, opacity: 0.96 },
+  respondendo: { label: 'Falando…',       speed: 2.2,  amplitude: 0.042, complexity: 6, colorSpeed: 0.012, opacity: 1.0  },
+  acolhendo:   { label: 'Aqui contigo…',  speed: 0.6,  amplitude: 0.028, complexity: 4, colorSpeed: 0.005, opacity: 0.94 },
 };
 
 const ORBE_CORES = [
@@ -2708,7 +2708,7 @@ function drawOrbeOn(canvas, isMain) {
       if (orbeInputPulse > 0) r += baseR * orbeInputPulse * 0.03 * Math.sin(angle * 4 + orbeT * 3);
       const x = cx + r * Math.cos(angle);
       const y = cy + r * Math.sin(angle);
-      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+      i === 0 ? Ctx.moveTo(x, y) : ctx.lineTo(x, y);
     }
     ctx.closePath();
   }
@@ -2989,8 +2989,8 @@ function mockCircaResponse(userText, nivelRisco) {
   // RISCO ELEVADO · acolher + perguntar diretamente + CVV
   if (nivelRisco === 'elevado') {
     const opts = [
-      `isso que você disse me tocou, ${c.nome}. quero entender melhor. você está bem agora? tem alguém por perto?`,
-      `obrigada por confiar em mim com isso. você está pensando em se machucar agora? eu tô aqui, mas esse momento merece uma voz humana de verdade também.`,
+      `isso que você disse me tocou, ${c.nome}. Quero entender melhor. Você está bem agora? Tem alguém por perto?`,
+      `obrigada por confiar em mim com isso. Você está pensando em se machucar agora? Eu tô aqui, mas esse momento merece uma voz humana de verdade também.`,
     ];
     return opts[Math.floor(Math.random() * opts.length)];
   }
@@ -2998,24 +2998,24 @@ function mockCircaResponse(userText, nivelRisco) {
   // RISCO MODERADO · só acolher, sem soluções, sem perguntas funcionais
   if (nivelRisco === 'moderado') {
     const opts = [
-      `tô aqui, ${c.nome}. o que você tá descrevendo é pesado e faz sentido estar pesado. não precisa ter resposta agora.`,
-      `fico com você nesse momento. respira. o que você tá sentindo é real e é muito. não precisa explicar.`,
-      `${c.nome}, eu ouvi. isso que você tá carregando não é pouca coisa. você tem com quem conversar sobre isso na sua vida?`,
+      `tô aqui, ${c.nome}. O que você tá descrevendo é pesado e faz sentido estar pesado. Não precisa ter resposta agora.`,
+      `fico com você nesse momento. Respira. O que você tá sentindo é real e é muito. Não precisa explicar.`,
+      `${c.nome}, eu ouvi. Isso que você tá carregando não é pouca coisa. Você tem com quem conversar sobre isso na sua vida?`,
     ];
     return opts[Math.floor(Math.random() * opts.length)];
   }
 
   // BURNOUT · validar limites + explorar sem presumir
   if (nivelRisco === 'burnout') {
-    return `burnout é real, ${c.nome}. corpo e mente têm limite, e o teu tá avisando. o que tá pesando mais no trabalho agora, as pessoas, o volume, a falta de sentido?`;
+    return `burnout é real, ${c.nome}. Corpo e mente têm limite, e o teu tá avisando. O que tá pesando mais no trabalho agora, as pessoas, o volume, a falta de sentido?`;
   }
 
   // SOFRIMENTO EMOCIONAL · primeira resposta é SÓ acolhimento
   if (nivelRisco === 'emocional') {
     const opts = [
-      `tô ouvindo, ${c.nome}. o que você tá sentindo faz sentido, não é fraqueza. conta mais se quiser, sem pressa.`,
-      `que bom que você falou. isso que tá passando tem peso. tô aqui.`,
-      `obrigada por trazer isso. a gente não precisa ir pra lugar nenhum, só ficar aqui um pouco. o que aconteceu?`,
+      `tô ouvindo, ${c.nome}. O que você tá sentindo faz sentido, não é fraqueza. Conta mais se quiser, sem pressa.`,
+      `que bom que você falou. Isso que tá passando tem peso. Tô aqui.`,
+      `obrigada por trazer isso. A gente não precisa ir pra lugar nenhum, só ficar aqui um pouco. O que aconteceu?`,
     ];
     return opts[Math.floor(Math.random() * opts.length)];
   }
@@ -3024,67 +3024,67 @@ function mockCircaResponse(userText, nivelRisco) {
 
   // SONO
   if (t.match(/\b(sono|dormir|dormindo|acordo|acordei|insôn|insom)\b/)) {
-    return `teu sono tá em ${c.sono_media} de média essa semana, ${c.nome}. é a coisa que mais tá puxando teu score pra baixo agora. que tá te tirando do sono, trabalho na cabeça, ansiedade, escolha de dormir tarde?`;
+    return `teu sono tá em ${c.sono_media} de média essa semana, ${c.nome}. É a coisa que mais tá puxando teu score pra baixo agora. Que tá te tirando do sono, trabalho na cabeça, ansiedade, escolha de dormir tarde?`;
   }
 
   // ANSIEDADE / SOBRECARGA
   if (t.match(/\b(ansios|sobrecarreg|estress|nervos|cansad|exaust|pesad)\b/)) {
-    return `sobrecarga é dado, não fraqueza. vejo um padrão no teu perfil: ${c.padrao_queda}. hoje tu dormiu bem? ou a cabeça já começou acelerada?`;
+    return `sobrecarga é dado, não fraqueza. Vejo um padrão no teu perfil: ${c.padrao_queda}. Hoje tu dormiu bem? Ou a cabeça já começou acelerada?`;
   }
 
   // TRISTEZA / DESANIMO
   if (t.match(/\b(triste|desanim|mal|ruim|baixo|deprim|chorar|sem for)\b/)) {
-    return `obrigada por contar, ${c.nome}. dia ruim não precisa ser consertado agora, só atravessado. se tá ficando difícil por muitos dias seguidos, vale conversar com um psicólogo. tu tem com quem falar próximo?`;
+    return `obrigada por contar, ${c.nome}. Dia ruim não precisa ser consertado agora, só atravessado. Se tá ficando difícil por muitos dias seguidos, vale conversar com um psicólogo. Tu tem com quem falar próximo?`;
   }
 
   // TREINO
   if (t.match(/\b(treino|exerc|corri|correr|academ|muscul|yoga|serie|carga)\b/)) {
     const last = c.ultimo_esporte ? `teu último log foi de ${c.ultimo_esporte}.` : '';
-    return `${last} e um detalhe que eu mapeei: ${c.insight_atual}. quer registrar o de hoje?`;
+    return `${last} e um detalhe que eu mapeei: ${c.insight_atual}. Quer registrar o de hoje?`;
   }
 
   // ÁGUA
   if (t.match(/\b(água|agua|hidrat|sede)\b/)) {
-    return `tu tá em ${c.agua_hoje} de ${c.agua_meta} hoje. nos dias de atividade tu tem média ainda mais baixa. quer que eu te lembre de 2 em 2 horas?`;
+    return `tu tá em ${c.agua_hoje} de ${c.agua_meta} hoje. Nos dias de atividade tu tem média ainda mais baixa. Quer que eu te lembre de 2 em 2 horas?`;
   }
 
   // EXAMES
   if (t.match(/\b(exam|sangue|homo|ferrit|vitamin|colest|tireoid)\b/)) {
-    return `dois marcadores pediram atenção no teu último: homocisteína ${c.homocisteina} e ferritina ${c.ferritina}. nenhum é drama imediato, mas ambos pedem conversa com médico. querendo, posso te mostrar o que costuma baixar cada um.`;
+    return `dois marcadores pediram atenção no teu último: homocisteína ${c.homocisteina} e ferritina ${c.ferritina}. Nenhum é drama imediato, mas ambos pedem conversa com médico. Querendo, posso te mostrar o que costuma baixar cada um.`;
   }
 
   // HUMOR / DIA BOM
   if (t.match(/\b(bom dia|dia bom|feliz|alegr|bem|ótimo|otimo|tranqu)\b/)) {
-    return `bom de ouvir isso. dias bons não são acaso, tu acumulou consistência nas últimas semanas. quer registrar o humor pra eu aprender com esse padrão?`;
+    return `bom de ouvir isso. Dias bons não são acaso, tu acumulou consistência nas últimas semanas. Quer registrar o humor pra eu aprender com esse padrão?`;
   }
 
   // SUPLEMENTO / MEDICAÇÃO
   if (t.match(/\b(suplement|creat|whey|vitamin|remed|medic|pílula)\b/)) {
-    const supps = c.suplementos.length ? c.suplementos.join(', ') : 'nenhum';
-    return `hoje tu tá com: ${supps}. tem alguma coisa nova que tu quer incluir ou alguma dose que tá te deixando na dúvida?`;
+    const supps = c.suplementos.length ? C.suplementos.join(', ') : 'nenhum';
+    return `hoje tu tá com: ${supps}. Tem alguma coisa nova que tu quer incluir ou alguma dose que tá te deixando na dúvida?`;
   }
 
   // REGISTRAR
   if (t.match(/\b(registrar|log|anotar|marcar|salvar)\b/)) {
-    return `pode me contar o que tu quer registrar? treino, refeição, humor, momento que te moveu, eu anoto e cruzo com o resto.`;
+    return `pode me contar o que tu quer registrar? Treino, refeição, humor, momento que te moveu, eu anoto e cruzo com o resto.`;
   }
 
   // AJUDA / COMO FUNCIONA
   if (t.match(/\b(ajuda|como funcion|o que tu faz|pra que|pode fazer)\b/)) {
-    return `eu cruzo tudo que tu registra, sono, treino, humor, exames, e mostro padrões que tu sozinho não consegue ver. também converso sempre que tu precisar. me pergunta qualquer coisa sobre ti.`;
+    return `eu cruzo tudo que tu registra, sono, treino, humor, exames, e mostro padrões que tu sozinho não consegue ver. Também converso sempre que tu precisar. Me pergunta qualquer coisa sobre ti.`;
   }
 
   // OI / SAUDAÇÃO
   if (t.match(/^(oi|olá|ola|hey|e aí|eai)\b/)) {
-    return `oi ${c.nome}. tô aqui. o que tá passando contigo hoje?`;
+    return `oi ${c.nome}. Tô aqui. O que tá passando contigo hoje?`;
   }
 
   // FALLBACK contextual
   const fallbacks = [
-    `me conta mais, ${c.nome}. tô aqui.`,
-    `entendi. quer que a gente foque em sono, treino, humor ou algo específico?`,
-    `tá valendo. conta com mais detalhe?`,
-    `guardei. tem mais alguma coisa que quer soltar?`,
+    `me conta mais, ${c.nome}. Tô aqui.`,
+    `entendi. Quer que a gente foque em sono, treino, humor ou algo específico?`,
+    `tá valendo. Conta com mais detalhe?`,
+    `guardei. Tem mais alguma coisa que quer soltar?`,
   ];
   return fallbacks[Math.floor(Math.random() * fallbacks.length)];
 }
@@ -3290,7 +3290,7 @@ function renderRitualWheel() {
     const start = (ev) => { ev.preventDefault(); dragging = true; hap(6); };
     const move = (ev) => {
       if (!dragging) return;
-      const t = ev.touches ? ev.touches[0] : ev;
+      const t = ev.touches ? Ev.touches[0] : ev;
       const pt = rSvg.createSVGPoint();
       pt.x = t.clientX; pt.y = t.clientY;
       const ctm = rSvg.getScreenCTM();
@@ -3387,7 +3387,7 @@ if (qdPanel) {
 
 // ───── ONBOARDING ─────
 const TOTAL_STEPS = 26;
-let obStep = 1;
+let obStep = 0;   // começa na capa de introdução (step 0)
 const onboard       = document.getElementById('onboard');
 const obSlides      = document.querySelectorAll('.ob-slide');
 const obProgress    = document.getElementById('ob-progress');
@@ -3475,7 +3475,7 @@ const QUIZ_QUESTIONS = [
 const PROFILES_DATA = {
   ignitor: {
     nome: 'O Ignitor',
-    label: 'perfil 01',
+    label: 'Perfil 01',
     desc: 'Você começa com intensidade máxima e vive de picos. Quando está on, está completamente on. O desafio é criar estruturas que sustentam o movimento quando a chama diminui.',
     forca: 'Motivação explosiva',
     cego: 'Consistência zero',
@@ -3484,7 +3484,7 @@ const PROFILES_DATA = {
   },
   arquiteto: {
     nome: 'O Arquiteto',
-    label: 'perfil 02',
+    label: 'Perfil 02',
     desc: 'Você precisa entender o porquê antes de agir, e quando age, age com precisão. Seu maior inimigo é a paralisia: a análise infinita que atrasa a execução. O plano perfeito que nunca começa.',
     forca: 'Disciplina estruturada',
     cego: 'Paralisia por análise',
@@ -3493,7 +3493,7 @@ const PROFILES_DATA = {
   },
   flutuante: {
     nome: 'O Flutuante',
-    label: 'perfil 03',
+    label: 'Perfil 03',
     desc: 'Você é intuitivo e profundamente conectado com seu estado interno. Vai extraordinariamente bem quando está bem, e isso é raro. O trabalho é criar âncoras mínimas que funcionem mesmo nos dias difíceis.',
     forca: 'Autoconhecimento alto',
     cego: 'Abandona em crises',
@@ -3502,7 +3502,7 @@ const PROFILES_DATA = {
   },
   relampago: {
     nome: 'O Relâmpago',
-    label: 'perfil 04',
+    label: 'Perfil 04',
     desc: 'Você produz resultados expressivos em ciclos curtos e tem capacidade de foco intenso quando motivado. Sem retorno visível rápido, o interesse some. Não é inconstância, é sprint, não maratona.',
     forca: 'Resultados imediatos',
     cego: 'Perde o fôlego',
@@ -3511,7 +3511,7 @@ const PROFILES_DATA = {
   },
   navegador: {
     nome: 'O Navegador',
-    label: 'perfil 05',
+    label: 'Perfil 05',
     desc: 'Você é o mais resiliente dos seis. Adaptável, consistente, raramente para completamente. A evolução é lenta mas real, o problema é que pode ficar tanto tempo na zona de conforto que para de crescer.',
     forca: 'Consistência total',
     cego: 'Zona de conforto crônica',
@@ -3520,7 +3520,7 @@ const PROFILES_DATA = {
   },
   inabalavel: {
     nome: 'O Inabalável',
-    label: 'perfil 06',
+    label: 'Perfil 06',
     desc: 'Disciplina de ferro. Você segue a rotina independente de como está, e isso é uma força que poucos têm. O perigo é não saber quando parar: ignorar sinais do corpo até que eles gritem.',
     forca: 'Consistência máxima',
     cego: 'Ignora sinais do corpo',
@@ -3567,7 +3567,7 @@ function renderQuizQuestion(slideEl) {
 // ───── CALIBRAÇÃO FISIOLÓGICA (steps 15-22) ─────
 const TRILHAS_FISIO = {
   masculina: {
-    nome: 'corpo masculino',
+    nome: 'Corpo masculino',
     cor: '#7B8BB8',
     perguntas: [
       {
@@ -3633,7 +3633,7 @@ const TRILHAS_FISIO = {
     ]
   },
   feminina: {
-    nome: 'corpo feminino com ciclo',
+    nome: 'Corpo feminino com ciclo',
     cor: '#D99D85',
     perguntas: [
       {
@@ -3648,7 +3648,7 @@ const TRILHAS_FISIO = {
       },
       {
         texto: 'Como sua performance física varia ao longo do mês?',
-        contexto: 'fase folicular (1-14) estrogênio alto = melhor performance. fase lútea (15-28) fadiga sobe.',
+        contexto: 'fase folicular (1-14) estrogênio alto = melhor performance. Fase lútea (15-28) fadiga sobe.',
         opcoes: [
           { texto: 'Noto diferença clara, semanas melhores e piores',     score: { cicloConsciente: 3 } },
           { texto: 'Percebo queda de energia antes da menstruação',        score: { lutea: 2 } },
@@ -3699,12 +3699,12 @@ const TRILHAS_FISIO = {
     ]
   },
   transicao: {
-    nome: 'transição hormonal',
+    nome: 'Transição hormonal',
     cor: '#D4B896',
     perguntas: [
       {
         texto: 'Qual melhor descreve seu momento hormonal?',
-        contexto: 'perimenopausa pode começar até 10 anos antes da menopausa. andropausa tipicamente 40-55 anos.',
+        contexto: 'perimenopausa pode começar até 10 anos antes da menopausa. Andropausa tipicamente 40-55 anos.',
         opcoes: [
           { texto: 'Perimenopausa, ciclos irregulares, ainda menstruo',   score: { peri: 3 } },
           { texto: 'Menopausa, sem menstruação há mais de 12 meses',      score: { meno: 3 } },
@@ -3769,28 +3769,28 @@ const TRILHAS_FISIO = {
 const RESULTADOS_FISIO = {
   masculina: {
     equilibrado: {
-      nome: 'perfil equilibrado',
-      label: 'masculina · equilibrado',
-      desc: 'tua fisiologia tá em boa sincronia. testosterona e cortisol operando em equilíbrio, o terreno ideal pra evoluir com consistência.',
-      insight: 'teu corpo responde bem ao estímulo atual. o foco agora é periodização inteligente e prevenção de platô.',
+      nome: 'Perfil equilibrado',
+      label: 'Masculina · equilibrado',
+      desc: 'Tua fisiologia tá em boa sincronia. Testosterona e cortisol operando em equilíbrio, o terreno ideal pra evoluir com consistência.',
+      insight: 'teu corpo responde bem ao estímulo atual. O foco agora é periodização inteligente e prevenção de platô.',
       prioridade: 'manutenção + sobrecarga progressiva',
       atencao: 'monitorar cortisol em períodos de alta demanda',
       acoes: ['exame semestral de testosterona total e livre', 'protocolo de descanso ativo 1-2x/semana', 'creatina 5g/dia como suporte de base']
     },
     altoStress: {
-      nome: 'cortisol elevado',
-      label: 'masculina · cortisol alto',
-      desc: 'sinais de estresse crônico impactando recuperação e possivelmente testosterona. teu corpo tá em modo de alerta constante.',
-      insight: 'cortisol e testosterona competem pelos mesmos precursores. reduzir cortisol é o caminho mais rápido pra melhorar composição.',
+      nome: 'Cortisol elevado',
+      label: 'Masculina · cortisol alto',
+      desc: 'Sinais de estresse crônico impactando recuperação e possivelmente testosterona. Teu corpo tá em modo de alerta constante.',
+      insight: 'cortisol e testosterona competem pelos mesmos precursores. Reduzir cortisol é o caminho mais rápido pra melhorar composição.',
       prioridade: 'redução de carga de estresse',
       atencao: 'evitar treinos de alta intensidade em sequência',
       acoes: ['dosar cortisol salivar matinal', 'janela de descompressão de 30min antes de dormir', 'reduzir treinos de alta intensidade pra 2x/semana']
     },
     baixaTestosterona: {
-      nome: 'sinal de baixa T',
-      label: 'masculina · baixa testosterona',
-      desc: 'padrões sugerem queda de testosterona, libido caindo, recuperação lenta e energia baixa pela manhã são sinais clássicos.',
-      insight: 'testosterona baixa afeta composição, humor e cognição, não só performance física. vale investigar com exame.',
+      nome: 'Sinal de baixa T',
+      label: 'Masculina · baixa testosterona',
+      desc: 'Padrões sugerem queda de testosterona, libido caindo, recuperação lenta e energia baixa pela manhã são sinais clássicos.',
+      insight: 'testosterona baixa afeta composição, humor e cognição, não só performance física. Vale investigar com exame.',
       prioridade: 'investigação hormonal com médico',
       atencao: 'suplementação sem exame pode mascarar causa real',
       acoes: ['agendar painel hormonal completo (T total, T livre, LH, FSH)', 'priorizar sono 7-8h, produção de T é noturna', 'zinco + vitamina D como suporte enquanto aguarda exame']
@@ -3798,28 +3798,28 @@ const RESULTADOS_FISIO = {
   },
   feminina: {
     cicloConsciente: {
-      nome: 'ciclicamente consciente',
-      label: 'feminina · ciclo consciente',
-      desc: 'tu já percebe as variações do teu ciclo, isso é um ativo enorme. a calibração vai traduzir esse autoconhecimento em protocolo prático.',
+      nome: 'Ciclicamente consciente',
+      label: 'Feminina · ciclo consciente',
+      desc: 'Tu já percebe as variações do teu ciclo, isso é um ativo enorme. A calibração vai traduzir esse autoconhecimento em protocolo prático.',
       insight: 'mulheres que treinam conforme as fases do ciclo relatam até 25% mais performance e menos lesões.',
       prioridade: 'periodização baseada no ciclo',
       atencao: 'fase lútea pede redução de intensidade',
       acoes: ['mapear ciclo por 2 meses pra identificar padrões', 'treino de força na fase folicular (dias 1-14)', 'yoga/pilates na fase lútea (dias 15-28)']
     },
     desequilibrio: {
-      nome: 'desequilíbrio hormonal',
-      label: 'feminina · desequilíbrio',
-      desc: 'sinais de dominância estrogênica ou déficit de progesterona, TPM intensa, ciclo irregular e fadiga persistente.',
-      insight: 'dominância de estrogênio é comum e tratável. alimentação, exercício e suplementação específica fazem diferença real.',
+      nome: 'Desequilíbrio hormonal',
+      label: 'Feminina · desequilíbrio',
+      desc: 'Sinais de dominância estrogênica ou déficit de progesterona, TPM intensa, ciclo irregular e fadiga persistente.',
+      insight: 'dominância de estrogênio é comum e tratável. Alimentação, exercício e suplementação específica fazem diferença real.',
       prioridade: 'avaliação com ginecologista/endócrino',
       atencao: 'anticoncepcional pode mascarar sintomas',
       acoes: ['exame de estrogênio, progesterona e FSH na fase lútea (dia 21)', 'reduzir disruptores endócrinos: plásticos, álcool, ultraprocessados', 'magnésio 300mg à noite, reduz TPM em estudos clínicos']
     },
     neutro: {
-      nome: 'perfil a descobrir',
-      label: 'feminina · descobrir',
-      desc: 'tu ainda não mapeou as variações do teu ciclo, oportunidade enorme de ganhar performance e qualidade de vida.',
-      insight: 'a maioria das mulheres desconhece como o ciclo afeta o corpo. essa calibração é o primeiro passo.',
+      nome: 'Perfil a descobrir',
+      label: 'Feminina · descobrir',
+      desc: 'Tu ainda não mapeou as variações do teu ciclo, oportunidade enorme de ganhar performance e qualidade de vida.',
+      insight: 'a maioria das mulheres desconhece como o ciclo afeta o corpo. Essa calibração é o primeiro passo.',
       prioridade: 'mapeamento do ciclo por 60 dias',
       atencao: 'não subestimar o impacto da fase lútea',
       acoes: ['usar o circa pra registrar energia e humor diários', 'marcar início e fim de cada fase no calendário', 'consulta com ginecologista pra painel hormonal base']
@@ -3827,27 +3827,27 @@ const RESULTADOS_FISIO = {
   },
   transicao: {
     ativa: {
-      nome: 'transição ativa',
-      label: 'transição · ativa',
-      desc: 'tu tá no processo com sintomas presentes. com o protocolo certo, a maioria dos sintomas é reversível ou manejável.',
+      nome: 'Transição ativa',
+      label: 'Transição · ativa',
+      desc: 'Tu tá no processo com sintomas presentes. Com o protocolo certo, a maioria dos sintomas é reversível ou manejável.',
       insight: 'a transição hormonal não precisa ser declínio, com intervenção adequada, muitos vivem os melhores anos depois dela.',
       prioridade: 'acompanhamento médico especializado',
       atencao: 'massa muscular e óssea precisam de proteção ativa',
       acoes: ['consulta com endocrinologista pra avaliação de TRH', 'treino de força 3x/semana, essencial pra preservar massa', 'vitamina D3 + K2 + magnésio como base de suporte']
     },
     gerenciada: {
-      nome: 'transição gerenciada',
-      label: 'transição · gerenciada',
-      desc: 'tu já tá em acompanhamento ou tem clareza do momento. o foco agora é otimizar o protocolo e monitorar evolução.',
+      nome: 'Transição gerenciada',
+      label: 'Transição · gerenciada',
+      desc: 'Tu já tá em acompanhamento ou tem clareza do momento. O foco agora é otimizar o protocolo e monitorar evolução.',
       insight: 'quem faz TRH bem conduzida tem menor risco cardiovascular, ósseo e cognitivo a longo prazo.',
       prioridade: 'otimização do protocolo atual',
       atencao: 'revisão anual dos níveis hormonais',
       acoes: ['revisão de exames a cada 6 meses com médico', 'adicionar proteína na dieta, 1.8g por kg de peso', 'registrar sintomas no circa pra identificar padrões']
     },
     inicial: {
-      nome: 'início de transição',
-      label: 'transição · inicial',
-      desc: 'primeiros sinais de transição, o momento ideal pra agir preventivamente antes que os sintomas se intensifiquem.',
+      nome: 'Início de transição',
+      label: 'Transição · inicial',
+      desc: 'Primeiros sinais de transição, o momento ideal pra agir preventivamente antes que os sintomas se intensifiquem.',
       insight: 'intervir cedo tem impacto muito maior do que intervir depois dos sintomas instalados.',
       prioridade: 'investigação e prevenção',
       atencao: 'não normalizar sintomas como envelhecimento inevitável',
@@ -3979,7 +3979,7 @@ function renderFisioResult(slideEl) {
 function renderQuizResult(slideEl) {
   const keys = Object.keys(quizVotes);
   const winner = keys.length
-    ? keys.reduce((a, b) => (quizVotes[a] > quizVotes[b] ? a : b))
+    ? Keys.reduce((a, b) => (quizVotes[a] > quizVotes[b] ? A : b))
     : 'navegador';
   const p = PROFILES_DATA[winner];
   window.CIRCA_PROFILE = winner;
@@ -4017,7 +4017,7 @@ function renderQuizResult(slideEl) {
 }
 
 function openOnboard() {
-  obStep = 1;
+  obStep = 0;   // sempre começa na capa de introdução
   quizVotes = {};
   fisioTrilha = null;
   fisioScores = {};
@@ -4057,7 +4057,7 @@ function renderObStep() {
   });
   // progress bar baseada no flow atual
   const total = flow.length;
-  const pos = currentIdx >= 0 ? currentIdx : 0;
+  const pos = currentIdx >= 0 ? CurrentIdx : 0;
   if (obProgressFill) obProgressFill.style.width = (pos / Math.max(1, total - 1) * 100).toFixed(1) + '%';
   if (obProgressLbl)  obProgressLbl.textContent = (pos + 1) + ' / ' + total;
   obBackBtn.disabled = pos === 0;
@@ -4095,11 +4095,12 @@ function renderObStep() {
 }
 
 // fluxo explícito pra permitir branching por gênero
+// step 0 · capa de introdução (expectation setting) · primeiro de todos
 // insere 31 (gênero), 32 (homem), 33 (mulher) entre step 1 e step 2
 // SUBSTITUI o quiz antigo (12-20) pelo flow do temperamento (41-47):
 // 5 cenários (41-45) + processando (46) + revelação (47)
 // step 51 · nível de atividade · pílula dourada com 3 figs · após gênero, antes do temperamento
-const OB_FLOW = [1, 31, 32, 33, 51, 41, 42, 43, 44, 45, 46, 47, 21, 22, 23, 24, 25, 26];
+const OB_FLOW = [0, 1, 31, 32, 33, 51, 41, 42, 43, 44, 45, 46, 47, 21, 22, 23, 24, 25, 26];
 
 function obCurrentGender() {
   try { return localStorage.getItem('circa_gender') || null; } catch (e) { return null; }
@@ -4117,7 +4118,7 @@ function obFlowFiltered() {
 function obFlowIndex(step) {
   const f = obFlowFiltered();
   const i = f.indexOf(step);
-  return i >= 0 ? i : 0;
+  return i >= 0 ? I : 0;
 }
 
 function nextStep() {
@@ -4231,7 +4232,7 @@ document.querySelectorAll('.ob-slide[data-step="32"] .ob-card, .ob-slide[data-st
 
     function updateActiveDot() {
       // qual card está mais próximo do centro do track?
-      const trackRect = track.getBoundingClientRect();
+      Const trackRect = track.getBoundingClientRect();
       const center = trackRect.left + trackRect.width / 2;
       let closestIdx = 0;
       let closestDist = Infinity;
@@ -4563,7 +4564,7 @@ function renderObWheel() {
     };
     const move = (ev) => {
       if (!dragging) return;
-      const t = ev.touches ? ev.touches[0] : ev;
+      const t = ev.touches ? Ev.touches[0] : ev;
       const pt = obSvg.createSVGPoint();
       pt.x = t.clientX; pt.y = t.clientY;
       const ctm = obSvg.getScreenCTM();
@@ -4657,7 +4658,7 @@ function renderObGoalWheel() {
     };
     const move = (ev) => {
       if (!dragging) return;
-      const t = ev.touches ? ev.touches[0] : ev;
+      const t = ev.touches ? Ev.touches[0] : ev;
       const pt = gSvg.createSVGPoint();
       pt.x = t.clientX; pt.y = t.clientY;
       const ctm = gSvg.getScreenCTM();
@@ -4695,11 +4696,11 @@ function renderObGoalWheel() {
 (function () {
   const SCORE_J = 78;
   const MSGS_PAUSA = [
-    'você está carregando mais do que o normal esta semana. o sono sabe disso antes de você.',
-    'corpo em 82, mente em 71. o que está pesando?',
-    '78 pontos hoje. mas o número não conta o que você sentiu.',
-    'espírito em alta. corpo pedindo atenção. a Circa viu os dois.',
-    'você voltou. quem volta está evoluindo, mesmo quando parece que não.',
+    'você está carregando mais do que o normal esta semana. O sono sabe disso antes de você.',
+    'corpo em 82, mente em 71. O que está pesando?',
+    '78 pontos hoje. Mas o número não conta o que você sentiu.',
+    'espírito em alta. Corpo pedindo atenção. A Circa viu os dois.',
+    'você voltou. Quem volta está evoluindo, mesmo quando parece que não.',
   ];
 
   // paleta do fundo vivo · adaptada pra champanhe
@@ -4741,7 +4742,7 @@ function renderObGoalWheel() {
       const ry = b.r * (1 + p.amp * Math.cos(fundoT * p.spd * 60 + b.py));
       const cx = b.x + Math.sin(fundoT * p.spd * 30 + b.px) * W * 0.04;
       const cy = b.y + Math.cos(fundoT * p.spd * 25 + b.py) * H * 0.04;
-      const cor = bi === 0 ? p.c1 : bi === 1 ? p.c2 : p.c3;
+      const cor = bi === 0 ? P.c1 : bi === 1 ? P.c2 : p.c3;
       const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, rx);
       g.addColorStop(0, `rgba(${cor[0]},${cor[1]},${cor[2]},${cor[3]})`);
       g.addColorStop(1, `rgba(${cor[0]},${cor[1]},${cor[2]},0)`);
@@ -4776,7 +4777,7 @@ function renderObGoalWheel() {
         r += baseR * amp * Math.sin(a * h * 0.7 + orbeT * spd * (h % 2 === 0 ? 1 : -0.7) + h * 1.3) / h;
       }
       const x = cx + r * Math.cos(a), y = cy + r * Math.sin(a);
-      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+      i === 0 ? Ctx.moveTo(x, y) : ctx.lineTo(x, y);
     }
     ctx.closePath();
     const ga = orbeT * 0.004 * Math.PI * 2;
@@ -4797,7 +4798,7 @@ function renderObGoalWheel() {
       let r = baseR;
       for (let h = 1; h <= 4; h++) r += baseR * amp * Math.sin(a * h * 0.7 + orbeT * spd * (h % 2 === 0 ? 1 : -0.7) + h * 1.3) / h;
       const x = cx + r * Math.cos(a), y = cy + r * Math.sin(a);
-      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+      i === 0 ? Ctx.moveTo(x, y) : ctx.lineTo(x, y);
     }
     ctx.closePath(); ctx.fillStyle = shine; ctx.fill();
     orbeT++;
@@ -4917,7 +4918,7 @@ function renderObGoalWheel() {
     goToSec(current - 1);
   }
 
-  // helper: o gesto começou num input/botão/card interativo? se sim, ignora swipe
+  // helper: o gesto começou num input/botão/card interativo? Se sim, ignora swipe
   function gestoEmElementoInterativo(target) {
     if (!target || !target.closest) return false;
     return !!target.closest(
@@ -4964,7 +4965,7 @@ function renderObGoalWheel() {
     const minDy = isFlick ? 25 : 55;
 
     if (Math.abs(dy) > minDy && Math.abs(dy) > dx * 1.2) {
-      dy > 0 ? nextSec() : prevSec();
+      dy > 0 ? NextSec() : prevSec();
     }
   }, { passive: true });
 
@@ -5008,7 +5009,7 @@ function renderObGoalWheel() {
     wheelLastDelta = e.deltaY;
     wheelInertialCount = 0;
 
-    e.deltaY > 0 ? nextSec() : prevSec();
+    e.deltaY > 0 ? NextSec() : prevSec();
   }, { passive: false });
 
   // teclado
@@ -5045,14 +5046,14 @@ function renderObGoalWheel() {
   // sincronizada com as 8 dimensões da roda principal do Circa (AREAS global)
   // cor + mensagem por key, valor puxado direto do AREAS pra ficar sempre em dia
   const RODA_META = {
-    saude:    { lbl:'saúde',      cor:'#7B8BB8', msg:'treino e consistência funcionam. corpo respondendo.' },
-    carreira: { lbl:'carreira',   cor:'#E8C9A0', msg:'sólida. atenção ao equilíbrio com descanso.' },
-    familia:  { lbl:'família',    cor:'#8FA87C', msg:'vínculos próximos em dia. presença consistente.' },
-    relac:    { lbl:'relações',   cor:'#C09090', msg:'pedindo atenção. última conexão há 9 dias.' },
-    lazer:    { lbl:'lazer',      cor:'#E8A87C', msg:'abaixo do ideal. teu corpo pede mais pausa.' },
-    desenv:   { lbl:'desenvolv.', cor:'#D4B896', msg:'ritmo estável. curiosidade acesa.' },
+    saude:    { lbl:'saúde',      cor:'#7B8BB8', msg:'treino e consistência funcionam. Corpo respondendo.' },
+    carreira: { lbl:'carreira',   cor:'#E8C9A0', msg:'sólida. Atenção ao equilíbrio com descanso.' },
+    familia:  { lbl:'família',    cor:'#8FA87C', msg:'vínculos próximos em dia. Presença consistente.' },
+    relac:    { lbl:'relações',   cor:'#C09090', msg:'pedindo atenção. Última conexão há 9 dias.' },
+    lazer:    { lbl:'lazer',      cor:'#E8A87C', msg:'abaixo do ideal. Teu corpo pede mais pausa.' },
+    desenv:   { lbl:'desenvolv.', cor:'#D4B896', msg:'ritmo estável. Curiosidade acesa.' },
     espirit:  { lbl:'espírito',   cor:'#A89CC8', msg:'fé e propósito alimentando o score.' },
-    financas: { lbl:'finanças',   cor:'#B8A878', msg:'previsível. sem sobressaltos no mês.' },
+    financas: { lbl:'finanças',   cor:'#B8A878', msg:'previsível. Sem sobressaltos no mês.' },
   };
   function buildRodaFromAreas() {
     const src = (typeof AREAS !== 'undefined' && Array.isArray(AREAS)) ? AREAS : [];
@@ -5160,9 +5161,9 @@ function renderObGoalWheel() {
       ctx.moveTo(cx, cy);
       ctx.arc(cx, cy, r, aStart, aEnd);
       ctx.closePath();
-      ctx.fillStyle = hexToRgba(a.cor, isAtiva ? alpha * 1.8 : alpha);
+      ctx.fillStyle = hexToRgba(a.cor, isAtiva ? Alpha * 1.8 : alpha);
       ctx.fill();
-      ctx.strokeStyle = hexToRgba(a.cor, isAtiva ? alphaS * 1.3 : alphaS * 0.6);
+      ctx.strokeStyle = hexToRgba(a.cor, isAtiva ? AlphaS * 1.3 : alphaS * 0.6);
       ctx.lineWidth = isAtiva ? 1.5 : 1;
       ctx.stroke();
     });
@@ -5174,7 +5175,7 @@ function renderObGoalWheel() {
       const pulso = 1 + 0.025 * Math.sin(rodaPulsoT + i * 0.8);
       const r = maxR * (v / 10) * pulso;
       const x = cx + Math.cos(angle) * r, y = cy + Math.sin(angle) * r;
-      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+      i === 0 ? Ctx.moveTo(x, y) : ctx.lineTo(x, y);
     });
     ctx.closePath();
     ctx.strokeStyle = 'rgba(212,184,150,0.55)';
@@ -5437,7 +5438,7 @@ function renderObGoalWheel() {
     });
   }
 
-  // 2. tocar na aba "hoje" re-abre a jornada
+  // 2. Tocar na aba "hoje" re-abre a jornada
   document.querySelectorAll('.tab[data-target="home"]').forEach((t) => {
     t.addEventListener('click', () => {
       jornadaFechadaManual = false;
@@ -5445,7 +5446,7 @@ function renderObGoalWheel() {
     });
   });
 
-  // 3. auto-abre ao carregar a primeira vez (esperando splash fechar)
+  // 3. Auto-abre ao carregar a primeira vez (esperando splash fechar)
   function autoOpen() {
     if (jornadaFechadaManual) return;
     abrirJornadaSafe();
@@ -5608,10 +5609,10 @@ function renderResumoSemanaSono() {
   // gera insights automáticos
   const insights = [];
   if (mediaMin >= 420 && mediaMin <= 540) {
-    insights.push(`média na meta. seu corpo tá recuperando bem.`);
+    insights.push(`média na meta. Seu corpo tá recuperando bem.`);
   } else if (mediaMin < 420) {
     const deficit = Math.round((420 - mediaMin) / 60 * 10) / 10;
-    insights.push(`${deficit}h abaixo da meta na semana. acumula cansaço.`);
+    insights.push(`${deficit}h abaixo da meta na semana. Acumula cansaço.`);
   } else {
     insights.push(`dormindo acima da meta, vale investigar se é recovery ou excesso.`);
   }
@@ -5619,7 +5620,7 @@ function renderResumoSemanaSono() {
   if (sdMin < 30) {
     insights.push(`consistência alta, horário estável (${sdMin}min de variação).`);
   } else if (sdMin > 60) {
-    insights.push(`horário oscilou ${sdMin}min. regularidade melhora qualidade.`);
+    insights.push(`horário oscilou ${sdMin}min. Regularidade melhora qualidade.`);
   }
 
   // correlação cafeína
@@ -5680,15 +5681,15 @@ function calcularDuracaoSono() {
   // hint qualitativo
   hint.classList.remove('is-low', 'is-good');
   if (totalMin < 6 * 60) {
-    hint.textContent = 'abaixo da meta · 7-9h recomendadas';
+    hint.textContent = 'Abaixo da meta · 7-9h recomendadas';
     hint.classList.add('is-low');
   } else if (totalMin >= 7 * 60 && totalMin <= 9 * 60 + 30) {
-    hint.textContent = 'dentro da meta · 7-9h';
+    hint.textContent = 'Dentro da meta · 7-9h';
     hint.classList.add('is-good');
   } else if (totalMin > 9 * 60 + 30) {
-    hint.textContent = 'mais longo que o usual';
+    hint.textContent = 'Mais longo que o usual';
   } else {
-    hint.textContent = 'próximo da meta · 7-9h';
+    hint.textContent = 'Próximo da meta · 7-9h';
   }
 }
 
@@ -5768,7 +5769,7 @@ function calcularDuracaoSono() {
     setTimeout(() => {
       const t = document.getElementById('log-ok-title');
       const s = document.getElementById('log-ok-sub');
-      if (t) t.textContent = 'sono registrado.';
+      if (t) t.textContent = 'Sono registrado.';
       const partes = [dur, sonoDaySel || 'hoje'];
       if (sonoQualidade) partes.push(`qualidade ${sonoQualidade}/5`);
       if (s) s.textContent = partes.join(' · ');
@@ -5848,7 +5849,7 @@ function abrirLogAgua() {
     setTimeout(() => {
       const t = document.getElementById('log-ok-title');
       const s = document.getElementById('log-ok-sub');
-      if (t) t.textContent = 'água registrada.';
+      if (t) t.textContent = 'Água registrada.';
       if (s) s.textContent = `total hoje: ${formatLitros(aguaHojeMl)} L / ${formatLitros(aguaMetaMl)} L`;
       if (typeof openSheet === 'function') openSheet('sheet-log-ok');
     }, 180);
@@ -5942,52 +5943,52 @@ function abrirLogTreinoSemana() {
 // ───── ALTERAR TREINO · substitutos por grupo muscular ─────
 const SUBSTITUTOS_POR_GRUPO = {
   peito: [
-    { nome: 'supino reto', meta: '4 × 8 · barra', por: 'mesmo padrão de empurrar · base' },
-    { nome: 'supino inclinado', meta: '3 × 10 · halteres', por: 'foca parte superior, mesma cadeia' },
-    { nome: 'crucifixo', meta: '3 × 12 · halteres', por: 'isola o peitoral, menos ombro' },
-    { nome: 'flexão de braço', meta: '4 × max · corpo', por: 'sem equipamento, recruta core' },
+    { nome: 'Supino reto', meta: '4 × 8 · barra', por: 'mesmo padrão de empurrar · base' },
+    { nome: 'Supino inclinado', meta: '3 × 10 · halteres', por: 'foca parte superior, mesma cadeia' },
+    { nome: 'Crucifixo', meta: '3 × 12 · halteres', por: 'isola o peitoral, menos ombro' },
+    { nome: 'Flexão de braço', meta: '4 × max · corpo', por: 'sem equipamento, recruta core' },
   ],
   costas: [
-    { nome: 'puxada frontal', meta: '4 × 10 · polia', por: 'vertical, dorsal amplo' },
-    { nome: 'remada curvada', meta: '4 × 8 · barra', por: 'horizontal, mid-back' },
-    { nome: 'remada baixa', meta: '3 × 10 · polia', por: 'mesmo padrão de puxar' },
-    { nome: 'barra fixa', meta: '4 × max · corpo', por: 'clássico, pega toda cadeia' },
+    { nome: 'Puxada frontal', meta: '4 × 10 · polia', por: 'vertical, dorsal amplo' },
+    { nome: 'Remada curvada', meta: '4 × 8 · barra', por: 'horizontal, mid-back' },
+    { nome: 'Remada baixa', meta: '3 × 10 · polia', por: 'mesmo padrão de puxar' },
+    { nome: 'Barra fixa', meta: '4 × max · corpo', por: 'clássico, pega toda cadeia' },
   ],
   pernas: [
-    { nome: 'agachamento livre', meta: '5 × 6 · barra', por: 'padrão composto completo' },
-    { nome: 'leg press', meta: '4 × 10 · máquina', por: 'volume sem carga axial' },
-    { nome: 'stiff', meta: '4 × 10 · barra', por: 'posterior + glúteo' },
-    { nome: 'afundo', meta: '3 × 12 cada lado', por: 'unilateral, corrige assimetria' },
+    { nome: 'Agachamento livre', meta: '5 × 6 · barra', por: 'padrão composto completo' },
+    { nome: 'Leg press', meta: '4 × 10 · máquina', por: 'volume sem carga axial' },
+    { nome: 'Stiff', meta: '4 × 10 · barra', por: 'posterior + glúteo' },
+    { nome: 'Afundo', meta: '3 × 12 cada lado', por: 'unilateral, corrige assimetria' },
   ],
   ombro: [
-    { nome: 'desenvolvimento', meta: '4 × 8 · halteres', por: 'empurrar vertical, deltóide' },
-    { nome: 'elevação lateral', meta: '4 × 12 · halteres', por: 'isola deltóide médio' },
-    { nome: 'elevação frontal', meta: '3 × 12 · halteres', por: 'deltóide anterior' },
-    { nome: 'face pull', meta: '3 × 15 · polia', por: 'postural, deltóide posterior' },
+    { nome: 'Desenvolvimento', meta: '4 × 8 · halteres', por: 'empurrar vertical, deltóide' },
+    { nome: 'Elevação lateral', meta: '4 × 12 · halteres', por: 'isola deltóide médio' },
+    { nome: 'Elevação frontal', meta: '3 × 12 · halteres', por: 'deltóide anterior' },
+    { nome: 'Face pull', meta: '3 × 15 · polia', por: 'postural, deltóide posterior' },
   ],
   biceps: [
-    { nome: 'rosca direta', meta: '4 × 10 · barra', por: 'foco na cabeça longa' },
-    { nome: 'rosca martelo', meta: '3 × 12 · halteres', por: 'pega neutra, braquial' },
-    { nome: 'rosca scott', meta: '3 × 10 · banco', por: 'isola, tira impulso' },
-    { nome: 'rosca inversa', meta: '3 × 12 · barra', por: 'antebraço + braquiorradial' },
+    { nome: 'Rosca direta', meta: '4 × 10 · barra', por: 'foco na cabeça longa' },
+    { nome: 'Rosca martelo', meta: '3 × 12 · halteres', por: 'pega neutra, braquial' },
+    { nome: 'Rosca scott', meta: '3 × 10 · banco', por: 'isola, tira impulso' },
+    { nome: 'Rosca inversa', meta: '3 × 12 · barra', por: 'antebraço + braquiorradial' },
   ],
   triceps: [
-    { nome: 'tríceps corda', meta: '4 × 12 · polia', por: 'isola cabeça lateral' },
-    { nome: 'tríceps francês', meta: '3 × 10 · halter', por: 'alonga cabeça longa' },
-    { nome: 'paralela', meta: '3 × max · corpo', por: 'composto, peito + tríceps' },
-    { nome: 'supino fechado', meta: '4 × 8 · barra', por: 'pega fechada, foca tríceps' },
+    { nome: 'Tríceps corda', meta: '4 × 12 · polia', por: 'isola cabeça lateral' },
+    { nome: 'Tríceps francês', meta: '3 × 10 · halter', por: 'alonga cabeça longa' },
+    { nome: 'Paralela', meta: '3 × max · corpo', por: 'composto, peito + tríceps' },
+    { nome: 'Supino fechado', meta: '4 × 8 · barra', por: 'pega fechada, foca tríceps' },
   ],
   core: [
-    { nome: 'prancha', meta: '3 × 60s', por: 'isométrica, core profundo' },
-    { nome: 'abdominal reto', meta: '4 × 20', por: 'reto abdominal direto' },
-    { nome: 'elevação de pernas', meta: '4 × 15', por: 'parte inferior do reto' },
-    { nome: 'prancha lateral', meta: '3 × 40s cada', por: 'oblíquos + estabilidade' },
+    { nome: 'Prancha', meta: '3 × 60s', por: 'isométrica, core profundo' },
+    { nome: 'Abdominal reto', meta: '4 × 20', por: 'reto abdominal direto' },
+    { nome: 'Elevação de pernas', meta: '4 × 15', por: 'parte inferior do reto' },
+    { nome: 'Prancha lateral', meta: '3 × 40s cada', por: 'oblíquos + estabilidade' },
   ],
   cardio: [
-    { nome: 'corrida', meta: '30min · pace 6:00', por: 'aeróbico contínuo, impacto' },
-    { nome: 'bike', meta: '40min · moderado', por: 'aeróbico sem impacto' },
-    { nome: 'hiit', meta: '20min · 30/30', por: 'anaeróbico intenso, queima alta' },
-    { nome: 'caminhada rápida', meta: '45min · incline', por: 'baixa intensidade, recovery' },
+    { nome: 'Corrida', meta: '30min · pace 6:00', por: 'aeróbico contínuo, impacto' },
+    { nome: 'Bike', meta: '40min · moderado', por: 'aeróbico sem impacto' },
+    { nome: 'Hiit', meta: '20min · 30/30', por: 'anaeróbico intenso, queima alta' },
+    { nome: 'Caminhada rápida', meta: '45min · incline', por: 'baixa intensidade, recovery' },
   ],
 };
 
@@ -6029,7 +6030,7 @@ function renderTrocarSubs(grupo) {
       setTimeout(() => {
         const t = document.getElementById('log-ok-title');
         const sb = document.getElementById('log-ok-sub');
-        if (t) t.textContent = 'treino ajustado.';
+        if (t) t.textContent = 'Treino ajustado.';
         if (sb) sb.textContent = `${grupo}: ${s.nome} · ${s.meta}`;
         if (typeof openSheet === 'function') openSheet('sheet-log-ok');
       }, 220);
@@ -6168,7 +6169,7 @@ function renderHumorHistorico() {
     setTimeout(() => {
       const t = document.getElementById('log-ok-title');
       const s = document.getElementById('log-ok-sub');
-      if (t) t.textContent = 'humor registrado.';
+      if (t) t.textContent = 'Humor registrado.';
       const label = ['', 'muito mal', 'mal', 'ok', 'bem', 'incrível'][humorSens || 3];
       if (s) s.textContent = `sensação: ${label}${humorEnergia ? ' · energia ' + humorEnergia + '/5' : ''}${humorFoco ? ' · foco ' + humorFoco + '/5' : ''}`;
       if (typeof openSheet === 'function') openSheet('sheet-log-ok');
@@ -6183,10 +6184,10 @@ let refSens = null;
 // ───── LOG DE REFEIÇÃO · plano de dieta do dia com check ─────
 // plano diário de 4 refeições (modelo v0, pode ser customizado por dieta)
 const REF_PLANO_HOJE = [
-  { id: 'cafe',   hora: '07:30', nome: 'café da manhã', prato: 'ovos mexidos + aveia + frutas vermelhas', kcal: 420 },
-  { id: 'almoco', hora: '13:00', nome: 'almoço',        prato: 'frango grelhado + arroz integral + legumes', kcal: 650 },
-  { id: 'lanche', hora: '16:30', nome: 'lanche',        prato: 'iogurte natural + castanhas + banana', kcal: 280 },
-  { id: 'jantar', hora: '20:00', nome: 'jantar',        prato: 'salmão + batata-doce + salada verde', kcal: 580 },
+  { id: 'cafe',   hora: '07:30', nome: 'Café da manhã', prato: 'ovos mexidos + aveia + frutas vermelhas', kcal: 420 },
+  { id: 'almoco', hora: '13:00', nome: 'Almoço',        prato: 'frango grelhado + arroz integral + legumes', kcal: 650 },
+  { id: 'lanche', hora: '16:30', nome: 'Lanche',        prato: 'iogurte natural + castanhas + banana', kcal: 280 },
+  { id: 'jantar', hora: '20:00', nome: 'Jantar',        prato: 'salmão + batata-doce + salada verde', kcal: 580 },
 ];
 
 function chaveDoDia() {
@@ -6290,7 +6291,7 @@ function calcularScoreDinamico() {
   const lastSono = d.sono[d.sono.length - 1];
   if (lastSono && lastSono.dur) {
     const m = lastSono.dur.match(/(\d+)h/);
-    const h = m ? parseInt(m[1], 10) : 0;
+    const h = m ? ParseInt(m[1], 10) : 0;
     if (h >= 7 && h <= 9) corpo += 18;
     else if (h >= 6) corpo += 8;
     else corpo -= 5;
@@ -6333,14 +6334,14 @@ function gerarInsightsDinamicos() {
   const lastSono = d.sono[d.sono.length - 1];
   if (lastSono) {
     const m = lastSono.dur && lastSono.dur.match(/(\d+)h\s*(\d+)min/);
-    const totalMin = m ? parseInt(m[1], 10) * 60 + parseInt(m[2], 10) : 0;
+    const totalMin = m ? ParseInt(m[1], 10) * 60 + parseInt(m[2], 10) : 0;
     if (totalMin > 0 && totalMin < 420) {
-      ins.push({ tag: 'corpo', cor: '#7B8BB8', txt: `dormiu ${lastSono.dur}, abaixo da meta. teu corpo tá pedindo 7h.` });
+      ins.push({ tag: 'corpo', cor: '#7B8BB8', txt: `dormiu ${lastSono.dur}, abaixo da meta. Teu corpo tá pedindo 7h.` });
     } else if (totalMin >= 420 && totalMin <= 540) {
-      ins.push({ tag: 'corpo', cor: '#7B8BB8', txt: `${lastSono.dur} de sono, dentro da meta. recuperação ok.` });
+      ins.push({ tag: 'corpo', cor: '#7B8BB8', txt: `${lastSono.dur} de sono, dentro da meta. Recuperação ok.` });
     }
     if (lastSono.cafeina === 'sim') {
-      ins.push({ tag: 'corpo', cor: '#7B8BB8', txt: `cafeína após 14h ontem. sono costuma ficar mais fragmentado.` });
+      ins.push({ tag: 'corpo', cor: '#7B8BB8', txt: `cafeína após 14h ontem. Sono costuma ficar mais fragmentado.` });
     }
   } else {
     ins.push({ tag: 'corpo', cor: '#7B8BB8', txt: `registra teu sono pro circa começar a cruzar padrões.` });
@@ -6349,9 +6350,9 @@ function gerarInsightsDinamicos() {
   const lastHumor = d.humor[d.humor.length - 1];
   if (lastHumor && lastHumor.sens) {
     if (lastHumor.sens <= 2) {
-      ins.push({ tag: 'mente', cor: '#E8A87C', txt: `humor baixo no último check-in. movimento e sol costumam ajudar.` });
+      ins.push({ tag: 'mente', cor: '#E8A87C', txt: `humor baixo no último check-in. Movimento e sol costumam ajudar.` });
     } else if (lastHumor.sens >= 4) {
-      ins.push({ tag: 'mente', cor: '#E8A87C', txt: `humor alto no último check-in. observa o que tá puxando.` });
+      ins.push({ tag: 'mente', cor: '#E8A87C', txt: `humor alto no último check-in. Observa o que tá puxando.` });
     }
   } else {
     ins.push({ tag: 'mente', cor: '#E8A87C', txt: `check-in rápido de humor ajuda o circa a cruzar com teu dia.` });
@@ -6361,26 +6362,26 @@ function gerarInsightsDinamicos() {
   if (treinosHoje.length) {
     const t = treinosHoje[treinosHoje.length - 1];
     if (t.intensidade >= 4) {
-      ins.push({ tag: 'corpo', cor: '#7B8BB8', txt: `treino intenso hoje. hidrata mais e cuida do sono à noite.` });
+      ins.push({ tag: 'corpo', cor: '#7B8BB8', txt: `treino intenso hoje. Hidrata mais e cuida do sono à noite.` });
     } else if (t.intensidade) {
-      ins.push({ tag: 'corpo', cor: '#7B8BB8', txt: `treino moderado hoje. consistência vale mais que intensidade.` });
+      ins.push({ tag: 'corpo', cor: '#7B8BB8', txt: `treino moderado hoje. Consistência vale mais que intensidade.` });
     }
   } else if (d.treino.length) {
     const last = d.treino[d.treino.length - 1];
     const diasAtras = Math.floor((Date.now() - new Date(last.data).getTime()) / (24 * 60 * 60 * 1000));
     if (diasAtras >= 2) {
-      ins.push({ tag: 'corpo', cor: '#7B8BB8', txt: `último treino há ${diasAtras} dias. corpo pedindo movimento.` });
+      ins.push({ tag: 'corpo', cor: '#7B8BB8', txt: `último treino há ${diasAtras} dias. Corpo pedindo movimento.` });
     }
   }
 
   const pctAgua = (d.aguaHoje / d.aguaMeta) * 100;
   if (pctAgua < 60) {
-    ins.push({ tag: 'corpo', cor: '#7B8BB8', txt: `${Math.round(pctAgua)}% da meta de água. mira 500ml nas próximas horas.` });
+    ins.push({ tag: 'corpo', cor: '#7B8BB8', txt: `${Math.round(pctAgua)}% da meta de água. Mira 500ml nas próximas horas.` });
   }
 
   const refHoje = d.refeicao.filter(r => new Date(r.ts).toDateString() === new Date().toDateString());
   if (!refHoje.length) {
-    ins.push({ tag: 'mente', cor: '#E8A87C', txt: `nenhuma refeição registrada hoje. alimentação afeta humor direto.` });
+    ins.push({ tag: 'mente', cor: '#E8A87C', txt: `nenhuma refeição registrada hoje. Alimentação afeta humor direto.` });
   }
 
   return { score: s, insights: ins };
@@ -6395,7 +6396,7 @@ function atualizarJornadaComLogs() {
     ? USER_NAME.split(' ')[0]
     : 'você';
   const hora = new Date().getHours();
-  const saudacao = hora < 12 ? 'bom dia' : hora < 18 ? 'boa tarde' : 'boa noite';
+  const saudacao = hora < 12 ? 'Bom dia' : hora < 18 ? 'Boa tarde' : 'Boa noite';
 
   const ritTitulo = document.getElementById('j-ritual-titulo');
   if (ritTitulo) {
@@ -6403,7 +6404,7 @@ function atualizarJornadaComLogs() {
   }
   const jGreet = document.getElementById('j-greet');
   if (jGreet) {
-    jGreet.textContent = nomeUser === 'você' ? saudacao : `${saudacao}, ${nomeUser}`;
+    jGreet.textContent = nomeUser === 'você' ? Saudacao : `${saudacao}, ${nomeUser}`;
   }
 
   const heroVal = document.getElementById('j-hero-value');
@@ -6510,7 +6511,7 @@ function abrirDimDetalhes(dim) {
     espirito: 'propósito, conexões, rituais.',
   };
 
-  document.getElementById('dim-eye').textContent = 'dimensão';
+  document.getElementById('dim-eye').textContent = 'Dimensão';
   const t = document.getElementById('dim-title');
   t.textContent = titulos[dim] || dim;
   t.style.color = cores[dim] || 'var(--fg)';
@@ -6523,10 +6524,10 @@ function abrirDimDetalhes(dim) {
     const lastSono = d.sono[d.sono.length - 1];
     const treinosHoje = d.treino.filter(t => new Date(t.data).toDateString() === new Date().toDateString());
     const metrics = [
-      { lbl: 'sono',    val: lastSono ? lastSono.dur : '—',           desc: lastSono ? `qualidade ${lastSono.qualidade || '—'}/5` : 'não registrado' },
-      { lbl: 'água',    val: `${(d.aguaHoje/1000).toFixed(1)}L`,       desc: `meta ${(d.aguaMeta/1000).toFixed(1)}L · ${Math.round(d.aguaHoje/d.aguaMeta*100)}%` },
+      { lbl: 'sono',    val: lastSono ? LastSono.dur : '—',           desc: lastSono ? `qualidade ${lastSono.qualidade || '—'}/5` : 'não registrado' },
+      { lbl: 'água',    val: `${(d.aguaHoje/1000).toFixed(1)}L`,       desc: `Meta ${(d.aguaMeta/1000).toFixed(1)}L · ${Math.round(d.aguaHoje/d.aguaMeta*100)}%` },
       { lbl: 'treino',  val: treinosHoje.length ? (treinosHoje[0].duracaoMin ? `${treinosHoje[0].duracaoMin}min` : 'feito') : '—', desc: treinosHoje.length ? `intensidade ${treinosHoje[0].intensidade || '—'}/5` : 'sem treino hoje' },
-      { lbl: 'suplementos', val: '1/3', desc: 'creatina · 2 pendentes' },
+      { lbl: 'suplementos', val: '1/3', desc: 'Creatina · 2 pendentes' },
     ];
     bd.innerHTML = `<div class="j-metrics">${metrics.map(m => `
       <div class="j-card"><p class="j-card-lbl">${m.lbl}</p><p class="j-card-val">${m.val}</p><p class="j-card-desc">${m.desc}</p></div>
@@ -6539,7 +6540,7 @@ function abrirDimDetalhes(dim) {
     const labelMap = { 1:'muito mal', 2:'mal', 3:'ok', 4:'bem', 5:'incrível' };
     bd.innerHTML = `
       <div class="j-metrics">
-        <div class="j-card"><p class="j-card-lbl">humor</p><p class="j-card-val">${lastHumor?.sens ? emojiMap[lastHumor.sens] : '—'}</p><p class="j-card-desc">${lastHumor?.sens ? labelMap[lastHumor.sens] : 'não registrado'}</p></div>
+        <div class="j-card"><p class="j-card-lbl">humor</p><p class="j-card-val">${lastHumor?.sens ? EmojiMap[lastHumor.sens] : '—'}</p><p class="j-card-desc">${lastHumor?.sens ? LabelMap[lastHumor.sens] : 'não registrado'}</p></div>
         <div class="j-card"><p class="j-card-lbl">energia</p><p class="j-card-val">${lastHumor?.energia || '—'}<span>/5</span></p><p class="j-card-desc">último check-in</p></div>
         <div class="j-card"><p class="j-card-lbl">foco</p><p class="j-card-val">${lastHumor?.foco || '—'}<span>/5</span></p><p class="j-card-desc">último check-in</p></div>
         <div class="j-card"><p class="j-card-lbl">registros</p><p class="j-card-val">${d.humor.length}</p><p class="j-card-desc">total de check-ins</p></div>
@@ -6571,7 +6572,7 @@ function abrirDimDetalhes(dim) {
   });
   if (!ul.children.length) {
     const li = document.createElement('li');
-    li.textContent = 'registra mais logs pra circa começar a cruzar padrões.';
+    li.textContent = 'Registra mais logs pra circa começar a cruzar padrões.';
     ul.appendChild(li);
   }
 
@@ -6615,8 +6616,8 @@ function renderPerfilMental() {
     <div class="perfil-group">
       <p class="perfil-group__head">perfil de motivação</p>
       <div class="perfil-row"><span class="perfil-row__lbl">arquétipo</span><span class="perfil-row__val">${profile.nome || profile.label || profile.perfil || 'em construção'}</span></div>
-      <div class="perfil-row"><span class="perfil-row__lbl">energia média</span><span class="perfil-row__val">${lastHumor?.energia ? lastHumor.energia + '/5' : '—'}</span></div>
-      <div class="perfil-row"><span class="perfil-row__lbl">foco médio</span><span class="perfil-row__val">${lastHumor?.foco ? lastHumor.foco + '/5' : '—'}</span></div>
+      <div class="perfil-row"><span class="perfil-row__lbl">energia média</span><span class="perfil-row__val">${lastHumor?.energia ? LastHumor.energia + '/5' : '—'}</span></div>
+      <div class="perfil-row"><span class="perfil-row__lbl">foco médio</span><span class="perfil-row__val">${lastHumor?.foco ? LastHumor.foco + '/5' : '—'}</span></div>
     </div>
     <div class="perfil-group">
       <p class="perfil-group__head">humor recente</p>
@@ -6639,7 +6640,7 @@ function renderPerfilSaude() {
     if (!sonoArr.length) return null;
     const mins = sonoArr.slice(-7).map(s => {
       const m = s.dur && s.dur.match(/(\d+)h\s*(\d+)min/);
-      return m ? parseInt(m[1],10)*60 + parseInt(m[2],10) : 0;
+      return m ? ParseInt(m[1],10)*60 + parseInt(m[2],10) : 0;
     }).filter(n => n > 0);
     if (!mins.length) return null;
     return Math.round(mins.reduce((a,b) => a+b, 0) / mins.length);
@@ -6663,7 +6664,7 @@ function renderPerfilSaude() {
     <div class="perfil-group">
       <p class="perfil-group__head">fisio (onboarding)</p>
       <div class="perfil-row"><span class="perfil-row__lbl">trilha</span><span class="perfil-row__val">${fisio.trilha || '—'}</span></div>
-      <div class="perfil-row"><span class="perfil-row__lbl">pontuação</span><span class="perfil-row__val">${fisio.score != null ? fisio.score + '/30' : '—'}</span></div>
+      <div class="perfil-row"><span class="perfil-row__lbl">pontuação</span><span class="perfil-row__val">${fisio.score != null ? Fisio.score + '/30' : '—'}</span></div>
     </div>
   `;
 }
@@ -6686,7 +6687,7 @@ function renderPerfilFisico() {
     </div>
     <div class="perfil-group">
       <p class="perfil-group__head">atividade</p>
-      <div class="perfil-row"><span class="perfil-row__lbl">último treino</span><span class="perfil-row__val">${ultimoTreino ? new Date(ultimoTreino.data).toLocaleDateString('pt-BR', { day:'numeric', month:'short' }) : '—'}</span></div>
+      <div class="perfil-row"><span class="perfil-row__lbl">último treino</span><span class="perfil-row__val">${ultimoTreino ? New Date(ultimoTreino.data).toLocaleDateString('pt-BR', { day:'numeric', month:'short' }) : '—'}</span></div>
       <div class="perfil-row"><span class="perfil-row__lbl">treinos semana</span><span class="perfil-row__val">${treinosSemana.length}</span></div>
       <div class="perfil-row"><span class="perfil-row__lbl">total registrados</span><span class="perfil-row__val">${treinoArr.length}</span></div>
     </div>
@@ -6763,7 +6764,7 @@ function abrirPerfil() {
       e.stopPropagation();
       const nome = btn.dataset.clubMsg;
       const sub = btn.dataset.clubSub || '';
-      document.getElementById('club-modal-titulo').textContent = 'mensagem para ' + nome;
+      document.getElementById('club-modal-titulo').textContent = 'Mensagem para ' + nome;
       document.getElementById('club-modal-sub').textContent = sub;
       document.getElementById('club-modal-input').value = '';
       document.getElementById('club-modal').classList.add('is-open');
@@ -6801,8 +6802,8 @@ function abrirPerfil() {
     const icon = g.dataset.clubGesto || '';
     const alvo = g.dataset.clubAlvo || '';
     const splitAt = icon.indexOf(' ');
-    const emoji = splitAt > 0 ? icon.slice(0, splitAt) : icon;
-    const texto = alvo || (splitAt > 0 ? icon.slice(splitAt + 1) : '');
+    const emoji = splitAt > 0 ? Icon.slice(0, splitAt) : icon;
+    const texto = alvo || (splitAt > 0 ? Icon.slice(splitAt + 1) : '');
     try { hap(8); } catch (er) {}
     clubToast(emoji, texto);
   });
@@ -6849,7 +6850,7 @@ function clubDesenharMiniRodas() {
       const r = maxR * (v / 100);
       const x = cx + Math.cos(ang) * r;
       const y = cy + Math.sin(ang) * r;
-      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+      i === 0 ? Ctx.moveTo(x, y) : ctx.lineTo(x, y);
     });
     ctx.closePath();
     const cor = cfg.cor;
@@ -7001,46 +7002,46 @@ function clubDesenharMiniRodas() {
 // ═════════════════════════════════════════════════════════
 const TEMPERAMENTOS = {
   corrente: {
-    nome: 'corrente',
+    nome: 'Corrente',
     cor:  '232,201,160', // E8C9A0
-    manifesto: 'você é o que se move,<br/>o que conecta,<br/>o que abre caminho onde havia parede.',
+    manifesto: 'Você é o que se move,<br/>o que conecta,<br/>o que abre caminho onde havia parede.',
     detalhes: [
-      { n: 'I',   t: 'sua <strong>energia vem do encontro</strong>. você se acende com gente, com novidade, com o mundo.' },
-      { n: 'II',  t: 'no esforço, você precisa de <strong>variedade</strong>. mesma rotina te apaga. mudança te acende.' },
-      { n: 'III', t: 'no espírito, é o <strong>convívio</strong> que te toca. uma conversa boa vale uma meditação.' },
+      { n: 'I',   t: 'sua <strong>energia vem do encontro</strong>. Você se acende com gente, com novidade, com o mundo.' },
+      { n: 'II',  t: 'no esforço, você precisa de <strong>variedade</strong>. Mesma rotina te apaga. Mudança te acende.' },
+      { n: 'III', t: 'no espírito, é o <strong>convívio</strong> que te toca. Uma conversa boa vale uma meditação.' },
     ],
     chamado: '"vou te lembrar, sempre, que parar também é movimento."',
   },
   brasa: {
-    nome: 'brasa',
+    nome: 'Brasa',
     cor:  '232,168,124', // E8A87C
-    manifesto: 'você é o que arde,<br/>o que constrói,<br/>o que transforma intenção em forma.',
+    manifesto: 'Você é o que arde,<br/>o que constrói,<br/>o que transforma intenção em forma.',
     detalhes: [
-      { n: 'I',   t: 'sua <strong>energia vem do propósito</strong>. você se move pelo que precisa existir, não pelo que é fácil.' },
-      { n: 'II',  t: 'na frustração, você <strong>age</strong>. transforma dor em produção, refaz com mais força.' },
-      { n: 'III', t: 'no espírito, é a <strong>conquista</strong> que te toca. realizar algo difícil é seu sagrado.' },
+      { n: 'I',   t: 'sua <strong>energia vem do propósito</strong>. Você se move pelo que precisa existir, não pelo que é fácil.' },
+      { n: 'II',  t: 'na frustração, você <strong>age</strong>. Transforma dor em produção, refaz com mais força.' },
+      { n: 'III', t: 'no espírito, é a <strong>conquista</strong> que te toca. Realizar algo difícil é seu sagrado.' },
     ],
     chamado: '"vou te lembrar, sempre, que o que não é construído também tem valor."',
   },
   raiz: {
-    nome: 'raiz',
+    nome: 'Raiz',
     cor:  '168,156,200', // A89CC8
-    manifesto: 'você é o que aprofunda,<br/>o que sente,<br/>o que entende antes de agir.',
+    manifesto: 'Você é o que aprofunda,<br/>o que sente,<br/>o que entende antes de agir.',
     detalhes: [
-      { n: 'I',   t: 'sua <strong>energia vem do silêncio</strong>. você se restaura no recolhimento, não no estímulo.' },
-      { n: 'II',  t: 'na frustração, você <strong>processa antes de mover</strong>. precisa sentir pra entender, e entender pra agir.' },
-      { n: 'III', t: 'no espírito, é a <strong>contemplação</strong> que te toca. um pôr do sol, um silêncio profundo.' },
+      { n: 'I',   t: 'sua <strong>energia vem do silêncio</strong>. Você se restaura no recolhimento, não no estímulo.' },
+      { n: 'II',  t: 'na frustração, você <strong>processa antes de mover</strong>. Precisa sentir pra entender, e entender pra agir.' },
+      { n: 'III', t: 'no espírito, é a <strong>contemplação</strong> que te toca. Um pôr do sol, um silêncio profundo.' },
     ],
     chamado: '"vou te lembrar, sempre, que sentir não precisa custar tanto."',
   },
   mare: {
-    nome: 'maré',
+    nome: 'Maré',
     cor:  '123,139,184', // 7B8BB8
-    manifesto: 'você é o que volta,<br/>o que sustenta,<br/>o que dura quando outros se cansam.',
+    manifesto: 'Você é o que volta,<br/>o que sustenta,<br/>o que dura quando outros se cansam.',
     detalhes: [
-      { n: 'I',   t: 'sua <strong>energia vem do ritmo</strong>. você sustenta o que outros começam e abandonam.' },
-      { n: 'II',  t: 'na frustração, você <strong>contém e segue</strong>. evita confronto, mas não desiste do plano.' },
-      { n: 'III', t: 'no espírito, é a <strong>presença</strong> que te toca. uma rotina simples cumprida em paz.' },
+      { n: 'I',   t: 'sua <strong>energia vem do ritmo</strong>. Você sustenta o que outros começam e abandonam.' },
+      { n: 'II',  t: 'na frustração, você <strong>contém e segue</strong>. Evita confronto, mas não desiste do plano.' },
+      { n: 'III', t: 'no espírito, é a <strong>presença</strong> que te toca. Uma rotina simples cumprida em paz.' },
     ],
     chamado: '"vou te lembrar, sempre, que mover também é cuidar."',
   },
@@ -7253,7 +7254,7 @@ function temprDrawElemento(tipo, cor) {
         }
         const x = cx + Math.cos(ang) * r;
         const y = cy + Math.sin(ang) * r;
-        k === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+        k === 0 ? Ctx.moveTo(x, y) : ctx.lineTo(x, y);
       }
       ctx.closePath();
       const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, 44);
@@ -7294,7 +7295,7 @@ function temprDrawElemento(tipo, cor) {
         ctx.beginPath();
         for (let x = cx - 56; x <= cx + 56; x += 2) {
           const y = cy + off * 9 + Math.sin((x - cx) * 0.13 + t * 1.2 + off * 0.4) * 6;
-          x === cx - 56 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+          x === cx - 56 ? Ctx.moveTo(x, y) : ctx.lineTo(x, y);
         }
         ctx.globalAlpha = 1 - Math.abs(off) * 0.3;
         ctx.strokeStyle = `rgba(${cor},0.7)`;
@@ -7370,11 +7371,11 @@ function temprDrawElemento(tipo, cor) {
     const hoje = new Date(); hoje.setHours(0,0,0,0);
     const d = diaCiclo(hoje);
     const ovu = ESTADO.cycle - 14;
-    if (d < ESTADO.period) return { id: 'menstruacao', nome: 'menstruação' };
-    if (d === ovu) return { id: 'ovulacao', nome: 'ovulação' };
-    if (d >= ovu - 5 && d <= ovu + 1) return { id: 'fertil', nome: 'janela fértil' };
-    if (d < ovu) return { id: 'folicular', nome: 'fase folicular' };
-    return { id: 'lutea', nome: 'fase lútea' };
+    if (d < ESTADO.period) return { id: 'menstruacao', nome: 'Menstruação' };
+    if (d === ovu) return { id: 'ovulacao', nome: 'Ovulação' };
+    if (d >= ovu - 5 && d <= ovu + 1) return { id: 'fertil', nome: 'Janela fértil' };
+    if (d < ovu) return { id: 'folicular', nome: 'Fase folicular' };
+    return { id: 'lutea', nome: 'Fase lútea' };
   }
 
   function diasProx() {
@@ -7591,13 +7592,13 @@ function temprDrawElemento(tipo, cor) {
     }));
 
     if (items.length === 0) {
-      el.innerHTML = `<div class="log-hist-empty">nada registrado ainda. registre teu primeiro item no card 'hoje' e ele aparece aqui.</div>`;
+      el.innerHTML = `<div class="log-hist-empty">nada registrado ainda. Registre teu primeiro item no card 'hoje' e ele aparece aqui.</div>`;
       return;
     }
 
     items.sort((a, b) => {
-      const ta = a.ts ? new Date(a.ts).getTime() : 0;
-      const tb = b.ts ? new Date(b.ts).getTime() : 0;
+      const ta = a.ts ? New Date(a.ts).getTime() : 0;
+      const tb = b.ts ? New Date(b.ts).getTime() : 0;
       return tb - ta;
     });
 

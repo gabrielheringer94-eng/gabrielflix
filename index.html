@@ -23,8 +23,8 @@
   <link rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,400&family=Inter:wght@400;500;600&display=swap" />
   <!-- cache-bust agressivo: muda v sempre que houver mudança visual -->
-  <link rel="stylesheet" href="styles.css?v=20260502-q" />
-  <link rel="stylesheet" href="apple.css?v=20260502-q" />
+  <link rel="stylesheet" href="styles.css?v=20260503-a" />
+  <link rel="stylesheet" href="apple.css?v=20260503-a" />
   <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="pragma" content="no-cache" />
   <meta http-equiv="expires" content="0" />
@@ -40,7 +40,7 @@
     body.apple-mode .hero-stage .ring { display: none !important; }
   </style>
   <script>
-    // 1. força apple-mode no <html> e (quando body existir) no body, antes do paint
+    // 1. Força apple-mode no <html> e (quando body existir) no body, antes do paint
     (function () {
       try { document.documentElement.classList.add('apple-mode'); } catch (e) {}
       var apply = function () {
@@ -51,7 +51,7 @@
       if (document.body) apply();
       else document.addEventListener('DOMContentLoaded', apply, { once: true });
     })();
-    // 2. wipe localStorage circa_* se versão antiga (welcome reabre, dados zeram)
+    // 2. Wipe localStorage circa_* se versão antiga (welcome reabre, dados zeram)
     (function () {
       var V = 'v5-2026-05-02-a';
       try {
@@ -123,23 +123,23 @@
           <span class="wlc-orbe-halo"></span>
           <span class="wlc-orbe-inner"></span>
         </div>
-        <p class="wlc-eye">antes de começar</p>
-        <h1 class="display">respira<em>.</em></h1>
-        <p class="lead">o circa não é mais um app de metas.<br/>é o único que te conhece de verdade.</p>
+        <p class="wlc-eye">Antes de começar</p>
+        <h1 class="display">Respira<em>.</em></h1>
+        <p class="lead">O circa não é mais um app de metas.<br/>É o único que te conhece de verdade.</p>
       </div>
-      <button class="btn btn--primary btn--full wlc-cta" data-wlc-go="2">estou pronto</button>
+      <button class="btn btn--primary btn--full wlc-cta" data-wlc-go="2">Estou pronto</button>
     </section>
 
     <!-- TELA 2 · frases -->
     <section class="wlc-tela" data-wlc="2">
       <div class="wlc-frases">
-        <p class="wlc-eye">passo 2 de 3</p>
-        <h1 class="display">qual dessas frases<br/>te <em>encontra</em> hoje?</h1>
-        <p class="lead">não existe resposta certa, só a sua.</p>
+        <p class="wlc-eye">Passo 2 de 3</p>
+        <h1 class="display">Qual dessas frases<br/>te <em>encontra</em> hoje?</h1>
+        <p class="lead">Não existe resposta certa, só a sua.</p>
 
         <div class="wlc-frase-list">
           <button class="wlc-frase" data-frase="sinto que perdi o fio." data-dim="energia vital">
-            <p class="wlc-frase__txt">"sinto que perdi o fio."</p>
+            <p class="wlc-frase__txt">"Sinto que perdi o fio."</p>
             <div class="wlc-frase__freq">
               <i class="wlc-bar"><u style="width:68%"></u></i>
               <span>frequente</span>
@@ -147,7 +147,7 @@
           </button>
 
           <button class="wlc-frase" data-frase="estou bem, mas poderia estar melhor." data-dim="equilíbrio">
-            <p class="wlc-frase__txt">"estou bem, mas poderia estar melhor."</p>
+            <p class="wlc-frase__txt">"Estou bem, mas poderia estar melhor."</p>
             <div class="wlc-frase__freq">
               <i class="wlc-bar"><u style="width:82%"></u></i>
               <span>muito frequente</span>
@@ -155,7 +155,7 @@
           </button>
 
           <button class="wlc-frase" data-frase="não sei o que está errado, mas algo está." data-dim="mente">
-            <p class="wlc-frase__txt">"não sei o que está errado, mas algo está."</p>
+            <p class="wlc-frase__txt">"Não sei o que está errado, mas algo está."</p>
             <div class="wlc-frase__freq">
               <i class="wlc-bar"><u style="width:55%"></u></i>
               <span>comum</span>
@@ -163,7 +163,7 @@
           </button>
 
           <button class="wlc-frase" data-frase="quero construir algo que dure." data-dim="longevidade">
-            <p class="wlc-frase__txt">"quero construir algo que dure."</p>
+            <p class="wlc-frase__txt">"Quero construir algo que dure."</p>
             <div class="wlc-frase__freq">
               <i class="wlc-bar"><u style="width:44%"></u></i>
               <span>incomum</span>
@@ -171,7 +171,7 @@
           </button>
 
           <button class="wlc-frase" data-frase="estou pronto pra começar de verdade." data-dim="corpo">
-            <p class="wlc-frase__txt">"estou pronto pra começar de verdade."</p>
+            <p class="wlc-frase__txt">"Estou pronto pra começar de verdade."</p>
             <div class="wlc-frase__freq">
               <i class="wlc-bar"><u style="width:38%"></u></i>
               <span>incomum</span>
@@ -187,13 +187,13 @@
         <div class="wlc-orbe wlc-orbe--check">
           <span class="wlc-check">◎</span>
         </div>
-        <h1 class="display">entendido.<br/>vamos começar<br/>por <em id="wlc-confirm-dim">aí</em>.</h1>
-        <p class="lead">o circa vai adaptar a sua jornada a partir de hoje.</p>
+        <h1 class="display">Entendido.<br/>Vamos começar<br/>por <em id="wlc-confirm-dim">aí</em>.</h1>
+        <p class="lead">O circa vai adaptar a sua jornada a partir de hoje.</p>
         <blockquote class="wlc-eco" id="wlc-confirm-eco"></blockquote>
       </div>
       <div class="wlc-confirm-actions">
-        <button class="btn btn--primary btn--full" id="wlc-entrar">entrar na circa</button>
-        <button class="btn btn--text btn--full" data-wlc-go="2">voltar</button>
+        <button class="btn btn--primary btn--full" id="wlc-entrar">Entrar na circa</button>
+        <button class="btn btn--text btn--full" data-wlc-go="2">Voltar</button>
       </div>
     </section>
   </div>
@@ -228,8 +228,42 @@
       <!-- 10 · resultado do perfil (renderizado por JS) -->
       <div class="ob-slide quiz-result" data-step="20"></div>
 
+      <!-- 0 · capa de introdução · expectation setting · contagem + ROI antes das perguntas -->
+      <div class="ob-slide ob-slide--intro is-active" data-step="0">
+        <div class="ob-intro">
+          <div class="ob-intro__symbol" aria-hidden="true">
+            <svg viewBox="0 0 80 80" fill="none" stroke="currentColor" stroke-width="1.4">
+              <circle cx="40" cy="40" r="34" opacity="0.22"/>
+              <circle cx="40" cy="40" r="24" opacity="0.5"/>
+              <circle cx="40" cy="40" r="14" opacity="0.85"/>
+              <circle cx="40" cy="40" r="5" fill="currentColor"/>
+            </svg>
+          </div>
+
+          <p class="ob-intro__eyebrow">antes de começar</p>
+
+          <h1 class="display ob-intro__title">
+            <span class="ob-intro__count">13 perguntas.</span><br/>
+            <em>~4 minutos.</em>
+          </h1>
+
+          <p class="lead ob-intro__lead">O que volta pra você?</p>
+
+          <ul class="ob-intro__bullets">
+            <li><span class="ob-intro__dot"></span><span>score circa personalizado</span></li>
+            <li><span class="ob-intro__dot"></span><span>rituais diários adaptados</span></li>
+            <li><span class="ob-intro__dot"></span><span>alertas inteligentes</span></li>
+            <li><span class="ob-intro__dot"></span><span>teu temperamento revelado</span></li>
+          </ul>
+
+          <p class="ob-intro__quote"><em>responda com calma. Cada resposta refina o circa.</em></p>
+        </div>
+
+        <button class="btn btn--primary btn--full ob-next">Começar</button>
+      </div>
+
       <!-- 1 · boas-vindas · o que busca no Circa -->
-      <div class="ob-slide is-active" data-step="1">
+      <div class="ob-slide" data-step="1">
         <div class="ob-logo">
           <svg viewBox="0 0 40 40" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5">
             <circle cx="20" cy="20" r="14"/>
@@ -237,37 +271,37 @@
           </svg>
           <span>circa</span>
         </div>
-        <h1 class="display">o que você<br/>quer melhorar<br/><em>primeiro?</em></h1>
-        <p class="lead">escolha teu foco principal. o circa adapta tudo a partir daí, da rotina aos insights.</p>
+        <h1 class="display">O que você<br/>quer melhorar<br/><em>primeiro?</em></h1>
+        <p class="lead">Escolha teu foco principal. O circa adapta tudo a partir daí, da rotina aos insights.</p>
 
         <div class="foco-cards">
           <button class="foco-card ob-card" data-val="performance" aria-label="performance física">
             <div class="foco-card__art">
               <img src="assets/onboarding/foco-performance.png" alt="" width="240" height="240" loading="eager" decoding="async"/>
             </div>
-            <span class="foco-card__title">performance<br/>física</span>
+            <span class="foco-card__title">Performance<br/>física</span>
           </button>
           <button class="foco-card foco-card--center ob-card" data-val="sono" aria-label="melhorar sono">
             <div class="foco-card__art foco-card__art--breathe">
               <img src="assets/onboarding/foco-sono.png" alt="" width="240" height="240" loading="eager" decoding="async"/>
             </div>
-            <span class="foco-card__title">melhorar<br/>sono</span>
+            <span class="foco-card__title">Melhorar<br/>sono</span>
           </button>
           <button class="foco-card ob-card" data-val="estresse" aria-label="gerenciar estresse">
             <div class="foco-card__art">
               <img src="assets/onboarding/foco-estresse.png" alt="" width="240" height="240" loading="eager" decoding="async"/>
             </div>
-            <span class="foco-card__title">gerenciar<br/>estresse</span>
+            <span class="foco-card__title">Gerenciar<br/>estresse</span>
           </button>
         </div>
 
-        <button class="btn btn--primary btn--full ob-next" disabled>continuar</button>
+        <button class="btn btn--primary btn--full ob-next" disabled>Continuar</button>
       </div>
 
       <!-- 1.5 · seletor de gênero · molda o resto do onboarding -->
       <div class="ob-slide" data-step="31">
-        <h1 class="display">como você<br/>se <em>identifica?</em></h1>
-        <p class="lead">isso ajuda o circa a adequar perguntas de saúde, corpo e rotina ao teu contexto.</p>
+        <h1 class="display">Como você<br/>se <em>identifica?</em></h1>
+        <p class="lead">Isso ajuda o circa a adequar perguntas de saúde, corpo e rotina ao teu contexto.</p>
 
         <div class="ob-gender">
           <!-- data network biométrico decorativo · atrás dos cards -->
@@ -371,7 +405,7 @@
           </button>
         </div>
 
-        <button class="btn btn--primary btn--full ob-next" disabled>continuar</button>
+        <button class="btn btn--primary btn--full ob-next" disabled>Continuar</button>
       </div>
 
       <!-- 1.6 · pergunta específica pra homem · swiper portrait -->
@@ -379,8 +413,8 @@
         <div class="ob-logo" style="color:#7B8BB8">
           <span>♂ teu perfil</span>
         </div>
-        <h1 class="display">o que hoje<br/>te <em>pesa mais?</em></h1>
-        <p class="lead">o circa usa isso pra priorizar alertas de saúde, humor e rotina no teu dashboard.</p>
+        <h1 class="display">O que hoje<br/>te <em>pesa mais?</em></h1>
+        <p class="lead">O circa usa isso pra priorizar alertas de saúde, humor e rotina no teu dashboard.</p>
 
         <div class="ob-swiper" data-swiper="m32">
           <div class="ob-swiper__track">
@@ -388,46 +422,46 @@
               <div class="ob-swiper__art ob-swiper__art--png">
                 <img src="assets/onboarding/forca_massa_magra.png" alt="" loading="lazy" decoding="async"/>
               </div>
-              <span class="ob-swiper__title">força e<br/>massa magra</span>
-              <span class="ob-swiper__body">corpo, testosterona, recuperação.</span>
+              <span class="ob-swiper__title">Força e<br/>massa magra</span>
+              <span class="ob-swiper__body">Corpo, testosterona, recuperação.</span>
             </button>
 
             <button class="ob-swiper__card ob-card" data-val="estresse">
               <div class="ob-swiper__art ob-swiper__art--png">
                 <img src="assets/onboarding/equilibrio_mental_man.png" alt="" loading="lazy" decoding="async"/>
               </div>
-              <span class="ob-swiper__title">equilíbrio<br/>mental</span>
-              <span class="ob-swiper__body">presença, foco, regulação emocional.</span>
+              <span class="ob-swiper__title">Equilíbrio<br/>mental</span>
+              <span class="ob-swiper__body">Presença, foco, regulação emocional.</span>
             </button>
 
             <button class="ob-swiper__card ob-card" data-val="libido">
               <div class="ob-swiper__art ob-swiper__art--png">
                 <img src="assets/onboarding/libido_vitalidade.png" alt="" loading="lazy" decoding="async"/>
               </div>
-              <span class="ob-swiper__title">libido e<br/>vitalidade</span>
-              <span class="ob-swiper__body">energia, vigor, disposição.</span>
+              <span class="ob-swiper__title">Libido e<br/>vitalidade</span>
+              <span class="ob-swiper__body">Energia, vigor, disposição.</span>
             </button>
 
             <button class="ob-swiper__card ob-card" data-val="peso">
               <div class="ob-swiper__art ob-swiper__art--png">
                 <img src="assets/onboarding/gordura_abdominal.png" alt="" loading="lazy" decoding="async"/>
               </div>
-              <span class="ob-swiper__title">gordura<br/>abdominal</span>
-              <span class="ob-swiper__body">barriga, cintura, inflamação.</span>
+              <span class="ob-swiper__title">Gordura<br/>abdominal</span>
+              <span class="ob-swiper__body">Barriga, cintura, inflamação.</span>
             </button>
 
             <button class="ob-swiper__card ob-card" data-val="cardiometabolico">
               <div class="ob-swiper__art ob-swiper__art--png">
                 <img src="assets/onboarding/pressao_glicemia.png" alt="" loading="lazy" decoding="async"/>
               </div>
-              <span class="ob-swiper__title">pressão e<br/>glicemia</span>
-              <span class="ob-swiper__body">cardíaco, metabolismo, longevidade.</span>
+              <span class="ob-swiper__title">Pressão e<br/>glicemia</span>
+              <span class="ob-swiper__body">Cardíaco, metabolismo, longevidade.</span>
             </button>
           </div>
           <div class="ob-swiper__dots" aria-hidden="true"></div>
         </div>
 
-        <button class="btn btn--primary btn--full ob-next" disabled>continuar</button>
+        <button class="btn btn--primary btn--full ob-next" disabled>Continuar</button>
       </div>
 
       <!-- 1.7 · pergunta específica pra mulher · swiper portrait -->
@@ -435,8 +469,8 @@
         <div class="ob-logo" style="color:#C4A5C0">
           <span>♀ teu perfil</span>
         </div>
-        <h1 class="display">o que hoje<br/>te <em>pesa mais?</em></h1>
-        <p class="lead">o circa usa isso pra priorizar alertas de saúde, humor e ciclo no teu dashboard.</p>
+        <h1 class="display">O que hoje<br/>te <em>pesa mais?</em></h1>
+        <p class="lead">O circa usa isso pra priorizar alertas de saúde, humor e ciclo no teu dashboard.</p>
 
         <div class="ob-swiper" data-swiper="w33">
           <div class="ob-swiper__track">
@@ -444,52 +478,52 @@
               <div class="ob-swiper__art ob-swiper__art--png">
                 <img src="assets/onboarding/ciclo_menstrual.png" alt="" loading="lazy" decoding="async"/>
               </div>
-              <span class="ob-swiper__title">ciclo<br/>menstrual</span>
-              <span class="ob-swiper__body">cólica, humor, TPM, fase fértil.</span>
+              <span class="ob-swiper__title">Ciclo<br/>menstrual</span>
+              <span class="ob-swiper__body">Cólica, humor, TPM, fase fértil.</span>
             </button>
 
             <button class="ob-swiper__card ob-card" data-val="hormonal">
               <div class="ob-swiper__art ob-swiper__art--png">
                 <img src="assets/onboarding/equilibrio_hormonal.png" alt="" loading="lazy" decoding="async"/>
               </div>
-              <span class="ob-swiper__title">equilíbrio<br/>hormonal</span>
-              <span class="ob-swiper__body">tireoide, estrogênio, cabelo, pele.</span>
+              <span class="ob-swiper__title">Equilíbrio<br/>hormonal</span>
+              <span class="ob-swiper__body">Tireoide, estrogênio, cabelo, pele.</span>
             </button>
 
             <button class="ob-swiper__card ob-card" data-val="estresse">
               <div class="ob-swiper__art ob-swiper__art--png">
                 <img src="assets/onboarding/equilibrio_mental.png" alt="" loading="lazy" decoding="async"/>
               </div>
-              <span class="ob-swiper__title">equilíbrio<br/>mental</span>
-              <span class="ob-swiper__body">presença, foco, regulação emocional.</span>
+              <span class="ob-swiper__title">Equilíbrio<br/>mental</span>
+              <span class="ob-swiper__body">Presença, foco, regulação emocional.</span>
             </button>
 
             <button class="ob-swiper__card ob-card" data-val="peso">
               <div class="ob-swiper__art ob-swiper__art--png">
                 <img src="assets/onboarding/composicao_corporal.png" alt="" loading="lazy" decoding="async"/>
               </div>
-              <span class="ob-swiper__title">composição<br/>corporal</span>
-              <span class="ob-swiper__body">gordura, retenção, corpo por dentro.</span>
+              <span class="ob-swiper__title">Composição<br/>corporal</span>
+              <span class="ob-swiper__body">Gordura, retenção, corpo por dentro.</span>
             </button>
 
             <button class="ob-swiper__card ob-card" data-val="fertilidade">
               <div class="ob-swiper__art ob-swiper__art--png">
                 <img src="assets/onboarding/longevidade.png" alt="" loading="lazy" decoding="async"/>
               </div>
-              <span class="ob-swiper__title">longevidade</span>
-              <span class="ob-swiper__body">prevenção, vitalidade, futuro do corpo.</span>
+              <span class="ob-swiper__title">Longevidade</span>
+              <span class="ob-swiper__body">Prevenção, vitalidade, futuro do corpo.</span>
             </button>
           </div>
           <div class="ob-swiper__dots" aria-hidden="true"></div>
         </div>
 
-        <button class="btn btn--primary btn--full ob-next" disabled>continuar</button>
+        <button class="btn btn--primary btn--full ob-next" disabled>Continuar</button>
       </div>
 
       <!-- 1.8 · nível de atividade · pílula dourada com 3 figs · novo step 51 -->
       <div class="ob-slide" data-step="51">
-        <h1 class="display">como você<br/>descreve seu<br/><em>nível de atividade?</em></h1>
-        <p class="lead">isso calibra a intensidade dos teus rituais e treinos.</p>
+        <h1 class="display">Como você<br/>descreve seu<br/><em>nível de atividade?</em></h1>
+        <p class="lead">Isso calibra a intensidade dos teus rituais e treinos.</p>
 
         <div class="ativ-labels-top">
           <span class="ativ-label" data-lvl="1">sedentário</span>
@@ -519,13 +553,13 @@
           <span class="ativ-sublabel" data-lvl="3">intenso</span>
         </div>
 
-        <button class="btn btn--primary btn--full ob-next">continuar</button>
+        <button class="btn btn--primary btn--full ob-next">Continuar</button>
       </div>
 
       <!-- 12 · roda hoje -->
       <div class="ob-slide" data-step="2">
-        <h1 class="display">como tá<br/>tua vida<br/>hoje?</h1>
-        <p class="lead">arrasta cada área. sem julgamento, só um mapa.</p>
+        <h1 class="display">Como tá<br/>tua vida<br/>hoje?</h1>
+        <p class="lead">Arrasta cada área. Sem julgamento, só um mapa.</p>
 
         <div class="ob-wheel-wrap">
           <svg id="ob-wheel" viewBox="-160 -160 320 320" class="wheel">
@@ -546,13 +580,13 @@
           </svg>
         </div>
 
-        <button class="btn btn--primary btn--full ob-next">continuar</button>
+        <button class="btn btn--primary btn--full ob-next">Continuar</button>
       </div>
 
       <!-- 13 · roda meta -->
       <div class="ob-slide" data-step="3">
-        <h1 class="display">e daqui a<br/>3 meses?</h1>
-        <p class="lead">arrasta pra onde quer chegar. a linha clara é onde você tá hoje.</p>
+        <h1 class="display">E daqui a<br/>3 meses?</h1>
+        <p class="lead">Arrasta pra onde quer chegar. A linha clara é onde você tá hoje.</p>
 
         <div class="ob-wheel-wrap">
           <svg id="ob-wheel-goal" viewBox="-160 -160 320 320" class="wheel">
@@ -574,89 +608,89 @@
           </svg>
         </div>
 
-        <button class="btn btn--primary btn--full ob-next">continuar</button>
+        <button class="btn btn--primary btn--full ob-next">Continuar</button>
       </div>
 
       <!-- ═════ TEMPERAMENTO · 5 cenários + processamento + revelação ═════ -->
 
       <!-- 41 · cenário 1 · rotina -->
       <div class="ob-slide tempr-slide" data-step="41">
-        <p class="tempr-eyebrow"><span class="tempr-num">cenário 1</span> · rotina</p>
-        <h1 class="tempr-pergunta">você acordou ontem sem energia e pulou o treino. hoje está bem.<br/>o que <em>faz?</em></h1>
+        <p class="tempr-eyebrow"><span class="tempr-num">Cenário 1</span> · rotina</p>
+        <h1 class="tempr-pergunta">Você acordou ontem sem energia e pulou o treino. Hoje está bem.<br/>O que <em>faz?</em></h1>
         <div class="ob-swiper ob-swiper--tempr" data-swiper="t41">
           <div class="ob-swiper__track">
-            <button class="ob-swiper__card tempr-opcao" data-temp="brasa"    data-cen="1"><span>"treino agora pra recuperar o que perdi."</span></button>
-            <button class="ob-swiper__card tempr-opcao" data-temp="mare"     data-cen="1"><span>"sigo o plano de hoje, ontem ficou pra trás."</span></button>
-            <button class="ob-swiper__card tempr-opcao" data-temp="raiz"     data-cen="1"><span>"escuto o corpo um pouco mais antes de decidir."</span></button>
-            <button class="ob-swiper__card tempr-opcao" data-temp="corrente" data-cen="1"><span>"aproveito que tô bem e treino mais forte."</span></button>
+            <button class="ob-swiper__card tempr-opcao" data-temp="brasa"    data-cen="1"><span>"Treino agora pra recuperar o que perdi."</span></button>
+            <button class="ob-swiper__card tempr-opcao" data-temp="mare"     data-cen="1"><span>"Sigo o plano de hoje, ontem ficou pra trás."</span></button>
+            <button class="ob-swiper__card tempr-opcao" data-temp="raiz"     data-cen="1"><span>"Escuto o corpo um pouco mais antes de decidir."</span></button>
+            <button class="ob-swiper__card tempr-opcao" data-temp="corrente" data-cen="1"><span>"Aproveito que tô bem e treino mais forte."</span></button>
           </div>
           <div class="ob-swiper__dots" aria-hidden="true"></div>
         </div>
-        <button class="btn btn--primary btn--full ob-next" disabled>continuar</button>
+        <button class="btn btn--primary btn--full ob-next" disabled>Continuar</button>
       </div>
 
       <!-- 42 · cenário 2 · decisão -->
       <div class="ob-slide tempr-slide" data-step="42">
-        <p class="tempr-eyebrow"><span class="tempr-num">cenário 2</span> · decisão</p>
-        <h1 class="tempr-pergunta">você combinou consigo dormir cedo hoje. amigos chamam pra um jantar de última hora. você <em>vai?</em></h1>
+        <p class="tempr-eyebrow"><span class="tempr-num">Cenário 2</span> · decisão</p>
+        <h1 class="tempr-pergunta">Você combinou consigo dormir cedo hoje. Amigos chamam pra um jantar de última hora. Você <em>vai?</em></h1>
         <div class="ob-swiper ob-swiper--tempr" data-swiper="t42">
           <div class="ob-swiper__track">
-            <button class="ob-swiper__card tempr-opcao" data-temp="corrente" data-cen="2"><span>"vou, durmo cedo amanhã."</span></button>
-            <button class="ob-swiper__card tempr-opcao" data-temp="brasa"    data-cen="2"><span>"não vou, combinei comigo, isso vale."</span></button>
-            <button class="ob-swiper__card tempr-opcao" data-temp="mare"     data-cen="2"><span>"vou se for até as 22h, com horário pra sair."</span></button>
-            <button class="ob-swiper__card tempr-opcao" data-temp="raiz"     data-cen="2"><span>"fico em dúvida, peso o que sinto, decido na hora."</span></button>
+            <button class="ob-swiper__card tempr-opcao" data-temp="corrente" data-cen="2"><span>"Vou, durmo cedo amanhã."</span></button>
+            <button class="ob-swiper__card tempr-opcao" data-temp="brasa"    data-cen="2"><span>"Não vou, combinei comigo, isso vale."</span></button>
+            <button class="ob-swiper__card tempr-opcao" data-temp="mare"     data-cen="2"><span>"Vou se for até as 22h, com horário pra sair."</span></button>
+            <button class="ob-swiper__card tempr-opcao" data-temp="raiz"     data-cen="2"><span>"Fico em dúvida, peso o que sinto, decido na hora."</span></button>
           </div>
           <div class="ob-swiper__dots" aria-hidden="true"></div>
         </div>
-        <button class="btn btn--primary btn--full ob-next" disabled>continuar</button>
+        <button class="btn btn--primary btn--full ob-next" disabled>Continuar</button>
       </div>
 
       <!-- 43 · cenário 3 · frustração -->
       <div class="ob-slide tempr-slide" data-step="43">
-        <p class="tempr-eyebrow"><span class="tempr-num">cenário 3</span> · frustração</p>
-        <h1 class="tempr-pergunta">você trabalhou semanas num projeto. o feedback foi <em>duro.</em> você sente:</h1>
+        <p class="tempr-eyebrow"><span class="tempr-num">Cenário 3</span> · frustração</p>
+        <h1 class="tempr-pergunta">Você trabalhou semanas num projeto. O feedback foi <em>duro.</em> você sente:</h1>
         <div class="ob-swiper ob-swiper--tempr" data-swiper="t43">
           <div class="ob-swiper__track">
-            <button class="ob-swiper__card tempr-opcao" data-temp="brasa"    data-cen="3"><span>"raiva, quero refazer agora, melhor ainda."</span></button>
-            <button class="ob-swiper__card tempr-opcao" data-temp="raiz"     data-cen="3"><span>"peso, preciso processar antes de qualquer coisa."</span></button>
-            <button class="ob-swiper__card tempr-opcao" data-temp="corrente" data-cen="3"><span>"distração, preciso sair, mudar o ar."</span></button>
-            <button class="ob-swiper__card tempr-opcao" data-temp="mare"     data-cen="3"><span>"silêncio, fico quieto, depois sigo o plano."</span></button>
+            <button class="ob-swiper__card tempr-opcao" data-temp="brasa"    data-cen="3"><span>"Raiva, quero refazer agora, melhor ainda."</span></button>
+            <button class="ob-swiper__card tempr-opcao" data-temp="raiz"     data-cen="3"><span>"Peso, preciso processar antes de qualquer coisa."</span></button>
+            <button class="ob-swiper__card tempr-opcao" data-temp="corrente" data-cen="3"><span>"Distração, preciso sair, mudar o ar."</span></button>
+            <button class="ob-swiper__card tempr-opcao" data-temp="mare"     data-cen="3"><span>"Silêncio, fico quieto, depois sigo o plano."</span></button>
           </div>
           <div class="ob-swiper__dots" aria-hidden="true"></div>
         </div>
-        <button class="btn btn--primary btn--full ob-next" disabled>continuar</button>
+        <button class="btn btn--primary btn--full ob-next" disabled>Continuar</button>
       </div>
 
       <!-- 44 · cenário 4 · espírito -->
       <div class="ob-slide tempr-slide" data-step="44">
-        <p class="tempr-eyebrow"><span class="tempr-num">cenário 4</span> · espírito</p>
-        <h1 class="tempr-pergunta">o que mais te <em>toca</em> quando você para de verdade?</h1>
+        <p class="tempr-eyebrow"><span class="tempr-num">Cenário 4</span> · espírito</p>
+        <h1 class="tempr-pergunta">O que mais te <em>toca</em> quando você para de verdade?</h1>
         <div class="ob-swiper ob-swiper--tempr" data-swiper="t44">
           <div class="ob-swiper__track">
-            <button class="ob-swiper__card tempr-opcao" data-temp="corrente" data-cen="4"><span>"uma conversa boa, encontrar alguém certo."</span></button>
-            <button class="ob-swiper__card tempr-opcao" data-temp="brasa"    data-cen="4"><span>"uma realização sua, ter feito algo difícil."</span></button>
-            <button class="ob-swiper__card tempr-opcao" data-temp="raiz"     data-cen="4"><span>"silêncio profundo, natureza, pôr do sol."</span></button>
-            <button class="ob-swiper__card tempr-opcao" data-temp="mare"     data-cen="4"><span>"uma rotina simples cumprida em paz."</span></button>
+            <button class="ob-swiper__card tempr-opcao" data-temp="corrente" data-cen="4"><span>"Uma conversa boa, encontrar alguém certo."</span></button>
+            <button class="ob-swiper__card tempr-opcao" data-temp="brasa"    data-cen="4"><span>"Uma realização sua, ter feito algo difícil."</span></button>
+            <button class="ob-swiper__card tempr-opcao" data-temp="raiz"     data-cen="4"><span>"Silêncio profundo, natureza, pôr do sol."</span></button>
+            <button class="ob-swiper__card tempr-opcao" data-temp="mare"     data-cen="4"><span>"Uma rotina simples cumprida em paz."</span></button>
           </div>
           <div class="ob-swiper__dots" aria-hidden="true"></div>
         </div>
-        <button class="btn btn--primary btn--full ob-next" disabled>continuar</button>
+        <button class="btn btn--primary btn--full ob-next" disabled>Continuar</button>
       </div>
 
       <!-- 45 · cenário 5 · tempo livre -->
       <div class="ob-slide tempr-slide" data-step="45">
-        <p class="tempr-eyebrow"><span class="tempr-num">cenário 5</span> · tempo livre</p>
-        <h1 class="tempr-pergunta">final de semana sem agenda. é manhã de sábado. o que você <em>sente?</em></h1>
+        <p class="tempr-eyebrow"><span class="tempr-num">Cenário 5</span> · tempo livre</p>
+        <h1 class="tempr-pergunta">Final de semana sem agenda. É manhã de sábado. O que você <em>sente?</em></h1>
         <div class="ob-swiper ob-swiper--tempr" data-swiper="t45">
           <div class="ob-swiper__track">
-            <button class="ob-swiper__card tempr-opcao" data-temp="corrente" data-cen="5"><span>"possibilidade, mil opções, energia pra começar."</span></button>
-            <button class="ob-swiper__card tempr-opcao" data-temp="brasa"    data-cen="5"><span>"oportunidade, lista de coisas pra adiantar."</span></button>
-            <button class="ob-swiper__card tempr-opcao" data-temp="raiz"     data-cen="5"><span>"alívio, finalmente posso parar e sentir."</span></button>
-            <button class="ob-swiper__card tempr-opcao" data-temp="mare"     data-cen="5"><span>"paz, nada precisa ser feito, isso já é bom."</span></button>
+            <button class="ob-swiper__card tempr-opcao" data-temp="corrente" data-cen="5"><span>"Possibilidade, mil opções, energia pra começar."</span></button>
+            <button class="ob-swiper__card tempr-opcao" data-temp="brasa"    data-cen="5"><span>"Oportunidade, lista de coisas pra adiantar."</span></button>
+            <button class="ob-swiper__card tempr-opcao" data-temp="raiz"     data-cen="5"><span>"Alívio, finalmente posso parar e sentir."</span></button>
+            <button class="ob-swiper__card tempr-opcao" data-temp="mare"     data-cen="5"><span>"Paz, nada precisa ser feito, isso já é bom."</span></button>
           </div>
           <div class="ob-swiper__dots" aria-hidden="true"></div>
         </div>
-        <button class="btn btn--primary btn--full ob-next" disabled>continuar</button>
+        <button class="btn btn--primary btn--full ob-next" disabled>Continuar</button>
       </div>
 
       <!-- 46 · processando · 3 anéis girando + status -->
@@ -665,9 +699,9 @@
           <div class="tempr-proc-orbe">
             <canvas id="tempr-proc-canvas" width="120" height="120"></canvas>
           </div>
-          <h2 class="tempr-proc-titulo">a circa está<br/><em>te lendo.</em></h2>
+          <h2 class="tempr-proc-titulo">A circa está<br/><em>te lendo.</em></h2>
           <p class="tempr-proc-status" id="tempr-proc-status">
-            compondo o retrato<span class="tempr-dot">.</span><span class="tempr-dot">.</span><span class="tempr-dot">.</span>
+            Compondo o retrato<span class="tempr-dot">.</span><span class="tempr-dot">.</span><span class="tempr-dot">.</span>
           </p>
         </div>
       </div>
@@ -675,16 +709,16 @@
       <!-- 47 · revelação · temperamento dominante + secundário + manifesto + traços + chamado -->
       <div class="ob-slide tempr-slide tempr-rev-slide" data-step="47">
         <div class="tempr-rev">
-          <p class="tempr-rev-eyebrow">você é</p>
+          <p class="tempr-rev-eyebrow">Você é</p>
 
           <div class="tempr-rev-elemento">
             <canvas id="tempr-rev-canvas" width="160" height="160"></canvas>
           </div>
 
-          <h2 class="tempr-rev-nome" id="tempr-rev-nome">raiz</h2>
+          <h2 class="tempr-rev-nome" id="tempr-rev-nome">Raiz</h2>
 
           <p class="tempr-rev-manifesto" id="tempr-rev-manifesto">
-            você é o que aprofunda,<br/>o que sente,<br/>o que entende antes de agir.
+            Você é o que aprofunda,<br/>o que sente,<br/>o que entende antes de agir.
           </p>
 
           <div class="tempr-rev-secundario">
@@ -695,41 +729,41 @@
           <div class="tempr-rev-detalhes" id="tempr-rev-detalhes"></div>
 
           <div class="tempr-rev-chamado">
-            <p class="tempr-rev-chamado-eye">o chamado da circa pra você</p>
-            <p class="tempr-rev-chamado-txt" id="tempr-rev-chamado-txt">"vou te lembrar, sempre, que sentir não precisa custar tanto."</p>
+            <p class="tempr-rev-chamado-eye">O chamado da circa pra você</p>
+            <p class="tempr-rev-chamado-txt" id="tempr-rev-chamado-txt">"Vou te lembrar, sempre, que sentir não precisa custar tanto."</p>
           </div>
 
-          <button class="btn btn--primary btn--full ob-next" id="tempr-rev-continuar">continuar</button>
+          <button class="btn btn--primary btn--full ob-next" id="tempr-rev-continuar">Continuar</button>
         </div>
       </div>
 
       <!-- 14 · corpo + rotina -->
       <div class="ob-slide" data-step="21">
-        <h1 class="display">sobre<br/>você.</h1>
-        <p class="lead">dados básicos pra calibrar tudo.</p>
+        <h1 class="display">Sobre<br/>você.</h1>
+        <p class="lead">Dados básicos pra calibrar tudo.</p>
 
         <div class="ob-section" style="margin-bottom:18px;">
           <label class="ob-field">
-            <span>como a gente te chama?</span>
+            <span>Como a gente te chama?</span>
             <input type="text" id="ob-name" placeholder="seu primeiro nome" value="Gabriel" autocomplete="given-name" />
           </label>
         </div>
 
         <div class="ob-grid-2">
           <label class="ob-field">
-            <span>peso</span>
+            <span>Peso</span>
             <input type="number" placeholder="kg" value="78" />
           </label>
           <label class="ob-field">
-            <span>altura</span>
+            <span>Altura</span>
             <input type="number" placeholder="cm" value="180" />
           </label>
           <label class="ob-field">
-            <span>idade</span>
+            <span>Idade</span>
             <input type="number" placeholder="anos" value="31" />
           </label>
           <label class="ob-field">
-            <span>sexo biol.</span>
+            <span>Sexo biol.</span>
             <div class="ob-toggle" data-name="sex">
               <button data-val="h" class="is-on">H</button>
               <button data-val="m">M</button>
@@ -738,7 +772,7 @@
         </div>
 
         <div class="ob-section">
-          <span class="eyebrow">rotina</span>
+          <span class="eyebrow">Rotina</span>
           <div class="ob-time">
             <label>
               <span>acorda</span>
@@ -755,23 +789,23 @@
           </div>
         </div>
 
-        <button class="btn btn--primary btn--full ob-next">continuar</button>
+        <button class="btn btn--primary btn--full ob-next">Continuar</button>
       </div>
 
       <!-- 4 · calibração fisiológica · pergunta inicial (chips) · só aparece pra mulher/outro -->
       <div class="ob-slide fisio-intro" data-step="4" data-gender-skip="man">
-        <span class="eyebrow">calibração fisiológica</span>
-        <h1 class="display">como tá sua<br/>relação com<br/>o <em>ciclo</em>?</h1>
-        <p class="lead">um tap define o ritmo do teu corpo pro app.</p>
+        <span class="eyebrow">Calibração fisiológica</span>
+        <h1 class="display">Como tá sua<br/>relação com<br/>o <em>ciclo</em>?</h1>
+        <p class="lead">Um tap define o ritmo do teu corpo pro app.</p>
 
         <div class="ob-chips fisio-chips">
-          <button class="ob-chip" data-trilha="feminina">ciclo regular</button>
-          <button class="ob-chip" data-trilha="feminina">ciclo irregular</button>
-          <button class="ob-chip" data-trilha="transicao">parei há pouco tempo</button>
-          <button class="ob-chip" data-trilha="transicao">parei há anos</button>
+          <button class="ob-chip" data-trilha="feminina">Ciclo regular</button>
+          <button class="ob-chip" data-trilha="feminina">Ciclo irregular</button>
+          <button class="ob-chip" data-trilha="transicao">Parei há pouco tempo</button>
+          <button class="ob-chip" data-trilha="transicao">Parei há anos</button>
         </div>
 
-        <p class="micro-note">ciclo hormonal muda tudo, humor, sono, treino, nutrição. 6 perguntinhas em seguida · ~2 min.</p>
+        <p class="micro-note">Ciclo hormonal muda tudo, humor, sono, treino, nutrição. 6 perguntinhas em seguida · ~2 min.</p>
       </div>
 
       <!-- 16-21 · 6 perguntas fisiológicas (renderizadas por JS com base na trilha) -->
@@ -787,19 +821,19 @@
 
       <!-- 23 · comida -->
       <div class="ob-slide" data-step="22">
-        <h1 class="display">e como<br/>você come?</h1>
-        <p class="lead">o que você nunca comeria, e o que te dá tesão de comer.</p>
+        <h1 class="display">E como<br/>você come?</h1>
+        <p class="lead">O que você nunca comeria, e o que te dá tesão de comer.</p>
 
         <div class="ob-section">
-          <span class="eyebrow">restrições</span>
+          <span class="eyebrow">Restrições</span>
           <div class="ob-chips">
-            <button class="ob-chip">sem lactose</button>
-            <button class="ob-chip">vegetariano</button>
-            <button class="ob-chip">vegano</button>
-            <button class="ob-chip">low carb</button>
-            <button class="ob-chip">sem glúten</button>
-            <button class="ob-chip">jejum intermitente</button>
-            <button class="ob-chip">nenhuma</button>
+            <button class="ob-chip">Sem lactose</button>
+            <button class="ob-chip">Vegetariano</button>
+            <button class="ob-chip">Vegano</button>
+            <button class="ob-chip">Low carb</button>
+            <button class="ob-chip">Sem glúten</button>
+            <button class="ob-chip">Jejum intermitente</button>
+            <button class="ob-chip">Nenhuma</button>
           </div>
         </div>
 
@@ -812,13 +846,13 @@
           </div>
         </div>
 
-        <button class="btn btn--primary btn--full ob-next">continuar</button>
+        <button class="btn btn--primary btn--full ob-next">Continuar</button>
       </div>
 
       <!-- 24 · sentido · swiper portrait com 6 cards -->
       <div class="ob-slide" data-step="23">
-        <h1 class="display">quando você<br/>pensa em<br/>sentido...</h1>
-        <p class="lead">o que faz mais sentido pra <em>você</em>? isso molda como o circa vai falar contigo sobre essa área.</p>
+        <h1 class="display">Quando você<br/>pensa em<br/>sentido...</h1>
+        <p class="lead">O que faz mais sentido pra <em>você</em>? Isso molda como o circa vai falar contigo sobre essa área.</p>
 
         <div class="ob-swiper" data-swiper="s23">
           <div class="ob-swiper__track">
@@ -833,8 +867,8 @@
                   <path d="M50 14 L50 22" opacity="0.55"/>
                 </svg>
               </div>
-              <span class="ob-swiper__title">fé /<br/>religião</span>
-              <span class="ob-swiper__body">prática espiritual diária.</span>
+              <span class="ob-swiper__title">Fé /<br/>religião</span>
+              <span class="ob-swiper__body">Prática espiritual diária.</span>
             </button>
 
             <button class="ob-swiper__card ob-card" data-val="meditacao">
@@ -848,8 +882,8 @@
                   <circle cx="50" cy="20" r="6" fill="none" opacity="0.45"/>
                 </svg>
               </div>
-              <span class="ob-swiper__title">meditação</span>
-              <span class="ob-swiper__body">silêncio, respiração, presença.</span>
+              <span class="ob-swiper__title">Meditação</span>
+              <span class="ob-swiper__body">Silêncio, respiração, presença.</span>
             </button>
 
             <button class="ob-swiper__card ob-card" data-val="natureza">
@@ -864,8 +898,8 @@
                   <line x1="42" y1="78" x2="58" y2="78"/>
                 </svg>
               </div>
-              <span class="ob-swiper__title">natureza</span>
-              <span class="ob-swiper__body">conexão com o vivo, o real.</span>
+              <span class="ob-swiper__title">Natureza</span>
+              <span class="ob-swiper__body">Conexão com o vivo, o real.</span>
             </button>
 
             <button class="ob-swiper__card ob-card" data-val="filosofia">
@@ -883,8 +917,8 @@
                   <line x1="56" y1="60" x2="70" y2="58" opacity="0.55"/>
                 </svg>
               </div>
-              <span class="ob-swiper__title">filosofia /<br/>propósito</span>
-              <span class="ob-swiper__body">refletir, perguntar, conduzir.</span>
+              <span class="ob-swiper__title">Filosofia /<br/>propósito</span>
+              <span class="ob-swiper__body">Refletir, perguntar, conduzir.</span>
             </button>
 
             <button class="ob-swiper__card ob-card" data-val="nenhuma">
@@ -897,8 +931,8 @@
                   <path d="M50 24 L50 30 M50 46 L50 52 M64 38 L70 38 M30 38 L36 38" opacity="0.5"/>
                 </svg>
               </div>
-              <span class="ob-swiper__title">ainda<br/>não sei</span>
-              <span class="ob-swiper__body">modo explorar, sem cobrar.</span>
+              <span class="ob-swiper__title">Ainda<br/>não sei</span>
+              <span class="ob-swiper__body">Modo explorar, sem cobrar.</span>
             </button>
 
             <button class="ob-swiper__card ob-card" data-val="outra">
@@ -912,66 +946,66 @@
                   <circle cx="50" cy="50" r="6" fill="currentColor" opacity="0.5"/>
                 </svg>
               </div>
-              <span class="ob-swiper__title">outra<br/>coisa</span>
-              <span class="ob-swiper__body">algo único pra você.</span>
+              <span class="ob-swiper__title">Outra<br/>coisa</span>
+              <span class="ob-swiper__body">Algo único pra você.</span>
             </button>
           </div>
           <div class="ob-swiper__dots" aria-hidden="true"></div>
         </div>
 
-        <button class="btn btn--primary btn--full ob-next" disabled>continuar</button>
+        <button class="btn btn--primary btn--full ob-next" disabled>Continuar</button>
       </div>
 
       <!-- 25 · apple health -->
       <div class="ob-slide" data-step="24">
-        <h1 class="display">conecta o<br/>Apple Health?</h1>
-        <p class="lead">sono, passos, frequência cardíaca e treinos entram sozinhos. menos coisa pra você logar à mão.</p>
+        <h1 class="display">Conecta o<br/>Apple Health?</h1>
+        <p class="lead">Sono, passos, frequência cardíaca e treinos entram sozinhos. Menos coisa pra você logar à mão.</p>
 
         <ul class="ob-bullets">
-          <li><span class="b-dot"></span>só lê, circa nunca escreve lá.</li>
-          <li><span class="b-dot"></span>você desliga a qualquer momento.</li>
-          <li><span class="b-dot"></span>sem conexão não tem problema, dá pra logar à mão.</li>
+          <li><span class="b-dot"></span>Só lê, circa nunca escreve lá.</li>
+          <li><span class="b-dot"></span>Você desliga a qualquer momento.</li>
+          <li><span class="b-dot"></span>Sem conexão não tem problema, dá pra logar à mão.</li>
         </ul>
 
-        <button class="btn btn--primary btn--full ob-next" id="ob-hk-yes">conectar Apple Health</button>
-        <button class="btn btn--text ob-next" id="ob-hk-no">depois</button>
+        <button class="btn btn--primary btn--full ob-next" id="ob-hk-yes">Conectar Apple Health</button>
+        <button class="btn btn--text ob-next" id="ob-hk-no">Depois</button>
       </div>
 
       <!-- 26 · medicamentos & suplementos -->
       <div class="ob-slide" data-step="25">
-        <h1 class="display">remédios &<br/>suplementos.</h1>
-        <p class="lead">o que você toma rotineiramente? cada item vira uma tarefa diária no app.</p>
+        <h1 class="display">Remédios &<br/>suplementos.</h1>
+        <p class="lead">O que você toma rotineiramente? Cada item vira uma tarefa diária no app.</p>
 
         <div class="ob-section">
-          <span class="eyebrow">comuns</span>
+          <span class="eyebrow">Comuns</span>
           <div class="ob-chips" id="supp-chips">
-            <button class="ob-chip" data-supp="creatina">creatina · 5g</button>
-            <button class="ob-chip" data-supp="whey">whey protein</button>
-            <button class="ob-chip" data-supp="vitD">vitamina D</button>
-            <button class="ob-chip" data-supp="b12">vitamina B12</button>
-            <button class="ob-chip" data-supp="omega3">ômega 3</button>
-            <button class="ob-chip" data-supp="magnesio">magnésio</button>
-            <button class="ob-chip" data-supp="multi">multivitamínico</button>
-            <button class="ob-chip" data-supp="folato">folato</button>
-            <button class="ob-chip" data-supp="anticonc">anticoncepcional</button>
-            <button class="ob-chip" data-supp="antialerg">antialérgico</button>
-            <button class="ob-chip" data-supp="antihiper">anti-hipertensivo</button>
-            <button class="ob-chip" data-supp="antidepres">antidepressivo</button>
-            <button class="ob-chip" data-supp="cafeina">cafeína / pre-treino</button>
+            <button class="ob-chip" data-supp="creatina">Creatina · 5g</button>
+            <button class="ob-chip" data-supp="whey">Whey protein</button>
+            <button class="ob-chip" data-supp="vitD">Vitamina D</button>
+            <button class="ob-chip" data-supp="b12">Vitamina B12</button>
+            <button class="ob-chip" data-supp="omega3">Ômega 3</button>
+            <button class="ob-chip" data-supp="magnesio">Magnésio</button>
+            <button class="ob-chip" data-supp="multi">Multivitamínico</button>
+            <button class="ob-chip" data-supp="folato">Folato</button>
+            <button class="ob-chip" data-supp="anticonc">Anticoncepcional</button>
+            <button class="ob-chip" data-supp="antialerg">Antialérgico</button>
+            <button class="ob-chip" data-supp="antihiper">Anti-hipertensivo</button>
+            <button class="ob-chip" data-supp="antidepres">Antidepressivo</button>
+            <button class="ob-chip" data-supp="cafeina">Cafeína / pre-treino</button>
           </div>
         </div>
 
         <div class="ob-section">
-          <span class="eyebrow">outros (opcional)</span>
+          <span class="eyebrow">Outros (opcional)</span>
           <div class="ob-inputs">
             <input type="text" placeholder="ex: bromazepam 3mg, magnésio bisglicinato..." id="supp-other-1" />
             <input type="text" placeholder="ex: outra coisa que você toma" id="supp-other-2" />
           </div>
         </div>
 
-        <p class="micro-note">você define dose e horário depois, dentro do app. agora é só marcar o que toma.</p>
+        <p class="micro-note">Você define dose e horário depois, dentro do app. Agora é só marcar o que toma.</p>
 
-        <button class="btn btn--primary btn--full ob-next">continuar</button>
+        <button class="btn btn--primary btn--full ob-next">Continuar</button>
       </div>
 
       <!-- 27 · bora -->
@@ -980,11 +1014,11 @@
           <div class="score-gem-wrap">
             <img class="score-gem" src="assets/onboarding/score-gem.png" alt="circa score" width="240" height="240" loading="eager" decoding="async"/>
           </div>
-          <h1 class="display">pronto,<br/>Gabriel.</h1>
-          <p class="lead">teu primeiro check-in tá valendo. o mapa começa a se desenhar a partir de agora.</p>
+          <h1 class="display">Pronto,<br/>Gabriel.</h1>
+          <p class="lead">Teu primeiro check-in tá valendo. O mapa começa a se desenhar a partir de agora.</p>
         </div>
 
-        <button class="btn btn--primary btn--full" id="ob-finish">começar</button>
+        <button class="btn btn--primary btn--full" id="ob-finish">Começar</button>
       </div>
 
     </div>
@@ -999,7 +1033,7 @@
           <img src="circa-logo.png" alt="Circa" class="brand__mark" width="32" height="32" />
           <span class="brand__name">circa</span>
         </div>
-        <span class="top__greet">boa tarde, Gabriel</span>
+        <span class="top__greet">Boa tarde, Gabriel</span>
         <button class="top__menu" aria-label="menu">
           <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5">
             <path d="M4 7h16M4 12h16M4 17h16" stroke-linecap="round"/>
@@ -1053,7 +1087,7 @@
 
       <div class="hero-context">
         <div class="hc-item">
-          <span class="eyebrow">meta 3m</span>
+          <span class="eyebrow">Meta 3m</span>
           <div class="hc-row">
             <strong id="hc-goal">82</strong>
             <span class="mute" id="hc-goal-gap">caminho +10</span>
@@ -1061,7 +1095,7 @@
           <div class="hc-bar"><i id="hc-goal-bar" style="width: 88%"></i></div>
         </div>
         <div class="hc-item">
-          <span class="eyebrow">perfil · sáb</span>
+          <span class="eyebrow">Perfil · sáb</span>
           <div class="hc-row">
             <strong>65–78</strong>
             <span class="mute">dentro</span>
@@ -1092,10 +1126,10 @@
       <!-- treino de hoje -->
       <button class="card card--training" id="training-open">
         <div class="training-head">
-          <span class="eyebrow">treino de hoje</span>
+          <span class="eyebrow">Treino de hoje</span>
           <span class="training-day">sáb · dia 7</span>
         </div>
-        <h2 class="card__title">musculação · 45min<br/><span class="mute small">abdome & core + cardio leve</span></h2>
+        <h2 class="card__title">Musculação · 45min<br/><span class="mute small">abdome & core + cardio leve</span></h2>
         <div class="training-meta">
           <span><i class="dot" style="--c:var(--treino)"></i>alta intensidade</span>
           <span class="mute">17:00 – 19:00</span>
@@ -1125,7 +1159,7 @@
             </svg>
           </div>
           <div class="water-info">
-            <span class="eyebrow">água · hoje</span>
+            <span class="eyebrow">Água · hoje</span>
             <h3 class="water-value"><b id="water-ml">1.8</b><i>/ 2.8 L</i></h3>
             <div class="water-bar"><i id="water-bar-fill" style="width: 64%"></i></div>
             <span class="water-status is-low" id="water-status">35% abaixo da meta</span>
@@ -1148,7 +1182,7 @@
                 <rect x="3" y="3" width="10" height="18" rx="5" transform="rotate(-45 8 12)"/>
               </svg>
             </span>
-            <span class="eyebrow">suplementos · hoje</span>
+            <span class="eyebrow">Suplementos · hoje</span>
           </div>
           <span class="supps-count" id="supps-count">1 / 3</span>
         </div>
@@ -1165,7 +1199,7 @@
     <!-- ───────── RODA DA VIDA ───────── -->
     <section class="screen screen--wheel" data-screen="wheel">
       <header class="top">
-        <span class="top__greet">roda da vida</span>
+        <span class="top__greet">Roda da vida</span>
         <button class="top__menu" id="wheel-edit-toggle" aria-label="editar roda">
           <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
             <path d="M12 20h9"/>
@@ -1175,8 +1209,8 @@
       </header>
 
       <div class="wheel-intro">
-        <span class="eyebrow" id="wheel-mode-label">toque nas áreas pra ver detalhes</span>
-        <h1 class="display">como tá<br/>tua vida?</h1>
+        <span class="eyebrow" id="wheel-mode-label">Toque nas áreas pra ver detalhes</span>
+        <h1 class="display">Como tá<br/>tua vida?</h1>
       </div>
 
       <div class="wheel-wrap">
@@ -1208,7 +1242,7 @@
         </svg>
       </div>
 
-      <button class="btn btn--primary btn--full" id="wheel-edit-btn">editar roda</button>
+      <button class="btn btn--primary btn--full" id="wheel-edit-btn">Editar roda</button>
 
       <button class="card ritual-trigger" id="open-ritual">
         <div class="ritual-trigger__icon">
@@ -1218,7 +1252,7 @@
           </svg>
         </div>
         <div class="ritual-trigger__text">
-          <span class="eyebrow">ritual de domingo</span>
+          <span class="eyebrow">Ritual de domingo</span>
           <strong>fecha a semana em 30s</strong>
           <span class="mute">reavalia as 8 áreas + 2 perguntas de reflexão</span>
         </div>
@@ -1240,7 +1274,7 @@
       <div class="sliders">
         <div class="slider">
           <div class="slider__head">
-            <span class="slider__label">energia</span>
+            <span class="slider__label">Energia</span>
             <span class="slider__value">
               <em class="slider__word" data-word="energy">boa</em>
               <b data-value="energy">4</b><i>/ 5</i>
@@ -1270,7 +1304,7 @@
 
         <div class="slider">
           <div class="slider__head">
-            <span class="slider__label">humor</span>
+            <span class="slider__label">Humor</span>
             <span class="slider__value">
               <em class="slider__word" data-word="mood">ótimo</em>
               <b data-value="mood">5</b><i>/ 5</i>
@@ -1296,7 +1330,7 @@
 
         <div class="slider">
           <div class="slider__head">
-            <span class="slider__label">ansiedade</span>
+            <span class="slider__label">Ansiedade</span>
             <span class="slider__value">
               <em class="slider__word" data-word="anx">leve</em>
               <b data-value="anx">1</b><i>/ 5</i>
@@ -1321,13 +1355,13 @@
         </div>
       </div>
 
-      <button class="btn btn--primary btn--full">pronto</button>
+      <button class="btn btn--primary btn--full">Pronto</button>
     </section>
 
     <!-- ───────── INSIGHT ───────── -->
     <section class="screen screen--insight" data-screen="insight">
       <header class="top">
-        <span class="top__greet">insights</span>
+        <span class="top__greet">Insights</span>
         <button class="top__menu" aria-label="filtrar">
           <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5">
             <path d="M4 6h16M7 12h10M10 18h4" stroke-linecap="round"/>
@@ -1336,7 +1370,7 @@
       </header>
 
       <article class="card card--insight">
-        <span class="eyebrow">padrão detectado</span>
+        <span class="eyebrow">Padrão detectado</span>
         <h2 class="card__title">
           Teu humor sobe<br/>
           <em>1.8 pontos</em> quando<br/>
@@ -1348,8 +1382,8 @@
           Observado em 12 dos últimos 14 dias com treino matinal.
           Nos dias de treino à noite, o efeito some.
         </p>
-        <button class="btn btn--primary btn--full">agendar amanhã cedo</button>
-        <button class="btn btn--text">dispensar</button>
+        <button class="btn btn--primary btn--full">Agendar amanhã cedo</button>
+        <button class="btn btn--text">Dispensar</button>
         <div class="card__footer">
           <span>baseado em 14 dias</span>
           <span class="confidence">
@@ -1363,14 +1397,14 @@
       </article>
 
       <article class="card card--insight card--insight-sm">
-        <span class="eyebrow">observação</span>
+        <span class="eyebrow">Observação</span>
         <p class="card__title-sm">
           Ansiedade subiu nos 3 dias após noites abaixo de 6h, padrão recorrente há 2 meses.
         </p>
       </article>
 
       <article class="card card--insight card--insight-sm">
-        <span class="eyebrow">sugestão</span>
+        <span class="eyebrow">Sugestão</span>
         <p class="card__title-sm">
           Área <em>relacionamentos</em> caiu 2 semanas. Última refeição social há 9 dias.
         </p>
@@ -1380,22 +1414,22 @@
     <!-- ───────── EXAMES ───────── -->
     <section class="screen screen--labs" data-screen="labs">
       <header class="top">
-        <span class="top__greet">exames</span>
+        <span class="top__greet">Exames</span>
         <span class="top__beta">beta · grátis</span>
       </header>
 
       <div class="labs-intro">
-        <span class="eyebrow">seu mapa metabólico</span>
-        <h1 class="display">exames contam<br/>uma história.</h1>
-        <p class="lead">sobe teus exames dos últimos 3 meses. o circa cruza com teu dia-a-dia e te mostra o que tá conectado.</p>
+        <span class="eyebrow">Seu mapa metabólico</span>
+        <h1 class="display">Exames contam<br/>uma história.</h1>
+        <p class="lead">Sobe teus exames dos últimos 3 meses. O circa cruza com teu dia-a-dia e te mostra o que tá conectado.</p>
       </div>
 
       <button class="lab-card" id="lab-open">
         <div class="lab-card__top">
-          <span class="eyebrow">último exame</span>
+          <span class="eyebrow">Último exame</span>
           <span class="lab-card__date">25 mar · 2026</span>
         </div>
-        <h2 class="card__title">hemograma +<br/>perfil metabólico</h2>
+        <h2 class="card__title">Hemograma +<br/>perfil metabólico</h2>
 
         <div class="lab-card__stats">
           <span class="stat">
@@ -1436,7 +1470,7 @@
 
       <button class="lab-card lab-card--bioage" id="body-open">
         <div class="lab-card__top">
-          <span class="eyebrow">derivada do exame · 25 mar</span>
+          <span class="eyebrow">Derivada do exame · 25 mar</span>
           <span class="lab-card__date">20 abr · 2026</span>
         </div>
         <h2 class="card__title">
@@ -1463,9 +1497,9 @@
       </button>
 
       <div class="labs-foot">
-        <span class="eyebrow">na fase paga</span>
+        <span class="eyebrow">Na fase paga</span>
         <p class="micro-note">
-          análise automática por IA · evolução de marcadores ao longo do tempo · alertas de desvio · sugestões semanais integradas a treino, comida, sono e roda da vida.
+          Análise automática por IA · evolução de marcadores ao longo do tempo · alertas de desvio · sugestões semanais integradas a treino, comida, sono e roda da vida.
         </p>
       </div>
     </section>
@@ -1477,9 +1511,9 @@
         <div class="sheet__grab"></div>
 
         <div class="sheet__head">
-          <span class="eyebrow">circa score</span>
+          <span class="eyebrow">Circa score</span>
           <h2 class="display display--sm">78 · hoje</h2>
-          <p class="lead lead--sm">média 7d <strong>72</strong> · média 30d <strong>70</strong></p>
+          <p class="lead lead--sm">Média 7d <strong>72</strong> · média 30d <strong>70</strong></p>
         </div>
 
         <div class="breakdown">
@@ -1506,7 +1540,7 @@
         </div>
 
         <div class="sheet__section">
-          <span class="eyebrow">últimos 14 dias</span>
+          <span class="eyebrow">Últimos 14 dias</span>
           <svg class="wow" viewBox="0 0 320 100" preserveAspectRatio="none" aria-hidden="true">
             <defs>
               <linearGradient id="wowFill" x1="0" y1="0" x2="0" y2="1">
@@ -1526,7 +1560,7 @@
         </div>
 
         <div class="sheet__section">
-          <span class="eyebrow">o que puxou</span>
+          <span class="eyebrow">O que puxou</span>
           <ul class="pull-list">
             <li><i class="pull-dot pull-dot--up"></i><strong>humor +2.1</strong> · check-ins acima da média</li>
             <li><i class="pull-dot pull-dot--up"></i><strong>treino +1.5</strong> · musculação + core hoje</li>
@@ -1535,10 +1569,10 @@
         </div>
 
         <div class="sheet__section">
-          <span class="eyebrow">como é calculado</span>
+          <span class="eyebrow">Como é calculado</span>
 
           <p class="lead lead--sm" style="margin-bottom:14px;">
-            1 número = 4 dimensões com pesos. humor pesa mais porque é o que o circa trata diferente.
+            1 número = 4 dimensões com pesos. Humor pesa mais porque é o que o circa trata diferente.
           </p>
 
           <ul class="formula">
@@ -1573,12 +1607,12 @@
           </ul>
 
           <p class="micro-note">
-            ★ por que humor pesa mais? porque performance sem saúde mental não se sustenta.
-            outros apps já contam caloria bem. o circa é sobre o conjunto.
+            ★ por que humor pesa mais? Porque performance sem saúde mental não se sustenta.
+            Outros apps já contam caloria bem. O circa é sobre o conjunto.
           </p>
         </div>
 
-        <button class="btn btn--ghost btn--full" data-close>fechar</button>
+        <button class="btn btn--ghost btn--full" data-close>Fechar</button>
       </div>
     </div>
 
@@ -1589,7 +1623,7 @@
         <div class="sheet__grab"></div>
 
         <div class="sheet__head">
-          <span class="eyebrow" id="area-eyebrow">área</span>
+          <span class="eyebrow" id="area-eyebrow">Área</span>
           <h2 class="display display--sm" id="area-title">—</h2>
           <p class="lead lead--sm">
             <span id="area-now">7</span><span class="mute">/10 hoje</span>
@@ -1608,13 +1642,13 @@
         </div>
 
         <div class="sheet__section">
-          <span class="eyebrow">última prática</span>
+          <span class="eyebrow">Última prática</span>
           <p class="lead" id="area-last">—</p>
         </div>
 
         <!-- histórico de 14 dias (só aparece quando é espírito) -->
         <div class="sheet__section" id="area-history" style="display:none;">
-          <span class="eyebrow">últimos 14 dias</span>
+          <span class="eyebrow">Últimos 14 dias</span>
           <div class="history-dots" id="history-dots"></div>
           <div class="history-legend">
             <span><i class="h-dot h-dot--on"></i>com prática</span>
@@ -1623,17 +1657,17 @@
         </div>
 
         <div class="sheet__section">
-          <span class="eyebrow">sugestão do circa</span>
+          <span class="eyebrow">Sugestão do circa</span>
           <p class="lead" id="area-suggest">—</p>
         </div>
 
         <!-- slider pós-prática (só aparece após registrar em espírito) -->
         <div class="sheet__section post-practice" id="post-practice" style="display:none;">
-          <span class="eyebrow">como foi?</span>
-          <p class="lead lead--sm" style="margin-bottom:16px;">opcional. só se quiser.</p>
+          <span class="eyebrow">Como foi?</span>
+          <p class="lead lead--sm" style="margin-bottom:16px;">Opcional. Só se quiser.</p>
           <div class="slider" style="margin-bottom:8px;">
             <div class="slider__head">
-              <span class="slider__label">qualidade</span>
+              <span class="slider__label">Qualidade</span>
               <span class="slider__value"><b id="pp-value">3</b><i>/ 5</i></span>
             </div>
             <div class="slider__track">
@@ -1644,15 +1678,15 @@
             <div class="slider__ticks"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
           </div>
           <div style="display:flex;gap:8px;margin-top:14px;">
-            <button class="btn btn--ghost" style="flex:1" id="pp-skip">pular</button>
-            <button class="btn btn--primary" style="flex:1" id="pp-save">salvar</button>
+            <button class="btn btn--ghost" style="flex:1" id="pp-skip">Pular</button>
+            <button class="btn btn--primary" style="flex:1" id="pp-save">Salvar</button>
           </div>
         </div>
 
         <button class="btn btn--primary btn--full" id="area-log-btn">
           <span id="area-log-label">registrar ação</span>
         </button>
-        <button class="btn btn--text" data-close>fechar</button>
+        <button class="btn btn--text" data-close>Fechar</button>
       </div>
     </div>
 
@@ -1663,17 +1697,17 @@
         <div class="sheet__grab"></div>
 
         <div class="sheet__head">
-          <span class="eyebrow">exame · 25 mar · 2026</span>
-          <h2 class="display display--sm">hemograma +<br/>perfil metabólico</h2>
+          <span class="eyebrow">Exame · 25 mar · 2026</span>
+          <h2 class="display display--sm">Hemograma +<br/>perfil metabólico</h2>
           <p class="lead lead--sm">47 marcadores · <strong>2 alertas</strong> · 45 no range</p>
         </div>
 
         <div class="sheet__section">
-          <span class="eyebrow">alertas</span>
+          <span class="eyebrow">Alertas</span>
 
           <article class="alert">
             <div class="alert__head">
-              <span class="alert__name">homocisteína</span>
+              <span class="alert__name">Homocisteína</span>
               <span class="alert__val">28 <i>µmol/L</i></span>
             </div>
             <div class="alert__bar">
@@ -1685,17 +1719,17 @@
               <span class="alert__tag">+87%</span>
             </div>
             <p class="alert__body">
-              associado a fadiga, risco cardiovascular e metabolismo de metilação. geralmente puxado por baixo folato, B12 ou B6.
+              Associado a fadiga, risco cardiovascular e metabolismo de metilação. Geralmente puxado por baixo folato, B12 ou B6.
             </p>
 
-            <span class="eyebrow eyebrow--sub">correlação com seu dia-a-dia</span>
+            <span class="eyebrow eyebrow--sub">Correlação com seu dia-a-dia</span>
             <ul class="corr">
               <li><i class="pull-dot pull-dot--down"></i>tua comida tá com <strong>pouco folato</strong> (baixo consumo de feijão, folhas escuras)</li>
               <li><i class="pull-dot pull-dot--down"></i>padrão: <strong>sono curto</strong> (5h30 médio) aumenta estresse oxidativo</li>
               <li><i class="pull-dot pull-dot--up"></i>teus treinos ajudam, mantém</li>
             </ul>
 
-            <span class="eyebrow eyebrow--sub">sugestões pras próximas 8 semanas</span>
+            <span class="eyebrow eyebrow--sub">Sugestões pras próximas 8 semanas</span>
             <ul class="sugg">
               <li><i class="s-dot"></i>+ folato via alimentação: feijão preto, espinafre, abacate (3x/semana mínimo)</li>
               <li><i class="s-dot"></i>suplementação B12 + B6 por 8 semanas</li>
@@ -1706,7 +1740,7 @@
 
           <article class="alert">
             <div class="alert__head">
-              <span class="alert__name">ferritina</span>
+              <span class="alert__name">Ferritina</span>
               <span class="alert__val">484 <i>ng/mL</i></span>
             </div>
             <div class="alert__bar">
@@ -1718,10 +1752,10 @@
               <span class="alert__tag">+61%</span>
             </div>
             <p class="alert__body">
-              estoque alto de ferro. pode indicar inflamação sistêmica, sobrecarga hepática ou predisposição genética (hemocromatose).
+              Estoque alto de ferro. Pode indicar inflamação sistêmica, sobrecarga hepática ou predisposição genética (hemocromatose).
             </p>
 
-            <span class="eyebrow eyebrow--sub">ação prioritária</span>
+            <span class="eyebrow eyebrow--sub">Ação prioritária</span>
             <ul class="sugg">
               <li><i class="s-dot"></i>conversa médica antes de qualquer ação, esse não é pra resolver sozinho.</li>
               <li><i class="s-dot"></i>reduzir carne vermelha temporariamente até reavaliação.</li>
@@ -1731,7 +1765,7 @@
         </div>
 
         <div class="sheet__section">
-          <span class="eyebrow">marcadores em ordem</span>
+          <span class="eyebrow">Marcadores em ordem</span>
           <ul class="marker-list">
             <li class="ok"><span>hemograma completo</span><i>✓ normal</i></li>
             <li class="ok"><span>glicose em jejum</span><i>89 mg/dL</i></li>
@@ -1749,7 +1783,7 @@
           </ul>
         </div>
 
-        <button class="btn btn--ghost btn--full" data-close>fechar</button>
+        <button class="btn btn--ghost btn--full" data-close>Fechar</button>
       </div>
     </div>
 
@@ -1760,8 +1794,8 @@
         <div class="sheet__grab"></div>
 
         <div class="sheet__head">
-          <span class="eyebrow">plano semanal</span>
-          <h2 class="display display--sm">semana 15</h2>
+          <span class="eyebrow">Plano semanal</span>
+          <h2 class="display display--sm">Semana 15</h2>
           <p class="lead lead--sm">4 sessões · ~4h · força total</p>
         </div>
 
@@ -1832,10 +1866,10 @@
           que a Circa revise
         </button>
         <p class="micro-note" style="margin-top:10px;">
-          cruza tuas últimas 3 semanas de sono, alimentação, água, e o exame de 25 mar, e te entrega um relatório em ~20 segundos.
+          Cruza tuas últimas 3 semanas de sono, alimentação, água, e o exame de 25 mar, e te entrega um relatório em ~20 segundos.
         </p>
 
-        <button class="btn btn--text btn--full" data-close>fechar</button>
+        <button class="btn btn--text btn--full" data-close>Fechar</button>
       </div>
     </div>
 
@@ -1846,17 +1880,17 @@
         <div class="sheet__grab"></div>
 
         <div class="sheet__head">
-          <span class="eyebrow" id="status-eyebrow">indicador</span>
+          <span class="eyebrow" id="status-eyebrow">Indicador</span>
           <h2 class="display display--sm" id="status-title">—</h2>
-          <p class="lead lead--sm" id="status-hint">no momento você escolheu este nível.</p>
+          <p class="lead lead--sm" id="status-hint">No momento você escolheu este nível.</p>
         </div>
 
         <div class="sheet__section">
-          <span class="eyebrow">todos os níveis</span>
+          <span class="eyebrow">Todos os níveis</span>
           <ul class="level-list" id="status-levels"></ul>
         </div>
 
-        <button class="btn btn--ghost btn--full" data-close>fechar</button>
+        <button class="btn btn--ghost btn--full" data-close>Fechar</button>
       </div>
     </div>
 
@@ -1867,20 +1901,20 @@
         <div class="sheet__grab"></div>
 
         <div class="sheet__head">
-          <span class="eyebrow">suplementos · hoje</span>
+          <span class="eyebrow">Suplementos · hoje</span>
           <h2 class="display display--sm"><span id="supps-sheet-count">1</span> de <span id="supps-sheet-total">3</span> tomados</h2>
-          <p class="lead lead--sm">marca conforme você for tomando · aderência cruza com humor, sono e treino.</p>
+          <p class="lead lead--sm">Marca conforme você for tomando · aderência cruza com humor, sono e treino.</p>
         </div>
 
         <div class="sheet__section">
-          <span class="eyebrow">tarefas de hoje</span>
+          <span class="eyebrow">Tarefas de hoje</span>
           <ul class="supps-tasks" id="supps-tasks">
             <!-- renderizado por JS -->
           </ul>
         </div>
 
         <div class="sheet__section">
-          <span class="eyebrow">aderência · últimos 14 dias</span>
+          <span class="eyebrow">Aderência · últimos 14 dias</span>
           <div class="adherence-grid" id="supps-adherence">
             <!-- renderizado por JS -->
           </div>
@@ -1890,7 +1924,7 @@
         </div>
 
         <div class="sheet__section">
-          <span class="eyebrow">impacto observado</span>
+          <span class="eyebrow">Impacto observado</span>
           <ul class="corr">
             <li><i class="pull-dot pull-dot--up"></i>dias com <strong>creatina + treino</strong> têm humor médio <strong>+0.4</strong> vs dias sem</li>
             <li><i class="pull-dot pull-dot--up"></i>desde que começou <strong>vitamina D</strong> (jan/2026), score médio subiu <strong>+5.2 pts</strong></li>
@@ -1899,7 +1933,7 @@
         </div>
 
         <div class="sheet__section">
-          <span class="eyebrow">gerenciar</span>
+          <span class="eyebrow">Gerenciar</span>
           <button class="upload-card" id="supps-add-btn" style="margin-bottom:0;">
             <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
               <path d="M12 4v14M5 11l7-7 7 7"/>
@@ -1911,7 +1945,7 @@
           </button>
         </div>
 
-        <button class="btn btn--ghost btn--full" data-close>fechar</button>
+        <button class="btn btn--ghost btn--full" data-close>Fechar</button>
       </div>
     </div>
 
@@ -1922,7 +1956,7 @@
         <div class="sheet__grab"></div>
 
         <div class="sheet__head">
-          <span class="eyebrow">idade biológica · abr 2026</span>
+          <span class="eyebrow">Idade biológica · abr 2026</span>
         </div>
 
         <div class="body-hero">
@@ -1945,9 +1979,9 @@
         </div>
 
         <div class="sheet__section">
-          <span class="eyebrow">como é calculado</span>
+          <span class="eyebrow">Como é calculado</span>
           <p class="lead lead--sm" style="margin-bottom:14px;">
-            a gente cruza 12 marcadores do teu exame em 4 eixos. cada eixo puxa tua idade pra cima ou pra baixo.
+            A gente cruza 12 marcadores do teu exame em 4 eixos. Cada eixo puxa tua idade pra cima ou pra baixo.
           </p>
 
           <ul class="body-metrics">
@@ -1975,7 +2009,7 @@
         </div>
 
         <div class="sheet__section">
-          <span class="eyebrow">o que puxou a conta</span>
+          <span class="eyebrow">O que puxou a conta</span>
 
           <div class="bioage-group">
             <div class="bioage-group__head">
@@ -2026,7 +2060,7 @@
         </div>
 
         <div class="sheet__section">
-          <span class="eyebrow">o que faria cair mais</span>
+          <span class="eyebrow">O que faria cair mais</span>
           <ul class="sugg">
             <li><i class="s-dot"></i>tratar <strong>homocisteína</strong> (folato + B12) pode tirar <strong>−2 anos</strong> adicionais em 8 semanas</li>
             <li><i class="s-dot"></i>reduzir ferritina via conversa médica, potencial <strong>−1 ano</strong></li>
@@ -2035,7 +2069,7 @@
         </div>
 
         <div class="sheet__section">
-          <span class="eyebrow">evolução · 12 meses</span>
+          <span class="eyebrow">Evolução · 12 meses</span>
           <svg class="wow" viewBox="0 0 320 100" preserveAspectRatio="none" aria-hidden="true">
             <defs>
               <linearGradient id="bodyFill" x1="0" y1="0" x2="0" y2="1">
@@ -2051,11 +2085,11 @@
             <span><i class="lg-dot" style="background:var(--accent)"></i>idade biológica por exame</span>
           </div>
           <p class="micro-note" style="margin-top:12px;">
-            cada ponto = um exame. a última vez tu tavas em 32.5 anos biológicos. caiu pra 30.8 porque glicose e PCR melhoraram.
+            Cada ponto = um exame. A última vez tu tavas em 32.5 anos biológicos. Caiu pra 30.8 porque glicose e PCR melhoraram.
           </p>
         </div>
 
-        <button class="btn btn--ghost btn--full" data-close>fechar</button>
+        <button class="btn btn--ghost btn--full" data-close>Fechar</button>
       </div>
     </div>
 
@@ -2066,7 +2100,7 @@
         <div class="sheet__grab"></div>
 
         <div class="sheet__head">
-          <span class="eyebrow" id="day-eyebrow">dia ·,</span>
+          <span class="eyebrow" id="day-eyebrow">Dia ·,</span>
           <h2 class="display display--sm" id="day-title">—</h2>
           <p class="lead lead--sm" id="day-subtitle">—</p>
           <span class="day-status" id="day-status"></span>
@@ -2074,7 +2108,7 @@
 
         <div class="sheet__section" id="day-exercises-wrap">
           <div class="day-head-row">
-            <span class="eyebrow">exercícios</span>
+            <span class="eyebrow">Exercícios</span>
             <button class="day-add-btn" id="day-add-ex" aria-label="adicionar exercício">+ adicionar</button>
           </div>
           <ul class="day-exercises" id="day-exercises"></ul>
@@ -2082,7 +2116,7 @@
 
         <!-- trocar treino: lista de templates -->
         <div class="sheet__section day-swap" id="day-swap" style="display:none;">
-          <span class="eyebrow">trocar por</span>
+          <span class="eyebrow">Trocar por</span>
           <div class="swap-options">
             <button class="swap-opt" data-swap="strength-upper">
               <strong>força · superior</strong>
@@ -2105,7 +2139,7 @@
               <span>recovery passivo</span>
             </button>
           </div>
-          <button class="btn btn--text" id="day-swap-cancel">cancelar</button>
+          <button class="btn btn--text" id="day-swap-cancel">Cancelar</button>
         </div>
 
         <!-- botões de ação -->
@@ -2140,7 +2174,7 @@
           </button>
         </div>
 
-        <button class="btn btn--ghost btn--full" data-close>fechar</button>
+        <button class="btn btn--ghost btn--full" data-close>Fechar</button>
       </div>
     </div>
 
@@ -2151,16 +2185,16 @@
         <div class="sheet__grab"></div>
 
         <div class="sheet__head">
-          <span class="eyebrow">relatório · circa</span>
-          <h2 class="display display--sm">revisão da<br/>semana 15</h2>
-          <p class="lead lead--sm">cruzando treino, sono, comida, água e exame de 25 mar.</p>
+          <span class="eyebrow">Relatório · circa</span>
+          <h2 class="display display--sm">Revisão da<br/>semana 15</h2>
+          <p class="lead lead--sm">Cruzando treino, sono, comida, água e exame de 25 mar.</p>
         </div>
 
         <div class="review-tldr">
-          <span class="eyebrow">resumo</span>
+          <span class="eyebrow">Resumo</span>
           <p class="review-tldr__body">
-            você treinou bem, mas a <strong>recuperação tá limitada por sono e hidratação</strong>.
-            semana que vem: dormir mais nas noites pré-treino, beber +1L nos dias de atividade,
+            Você treinou bem, mas a <strong>recuperação tá limitada por sono e hidratação</strong>.
+            Semana que vem: dormir mais nas noites pré-treino, beber +1L nos dias de atividade,
             e começar suplementação pra homocisteína.
           </p>
 
@@ -2173,7 +2207,7 @@
         </div>
 
         <div class="sheet__section">
-          <span class="eyebrow">volume do treino</span>
+          <span class="eyebrow">Volume do treino</span>
           <ul class="corr">
             <li><i class="pull-dot pull-dot--up"></i>3 sessões de força + 1 sessão de core · total <strong>~4h</strong></li>
             <li><i class="pull-dot pull-dot--up"></i>dentro do range de recuperação pra teu perfil</li>
@@ -2181,7 +2215,7 @@
         </div>
 
         <div class="sheet__section">
-          <span class="eyebrow">sono · últimas 3 semanas</span>
+          <span class="eyebrow">Sono · últimas 3 semanas</span>
           <ul class="corr">
             <li><i class="pull-dot pull-dot--down"></i>média <strong>5h42</strong>, abaixo do ideal (7h) pra esse volume</li>
             <li><i class="pull-dot pull-dot--down"></i>padrão: noites curtas antes de treino matinal reduzem adaptação muscular em <strong>~20%</strong></li>
@@ -2190,7 +2224,7 @@
         </div>
 
         <div class="sheet__section">
-          <span class="eyebrow">alimentação</span>
+          <span class="eyebrow">Alimentação</span>
           <ul class="corr">
             <li><i class="pull-dot pull-dot--up"></i>proteína <strong>~1.8g/kg</strong>, adequada, mantém</li>
             <li><i class="pull-dot pull-dot--down"></i>carboidrato pós-treino: 2 dias sem refeição nas 2h seguintes (seg e sex)</li>
@@ -2199,7 +2233,7 @@
         </div>
 
         <div class="sheet__section">
-          <span class="eyebrow">água</span>
+          <span class="eyebrow">Água</span>
           <ul class="corr">
             <li><i class="pull-dot pull-dot--down"></i>média <strong>1.8L/dia</strong> (meta 2.8L), 35% abaixo</li>
             <li><i class="pull-dot pull-dot--down"></i>dias de treino pesado (sáb): média <strong>1.2L</strong> apenas</li>
@@ -2208,7 +2242,7 @@
         </div>
 
         <div class="sheet__section">
-          <span class="eyebrow">exame · 25 mar</span>
+          <span class="eyebrow">Exame · 25 mar</span>
           <ul class="corr">
             <li><i class="pull-dot pull-dot--down"></i><strong>homocisteína 28 µmol/L</strong>, prioridade</li>
             <li><i class="pull-dot pull-dot--up"></i>treino não piora o quadro, mas precisa folato + B12</li>
@@ -2217,7 +2251,7 @@
         </div>
 
         <div class="sheet__section">
-          <span class="eyebrow">recomendação · próxima semana</span>
+          <span class="eyebrow">Recomendação · próxima semana</span>
           <ul class="sugg">
             <li><i class="s-dot"></i>meta sono: <strong>7h</strong> nas 3 noites antes do treino pesado</li>
             <li><i class="s-dot"></i>pós-treino em até <strong>90min</strong> (refeição programada)</li>
@@ -2227,8 +2261,8 @@
           </ul>
         </div>
 
-        <button class="btn btn--primary btn--full">aplicar no plano</button>
-        <button class="btn btn--text btn--full" data-close>fechar</button>
+        <button class="btn btn--primary btn--full">Aplicar no plano</button>
+        <button class="btn btn--text btn--full" data-close>Fechar</button>
       </div>
     </div>
 
@@ -2239,14 +2273,14 @@
         <div class="sheet__grab"></div>
 
         <div class="sheet__head">
-          <span class="eyebrow">hidratação</span>
+          <span class="eyebrow">Hidratação</span>
           <h2 class="display display--sm"><span id="water-big">1.8</span> <i class="mute" style="font-family:var(--sans);font-size:14px;font-style:normal;">/ 2.8 L hoje</i></h2>
-          <p class="lead lead--sm">meta diária calculada pelo teu peso (78kg · 35ml/kg).</p>
+          <p class="lead lead--sm">Meta diária calculada pelo teu peso (78kg · 35ml/kg).</p>
         </div>
 
         <div class="sheet__tabs">
-          <button class="wt-tab is-on" data-range="week">semana</button>
-          <button class="wt-tab" data-range="month">mês</button>
+          <button class="wt-tab is-on" data-range="week">Semana</button>
+          <button class="wt-tab" data-range="month">Mês</button>
         </div>
 
         <div class="sheet__section" id="water-range-week">
@@ -2272,15 +2306,15 @@
         </div>
 
         <div class="sheet__section">
-          <span class="eyebrow">observação da circa</span>
+          <span class="eyebrow">Observação da circa</span>
           <ul class="corr">
             <li><i class="pull-dot pull-dot--down"></i>sexta e sábado (treinos pesados) ficaram abaixo de <strong>1.5L</strong></li>
             <li><i class="pull-dot pull-dot--up"></i>terça e quinta bateram a meta, foram dias de deep work</li>
-            <li><i class="s-dot"></i>hipótese: você hidrata melhor sentado que em movimento. considere garrafa visível no treino.</li>
+            <li><i class="s-dot"></i>hipótese: você hidrata melhor sentado que em movimento. Considere garrafa visível no treino.</li>
           </ul>
         </div>
 
-        <button class="btn btn--ghost btn--full" data-close>fechar</button>
+        <button class="btn btn--ghost btn--full" data-close>Fechar</button>
       </div>
     </div>
 
@@ -2291,9 +2325,9 @@
         <div class="sheet__grab"></div>
 
         <div class="sheet__head">
-          <span class="eyebrow">ritual de domingo · 30s</span>
-          <h2 class="display display--sm">fecha a<br/>semana 15.</h2>
-          <p class="lead lead--sm">reavalia as 8 áreas. isso é o que mais importa pra IA entender você.</p>
+          <span class="eyebrow">Ritual de domingo · 30s</span>
+          <h2 class="display display--sm">Fecha a<br/>semana 15.</h2>
+          <p class="lead lead--sm">Reavalia as 8 áreas. Isso é o que mais importa pra IA entender você.</p>
         </div>
 
         <div class="ritual-step" id="ritual-step-wheel">
@@ -2315,11 +2349,11 @@
               <g id="ritual-wheel-labels"></g>
             </svg>
           </div>
-          <button class="btn btn--primary btn--full" id="ritual-to-reflect">continuar</button>
+          <button class="btn btn--primary btn--full" id="ritual-to-reflect">Continuar</button>
         </div>
 
         <div class="ritual-step" id="ritual-step-reflect" style="display:none;">
-          <span class="eyebrow">reflexão da semana</span>
+          <span class="eyebrow">Reflexão da semana</span>
 
           <div class="reflect-q">
             <p class="reflect-label">essa semana me senti conectado comigo.</p>
@@ -2337,13 +2371,13 @@
           <div class="reflect-q">
             <p class="reflect-label">teve algum momento que te moveu?</p>
             <div class="reflect-yn">
-              <button class="yn is-on" data-yn="yes">sim</button>
-              <button class="yn" data-yn="no">não</button>
+              <button class="yn is-on" data-yn="yes">Sim</button>
+              <button class="yn" data-yn="no">Não</button>
             </div>
             <textarea class="reflect-text" id="reflect-text" placeholder="o quê? (opcional)" rows="3"></textarea>
           </div>
 
-          <button class="btn btn--primary btn--full" id="ritual-finish">fechar semana</button>
+          <button class="btn btn--primary btn--full" id="ritual-finish">Fechar semana</button>
         </div>
 
         <div class="ritual-step" id="ritual-step-done" style="display:none;">
@@ -2354,10 +2388,10 @@
               <circle cx="40" cy="40" r="18" opacity="0.8"/>
               <circle cx="40" cy="40" r="6" fill="currentColor"/>
             </svg>
-            <h2 class="display display--sm">semana<br/>arquivada.</h2>
-            <p class="lead lead--sm">a roda atualizou. amanhã começa fresco.</p>
+            <h2 class="display display--sm">Semana<br/>arquivada.</h2>
+            <p class="lead lead--sm">A roda atualizou. Amanhã começa fresco.</p>
           </div>
-          <button class="btn btn--ghost btn--full" data-close>fechar</button>
+          <button class="btn btn--ghost btn--full" data-close>Fechar</button>
         </div>
       </div>
     </div>
@@ -2369,37 +2403,37 @@
         <div class="sheet__grab"></div>
 
         <div class="sheet__head">
-          <span class="eyebrow">momento que me moveu</span>
-          <h2 class="display display--sm">o que<br/>aconteceu?</h2>
-          <p class="lead lead--sm">marque rápido. pode ser algo simples, um pôr do sol, um silêncio, uma conversa.</p>
+          <span class="eyebrow">Momento que me moveu</span>
+          <h2 class="display display--sm">O que<br/>aconteceu?</h2>
+          <p class="lead lead--sm">Marque rápido. Pode ser algo simples, um pôr do sol, um silêncio, uma conversa.</p>
         </div>
 
         <div class="sheet__section">
           <textarea class="reflect-text" id="moment-text" rows="4" placeholder="em poucas palavras…"></textarea>
 
-          <span class="eyebrow eyebrow--sub">contexto</span>
+          <span class="eyebrow eyebrow--sub">Contexto</span>
           <div class="ob-chips">
-            <button class="ob-chip" data-ctx="sozinho">sozinho</button>
-            <button class="ob-chip" data-ctx="natureza">natureza</button>
-            <button class="ob-chip" data-ctx="social">com alguém</button>
-            <button class="ob-chip" data-ctx="trabalho">no trabalho</button>
-            <button class="ob-chip" data-ctx="movimento">em movimento</button>
-            <button class="ob-chip" data-ctx="quieto">silêncio</button>
+            <button class="ob-chip" data-ctx="sozinho">Sozinho</button>
+            <button class="ob-chip" data-ctx="natureza">Natureza</button>
+            <button class="ob-chip" data-ctx="social">Com alguém</button>
+            <button class="ob-chip" data-ctx="trabalho">No trabalho</button>
+            <button class="ob-chip" data-ctx="movimento">Em movimento</button>
+            <button class="ob-chip" data-ctx="quieto">Silêncio</button>
           </div>
 
-          <span class="eyebrow eyebrow--sub">área que tocou</span>
+          <span class="eyebrow eyebrow--sub">Área que tocou</span>
           <div class="ob-chips">
-            <button class="ob-chip" data-area="espirit">espírito</button>
-            <button class="ob-chip" data-area="relac">relações</button>
-            <button class="ob-chip" data-area="lazer">lazer</button>
-            <button class="ob-chip" data-area="carreira">carreira</button>
-            <button class="ob-chip" data-area="familia">família</button>
-            <button class="ob-chip" data-area="saude">saúde</button>
+            <button class="ob-chip" data-area="espirit">Espírito</button>
+            <button class="ob-chip" data-area="relac">Relações</button>
+            <button class="ob-chip" data-area="lazer">Lazer</button>
+            <button class="ob-chip" data-area="carreira">Carreira</button>
+            <button class="ob-chip" data-area="familia">Família</button>
+            <button class="ob-chip" data-area="saude">Saúde</button>
           </div>
         </div>
 
-        <button class="btn btn--primary btn--full" id="moment-save">salvar momento</button>
-        <button class="btn btn--text btn--full" data-close>fechar</button>
+        <button class="btn btn--primary btn--full" id="moment-save">Salvar momento</button>
+        <button class="btn btn--text btn--full" data-close>Fechar</button>
       </div>
     </div>
 
@@ -2450,9 +2484,9 @@
         <div class="sheet__grab"></div>
 
         <div class="sheet__head">
-          <span class="eyebrow">log de treino</span>
-          <h2 class="display display--sm">qual foi<br/>seu treino?</h2>
-          <p class="lead lead--sm">a gente lembra pra próxima vez.</p>
+          <span class="eyebrow">Log de treino</span>
+          <h2 class="display display--sm">Qual foi<br/>seu treino?</h2>
+          <p class="lead lead--sm">A gente lembra pra próxima vez.</p>
         </div>
 
         <div class="sheet__section">
@@ -2475,8 +2509,8 @@
           </div>
         </div>
 
-        <button class="btn btn--primary btn--full" id="esporte-continuar" disabled>continuar</button>
-        <button class="btn btn--text btn--full" data-close>cancelar</button>
+        <button class="btn btn--primary btn--full" id="esporte-continuar" disabled>Continuar</button>
+        <button class="btn btn--text btn--full" data-close>Cancelar</button>
       </div>
     </div>
 
@@ -2488,7 +2522,7 @@
         <div class="sheet__grab"></div>
 
         <div class="sheet__head">
-          <span class="eyebrow" id="dim-eye">dimensão</span>
+          <span class="eyebrow" id="dim-eye">Dimensão</span>
           <h2 class="display display--sm" id="dim-title">—</h2>
           <p class="lead lead--sm" id="dim-sub">—</p>
         </div>
@@ -2498,11 +2532,11 @@
         </div>
 
         <div class="sheet__section">
-          <span class="eyebrow">insights</span>
+          <span class="eyebrow">Insights</span>
           <ul class="log-insights" id="dim-insights"></ul>
         </div>
 
-        <button class="btn btn--ghost btn--full" data-close>fechar</button>
+        <button class="btn btn--ghost btn--full" data-close>Fechar</button>
       </div>
     </div>
 
@@ -2513,22 +2547,22 @@
         <div class="sheet__grab"></div>
 
         <div class="sheet__head">
-          <span class="eyebrow">circa score · hoje</span>
+          <span class="eyebrow">Circa score · hoje</span>
           <h2 class="display display--sm"><span id="sbd-total">78</span><i style="font-family:var(--sans);font-size:14px;font-style:normal;color:var(--fg-muted);">/100</i></h2>
-          <p class="lead lead--sm" id="sbd-resumo">calculado com teus logs de hoje.</p>
+          <p class="lead lead--sm" id="sbd-resumo">Calculado com teus logs de hoje.</p>
         </div>
 
         <div class="sheet__section">
-          <span class="eyebrow">composição</span>
+          <span class="eyebrow">Composição</span>
           <ul class="sbd-list" id="sbd-composicao"></ul>
         </div>
 
         <div class="sheet__section">
-          <span class="eyebrow">o que mais pesou hoje</span>
+          <span class="eyebrow">O que mais pesou hoje</span>
           <ul class="log-insights" id="sbd-motivos"></ul>
         </div>
 
-        <button class="btn btn--ghost btn--full" data-close>fechar</button>
+        <button class="btn btn--ghost btn--full" data-close>Fechar</button>
       </div>
     </div>
 
@@ -2539,22 +2573,22 @@
         <div class="sheet__grab"></div>
 
         <div class="sheet__head">
-          <span class="eyebrow">meu perfil</span>
+          <span class="eyebrow">Meu perfil</span>
           <h2 class="display display--sm" id="perfil-nome">Gabriel</h2>
-          <p class="lead lead--sm">mental, saúde e físico, todos num só lugar.</p>
+          <p class="lead lead--sm">Mental, saúde e físico, todos num só lugar.</p>
         </div>
 
         <div class="perfil-tabs">
-          <button class="perfil-tab is-on" data-perfil-tab="mental">mental</button>
-          <button class="perfil-tab" data-perfil-tab="saude">saúde</button>
-          <button class="perfil-tab" data-perfil-tab="fisico">físico</button>
+          <button class="perfil-tab is-on" data-perfil-tab="mental">Mental</button>
+          <button class="perfil-tab" data-perfil-tab="saude">Saúde</button>
+          <button class="perfil-tab" data-perfil-tab="fisico">Físico</button>
         </div>
 
         <div class="sheet__section perfil-pane is-on" data-perfil-pane="mental" id="perfil-mental"></div>
         <div class="sheet__section perfil-pane" data-perfil-pane="saude" id="perfil-saude"></div>
         <div class="sheet__section perfil-pane" data-perfil-pane="fisico" id="perfil-fisico"></div>
 
-        <button class="btn btn--ghost btn--full" data-close>fechar</button>
+        <button class="btn btn--ghost btn--full" data-close>Fechar</button>
       </div>
     </div>
 
@@ -2565,9 +2599,9 @@
         <div class="sheet__grab"></div>
 
         <div class="sheet__head">
-          <span class="eyebrow" id="tr-eye">alterar treino</span>
-          <h2 class="display display--sm" id="tr-title">qual parte<br/>você quer trocar?</h2>
-          <p class="lead lead--sm" id="tr-sub">escolha o grupo muscular. depois, substitutos equivalentes.</p>
+          <span class="eyebrow" id="tr-eye">Alterar treino</span>
+          <h2 class="display display--sm" id="tr-title">Qual parte<br/>você quer trocar?</h2>
+          <p class="lead lead--sm" id="tr-sub">Escolha o grupo muscular. Depois, substitutos equivalentes.</p>
         </div>
 
         <!-- STEP 1: grupo muscular -->
@@ -2586,12 +2620,12 @@
 
         <!-- STEP 2: substitutos -->
         <div class="sheet__section" id="tr-step-subs" style="display:none;">
-          <span class="eyebrow" id="tr-subs-eye">substitutos recomendados</span>
+          <span class="eyebrow" id="tr-subs-eye">Substitutos recomendados</span>
           <ul class="tr-subs-list" id="tr-subs-list"></ul>
           <button class="btn btn--text btn--full" id="tr-voltar">← voltar</button>
         </div>
 
-        <button class="btn btn--text btn--full" data-close>fechar</button>
+        <button class="btn btn--text btn--full" data-close>Fechar</button>
       </div>
     </div>
 
@@ -2602,13 +2636,13 @@
         <div class="sheet__grab"></div>
 
         <div class="sheet__head">
-          <span class="eyebrow">log de humor</span>
-          <h2 class="display display--sm">como você<br/>está agora?</h2>
-          <p class="lead lead--sm">10 segundos, sem drama. o circa cruza com treino, sono e espírito.</p>
+          <span class="eyebrow">Log de humor</span>
+          <h2 class="display display--sm">Como você<br/>está agora?</h2>
+          <p class="lead lead--sm">10 segundos, sem drama. O circa cruza com treino, sono e espírito.</p>
         </div>
 
         <div class="sheet__section">
-          <span class="eyebrow">sensação geral</span>
+          <span class="eyebrow">Sensação geral</span>
           <div class="sensacao-grid">
             <button class="sensacao" data-humor-sens="1"><span>1</span><small>muito mal</small></button>
             <button class="sensacao" data-humor-sens="2"><span>2</span><small>mal</small></button>
@@ -2619,7 +2653,7 @@
         </div>
 
         <div class="sheet__section">
-          <span class="eyebrow">energia · 1 a 5</span>
+          <span class="eyebrow">Energia · 1 a 5</span>
           <div class="log-dots-scale" id="humor-energia">
             <button class="log-dot" data-v="1">1</button>
             <button class="log-dot" data-v="2">2</button>
@@ -2630,7 +2664,7 @@
         </div>
 
         <div class="sheet__section">
-          <span class="eyebrow">foco · 1 a 5</span>
+          <span class="eyebrow">Foco · 1 a 5</span>
           <div class="log-dots-scale" id="humor-foco">
             <button class="log-dot" data-v="1">1</button>
             <button class="log-dot" data-v="2">2</button>
@@ -2641,18 +2675,18 @@
         </div>
 
         <div class="sheet__section">
-          <span class="eyebrow">nota do momento · opcional</span>
+          <span class="eyebrow">Nota do momento · opcional</span>
           <textarea class="reflect-text" id="humor-nota" rows="3" placeholder="o que tá na tua cabeça…"></textarea>
         </div>
 
         <!-- histórico de registros · populado por JS -->
         <div class="sheet__section log-hist" id="humor-hist-wrap" style="display:none;">
-          <span class="eyebrow">seus últimos registros</span>
+          <span class="eyebrow">Seus últimos registros</span>
           <ul class="log-hist-list" id="humor-hist"></ul>
         </div>
 
-        <button class="btn btn--primary btn--full" id="humor-salvar">registrar humor</button>
-        <button class="btn btn--text btn--full" data-close>cancelar</button>
+        <button class="btn btn--primary btn--full" id="humor-salvar">Registrar humor</button>
+        <button class="btn btn--text btn--full" data-close>Cancelar</button>
       </div>
     </div>
 
@@ -2663,22 +2697,22 @@
         <div class="sheet__grab"></div>
 
         <div class="sheet__head">
-          <span class="eyebrow">log de refeição</span>
-          <h2 class="display display--sm">sua dieta<br/>do dia.</h2>
-          <p class="lead lead--sm">marque o que já comeu. adaptado ao teu plano.</p>
+          <span class="eyebrow">Log de refeição</span>
+          <h2 class="display display--sm">Sua dieta<br/>do dia.</h2>
+          <p class="lead lead--sm">Marque o que já comeu. Adaptado ao teu plano.</p>
         </div>
 
         <div class="sheet__section">
-          <span class="eyebrow">plano de hoje</span>
+          <span class="eyebrow">Plano de hoje</span>
           <ul class="ref-plano" id="ref-plano"></ul>
         </div>
 
         <div class="sheet__section">
           <label class="eyebrow" for="ref-nota">observação · opcional</label>
-          <textarea class="reflect-text" id="ref-nota" rows="2" placeholder="algo fora do plano? registre aqui…"></textarea>
+          <textarea class="reflect-text" id="ref-nota" rows="2" placeholder="algo fora do plano? Registre aqui…"></textarea>
         </div>
 
-        <button class="btn btn--text btn--full" data-close>fechar</button>
+        <button class="btn btn--text btn--full" data-close>Fechar</button>
       </div>
     </div>
 
@@ -2689,21 +2723,21 @@
         <div class="sheet__grab"></div>
 
         <div class="sheet__head">
-          <span class="eyebrow">log de sono</span>
-          <h2 class="display display--sm">como foi a<br/>tua noite?</h2>
-          <p class="lead lead--sm">cruzamos com treino, humor e recuperação.</p>
+          <span class="eyebrow">Log de sono</span>
+          <h2 class="display display--sm">Como foi a<br/>tua noite?</h2>
+          <p class="lead lead--sm">Cruzamos com treino, humor e recuperação.</p>
         </div>
 
         <div class="sheet__section">
-          <span class="eyebrow">dia</span>
+          <span class="eyebrow">Dia</span>
           <div class="log-day-chips" id="sono-day-chips">
-            <button class="log-day-chip" data-day="seg">seg</button>
-            <button class="log-day-chip" data-day="ter">ter</button>
-            <button class="log-day-chip" data-day="qua">qua</button>
-            <button class="log-day-chip" data-day="qui">qui</button>
-            <button class="log-day-chip" data-day="sex">sex</button>
-            <button class="log-day-chip" data-day="sab">sáb</button>
-            <button class="log-day-chip" data-day="dom">dom</button>
+            <button class="log-day-chip" data-day="seg">Seg</button>
+            <button class="log-day-chip" data-day="ter">Ter</button>
+            <button class="log-day-chip" data-day="qua">Qua</button>
+            <button class="log-day-chip" data-day="qui">Qui</button>
+            <button class="log-day-chip" data-day="sex">Sex</button>
+            <button class="log-day-chip" data-day="sab">Sáb</button>
+            <button class="log-day-chip" data-day="dom">Dom</button>
           </div>
         </div>
 
@@ -2719,13 +2753,13 @@
         </div>
 
         <div class="sheet__section log-sono-out">
-          <span class="eyebrow">duração</span>
+          <span class="eyebrow">Duração</span>
           <strong class="log-sono-big" id="sono-dur">8h 00min</strong>
           <span class="log-sono-hint" id="sono-hint">dentro da meta · 7-9h</span>
         </div>
 
         <div class="sheet__section">
-          <span class="eyebrow">qualidade · 1 a 5</span>
+          <span class="eyebrow">Qualidade · 1 a 5</span>
           <div class="log-dots-scale" id="sono-qualidade">
             <button class="log-dot" data-v="1">1</button>
             <button class="log-dot" data-v="2">2</button>
@@ -2736,7 +2770,7 @@
         </div>
 
         <div class="sheet__section">
-          <span class="eyebrow">como você acordou</span>
+          <span class="eyebrow">Como você acordou</span>
           <div class="sensacao-grid">
             <button class="sensacao" data-sono-sens="1"><span>1</span><small>exausto</small></button>
             <button class="sensacao" data-sono-sens="2"><span>2</span><small>cansado</small></button>
@@ -2747,37 +2781,37 @@
         </div>
 
         <div class="sheet__section">
-          <span class="eyebrow">interrupções durante a noite?</span>
+          <span class="eyebrow">Interrupções durante a noite?</span>
           <div class="log-yn-row">
-            <button class="log-yn" data-sono-interr="sim">sim</button>
-            <button class="log-yn is-active" data-sono-interr="nao">não</button>
+            <button class="log-yn" data-sono-interr="sim">Sim</button>
+            <button class="log-yn is-active" data-sono-interr="nao">Não</button>
           </div>
         </div>
 
         <div class="sheet__section">
-          <span class="eyebrow">consumiu cafeína após 14h?</span>
+          <span class="eyebrow">Consumiu cafeína após 14h?</span>
           <div class="log-yn-row">
-            <button class="log-yn" data-sono-cafe="sim">sim</button>
-            <button class="log-yn is-active" data-sono-cafe="nao">não</button>
+            <button class="log-yn" data-sono-cafe="sim">Sim</button>
+            <button class="log-yn is-active" data-sono-cafe="nao">Não</button>
           </div>
         </div>
 
         <div class="sheet__section">
-          <span class="eyebrow">álcool à noite?</span>
+          <span class="eyebrow">Álcool à noite?</span>
           <div class="log-yn-row">
-            <button class="log-yn" data-sono-alc="sim">sim</button>
-            <button class="log-yn is-active" data-sono-alc="nao">não</button>
+            <button class="log-yn" data-sono-alc="sim">Sim</button>
+            <button class="log-yn is-active" data-sono-alc="nao">Não</button>
           </div>
         </div>
 
         <div class="sheet__section">
-          <span class="eyebrow">observação · opcional</span>
+          <span class="eyebrow">Observação · opcional</span>
           <textarea class="reflect-text" id="sono-nota" rows="2" placeholder="algo que queira registrar…"></textarea>
         </div>
 
         <!-- resumo da semana (só aparece se tiver 2+ registros) -->
         <div class="sheet__section log-semana" id="sono-semana-wrap" style="display:none;">
-          <span class="eyebrow">sua semana</span>
+          <span class="eyebrow">Sua semana</span>
           <div class="log-semana-grid">
             <div class="ls-item"><small>média</small><strong id="sono-media">—</strong></div>
             <div class="ls-item"><small>consistência</small><strong id="sono-consist">—</strong></div>
@@ -2786,8 +2820,8 @@
           <ul class="log-insights" id="sono-insights"></ul>
         </div>
 
-        <button class="btn btn--primary btn--full" id="sono-salvar">registrar sono</button>
-        <button class="btn btn--text btn--full" data-close>cancelar</button>
+        <button class="btn btn--primary btn--full" id="sono-salvar">Registrar sono</button>
+        <button class="btn btn--text btn--full" data-close>Cancelar</button>
       </div>
     </div>
 
@@ -2798,13 +2832,13 @@
         <div class="sheet__grab"></div>
 
         <div class="sheet__head">
-          <span class="eyebrow">log de água</span>
+          <span class="eyebrow">Log de água</span>
           <h2 class="display display--sm"><span id="agua-hoje">1.8</span><i style="font-family:var(--sans);font-size:14px;font-style:normal;color:var(--fg-muted);"> / 2.8L hoje</i></h2>
-          <p class="lead lead--sm">toque num chip ou digite a quantidade.</p>
+          <p class="lead lead--sm">Toque num chip ou digite a quantidade.</p>
         </div>
 
         <div class="sheet__section">
-          <span class="eyebrow">rápido</span>
+          <span class="eyebrow">Rápido</span>
           <div class="log-agua-chips">
             <button class="log-agua-chip" data-ml="200">+200 ml</button>
             <button class="log-agua-chip" data-ml="500">+500 ml</button>
@@ -2819,7 +2853,7 @@
         </div>
 
         <div class="sheet__section log-agua-hist">
-          <span class="eyebrow">últimos 7 dias</span>
+          <span class="eyebrow">Últimos 7 dias</span>
           <div class="log-agua-week">
             <div class="lww-day"><i style="--h:70%"></i><span>seg</span><b>2.0</b></div>
             <div class="lww-day"><i style="--h:85%"></i><span>ter</span><b>2.4</b></div>
@@ -2831,8 +2865,8 @@
           </div>
         </div>
 
-        <button class="btn btn--primary btn--full" id="agua-salvar">adicionar</button>
-        <button class="btn btn--text btn--full" data-close>fechar</button>
+        <button class="btn btn--primary btn--full" id="agua-salvar">Adicionar</button>
+        <button class="btn btn--text btn--full" data-close>Fechar</button>
       </div>
     </div>
 
@@ -2843,16 +2877,16 @@
         <div class="sheet__grab"></div>
 
         <div class="sheet__head">
-          <span class="eyebrow">meus treinos</span>
-          <h2 class="display display--sm">semana de hoje</h2>
-          <p class="lead lead--sm">toque num dia pra registrar ou revisar.</p>
+          <span class="eyebrow">Meus treinos</span>
+          <h2 class="display display--sm">Semana de hoje</h2>
+          <p class="lead lead--sm">Toque num dia pra registrar ou revisar.</p>
         </div>
 
         <div class="sheet__section">
           <div class="treino-semana" id="treino-semana-list"></div>
         </div>
 
-        <button class="btn btn--text btn--full" data-close>fechar</button>
+        <button class="btn btn--text btn--full" data-close>Fechar</button>
       </div>
     </div>
 
@@ -2862,13 +2896,13 @@
         <div class="sheet__grab"></div>
 
         <div class="sheet__head">
-          <span class="eyebrow" id="log-t-eye">treino · hoje</span>
+          <span class="eyebrow" id="log-t-eye">Treino · hoje</span>
           <h2 class="display display--sm" id="log-t-nome">—</h2>
           <p class="lead lead--sm" id="log-t-data">—</p>
         </div>
 
         <div class="sheet__section">
-          <span class="eyebrow">métricas</span>
+          <span class="eyebrow">Métricas</span>
           <div class="log-campos" id="log-t-campos"></div>
         </div>
 
@@ -2884,7 +2918,7 @@
         </div>
 
         <div class="sheet__section">
-          <span class="eyebrow">intensidade percebida · 1 a 5</span>
+          <span class="eyebrow">Intensidade percebida · 1 a 5</span>
           <div class="log-dots-scale" id="log-t-intensidade">
             <button class="log-dot" data-v="1">1</button>
             <button class="log-dot" data-v="2">2</button>
@@ -2896,7 +2930,7 @@
         </div>
 
         <div class="sheet__section">
-          <span class="eyebrow">humor pós-treino</span>
+          <span class="eyebrow">Humor pós-treino</span>
           <div class="sensacao-grid">
             <button class="sensacao" data-sens="1"><span>1</span><small>exausto</small></button>
             <button class="sensacao" data-sens="2"><span>2</span><small>cansado</small></button>
@@ -2907,13 +2941,13 @@
         </div>
 
         <div class="sheet__section">
-          <span class="eyebrow">observação rápida · opcional</span>
+          <span class="eyebrow">Observação rápida · opcional</span>
           <textarea class="reflect-text" id="log-t-nota" rows="2" placeholder="algo que valha registrar…"></textarea>
         </div>
 
-        <button class="btn btn--primary btn--full" id="log-t-salvar">registrar treino</button>
-        <button class="btn btn--text btn--full" id="log-t-pular">pular, só marcar feito</button>
-        <button class="btn btn--text btn--full" data-close>cancelar</button>
+        <button class="btn btn--primary btn--full" id="log-t-salvar">Registrar treino</button>
+        <button class="btn btn--text btn--full" id="log-t-pular">Pular, só marcar feito</button>
+        <button class="btn btn--text btn--full" data-close>Cancelar</button>
       </div>
     </div>
 
@@ -2930,22 +2964,22 @@
         </div>
 
         <div class="sheet__head" style="text-align:center;">
-          <h2 class="display display--sm" id="log-ok-title">registrado.</h2>
+          <h2 class="display display--sm" id="log-ok-title">Registrado.</h2>
           <p class="lead lead--sm" id="log-ok-sub">—</p>
         </div>
 
         <div class="sheet__section log-ok__score">
-          <span class="eyebrow">circa score · hoje</span>
+          <span class="eyebrow">Circa score · hoje</span>
           <strong class="log-ok__num" id="log-ok-num">—</strong>
           <div class="log-ok__dims" id="log-ok-dims"></div>
         </div>
 
         <div class="sheet__section log-ok__insight">
-          <span class="eyebrow">insight de hoje</span>
+          <span class="eyebrow">Insight de hoje</span>
           <p id="log-ok-insight">—</p>
         </div>
 
-        <button class="btn btn--ghost btn--full" data-close>fechar</button>
+        <button class="btn btn--ghost btn--full" data-close>Fechar</button>
       </div>
     </div>
 
@@ -2954,18 +2988,18 @@
       <svg viewBox="0 0 12 40" width="12" height="40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
         <path d="M3 14l4 6-4 6"/>
       </svg>
-      <span class="qd-handle__label">log</span>
+      <span class="qd-handle__label">Log</span>
     </button>
 
     <div class="qd" id="qd" aria-hidden="true">
       <div class="qd__backdrop" data-close-qd></div>
       <aside class="qd__panel" role="dialog" aria-label="log rápido">
         <div class="qd__top">
-          <span class="eyebrow">log rápido</span>
+          <span class="eyebrow">Log rápido</span>
           <button class="qd__close" data-close-qd aria-label="fechar">✕</button>
         </div>
-        <h2 class="display display--sm">o que<br/>aconteceu?</h2>
-        <p class="lead lead--sm">registra em 1 toque. detalhe depois se quiser.</p>
+        <h2 class="display display--sm">O que<br/>aconteceu?</h2>
+        <p class="lead lead--sm">Registra em 1 toque. Detalhe depois se quiser.</p>
 
         <ul class="qd__list">
           <li><button class="qd__item" data-type="meal">
@@ -2975,7 +3009,7 @@
                 <path d="M5 3v9M19 3v9"/>
               </svg>
             </span>
-            <span class="qd__name">refeição</span>
+            <span class="qd__name">Refeição</span>
             <span class="qd__plus">+</span>
           </button></li>
           <li><button class="qd__item" data-type="workout">
@@ -2984,7 +3018,7 @@
                 <path d="M7 7h10M7 17h10M7 7v10M17 7v10M3 10v4M21 10v4"/>
               </svg>
             </span>
-            <span class="qd__name">treino</span>
+            <span class="qd__name">Treino</span>
             <span class="qd__plus">+</span>
           </button></li>
           <li><button class="qd__item" data-type="sleep">
@@ -2993,7 +3027,7 @@
                 <path d="M20 14A8 8 0 0 1 10 4c-.3 0-.6 0-.9.1A8 8 0 1 0 20 14z"/>
               </svg>
             </span>
-            <span class="qd__name">sono</span>
+            <span class="qd__name">Sono</span>
             <span class="qd__plus">+</span>
           </button></li>
           <li><button class="qd__item" data-type="water">
@@ -3002,7 +3036,7 @@
                 <path d="M12 3s-6 7-6 12a6 6 0 0 0 12 0c0-5-6-12-6-12z"/>
               </svg>
             </span>
-            <span class="qd__name">água</span>
+            <span class="qd__name">Água</span>
             <span class="qd__plus">+</span>
           </button></li>
           <li><button class="qd__item" data-type="mood">
@@ -3014,7 +3048,7 @@
                 <circle cx="15" cy="10" r=".8" fill="currentColor"/>
               </svg>
             </span>
-            <span class="qd__name">humor</span>
+            <span class="qd__name">Humor</span>
             <span class="qd__plus">+</span>
           </button></li>
           <li><button class="qd__item" data-type="spirit">
@@ -3025,7 +3059,7 @@
                 <path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.4 1.4M17.6 17.6L19 19M5 19l1.4-1.4M17.6 6.4L19 5"/>
               </svg>
             </span>
-            <span class="qd__name">espírito</span>
+            <span class="qd__name">Espírito</span>
             <span class="qd__plus">+</span>
           </button></li>
           <li><button class="qd__item" data-type="moment">
@@ -3034,7 +3068,7 @@
                 <path d="M12 2L9.5 8.5 3 9l5 4.5L6 20l6-3.5 6 3.5-2-6.5L21 9l-6.5-.5z"/>
               </svg>
             </span>
-            <span class="qd__name">momento que me moveu</span>
+            <span class="qd__name">Momento que me moveu</span>
             <span class="qd__plus">+</span>
           </button></li>
           <li><button class="qd__item" data-type="lab">
@@ -3043,7 +3077,7 @@
                 <path d="M9 3h6v4l5 10a3 3 0 0 1-2.7 4.3H10.7A3 3 0 0 1 8 17l5-10V3"/>
               </svg>
             </span>
-            <span class="qd__name">exame</span>
+            <span class="qd__name">Exame</span>
             <span class="qd__plus">+</span>
           </button></li>
         </ul>
@@ -3066,7 +3100,7 @@
 
         <!-- 1. SCORE · mesmo círculo/ring do Circa principal -->
         <section class="jsec is-active" data-index="0" data-label="hoje">
-          <p class="jsec-greet" id="j-greet">boa tarde</p>
+          <p class="jsec-greet" id="j-greet">Boa tarde</p>
 
           <button class="hero j-hero-btn" id="j-hero-btn" style="--glow-rgb: 230, 194, 126; --glow-strength: 0.6; --crown-opacity: 0.7;" aria-label="ver detalhes do score">
             <svg class="ring" viewBox="0 0 240 240" aria-hidden="true">
@@ -3104,8 +3138,8 @@
         <!-- 2. RITUAL -->
         <section class="jsec is-below" data-index="1" data-label="ritual">
           <p class="jsec-eye">check-in do dia</p>
-          <h2 class="jsec-q" id="j-ritual-titulo">como foi seu dia?</h2>
-          <p class="j-ritual-sub">escolha um tema pra registrar. o circa guarda cada dia pra cruzar depois.</p>
+          <h2 class="jsec-q" id="j-ritual-titulo">Como foi seu dia?</h2>
+          <p class="j-ritual-sub">escolha um tema pra registrar. O circa guarda cada dia pra cruzar depois.</p>
 
           <!-- blocos de temas · log rápido por tipo -->
           <div class="j-logs">
@@ -3148,7 +3182,7 @@
         <!-- 3. CORPO -->
         <section class="jsec is-below" data-index="2" data-label="corpo">
           <p class="jsec-eye">dimensão</p>
-          <h2 class="jsec-title" style="color:#7B8BB8">corpo</h2>
+          <h2 class="jsec-title" style="color:#7B8BB8">Corpo</h2>
           <div class="j-line"></div>
 
           <button class="hero hero--dim j-dim-btn" data-dim="corpo" style="--glow-rgb: 123, 139, 184; --glow-strength: 0.5; --crown-opacity: 0.55;" aria-label="ver detalhes de corpo">
@@ -3168,13 +3202,13 @@
             </div>
           </button>
 
-          <button class="j-ver-detalhes" data-dim="corpo">ver detalhes →</button>
+          <button class="j-ver-detalhes" data-dim="corpo">Ver detalhes →</button>
         </section>
 
         <!-- 4. MENTE -->
         <section class="jsec is-below" data-index="3" data-label="mente">
           <p class="jsec-eye">dimensão</p>
-          <h2 class="jsec-title" style="color:#E8A87C">mente</h2>
+          <h2 class="jsec-title" style="color:#E8A87C">Mente</h2>
           <div class="j-line"></div>
 
           <button class="hero hero--dim j-dim-btn" data-dim="mente" style="--glow-rgb: 232, 168, 124; --glow-strength: 0.55; --crown-opacity: 0.55;" aria-label="ver detalhes de mente">
@@ -3194,7 +3228,7 @@
             </div>
           </button>
 
-          <button class="j-ver-detalhes" data-dim="mente">ver detalhes →</button>
+          <button class="j-ver-detalhes" data-dim="mente">Ver detalhes →</button>
         </section>
 
         <!-- 5. PAUSA CIRCA · mesmo C do botão da nav inferior -->
@@ -3228,7 +3262,7 @@
         <!-- 6. ESPÍRITO -->
         <section class="jsec is-below" data-index="5" data-label="espírito">
           <p class="jsec-eye">dimensão</p>
-          <h2 class="jsec-title" style="color:#A89CC8">espírito</h2>
+          <h2 class="jsec-title" style="color:#A89CC8">Espírito</h2>
           <div class="j-line"></div>
 
           <button class="hero hero--dim j-dim-btn" data-dim="espirito" style="--glow-rgb: 168, 156, 200; --glow-strength: 0.55; --crown-opacity: 0.55;" aria-label="ver detalhes de espírito">
@@ -3248,7 +3282,7 @@
             </div>
           </button>
 
-          <button class="j-ver-detalhes" data-dim="espirito">ver detalhes →</button>
+          <button class="j-ver-detalhes" data-dim="espirito">Ver detalhes →</button>
 
           <!-- mantido escondido · conteúdo move pro sheet -->
         </section>
@@ -3259,17 +3293,17 @@
           <h2 class="jsec-title"><em>padrões</em></h2>
           <div class="j-line"></div>
           <div class="j-insights-list">
-            <div class="j-insight" style="border-left-color:#7B8BB8"><p class="j-insight-lbl" style="color:#7B8BB8"><i class="j-ins-dot" style="background:#7B8BB8"></i>corpo</p><p class="j-insight-text">sono curto há 5 dias + alta intensidade, recuperação comprometida. teu corpo tá pedindo 7h.</p></div>
-            <div class="j-insight" style="border-left-color:#E8A87C"><p class="j-insight-lbl" style="color:#E8A87C"><i class="j-ins-dot" style="background:#E8A87C"></i>mente</p><p class="j-insight-text">teu humor sobe 1.8 pontos quando treinas antes das 10h. amanhã é sábado.</p></div>
-            <div class="j-insight" style="border-left-color:#A89CC8"><p class="j-insight-lbl" style="color:#A89CC8"><i class="j-ins-dot" style="background:#A89CC8"></i>espírito</p><p class="j-insight-text">relacionamentos caiu 2 semanas. última refeição social há 9 dias.</p></div>
-            <div class="j-insight j-insight--accent"><p class="j-insight-lbl"><i class="j-ins-dot" style="background:var(--accent)"></i>exames</p><p class="j-insight-text">homocisteína 28 + sono curto é combinação que aumenta estresse oxidativo. prioridade esta semana.</p></div>
+            <div class="j-insight" style="border-left-color:#7B8BB8"><p class="j-insight-lbl" style="color:#7B8BB8"><i class="j-ins-dot" style="background:#7B8BB8"></i>corpo</p><p class="j-insight-text">sono curto há 5 dias + alta intensidade, recuperação comprometida. Teu corpo tá pedindo 7h.</p></div>
+            <div class="j-insight" style="border-left-color:#E8A87C"><p class="j-insight-lbl" style="color:#E8A87C"><i class="j-ins-dot" style="background:#E8A87C"></i>mente</p><p class="j-insight-text">teu humor sobe 1.8 pontos quando treinas antes das 10h. Amanhã é sábado.</p></div>
+            <div class="j-insight" style="border-left-color:#A89CC8"><p class="j-insight-lbl" style="color:#A89CC8"><i class="j-ins-dot" style="background:#A89CC8"></i>espírito</p><p class="j-insight-text">relacionamentos caiu 2 semanas. Última refeição social há 9 dias.</p></div>
+            <div class="j-insight j-insight--accent"><p class="j-insight-lbl"><i class="j-ins-dot" style="background:var(--accent)"></i>exames</p><p class="j-insight-text">homocisteína 28 + sono curto é combinação que aumenta estresse oxidativo. Prioridade esta semana.</p></div>
           </div>
         </section>
 
         <!-- 8. EXAMES · mapa metabólico no eixo vertical -->
         <section class="jsec is-below jsec--exames" data-index="7" data-label="exames">
           <p class="jsec-eye">seu mapa metabólico</p>
-          <h2 class="jsec-title">exames contam<br/><em>uma história.</em></h2>
+          <h2 class="jsec-title">Exames contam<br/><em>uma história.</em></h2>
           <div class="j-line"></div>
 
           <div class="j-exames-wrap">
@@ -3278,7 +3312,7 @@
                 <span class="jsec-eye" style="margin:0">último exame</span>
                 <span class="j-lab-date">25 mar · 2026</span>
               </div>
-              <h3 class="j-lab-title">hemograma +<br/>perfil metabólico</h3>
+              <h3 class="j-lab-title">Hemograma +<br/>perfil metabólico</h3>
               <div class="j-lab-stats">
                 <span class="j-stat"><b>47</b><small>marcadores</small></span>
                 <span class="j-stat j-stat--warn"><b>2</b><small>alertas</small></span>
@@ -3355,8 +3389,8 @@
               </svg>
             </div>
             <p class="club-locked__eye">club circa</p>
-            <h2 class="club-locked__title">sendo construído.</h2>
-            <p class="club-locked__sub">em breve, a comunidade com dados reais. acesso por convite.</p>
+            <h2 class="club-locked__title">Sendo construído.</h2>
+            <p class="club-locked__sub">em breve, a comunidade com dados reais. Acesso por convite.</p>
           </div>
         </section>
 
@@ -3364,7 +3398,7 @@
         <section class="jsec is-below" data-index="10" data-label="30 dias">
           <div class="j-chip"><i></i><span>anteriormente no circa</span></div>
           <p class="jsec-eye">30 dias atrás</p>
-          <h2 class="jsec-title">você era <em>outro.</em></h2>
+          <h2 class="jsec-title">Você era <em>outro.</em></h2>
           <div class="j-antes-row">
             <button class="j-antes-box" data-antes="before">
               <p class="j-antes-lbl">antes</p>
@@ -3389,12 +3423,12 @@
           </div>
           <div class="j-insight">
             <p class="j-insight-lbl">o circa interpretou</p>
-            <p class="j-insight-text">em 30 dias melhorou: energia, sono e dias bons. não foi por acaso, foi por escolha.</p>
+            <p class="j-insight-text">em 30 dias melhorou: energia, sono e dias bons. Não foi por acaso, foi por escolha.</p>
           </div>
           <p class="j-end">você chegou ao fim da sua jornada de hoje.</p>
           <div class="j-end-actions">
-            <button class="j-refazer" id="j-abrir-perfil">meu perfil completo</button>
-            <button class="j-refazer" id="j-refazer-onb">refazer perguntas iniciais</button>
+            <button class="j-refazer" id="j-abrir-perfil">Meu perfil completo</button>
+            <button class="j-refazer" id="j-refazer-onb">Refazer perguntas iniciais</button>
           </div>
         </section>
 
@@ -3408,8 +3442,8 @@
           <h4 class="club-modal__titulo" id="club-modal-titulo">mensagem</h4>
           <p class="club-modal__sub" id="club-modal-sub">portador circa</p>
           <textarea class="club-modal__input" id="club-modal-input" placeholder="escreva sua mensagem…" rows="4"></textarea>
-          <button class="btn btn--primary btn--full" id="club-modal-send">enviar mensagem</button>
-          <button class="btn btn--text btn--full" data-club-close>cancelar</button>
+          <button class="btn btn--primary btn--full" id="club-modal-send">Enviar mensagem</button>
+          <button class="btn btn--text btn--full" data-club-close>Cancelar</button>
         </div>
       </div>
 
@@ -3518,6 +3552,6 @@
     </nav>
   </div>
 
-  <script src="app.js?v=20260502-q"></script>
+  <script src="app.js?v=20260503-a"></script>
 </body>
 </html>
