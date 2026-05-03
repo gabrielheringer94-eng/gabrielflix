@@ -4832,10 +4832,13 @@ function renderObGoalWheel() {
   // ═══ nav entre seções ═══
   const sectionsEl = document.getElementById('jornada-sections');
   if (!sectionsEl) return;
-  // gestureEl é onde os listeners de touch/wheel rodam · usa .jornada (fullscreen)
-  // ao invés de sectionsEl (ocupa só faixa central 440px) · sem isso, scroll/swipe
-  // em qualquer área fora do centro da tela não disparava nextSec/prevSec
-  const gestureEl = document.getElementById('jornada') || sectionsEl;
+  // gestureEl é onde os listeners de touch/wheel rodam · agora usamos WINDOW
+  // (ao invés de .jornada) pra capturar TODOS os wheel events independente do path
+  // de bubble · trackpad macOS pode ter targets inesperados (browser chrome,
+  // overflow scroll containers consumindo evento etc) · window é o topo da chain
+  // de event propagation · handler interno checa is-open + gestoEmElementoInterativo
+  // pra não disparar quando jornada está fechada
+  const gestureEl = window;
   const secs = sectionsEl.querySelectorAll('.jsec');
   const TOTAL = secs.length;
   let current = 0;
