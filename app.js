@@ -4069,6 +4069,9 @@ function renderObStep() {
   if (obStep === 2) renderObWheel();
   if (obStep === 3) renderObGoalWheel();
 
+  // espelho de respostas · step 61 · render dinâmico do localStorage
+  if (obStep === 61) renderMirror();
+
   // calibração fisiológica · seletor (step 4)
   if (obStep === 4) {
     const slide = document.querySelector('.ob-slide[data-step="4"]');
@@ -4101,9 +4104,10 @@ function renderObStep() {
 // step 0 · capa de introdução (expectation setting) · primeiro de todos
 // insere 31 (gênero), 32 (homem), 33 (mulher) entre step 1 e step 2
 // SUBSTITUI o quiz antigo (12-20) pelo flow do temperamento (41-47):
-// 5 cenários (41-45) + processando (46) + revelação (47)
+// 5 cenários (41-45) + espelho (61) + processando (46) + revelação (47)
 // step 51 · nível de atividade · pílula dourada com 3 figs · após gênero, antes do temperamento
-const OB_FLOW = [0, 1, 31, 32, 33, 51, 41, 42, 43, 44, 45, 46, 47, 21, 22, 23, 24, 25, 26];
+// step 61 · espelho de respostas · revisão consciente entre cenários e reveal
+const OB_FLOW = [0, 1, 31, 32, 33, 51, 41, 42, 43, 44, 45, 61, 46, 47, 21, 22, 23, 24, 25, 26];
 
 function obCurrentGender() {
   try { return localStorage.getItem('circa_gender') || null; } catch (e) { return null; }
@@ -4424,6 +4428,65 @@ document.querySelectorAll('.ob-slide[data-step="1"] .ob-card').forEach((card) =>
     }, { threshold: 0.5 });
     io.observe(slide);
   }
+})();
+
+// step 61 · espelho de respostas · lê localStorage e renderiza key/value
+function renderMirror() {
+  const list = document.getElementById('mirror-list');
+  if (!list) return;
+  const ls = (k, fb = '—') => { try { return localStorage.getItem(k) || fb; } catch (e) { return fb; } };
+
+  // labels humanos pros valores armazenados
+  const FOCO_LABEL = {
+    performance: 'Performance física',
+    sono: 'Melhorar sono',
+    estresse: 'Gerenciar estresse',
+  };
+  const PERFIL_MAN = {
+    forca: 'Força e massa magra',
+    estresse: 'Equilíbrio mental',
+    libido: 'Libido e vitalidade',
+    peso: 'Gordura abdominal',
+    cardiometabolico: 'Pressão e glicemia',
+  };
+  const PERFIL_WOMAN = {
+    ciclo: 'Ciclo menstrual',
+    hormonal: 'Equilíbrio hormonal',
+    estresse: 'Equilíbrio mental',
+    peso: 'Composição corporal',
+    fertilidade: 'Longevidade',
+  };
+  const ATIV_LABEL = { 1: 'Sedentário', 2: 'Moderado', 3: 'Atlético' };
+
+  const foco       = ls('circa_foco');
+  const gender     = ls('circa_gender');
+  const perfilKey  = gender === 'man' ? 'circa_perfil_man' : 'circa_perfil_woman';
+  const perfilDict = gender === 'man' ? PERFIL_MAN : PERFIL_WOMAN;
+  const perfil     = ls(perfilKey);
+  const ativ       = parseInt(ls('circa_atividade', '2'), 10);
+
+  const rows = [
+    ['Foco',         FOCO_LABEL[foco]      || '—'],
+    ['Prioridade',   perfilDict[perfil]    || '—'],
+    ['Intensidade',  ATIV_LABEL[ativ]      || '—'],
+  ];
+
+  list.innerHTML = rows.map(([k, v]) =>
+    `<div class="mirror-row"><span class="k">${k}</span><span class="v">${v}</span></div>`
+  ).join('');
+}
+
+// botão "Ajustar" do espelho · volta ao step de foco (1) pra o user revisar
+(function () {
+  const back = document.getElementById('mirror-back');
+  if (!back) return;
+  back.addEventListener('click', () => {
+    if (typeof obStep !== 'undefined') {
+      obStep = 1;
+      if (typeof renderObStep === 'function') renderObStep();
+      try { hap(4); } catch (e) {}
+    }
+  });
 })();
 
 // step 14 · input de nome

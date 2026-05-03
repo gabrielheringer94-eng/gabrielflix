@@ -693,6 +693,22 @@
         <button class="btn btn--primary btn--full ob-next" disabled>Continuar</button>
       </div>
 
+      <!-- 61 · espelho de respostas · resumo das escolhas antes do reveal de temperamento -->
+      <div class="ob-slide ob-mirror-slide" data-step="61">
+        <p class="eyebrow">o que o circa leu</p>
+        <h1 class="display">É assim que você <em>chega.</em></h1>
+        <p class="lead">Confirma se o circa te leu certo. Você pode ajustar depois, no perfil.</p>
+
+        <div class="mirror-list" id="mirror-list">
+          <!-- preenchido dinamicamente via JS lendo localStorage -->
+        </div>
+
+        <div class="ob-mirror-actions">
+          <button class="btn btn--ghost ob-mirror-back" id="mirror-back">Ajustar</button>
+          <button class="btn btn--primary ob-next">É assim mesmo</button>
+        </div>
+      </div>
+
       <!-- 46 · processando · 3 anéis girando + status -->
       <div class="ob-slide tempr-slide tempr-proc-slide" data-step="46">
         <div class="tempr-proc">
@@ -1008,17 +1024,39 @@
         <button class="btn btn--primary btn--full ob-next">Continuar</button>
       </div>
 
-      <!-- 27 · bora -->
-      <div class="ob-slide" data-step="26">
+      <!-- 27 · bora · score 3-pilares · linha de partida -->
+      <div class="ob-slide ob-final-slide" data-step="26">
         <div class="ob-final">
+          <p class="eyebrow ob-final-eye">circa score · primeiro retrato</p>
+
           <div class="score-gem-wrap">
-            <img class="score-gem" src="assets/onboarding/score-gem.png" alt="circa score" width="240" height="240" loading="eager" decoding="async"/>
+            <img class="score-gem" src="assets/onboarding/score-gem.png" alt="circa score" width="200" height="200" loading="eager" decoding="async"/>
           </div>
-          <h1 class="display">Pronto,<br/>Gabriel.</h1>
-          <p class="lead">Teu primeiro check-in tá valendo. O mapa começa a se desenhar a partir de agora.</p>
+
+          <p class="ob-final-label">Linha de partida</p>
+
+          <div class="pillars-row">
+            <div class="pillar-cell">
+              <span class="pillar-name">Físico</span>
+              <span class="pillar-val" id="pillar-fis">68</span>
+            </div>
+            <div class="pillar-cell">
+              <span class="pillar-name">Mental</span>
+              <span class="pillar-val" id="pillar-men">61</span>
+            </div>
+            <div class="pillar-cell">
+              <span class="pillar-name">Espiritual</span>
+              <span class="pillar-val" id="pillar-esp">59</span>
+            </div>
+          </div>
+
+          <p class="ob-final-foot">
+            Esta é tua <em>linha de partida.</em><br/>
+            Cada check-in diário ajusta esse número e revela o que move ele.
+          </p>
         </div>
 
-        <button class="btn btn--primary btn--full" id="ob-finish">Começar</button>
+        <button class="btn btn--primary btn--full" id="ob-finish">Entrar no circa</button>
       </div>
 
     </div>
