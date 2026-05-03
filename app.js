@@ -4925,7 +4925,7 @@ function renderObGoalWheel() {
   function gestoEmElementoInterativo(target) {
     if (!target || !target.closest) return false;
     return !!target.closest(
-      'input, textarea, select, button, .j-log, .j-mood__item, .j-area, .j-lab-card, .j-card, .j-antes-box, .j-roda-item, canvas#j-roda, .j-nav-item, .j-nav-circa, .j-dot, .jornada__close, .home-actions, .home-actions__track, .home-action-card'
+      'input, textarea, select, button, .j-log, .j-mood__item, .j-area, .j-lab-card, .j-card, .j-antes-box, .j-roda-item, canvas#j-roda, .j-nav-item, .j-nav-circa, .j-dot, .jornada__close'
     );
   }
 
@@ -4979,6 +4979,12 @@ function renderObGoalWheel() {
   let wheelInertialCount = 0;
   sectionsEl.addEventListener('wheel', (e) => {
     if (!document.getElementById('jornada').classList.contains('is-open')) return;
+    // se o target é um swiper horizontal E o scroll é dominantemente lateral, deixa nativo
+    // (trackpad horizontal nos home-action cards e ob-swiper)
+    const inSwiper = e.target.closest && e.target.closest('.home-actions__track, .ob-swiper__track');
+    if (inSwiper && Math.abs(e.deltaX) > Math.abs(e.deltaY) * 0.5) {
+      return; // não preventDefault · deixa scroll-snap horizontal funcionar
+    }
     e.preventDefault();
     if (pausaTimeout) return;
     if (gestoEmElementoInterativo(e.target)) return;

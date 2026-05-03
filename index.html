@@ -23,8 +23,8 @@
   <link rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,400&family=Inter:wght@400;500;600&display=swap" />
   <!-- cache-bust agressivo: muda v sempre que houver mudança visual -->
-  <link rel="stylesheet" href="styles.css?v=20260503-i" />
-  <link rel="stylesheet" href="apple.css?v=20260503-i" />
+  <link rel="stylesheet" href="styles.css?v=20260503-j" />
+  <link rel="stylesheet" href="apple.css?v=20260503-j" />
   <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="pragma" content="no-cache" />
   <meta http-equiv="expires" content="0" />
@@ -3243,44 +3243,10 @@
         <section class="jsec is-below" data-index="1" data-label="ritual">
           <p class="jsec-eye">check-in do dia</p>
           <h2 class="jsec-q" id="j-ritual-titulo">Como foi seu dia?</h2>
-          <p class="j-ritual-sub">escolha um tema pra registrar. O circa guarda cada dia pra cruzar depois.</p>
+          <p class="j-ritual-sub">use os cards na home pra registrar humor, sono, treino, água e refeição. cada um abre seu próprio espaço.</p>
 
-          <!-- blocos de temas · log rápido por tipo -->
-          <div class="j-logs">
-            <span class="j-logs-lbl">registre por tema</span>
-            <div class="j-logs-grid">
-              <button class="j-log" data-log="humor">
-                <span class="j-log-icon">
-                  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
-                </span>
-                <span>humor</span>
-              </button>
-              <button class="j-log" data-log="sono">
-                <span class="j-log-icon">
-                  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-                </span>
-                <span>sono</span>
-              </button>
-              <button class="j-log" data-log="treino">
-                <span class="j-log-icon">
-                  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="6"/><path d="M5 3v9M19 3v9"/></svg>
-                </span>
-                <span>treino</span>
-              </button>
-              <button class="j-log" data-log="agua">
-                <span class="j-log-icon">
-                  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5s6 7 6 11.5a6 6 0 0 1-12 0c0-4.5 6-11.5 6-11.5z"/></svg>
-                </span>
-                <span>água</span>
-              </button>
-              <button class="j-log" data-log="refeicao">
-                <span class="j-log-icon">
-                  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v7a4 4 0 0 0 4 4h0v7M7 3v7M15 3c-1 2-2 4-2 7 0 2 1 3 2 3v8"/></svg>
-                </span>
-                <span>refeição</span>
-              </button>
-            </div>
-          </div>
+          <!-- j-logs removido · cards de home-actions na jsec=0 são a entrada principal pros logs
+               cada card abre o sheet-log-* correspondente · evita duplicação UX -->
         </section>
 
         <!-- 3. CORPO -->
@@ -3664,6 +3630,6 @@
     </nav>
   </div>
 
-  <script src="app.js?v=20260503-i"></script>
+  <script src="app.js?v=20260503-j"></script>
 </body>
 </html>

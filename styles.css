@@ -1076,6 +1076,10 @@ strong { color: var(--fg); font-weight: 500; }
    user pediu "no rodapé" · cards editoriais com imagem viraram a navegação primária */
 .tabbar { display: none !important; }
 
+/* CLUB EM STANDBY · botão da nav + section escondidos · user pediu standby (volta sob solicitação) */
+.j-nav-item[data-j-goto="9"],
+.jsec[data-index="9"] { display: none !important; }
+
 /* ───── TABBAR (mantido pro caso de fallback) ───── */
 .tabbar.tabbar--keep {
   position: fixed;
