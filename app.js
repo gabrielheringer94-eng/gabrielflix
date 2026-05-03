@@ -1590,7 +1590,7 @@ function stopWlcFundo() {
 let wlcTelaAtual = 1;
 
 function wlcIrPara(n) {
-  const telas = welcomeEl ? WelcomeEl.querySelectorAll('.wlc-tela') : [];
+  const telas = welcomeEl ? welcomeEl.querySelectorAll('.wlc-tela') : [];
   if (!telas.length) return;
   const atual = welcomeEl.querySelector(`.wlc-tela[data-wlc="${wlcTelaAtual}"]`);
   const prox  = welcomeEl.querySelector(`.wlc-tela[data-wlc="${n}"]`);
@@ -1980,8 +1980,8 @@ function salvarLogTreino() {
     esporte: esporteSel,
     sensacao: sensSel,
     intensidade: treinoIntensidade,
-    inicio: inicioEl ? InicioEl.value : null,
-    fim: fimEl ? FimEl.value : null,
+    inicio: inicioEl ? inicioEl.value : null,
+    fim: fimEl ? fimEl.value : null,
     duracaoMin: durMin,
     data: new Date().toISOString(),
   };
@@ -1994,7 +1994,7 @@ function salvarLogTreino() {
   } catch (e) {}
 
   // score simulado com base na sensação
-  const base = sensSel ? SensSel * 16 : 70;
+  const base = sensSel ? sensSel * 16 : 70;
   const corpo    = Math.min(100, base + Math.floor(Math.random() * 12));
   const mente    = Math.min(100, base - 5 + Math.floor(Math.random() * 15));
   const espirito = Math.min(100, base + 2 + Math.floor(Math.random() * 10));
@@ -2711,7 +2711,7 @@ function drawOrbeOn(canvas, isMain) {
       if (orbeInputPulse > 0) r += baseR * orbeInputPulse * 0.03 * Math.sin(angle * 4 + orbeT * 3);
       const x = cx + r * Math.cos(angle);
       const y = cy + r * Math.sin(angle);
-      i === 0 ? Ctx.moveTo(x, y) : ctx.lineTo(x, y);
+      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
     }
     ctx.closePath();
   }
@@ -3982,7 +3982,7 @@ function renderFisioResult(slideEl) {
 function renderQuizResult(slideEl) {
   const keys = Object.keys(quizVotes);
   const winner = keys.length
-    ? Keys.reduce((a, b) => (quizVotes[a] > quizVotes[b] ? A : b))
+    ? keys.reduce((a, b) => (quizVotes[a] > quizVotes[b] ? A : b))
     : 'navegador';
   const p = PROFILES_DATA[winner];
   window.CIRCA_PROFILE = winner;
@@ -4060,7 +4060,7 @@ function renderObStep() {
   });
   // progress bar baseada no flow atual
   const total = flow.length;
-  const pos = currentIdx >= 0 ? CurrentIdx : 0;
+  const pos = currentIdx >= 0 ? currentIdx : 0;
   if (obProgressFill) obProgressFill.style.width = (pos / Math.max(1, total - 1) * 100).toFixed(1) + '%';
   if (obProgressLbl)  obProgressLbl.textContent = (pos + 1) + ' / ' + total;
   obBackBtn.disabled = pos === 0;
@@ -4780,7 +4780,7 @@ function renderObGoalWheel() {
         r += baseR * amp * Math.sin(a * h * 0.7 + orbeT * spd * (h % 2 === 0 ? 1 : -0.7) + h * 1.3) / h;
       }
       const x = cx + r * Math.cos(a), y = cy + r * Math.sin(a);
-      i === 0 ? Ctx.moveTo(x, y) : ctx.lineTo(x, y);
+      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
     }
     ctx.closePath();
     const ga = orbeT * 0.004 * Math.PI * 2;
@@ -4801,7 +4801,7 @@ function renderObGoalWheel() {
       let r = baseR;
       for (let h = 1; h <= 4; h++) r += baseR * amp * Math.sin(a * h * 0.7 + orbeT * spd * (h % 2 === 0 ? 1 : -0.7) + h * 1.3) / h;
       const x = cx + r * Math.cos(a), y = cy + r * Math.sin(a);
-      i === 0 ? Ctx.moveTo(x, y) : ctx.lineTo(x, y);
+      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
     }
     ctx.closePath(); ctx.fillStyle = shine; ctx.fill();
     orbeT++;
@@ -4968,7 +4968,7 @@ function renderObGoalWheel() {
     const minDy = isFlick ? 25 : 55;
 
     if (Math.abs(dy) > minDy && Math.abs(dy) > dx * 1.2) {
-      dy > 0 ? NextSec() : prevSec();
+      dy > 0 ? nextSec()() : prevSec();
     }
   }, { passive: true });
 
@@ -5012,7 +5012,7 @@ function renderObGoalWheel() {
     wheelLastDelta = e.deltaY;
     wheelInertialCount = 0;
 
-    e.deltaY > 0 ? NextSec() : prevSec();
+    e.deltaY > 0 ? nextSec()() : prevSec();
   }, { passive: false });
 
   // teclado · ESC removido pq jornada é a home agora (não tem onde voltar)
@@ -5163,9 +5163,9 @@ function renderObGoalWheel() {
       ctx.moveTo(cx, cy);
       ctx.arc(cx, cy, r, aStart, aEnd);
       ctx.closePath();
-      ctx.fillStyle = hexToRgba(a.cor, isAtiva ? Alpha * 1.8 : alpha);
+      ctx.fillStyle = hexToRgba(a.cor, isAtiva ? alpha * 1.8 : alpha);
       ctx.fill();
-      ctx.strokeStyle = hexToRgba(a.cor, isAtiva ? AlphaS * 1.3 : alphaS * 0.6);
+      ctx.strokeStyle = hexToRgba(a.cor, isAtiva ? alphaS * 1.3 : alphaS * 0.6);
       ctx.lineWidth = isAtiva ? 1.5 : 1;
       ctx.stroke();
     });
@@ -5177,7 +5177,7 @@ function renderObGoalWheel() {
       const pulso = 1 + 0.025 * Math.sin(rodaPulsoT + i * 0.8);
       const r = maxR * (v / 10) * pulso;
       const x = cx + Math.cos(angle) * r, y = cy + Math.sin(angle) * r;
-      i === 0 ? Ctx.moveTo(x, y) : ctx.lineTo(x, y);
+      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
     });
     ctx.closePath();
     ctx.strokeStyle = 'rgba(212,184,150,0.55)';
@@ -6410,7 +6410,7 @@ function atualizarJornadaComLogs() {
   }
   const jGreet = document.getElementById('j-greet');
   if (jGreet) {
-    jGreet.textContent = nomeUser === 'você' ? Saudacao : `${saudacao}, ${nomeUser}`;
+    jGreet.textContent = nomeUser === 'você' ? saudacao : `${saudacao}, ${nomeUser}`;
   }
 
   const heroVal = document.getElementById('j-hero-value');
@@ -6530,7 +6530,7 @@ function abrirDimDetalhes(dim) {
     const lastSono = d.sono[d.sono.length - 1];
     const treinosHoje = d.treino.filter(t => new Date(t.data).toDateString() === new Date().toDateString());
     const metrics = [
-      { lbl: 'sono',    val: lastSono ? LastSono.dur : '—',           desc: lastSono ? `qualidade ${lastSono.qualidade || '—'}/5` : 'não registrado' },
+      { lbl: 'sono',    val: lastSono ? lastSono.dur : '—',           desc: lastSono ? `qualidade ${lastSono.qualidade || '—'}/5` : 'não registrado' },
       { lbl: 'água',    val: `${(d.aguaHoje/1000).toFixed(1)}L`,       desc: `Meta ${(d.aguaMeta/1000).toFixed(1)}L · ${Math.round(d.aguaHoje/d.aguaMeta*100)}%` },
       { lbl: 'treino',  val: treinosHoje.length ? (treinosHoje[0].duracaoMin ? `${treinosHoje[0].duracaoMin}min` : 'feito') : '—', desc: treinosHoje.length ? `intensidade ${treinosHoje[0].intensidade || '—'}/5` : 'sem treino hoje' },
       { lbl: 'suplementos', val: '1/3', desc: 'Creatina · 2 pendentes' },
@@ -6546,7 +6546,7 @@ function abrirDimDetalhes(dim) {
     const labelMap = { 1:'muito mal', 2:'mal', 3:'ok', 4:'bem', 5:'incrível' };
     bd.innerHTML = `
       <div class="j-metrics">
-        <div class="j-card"><p class="j-card-lbl">humor</p><p class="j-card-val">${lastHumor?.sens ? EmojiMap[lastHumor.sens] : '—'}</p><p class="j-card-desc">${lastHumor?.sens ? LabelMap[lastHumor.sens] : 'não registrado'}</p></div>
+        <div class="j-card"><p class="j-card-lbl">humor</p><p class="j-card-val">${lastHumor?.sens ? emojiMap[lastHumor.sens] : '—'}</p><p class="j-card-desc">${lastHumor?.sens ? labelMap[lastHumor.sens] : 'não registrado'}</p></div>
         <div class="j-card"><p class="j-card-lbl">energia</p><p class="j-card-val">${lastHumor?.energia || '—'}<span>/5</span></p><p class="j-card-desc">último check-in</p></div>
         <div class="j-card"><p class="j-card-lbl">foco</p><p class="j-card-val">${lastHumor?.foco || '—'}<span>/5</span></p><p class="j-card-desc">último check-in</p></div>
         <div class="j-card"><p class="j-card-lbl">registros</p><p class="j-card-val">${d.humor.length}</p><p class="j-card-desc">total de check-ins</p></div>
@@ -6622,8 +6622,8 @@ function renderPerfilMental() {
     <div class="perfil-group">
       <p class="perfil-group__head">perfil de motivação</p>
       <div class="perfil-row"><span class="perfil-row__lbl">arquétipo</span><span class="perfil-row__val">${profile.nome || profile.label || profile.perfil || 'em construção'}</span></div>
-      <div class="perfil-row"><span class="perfil-row__lbl">energia média</span><span class="perfil-row__val">${lastHumor?.energia ? LastHumor.energia + '/5' : '—'}</span></div>
-      <div class="perfil-row"><span class="perfil-row__lbl">foco médio</span><span class="perfil-row__val">${lastHumor?.foco ? LastHumor.foco + '/5' : '—'}</span></div>
+      <div class="perfil-row"><span class="perfil-row__lbl">energia média</span><span class="perfil-row__val">${lastHumor?.energia ? lastHumor.energia + '/5' : '—'}</span></div>
+      <div class="perfil-row"><span class="perfil-row__lbl">foco médio</span><span class="perfil-row__val">${lastHumor?.foco ? lastHumor.foco + '/5' : '—'}</span></div>
     </div>
     <div class="perfil-group">
       <p class="perfil-group__head">humor recente</p>
@@ -6808,8 +6808,8 @@ function abrirPerfil() {
     const icon = g.dataset.clubGesto || '';
     const alvo = g.dataset.clubAlvo || '';
     const splitAt = icon.indexOf(' ');
-    const emoji = splitAt > 0 ? Icon.slice(0, splitAt) : icon;
-    const texto = alvo || (splitAt > 0 ? Icon.slice(splitAt + 1) : '');
+    const emoji = splitAt > 0 ? icon.slice(0, splitAt) : icon;
+    const texto = alvo || (splitAt > 0 ? icon.slice(splitAt + 1) : '');
     try { hap(8); } catch (er) {}
     clubToast(emoji, texto);
   });
@@ -6856,7 +6856,7 @@ function clubDesenharMiniRodas() {
       const r = maxR * (v / 100);
       const x = cx + Math.cos(ang) * r;
       const y = cy + Math.sin(ang) * r;
-      i === 0 ? Ctx.moveTo(x, y) : ctx.lineTo(x, y);
+      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
     });
     ctx.closePath();
     const cor = cfg.cor;
@@ -7260,7 +7260,7 @@ function temprDrawElemento(tipo, cor) {
         }
         const x = cx + Math.cos(ang) * r;
         const y = cy + Math.sin(ang) * r;
-        k === 0 ? Ctx.moveTo(x, y) : ctx.lineTo(x, y);
+        k === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
       }
       ctx.closePath();
       const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, 44);
@@ -7301,7 +7301,7 @@ function temprDrawElemento(tipo, cor) {
         ctx.beginPath();
         for (let x = cx - 56; x <= cx + 56; x += 2) {
           const y = cy + off * 9 + Math.sin((x - cx) * 0.13 + t * 1.2 + off * 0.4) * 6;
-          x === cx - 56 ? Ctx.moveTo(x, y) : ctx.lineTo(x, y);
+          x === cx - 56 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
         }
         ctx.globalAlpha = 1 - Math.abs(off) * 0.3;
         ctx.strokeStyle = `rgba(${cor},0.7)`;
