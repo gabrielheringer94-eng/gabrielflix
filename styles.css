@@ -1813,6 +1813,108 @@ button.hero:active { transform: scale(0.985); }
   box-shadow: 0 0 8px var(--accent);
 }
 
+/* step 0 · capa de introdução · expectation setting antes das perguntas
+   contagem + ROI bullets + quote · não conta como pergunta no progress */
+.ob-slide--intro {
+  padding-top: 8px;
+}
+.ob-intro {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  gap: 18px;
+  padding: 12px 0 24px;
+  text-align: center;
+}
+.ob-intro__symbol {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 4px;
+  color: var(--accent);
+  filter: drop-shadow(0 0 18px rgba(212, 184, 150, 0.18));
+}
+.ob-intro__symbol svg { width: 100%; height: 100%; display: block; }
+.ob-intro__eyebrow {
+  font-family: var(--sans);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+  margin: 0;
+}
+.ob-intro__title {
+  font-family: var(--serif);
+  font-size: clamp(28px, 7vw, 36px);
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+  font-weight: 300;
+  margin: 0;
+  color: var(--fg);
+}
+.ob-intro__count {
+  background: linear-gradient(180deg, #E8C9A0, #B89572);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-style: normal;
+}
+.ob-intro__title em {
+  font-style: italic;
+  color: var(--fg);
+  opacity: 0.92;
+}
+.ob-intro__lead {
+  font-family: var(--sans);
+  font-size: 14px;
+  color: var(--fg-muted);
+  letter-spacing: 0.005em;
+  margin: 0;
+}
+.ob-intro__bullets {
+  list-style: none;
+  padding: 0;
+  margin: 6px auto 0;
+  max-width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: left;
+}
+.ob-intro__bullets li {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: var(--sans);
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--fg);
+  letter-spacing: 0.005em;
+}
+.ob-intro__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex-shrink: 0;
+  box-shadow: 0 0 10px rgba(212, 184, 150, 0.45);
+}
+.ob-intro__quote {
+  font-family: var(--serif);
+  font-size: 13px;
+  font-style: italic;
+  font-weight: 300;
+  color: var(--fg-dim, rgba(255,255,255,0.45));
+  letter-spacing: -0.005em;
+  line-height: 1.5;
+  max-width: 320px;
+  margin: 8px auto 0;
+}
+.ob-intro__quote em {
+  font-style: italic;
+}
+
 /* step 8 · final */
 .ob-final {
   flex: 1;
