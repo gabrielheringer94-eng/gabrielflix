@@ -4832,6 +4832,10 @@ function renderObGoalWheel() {
   // ═══ nav entre seções ═══
   const sectionsEl = document.getElementById('jornada-sections');
   if (!sectionsEl) return;
+  // gestureEl é onde os listeners de touch/wheel rodam · usa .jornada (fullscreen)
+  // ao invés de sectionsEl (ocupa só faixa central 440px) · sem isso, scroll/swipe
+  // em qualquer área fora do centro da tela não disparava nextSec/prevSec
+  const gestureEl = document.getElementById('jornada') || sectionsEl;
   const secs = sectionsEl.querySelectorAll('.jsec');
   const TOTAL = secs.length;
   let current = 0;
@@ -4934,7 +4938,7 @@ function renderObGoalWheel() {
   let touchStartTime = 0;
   let touchLastY = 0;
   let touchLastTime = 0;
-  sectionsEl.addEventListener('touchstart', (e) => {
+  gestureEl.addEventListener('touchstart', (e) => {
     touchStartY = e.touches[0].clientY;
     touchStartX = e.touches[0].clientX;
     touchLastY = touchStartY;
@@ -4943,12 +4947,12 @@ function renderObGoalWheel() {
     touchStartTime = touchLastTime;
   }, { passive: true });
 
-  sectionsEl.addEventListener('touchmove', (e) => {
+  gestureEl.addEventListener('touchmove', (e) => {
     touchLastY = e.touches[0].clientY;
     touchLastTime = Date.now();
   }, { passive: true });
 
-  sectionsEl.addEventListener('touchend', (e) => {
+  gestureEl.addEventListener('touchend', (e) => {
     if (pausaTimeout) return;
     if (gestoEmElementoInterativo(touchStartTarget)) return;
     if (document.activeElement && document.activeElement.matches('input, textarea')) return;
@@ -4977,7 +4981,7 @@ function renderObGoalWheel() {
   let wheelLastTime = 0;
   let wheelLastDelta = 0;
   let wheelInertialCount = 0;
-  sectionsEl.addEventListener('wheel', (e) => {
+  gestureEl.addEventListener('wheel', (e) => {
     if (!document.getElementById('jornada').classList.contains('is-open')) return;
     // se o target é um swiper horizontal E o scroll é dominantemente lateral, deixa nativo
     // (trackpad horizontal nos home-action cards e ob-swiper)
