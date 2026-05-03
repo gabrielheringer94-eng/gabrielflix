@@ -23,8 +23,8 @@
   <link rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,400&family=Inter:wght@400;500;600&display=swap" />
   <!-- cache-bust agressivo: muda v sempre que houver mudança visual -->
-  <link rel="stylesheet" href="styles.css?v=20260503-j" />
-  <link rel="stylesheet" href="apple.css?v=20260503-j" />
+  <link rel="stylesheet" href="styles.css?v=20260503-k" />
+  <link rel="stylesheet" href="apple.css?v=20260503-k" />
   <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="pragma" content="no-cache" />
   <meta http-equiv="expires" content="0" />
@@ -3241,12 +3241,16 @@
 
         <!-- 2. RITUAL -->
         <section class="jsec is-below" data-index="1" data-label="ritual">
-          <p class="jsec-eye">check-in do dia</p>
-          <h2 class="jsec-q" id="j-ritual-titulo">Como foi seu dia?</h2>
-          <p class="j-ritual-sub">use os cards na home pra registrar humor, sono, treino, água e refeição. cada um abre seu próprio espaço.</p>
+          <p class="jsec-eye" id="j-ritual-eye">leitura do dia</p>
+          <h2 class="jsec-q" id="j-ritual-titulo">tarde, Gabriel.</h2>
+          <p class="j-ritual-frase" id="j-ritual-frase">o que você deixou no caminho até agora.</p>
 
-          <!-- j-logs removido · cards de home-actions na jsec=0 são a entrada principal pros logs
-               cada card abre o sheet-log-* correspondente · evita duplicação UX -->
+          <!-- recap dinâmico · logs do dia agregados (sono, humor, treino, água, refeição) -->
+          <div class="ritual-recap" id="j-ritual-recap">
+            <!-- preenchido por renderRitual() · pode ser empty state ou lista de logs -->
+          </div>
+
+          <p class="j-ritual-cta" id="j-ritual-cta">deslize ↑ pra ver o resumo do corpo</p>
         </section>
 
         <!-- 3. CORPO -->
@@ -3630,6 +3634,6 @@
     </nav>
   </div>
 
-  <script src="app.js?v=20260503-j"></script>
+  <script src="app.js?v=20260503-k"></script>
 </body>
 </html>

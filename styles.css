@@ -6010,6 +6010,99 @@ body:not(.is-woman) [data-target="cycle"] { display: none; }
   max-width: 30ch;
   margin: 0 auto 18px;
 }
+/* RITUAL RECAP · leitura do dia · puxa logs do localStorage e renderiza inline */
+.j-ritual-frase {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 15px;
+  font-weight: 300;
+  color: var(--fg-dim, rgba(255,255,255,0.55));
+  text-align: center;
+  line-height: 1.5;
+  max-width: 30ch;
+  margin: 6px auto 28px;
+  letter-spacing: -0.005em;
+}
+.ritual-recap {
+  width: 100%;
+  max-width: 360px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.ritual-recap__row {
+  display: grid;
+  grid-template-columns: 36px 1fr auto;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 18px;
+  border-radius: 16px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01)),
+    rgba(20,18,16,0.5);
+  border: 1px solid rgba(212,184,150,0.12);
+  text-align: left;
+}
+.ritual-recap__icon {
+  width: 36px; height: 36px;
+  border-radius: 10px;
+  background: rgba(212,184,150,0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+.ritual-recap__icon svg { width: 18px; height: 18px; }
+.ritual-recap__body { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.ritual-recap__lbl {
+  font-family: var(--sans);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+.ritual-recap__val {
+  font-family: var(--serif);
+  font-size: 17px;
+  font-weight: 300;
+  color: var(--fg);
+  letter-spacing: -0.005em;
+  line-height: 1.2;
+}
+.ritual-recap__time {
+  font-family: var(--sans);
+  font-size: 10px;
+  color: var(--fg-faint, rgba(255,255,255,0.32));
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+/* empty state · sem nenhum log no dia */
+.ritual-recap--empty {
+  border: 1px dashed rgba(212,184,150,0.22);
+  border-radius: 18px;
+  padding: 28px 22px;
+  text-align: center;
+  background: rgba(20,18,16,0.3);
+}
+.ritual-recap--empty p {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 14px;
+  color: var(--fg-muted);
+  margin: 0;
+  line-height: 1.5;
+}
+.j-ritual-cta {
+  font-family: var(--sans);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--fg-faint, rgba(255,255,255,0.32));
+  text-align: center;
+  margin: 22px auto 0;
+}
 .j-ritual { width: 100%; display: flex; flex-direction: column; align-items: center; }
 .j-inp {
   width: 100%; max-width: 360px;

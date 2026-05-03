@@ -7727,3 +7727,168 @@ function temprDrawElemento(tipo, cor) {
 
   requestAnimationFrame(updateActiveDot);
 })();
+
+// ═════════════════════════════════════════════════════════
+// RITUAL RECAP · "leitura do dia" dinâmica · puxa logs do localStorage
+// e renderiza recap inline na jsec=1 da jornada
+// ═════════════════════════════════════════════════════════
+(function () {
+  const ICONS = {
+    sono: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>',
+    humor: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>',
+    treino: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="6"/><path d="M5 3v9M19 3v9"/></svg>',
+    refeicao: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v7a4 4 0 0 0 4 4h0v7M7 3v7M15 3c-1 2-2 4-2 7 0 2 1 3 2 3v8"/></svg>',
+    agua: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5s6 7 6 11.5a6 6 0 0 1-12 0c0-4.5 6-11.5 6-11.5z"/></svg>',
+  };
+
+  function safeArr(key) {
+    try { return JSON.parse(localStorage.getItem(key) || '[]') || []; } catch (e) { return []; }
+  }
+  function isToday(ts) {
+    if (!ts) return false;
+    const d = new Date(ts);
+    const t = new Date();
+    return d.getFullYear() === t.getFullYear() &&
+           d.getMonth() === t.getMonth() &&
+           d.getDate() === t.getDate();
+  }
+  function fmtTime(ts) {
+    if (!ts) return '';
+    const d = new Date(ts);
+    const hh = String(d.getHours()).padStart(2, '0');
+    const mm = String(d.getMinutes()).padStart(2, '0');
+    return hh + ':' + mm;
+  }
+
+  function getNome() {
+    try {
+      const raw = (localStorage.getItem('circa_user_name') || '').trim();
+      if (raw) return raw.split(' ')[0];
+    } catch (e) {}
+    return 'você';
+  }
+  function getPeriodo() {
+    const h = new Date().getHours();
+    if (h < 5)  return 'madrugada';
+    if (h < 12) return 'manhã';
+    if (h < 18) return 'tarde';
+    return 'noite';
+  }
+  function fraseDoMomento(logsCount) {
+    const p = getPeriodo();
+    if (logsCount === 0) {
+      const opcoes = [
+        'a página de hoje ainda está em branco. comece por onde for mais leve.',
+        'nenhum traço registrado ainda. só ouça o corpo.',
+        'o dia ainda não falou. quando falar, eu anoto.',
+      ];
+      return opcoes[Math.floor(Math.random() * opcoes.length)];
+    }
+    if (p === 'manhã')  return 'os primeiros traços do dia já estão aqui.';
+    if (p === 'tarde')  return 'o que você deixou no caminho até agora.';
+    if (p === 'noite')  return 'o dia se desenha. o circa segura cada peça.';
+    return 'a madrugada também conta. o que ficou marcado.';
+  }
+
+  function renderRitual() {
+    const recap = document.getElementById('j-ritual-recap');
+    const titulo = document.getElementById('j-ritual-titulo');
+    const frase = document.getElementById('j-ritual-frase');
+    if (!recap) return;
+
+    // título dinâmico
+    if (titulo) titulo.textContent = getPeriodo() + ', ' + getNome() + '.';
+
+    // junta logs de hoje, ordena por timestamp desc
+    const todayItems = [];
+    safeArr('circa_log_sono').forEach((s) => {
+      const ts = s.ts || s.data || s.fim;
+      if (isToday(ts)) todayItems.push({
+        tipo: 'sono', ts,
+        valor: s.dur ? s.dur + 'h' : (s.qualidade || '—'),
+        sub: s.qualidade ? 'qualidade ' + s.qualidade : '',
+      });
+    });
+    safeArr('circa_log_humor').forEach((h) => {
+      const ts = h.ts || h.data;
+      if (isToday(ts)) todayItems.push({
+        tipo: 'humor', ts,
+        valor: (h.sens || h.label || '—'),
+        sub: '',
+      });
+    });
+    safeArr('circa_workout_log').forEach((w) => {
+      const ts = w.ts || w.data || w.inicio;
+      if (isToday(ts)) todayItems.push({
+        tipo: 'treino', ts,
+        valor: (w.esporte ? String(w.esporte).toLowerCase() : 'treino'),
+        sub: w.duracaoMin ? w.duracaoMin + ' min' : '',
+      });
+    });
+    safeArr('circa_log_refeicao').forEach((r) => {
+      const ts = r.ts || r.data;
+      if (isToday(ts)) todayItems.push({
+        tipo: 'refeicao', ts,
+        valor: (r.tipo ? String(r.tipo).toLowerCase() : 'refeição'),
+        sub: r.desc || '',
+      });
+    });
+    // água: pega da quantidade do dia (se existir)
+    try {
+      const aguaToday = parseInt(localStorage.getItem('circa_water_today') || '0', 10);
+      if (aguaToday > 0) {
+        todayItems.push({
+          tipo: 'agua', ts: new Date().toISOString(),
+          valor: (aguaToday / 1000).toFixed(1) + 'L',
+          sub: 'consumo do dia',
+        });
+      }
+    } catch (e) {}
+
+    todayItems.sort((a, b) => new Date(b.ts) - new Date(a.ts));
+
+    // frase contextual
+    if (frase) frase.textContent = fraseDoMomento(todayItems.length);
+
+    if (todayItems.length === 0) {
+      recap.innerHTML = '<div class="ritual-recap--empty"><p>nenhum registro ainda hoje. quando você logar pelos cards na home, aparece aqui.</p></div>';
+      return;
+    }
+
+    // monta as rows (max 5 mais recentes)
+    const top = todayItems.slice(0, 5);
+    recap.innerHTML = top.map((it) => {
+      const sub = it.sub ? ' · ' + it.sub : '';
+      const tag = it.tipo === 'agua' ? 'água' : it.tipo;
+      return `
+        <div class="ritual-recap__row">
+          <div class="ritual-recap__icon">${ICONS[it.tipo] || ''}</div>
+          <div class="ritual-recap__body">
+            <span class="ritual-recap__lbl">${tag}</span>
+            <span class="ritual-recap__val">${it.valor}${sub ? '<span style="opacity:0.55;font-size:13px;"> ' + sub + '</span>' : ''}</span>
+          </div>
+          <span class="ritual-recap__time">${fmtTime(it.ts)}</span>
+        </div>
+      `;
+    }).join('');
+  }
+
+  // expõe globalmente · será chamada quando jornada abre
+  window.renderRitual = renderRitual;
+
+  // hook no openJornada existente · roda render quando jornada vira ativa
+  const _origOpenForRitual = window.openJornada;
+  if (typeof _origOpenForRitual === 'function') {
+    window.openJornada = function () {
+      _origOpenForRitual.apply(this, arguments);
+      requestAnimationFrame(renderRitual);
+    };
+  }
+
+  // primeira render no load (caso jornada já esteja aberta)
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => requestAnimationFrame(renderRitual));
+  } else {
+    requestAnimationFrame(renderRitual);
+  }
+})();
