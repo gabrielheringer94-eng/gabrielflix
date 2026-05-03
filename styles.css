@@ -2111,36 +2111,21 @@ button.hero:active { transform: scale(0.985); }
   background: radial-gradient(120% 60% at 50% 0%, rgba(212,184,150,0.08), transparent 60%);
   pointer-events: none;
 }
-/* default: sono central é o destaque · scale + glow (não muda largura/coluna) */
-.foco-card--center {
-  transform: scale(1.08);
-  border-color: rgba(212,184,150,0.36);
-  box-shadow:
-    0 0 0 1px rgba(212,184,150,0.12),
-    0 18px 38px rgba(0,0,0,0.45),
-    0 0 36px rgba(212,184,150,0.10);
-  z-index: 2;   /* sobressai por cima dos vizinhos quando escala */
-}
-/* qualquer card sob hover assume o destaque · só scale + glow, layout não mexe */
+/* default: as 3 cards começam IGUAIS · sono só tem a respiração do orbe via
+   .foco-card__art--breathe (animation organic, sem aparência de selecionada)
+   prominência (scale + glow + accent title) SÓ aparece quando user clica → .is-on
+   regra antiga .foco-card--center { scale 1.08 + glow + ... } removida pq fazia
+   sono parecer pré-selecionada sem ação do user */
+
+/* desktop · hover preview SÓ quando nada selecionado · sutil, não compete com .is-on */
 @media (hover: hover) {
-  .foco-cards:hover .foco-card--center:not(:hover) {
-    transform: scale(1);
-    border-color: rgba(212,184,150,0.18);
-    box-shadow: none;
+  .foco-cards:not(:has(.foco-card.is-on)) .foco-card:hover {
+    transform: scale(1.05);
+    border-color: rgba(212,184,150,0.32);
     z-index: 1;
   }
-  .foco-cards .foco-card:hover {
-    transform: scale(1.08);
-    border-color: rgba(212,184,150,0.36);
-    box-shadow:
-      0 0 0 1px rgba(212,184,150,0.12),
-      0 18px 38px rgba(0,0,0,0.45),
-      0 0 36px rgba(212,184,150,0.10);
-    z-index: 2;
-  }
-  /* cards laterais ganham um leve fade quando outro card é o protagonista */
-  .foco-cards:hover .foco-card:not(:hover) {
-    opacity: 0.65;
+  .foco-cards:not(:has(.foco-card.is-on)):hover .foco-card:not(:hover) {
+    opacity: 0.7;
   }
 }
 .foco-card__art {
@@ -2171,33 +2156,36 @@ button.hero:active { transform: scale(0.985); }
   letter-spacing: 0.04em;
   font-weight: 500;
 }
-.foco-card--center .foco-card__title {
-  font-size: 12px;
-  color: var(--accent);
-  letter-spacing: 0.05em;
-}
-/* título · transfere o destaque pro hovered */
+/* desktop · hover preview do título · só quando nada selecionado */
 @media (hover: hover) {
-  .foco-cards:hover .foco-card--center:not(:hover) .foco-card__title {
-    font-size: 11px;
-    color: var(--fg-muted);
-    letter-spacing: 0.04em;
-  }
-  .foco-card:hover .foco-card__title {
+  .foco-cards:not(:has(.foco-card.is-on)) .foco-card:hover .foco-card__title {
     font-size: 12px;
     color: var(--accent);
     letter-spacing: 0.05em;
   }
 }
-/* selecionado (após click) · combina com qualquer scale (default ou hover) */
+
+/* SELECIONADO (após click) · pré-seleção que persiste até user apertar continuar
+   funciona em mobile + desktop · prominência total: scale + glow forte + título champanhe-hi */
 .foco-card.is-on {
+  transform: scale(1.08);
   border-color: rgba(212,184,150,0.55);
   box-shadow:
-    0 0 0 1px rgba(212,184,150,0.25),
+    0 0 0 1px rgba(212,184,150,0.28),
     0 22px 42px rgba(0,0,0,0.55),
-    0 0 44px rgba(212,184,150,0.16);
+    0 0 44px rgba(212,184,150,0.22);
+  z-index: 2;
 }
-.foco-card.is-on .foco-card__title { color: var(--accent-hi, #E8C9A0); }
+.foco-card.is-on .foco-card__title {
+  color: var(--accent-hi, #E8C9A0);
+  font-size: 12px;
+  letter-spacing: 0.05em;
+}
+/* outros cards encolhem + esmaecem quando UM está selecionado · cross-device (mobile + desktop) */
+.foco-cards:has(.foco-card.is-on) .foco-card:not(.is-on) {
+  opacity: 0.5;
+  transform: scale(0.92);
+}
 
 /* ═════════════════════════════════════════
    STEP 51 · NÍVEL DE ATIVIDADE · pílula dourada
@@ -2225,7 +2213,7 @@ button.hero:active { transform: scale(0.985); }
 .ativ-pill-wrap {
   position: relative;
   width: 100%;
-  height: 200px;
+  height: 240px;             /* +40px pra acomodar Airbnb-style figs full-body */
   margin-top: 4px;
 }
 .ativ-pill {
@@ -2282,9 +2270,9 @@ button.hero:active { transform: scale(0.985); }
 }
 .ativ-fig {
   position: absolute;
-  bottom: 38px;
+  bottom: 30px;              /* alinha base do PNG full-body com o topo da pílula */
   transform: translateX(-50%);
-  width: 80px; height: 100px;
+  width: 110px; height: 160px;  /* +30/+60 pra Airbnb-style full-body characters */
   background: transparent;
   border: none;
   cursor: pointer;
