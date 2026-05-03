@@ -4839,7 +4839,10 @@ function renderObGoalWheel() {
   // de event propagation · handler interno checa is-open + gestoEmElementoInterativo
   // pra não disparar quando jornada está fechada
   const gestureEl = window;
-  const secs = sectionsEl.querySelectorAll('.jsec');
+  // filtra sections escondidas via CSS (display:none) · evita "navegação fantasma"
+  // user via 1 wheel/swipe pular silenciosamente uma section hidden e parecer travado
+  const secsAll = Array.from(sectionsEl.querySelectorAll('.jsec'));
+  const secs = secsAll.filter(s => getComputedStyle(s).display !== 'none');
   const TOTAL = secs.length;
   let current = 0;
   let isAnim = false;
