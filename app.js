@@ -1495,8 +1495,8 @@ function startWlcFundo() {
       wlcFundoRAF = null;
       return;
     }
-    // tempo principal · ritmo natural · +15% velocity (era 0.005, agora 0.00575)
-    wlcFundoT += 0.00575;
+    // tempo principal · ritmo natural · +30% velocity total (0.005 → 0.00575 → 0.0066)
+    wlcFundoT += 0.0066;
     const W = canvas.width, H = canvas.height;
     ctx.clearRect(0, 0, W, H);
 
