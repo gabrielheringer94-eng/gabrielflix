@@ -1402,6 +1402,7 @@ function openWelcome(opts) {
   welcomeEl.classList.toggle('is-breathe-only', mode === 'breathe');
   welcomeEl.classList.add('is-open');
   welcomeEl.setAttribute('aria-hidden', 'false');
+  document.body.classList.add('welcome-open');   // esconde .app via CSS
   document.body.style.overflow = 'hidden';
   // textos personalizados conforme o modo
   aplicarTextosWlc(mode);
@@ -1414,6 +1415,7 @@ function closeWelcome() {
   if (!welcomeEl) return;
   welcomeEl.classList.remove('is-open');
   welcomeEl.setAttribute('aria-hidden', 'true');
+  document.body.classList.remove('welcome-open');
   document.body.style.overflow = '';
   try { localStorage.setItem('circa_welcome_seen', '1'); } catch (e) {}
   // só desliga se onboarding também não estiver aberto
