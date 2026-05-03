@@ -1617,9 +1617,12 @@ function wlcIrPara(n) {
 // botões "estou pronto" / "voltar"
 document.querySelectorAll('[data-wlc-go]').forEach((b) => {
   b.addEventListener('click', () => {
-    // breathe mode: CTA "continuar" só fecha welcome, não avança
+    // breathe mode: CTA "continuar" fecha welcome + abre jornada (que é a home agora)
     if (welcomeEl && welcomeEl.classList.contains('is-breathe-only')) {
       closeWelcome();
+      setTimeout(() => {
+        if (typeof window.openJornada === 'function') window.openJornada();
+      }, 250);
       return;
     }
     const n = parseInt(b.dataset.wlcGo, 10);
@@ -5012,12 +5015,11 @@ function renderObGoalWheel() {
     e.deltaY > 0 ? NextSec() : prevSec();
   }, { passive: false });
 
-  // teclado
+  // teclado · ESC removido pq jornada é a home agora (não tem onde voltar)
   document.addEventListener('keydown', (e) => {
     if (!document.getElementById('jornada').classList.contains('is-open')) return;
     if (e.key === 'ArrowDown' || e.key === 'ArrowRight') nextSec();
     if (e.key === 'ArrowUp'   || e.key === 'ArrowLeft')  prevSec();
-    if (e.key === 'Escape') closeJornada();
   });
 
   // ═══ ritual ═══

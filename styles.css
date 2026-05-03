@@ -119,6 +119,12 @@ strong { color: var(--fg); font-weight: 500; }
 }
 .screen.is-active { display: block; }
 
+/* HOME ANTIGA REMOVIDA · jornada agora é a home padrão · screen--home fica no DOM
+   apenas pra preservar referências JS (greet do user, hero-stage etc) mas não
+   renderiza mais visualmente · usuário sempre cai direto na jornada */
+.screen--home,
+.screen--home.is-active { display: none !important; }
+
 @keyframes fade {
   from { opacity: 0; transform: translateY(8px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -5717,7 +5723,10 @@ body:not(.is-woman) [data-target="cycle"] { display: none; }
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
 }
 
-.jornada__close {
+/* botão X da jornada · ESCONDIDO · jornada agora é a home padrão, não tem onde
+   "voltar" · regra mantém o estilo abaixo só pra fins de fallback caso volte */
+.jornada__close { display: none !important; }
+.jornada__close--keep {
   position: absolute; top: 16px; right: 16px; z-index: 30;
   width: 40px; height: 40px; border-radius: 50%;
   background: rgba(26, 24, 22, 0.7);
@@ -5726,7 +5735,7 @@ body:not(.is-woman) [data-target="cycle"] { display: none; }
   cursor: pointer; transition: all 0.2s ease;
   backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
 }
-.jornada__close:hover { color: var(--accent); border-color: var(--accent-dim); }
+.jornada__close--keep:hover { color: var(--accent); border-color: var(--accent-dim); }
 
 .jornada__dots {
   position: absolute; right: 14px; top: 50%;
