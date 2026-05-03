@@ -1946,18 +1946,20 @@ button.hero:active { transform: scale(0.985); }
 .ob-swiper__art svg,
 .ob-swiper__art img { width: 100%; height: 100%; display: block; }
 .ob-swiper__art img { object-fit: contain; }
-/* modifier --png · cards com PNG raster (clay 3D Gemini) · maior + drop-shadow apropriado */
+/* modifier --png · cards com PNG raster (clay 3D Gemini) · maior pra dar presença
+   visual real (era 120, agora 150 · ~83% da largura útil do card 220-padding) */
 .ob-swiper__art--png {
-  width: 120px;
-  height: 120px;
+  width: 150px;
+  height: 150px;
+  margin-top: 0;
   filter:
-    drop-shadow(0 8px 14px rgba(0,0,0,0.45))
-    drop-shadow(0 0 22px rgba(212,184,150,0.10));
+    drop-shadow(0 10px 16px rgba(0,0,0,0.45))
+    drop-shadow(0 0 24px rgba(212,184,150,0.12));
 }
 .ob-swiper__card.is-on .ob-swiper__art--png {
   filter:
-    drop-shadow(0 10px 18px rgba(0,0,0,0.55))
-    drop-shadow(0 0 28px rgba(232,201,160,0.22));
+    drop-shadow(0 12px 20px rgba(0,0,0,0.55))
+    drop-shadow(0 0 32px rgba(232,201,160,0.26));
 }
 .ob-swiper__title {
   font-family: var(--serif);
