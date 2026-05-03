@@ -4925,7 +4925,7 @@ function renderObGoalWheel() {
   function gestoEmElementoInterativo(target) {
     if (!target || !target.closest) return false;
     return !!target.closest(
-      'input, textarea, select, button, .j-log, .j-mood__item, .j-area, .j-lab-card, .j-card, .j-antes-box, .j-roda-item, canvas#j-roda, .j-nav-item, .j-nav-circa, .j-dot, .jornada__close'
+      'input, textarea, select, button, .j-log, .j-mood__item, .j-area, .j-lab-card, .j-card, .j-antes-box, .j-roda-item, canvas#j-roda, .j-nav-item, .j-nav-circa, .j-dot, .jornada__close, .home-actions, .home-actions__track, .home-action-card'
     );
   }
 
@@ -4968,7 +4968,7 @@ function renderObGoalWheel() {
     const minDy = isFlick ? 25 : 55;
 
     if (Math.abs(dy) > minDy && Math.abs(dy) > dx * 1.2) {
-      dy > 0 ? nextSec()() : prevSec();
+      dy > 0 ? nextSec() : prevSec();
     }
   }, { passive: true });
 
@@ -5012,7 +5012,7 @@ function renderObGoalWheel() {
     wheelLastDelta = e.deltaY;
     wheelInertialCount = 0;
 
-    e.deltaY > 0 ? nextSec()() : prevSec();
+    e.deltaY > 0 ? nextSec() : prevSec();
   }, { passive: false });
 
   // teclado · ESC removido pq jornada é a home agora (não tem onde voltar)
