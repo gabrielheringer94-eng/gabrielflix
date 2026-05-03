@@ -4349,8 +4349,8 @@ document.querySelectorAll('.ob-slide[data-step="1"] .ob-card').forEach((card) =>
   // PNGs disponíveis (Airbnb-style por gênero) · só os explicitamente listados aqui
   // existem como arquivos · os que faltam caem no fallback automaticamente
   const FIGS_AVAILABLE = {
-    fem: { sed: true, mod: true, ath: false },   // ath ainda não gerado
-    man: { sed: false, mod: true, ath: false },  // sed e ath ainda não gerados
+    fem: { sed: true,  mod: true, ath: true  },   // batch4: ath gerado
+    man: { sed: false, mod: true, ath: true  },   // sed ainda não gerado
   };
   const LVL_KEY = { 1: 'sed', 2: 'mod', 3: 'ath' };
   // mapeia png path apropriado pro card lvl X dado o gênero atual
