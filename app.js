@@ -5338,14 +5338,18 @@ function renderObGoalWheel() {
   const closeBtn = document.getElementById('jornada-close');
   if (closeBtn) closeBtn.addEventListener('click', () => window.closeJornada());
 
-  // refazer onboarding, fecha jornada e abre o fluxo de perguntas
+  // refazer onboarding · fecha jornada → abre WELCOME full (respira → frases →
+  // confirmação) que culmina no botão "entrar na circa" disparando openOnboard
+  // user pediu fluxo completo desde "respira" ao invés de pular direto pra onboarding
   const jRefazer = document.getElementById('j-refazer-onb');
   if (jRefazer) jRefazer.addEventListener('click', () => {
     try { hap(10); } catch (e) {}
+    // limpa flag pra welcome abrir em modo 'full' (3 telas, não breathe)
+    try { localStorage.removeItem('circa_welcome_seen'); } catch (e) {}
     if (typeof window.closeJornada === 'function') window.closeJornada();
-    // espera o fade completo da jornada (400ms transition + 50ms buffer) antes de abrir
+    // espera o fade completo da jornada (400ms transition + 80ms buffer) antes de abrir
     setTimeout(() => {
-      if (typeof openOnboard === 'function') openOnboard();
+      if (typeof openWelcome === 'function') openWelcome({ mode: 'full' });
     }, 480);
   });
 
