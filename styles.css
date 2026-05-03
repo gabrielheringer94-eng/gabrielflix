@@ -1080,6 +1080,16 @@ strong { color: var(--fg); font-weight: 500; }
 .j-nav-item[data-j-goto="9"],
 .jsec[data-index="9"] { display: none !important; }
 
+/* RITUAL section (data-index=1) ESCONDIDA · user pediu pra remover · home-actions cards
+   já são a entrada principal pros logs · não tem mais função no flow */
+.jsec[data-label="ritual"],
+.jsec[data-index="1"] { display: none !important; }
+
+/* CIRCA PAUSA section ESCONDIDA · user disse que estava "perdida dentro do aplicativo" */
+.jsec--pausa,
+.jsec[data-pausa="true"],
+.jsec[data-label="circa"] { display: none !important; }
+
 /* ───── TABBAR (mantido pro caso de fallback) ───── */
 .tabbar.tabbar--keep {
   position: fixed;
@@ -2206,12 +2216,16 @@ button.hero:active { transform: scale(0.985); }
   -webkit-overflow-scrolling: touch;
   overscroll-behavior-x: contain;
   perspective: 1200px;
+  /* fix · pan-x explícito · vertical pan bubble pro parent (jornada) handler ao invés
+     de ser absorvido pela detecção de scroll horizontal nativo · sem isso, swipe
+     vertical iniciado em cima de um card era engolido pela área scrollable horizontal */
+  touch-action: pan-x;
 }
 .home-actions__track::-webkit-scrollbar { display: none; }
 .home-action-card {
   flex: 0 0 auto;
-  width: 220px;
-  height: 320px;
+  width: 180px;
+  height: 260px;
   scroll-snap-align: center;
   scroll-snap-stop: always;
   position: relative;
