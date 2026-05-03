@@ -980,7 +980,7 @@ function stateWord(score) {
 
 function narrativePrefix(score, name) {
   // templates com nome no começo. "Parabéns" só aparece em scores altos.
-  If (score >= 90) return `${name}, parabéns, você tá <em id="hero-state-inline">voando</em>.`;
+  if (score >= 90) return `${name}, parabéns, você tá <em id="hero-state-inline">voando</em>.`;
   if (score >= 80) return `${name}, parabéns, você tá <em id="hero-state-inline">constante</em>.`;
   if (score >= 70) return `${name}, você tá <em id="hero-state-inline">em ritmo</em>.`;
   if (score >= 60) return `${name}, hoje tá <em id="hero-state-inline">aquecendo</em>.`;
@@ -2626,7 +2626,7 @@ function userContext() {
 
 // abertura com PRESENÇA PURA, sem agenda, sem dados.
 // Os dados entram depois, só quando fizer sentido.
-Function aberturaPersonalizada() {
+function aberturaPersonalizada() {
   const c = userContext();
   const aberturas = [
     { texto: `estou aqui, ${c.nome}. Quer conversar?`, ctx: null },
@@ -4232,7 +4232,7 @@ document.querySelectorAll('.ob-slide[data-step="32"] .ob-card, .ob-slide[data-st
 
     function updateActiveDot() {
       // qual card está mais próximo do centro do track?
-      Const trackRect = track.getBoundingClientRect();
+      const trackRect = track.getBoundingClientRect();
       const center = trackRect.left + trackRect.width / 2;
       let closestIdx = 0;
       let closestDist = Infinity;
@@ -6687,7 +6687,7 @@ function renderPerfilFisico() {
     </div>
     <div class="perfil-group">
       <p class="perfil-group__head">atividade</p>
-      <div class="perfil-row"><span class="perfil-row__lbl">último treino</span><span class="perfil-row__val">${ultimoTreino ? New Date(ultimoTreino.data).toLocaleDateString('pt-BR', { day:'numeric', month:'short' }) : '—'}</span></div>
+      <div class="perfil-row"><span class="perfil-row__lbl">último treino</span><span class="perfil-row__val">${ultimoTreino ? new Date(ultimoTreino.data).toLocaleDateString('pt-BR', { day:'numeric', month:'short' }) : '—'}</span></div>
       <div class="perfil-row"><span class="perfil-row__lbl">treinos semana</span><span class="perfil-row__val">${treinosSemana.length}</span></div>
       <div class="perfil-row"><span class="perfil-row__lbl">total registrados</span><span class="perfil-row__val">${treinoArr.length}</span></div>
     </div>
@@ -7597,8 +7597,8 @@ function temprDrawElemento(tipo, cor) {
     }
 
     items.sort((a, b) => {
-      const ta = a.ts ? New Date(a.ts).getTime() : 0;
-      const tb = b.ts ? New Date(b.ts).getTime() : 0;
+      const ta = a.ts ? new Date(a.ts).getTime() : 0;
+      const tb = b.ts ? new Date(b.ts).getTime() : 0;
       return tb - ta;
     });
 
