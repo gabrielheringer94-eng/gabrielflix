@@ -85,8 +85,10 @@
 .apple-mode .ring-apple .arc-fill {
   fill: none;
   stroke-linecap: round;
-  filter: drop-shadow(0 0 8px currentColor);
+  /* glow reduzido · era 8px (luminoso forte) · agora 3px (sutil), opacity 0.55 via stroke-opacity inerente */
+  filter: drop-shadow(0 0 3px currentColor);
   animation: appleArcIn 1.4s var(--spring-glide) both;
+  opacity: 0.92;
 }
 .apple-mode .ring-apple .arc-fill[data-ring="0"] { animation-delay: 0s;     }
 .apple-mode .ring-apple .arc-fill[data-ring="1"] { animation-delay: 0.12s;  }
