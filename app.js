@@ -2360,6 +2360,24 @@ document.querySelectorAll('[data-sheet="sheet-treino-historico"]').forEach((b) =
   });
 });
 
+// defensive · garante que exercícios programados aparecem mesmo se sheet-log-treino
+// for aberto por caminho que não passou por openLogTreino (ex: data-sheet direto)
+// usa MutationObserver pra detectar quando o sheet vira is-open
+(function () {
+  const sheet = document.getElementById('sheet-log-treino');
+  if (!sheet) return;
+  const obs = new MutationObserver(() => {
+    if (sheet.classList.contains('is-open')) {
+      // só re-renderiza se a lista estiver vazia (evita override de um openLogTreino que já rodou)
+      const list = document.getElementById('log-t-exercicios');
+      if (list && !list.children.length && typeof renderLogTreinoExercicios === 'function') {
+        renderLogTreinoExercicios();
+      }
+    }
+  });
+  obs.observe(sheet, { attributes: true, attributeFilter: ['class'] });
+})();
+
 // no sheet-log-ok (após registrar treino) revela o link "Ver histórico"
 // chamado dentro de salvarLogTreino · vamos garantir aqui via observer pra não duplicar logic
 (function () {
