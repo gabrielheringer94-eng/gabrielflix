@@ -23,8 +23,8 @@
   <link rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,400&family=Inter:wght@400;500;600&display=swap" />
   <!-- cache-bust agressivo: muda v sempre que houver mudança visual -->
-  <link rel="stylesheet" href="styles.css?v=20260503-s" />
-  <link rel="stylesheet" href="apple.css?v=20260503-s" />
+  <link rel="stylesheet" href="styles.css?v=20260503-t" />
+  <link rel="stylesheet" href="apple.css?v=20260503-t" />
   <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="pragma" content="no-cache" />
   <meta http-equiv="expires" content="0" />
@@ -725,29 +725,31 @@
       <!-- 47 · revelação · temperamento dominante + secundário + manifesto + traços + chamado -->
       <div class="ob-slide tempr-slide tempr-rev-slide" data-step="47">
         <div class="tempr-rev">
-          <p class="tempr-rev-eyebrow">Você é</p>
-
           <div class="tempr-rev-elemento">
             <canvas id="tempr-rev-canvas" width="160" height="160"></canvas>
           </div>
 
-          <h2 class="tempr-rev-nome" id="tempr-rev-nome">Raiz</h2>
+          <article class="tempr-rev-card">
+            <p class="tempr-rev-eyebrow">Você é</p>
 
-          <p class="tempr-rev-manifesto" id="tempr-rev-manifesto">
-            Você é o que aprofunda,<br/>o que sente,<br/>o que entende antes de agir.
-          </p>
+            <h2 class="tempr-rev-nome" id="tempr-rev-nome">Raiz</h2>
 
-          <div class="tempr-rev-secundario">
-            <span class="tempr-rev-sec-dot" id="tempr-rev-sec-dot"></span>
-            <span>com toques de <em id="tempr-rev-sec-nome">brasa</em></span>
-          </div>
+            <div class="tempr-rev-secundario">
+              <span class="tempr-rev-sec-dot" id="tempr-rev-sec-dot"></span>
+              <span>com toques de <em id="tempr-rev-sec-nome">brasa</em></span>
+            </div>
+
+            <p class="tempr-rev-manifesto" id="tempr-rev-manifesto">
+              Você é o que aprofunda,<br/>o que sente,<br/>o que entende antes de agir.
+            </p>
+
+            <div class="tempr-rev-chamado">
+              <p class="tempr-rev-chamado-eye">O chamado da circa pra você</p>
+              <p class="tempr-rev-chamado-txt" id="tempr-rev-chamado-txt">"Vou te lembrar, sempre, que sentir não precisa custar tanto."</p>
+            </div>
+          </article>
 
           <div class="tempr-rev-detalhes" id="tempr-rev-detalhes"></div>
-
-          <div class="tempr-rev-chamado">
-            <p class="tempr-rev-chamado-eye">O chamado da circa pra você</p>
-            <p class="tempr-rev-chamado-txt" id="tempr-rev-chamado-txt">"Vou te lembrar, sempre, que sentir não precisa custar tanto."</p>
-          </div>
 
           <button class="btn btn--primary btn--full ob-next" id="tempr-rev-continuar">Continuar</button>
         </div>
@@ -3672,6 +3674,6 @@
     </nav>
   </div>
 
-  <script src="app.js?v=20260503-s"></script>
+  <script src="app.js?v=20260503-t"></script>
 </body>
 </html>
