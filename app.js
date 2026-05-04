@@ -1879,6 +1879,79 @@ if (esporteContinuar) esporteContinuar.addEventListener('click', () => {
   setTimeout(() => openLogTreino(esporteSel), 260);
 });
 
+// estado em memória dos checks da sessão atual de treino
+let logTreinoChecks = {};   // { exerciseIndex: true/false }
+let logTreinoDayKey = null; // dia atual carregado
+const DAY_KEYS = ['dom', 'seg', 'ter', 'qua', 'qui', 'sex', 'sab'];
+
+function getTodayKey() { return DAY_KEYS[new Date().getDay()]; }
+
+function renderLogTreinoExercicios() {
+  const wrap = document.getElementById('log-t-exercicios-wrap');
+  const list = document.getElementById('log-t-exercicios');
+  const progLbl = document.getElementById('log-t-exprogress');
+  const headLbl = document.getElementById('log-t-exhead-lbl');
+  if (!wrap || !list) return;
+
+  const today = getTodayKey();
+  logTreinoDayKey = today;
+  const day = (typeof WEEK_WORKOUTS !== 'undefined') ? WEEK_WORKOUTS[today] : null;
+  if (!day || !day.exercises || !day.exercises.length) {
+    wrap.style.display = 'none';
+    return;
+  }
+  // se for descanso (status rest), oculta também
+  if (day.status === 'rest') {
+    wrap.style.display = 'none';
+    return;
+  }
+
+  wrap.style.display = '';
+  if (headLbl) headLbl.textContent = `Exercícios programados · ${day.subtitle || day.type}`;
+
+  // restaura checks salvos na sessão (se reabriu o sheet sem fechar)
+  // logTreinoChecks já está populado se o user clicou em algum check antes
+  list.innerHTML = day.exercises.map((ex, i) => {
+    const checked = logTreinoChecks[i] === true;
+    return `
+      <li class="log-t-ex ${checked ? 'is-checked' : ''}" data-i="${i}">
+        <button class="log-t-ex__chk" data-i="${i}" aria-label="${checked ? 'desmarcar' : 'marcar'} ${ex.name}">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="5 12 10 17 19 8"/>
+          </svg>
+        </button>
+        <div class="log-t-ex__txt">
+          <span class="log-t-ex__name">${ex.name}</span>
+          <span class="log-t-ex__meta">${ex.meta}</span>
+        </div>
+      </li>
+    `;
+  }).join('');
+
+  list.querySelectorAll('.log-t-ex__chk').forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const i = parseInt(btn.dataset.i, 10);
+      logTreinoChecks[i] = !logTreinoChecks[i];
+      btn.closest('.log-t-ex').classList.toggle('is-checked', !!logTreinoChecks[i]);
+      updateLogTreinoProgress();
+      try { hap(6); } catch (e) {}
+    });
+  });
+
+  updateLogTreinoProgress();
+}
+
+function updateLogTreinoProgress() {
+  const progLbl = document.getElementById('log-t-exprogress');
+  if (!progLbl || !logTreinoDayKey) return;
+  const day = WEEK_WORKOUTS[logTreinoDayKey];
+  if (!day) return;
+  const total = day.exercises.length;
+  const done = day.exercises.reduce((acc, _, i) => acc + (logTreinoChecks[i] ? 1 : 0), 0);
+  progLbl.textContent = `${done} / ${total}`;
+}
+
 function openLogTreino(sportKey) {
   const m = MODALIDADES[sportKey];
   if (!m) return;
@@ -1888,6 +1961,10 @@ function openLogTreino(sportKey) {
   document.getElementById('log-t-eye').textContent = 'Treino · hoje';
   document.getElementById('log-t-nome').innerHTML = `${m.icon} ${nomeFinal}`;
   document.getElementById('log-t-data').textContent = new Date().toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' });
+
+  // reset checks ao abrir nova sessão
+  logTreinoChecks = {};
+  renderLogTreinoExercicios();
 
   const wrap = document.getElementById('log-t-campos');
   wrap.innerHTML = m.campos.map((c) => `
@@ -1994,7 +2071,25 @@ function salvarLogTreino() {
     fim: fimEl ? fimEl.value : null,
     duracaoMin: durMin,
     data: new Date().toISOString(),
+    hora: new Date().getHours(),                 // hora do dia · 0-23 · pra correlação melhor horário
+    diaSemana: getTodayKey ? getTodayKey() : DAY_KEYS[new Date().getDay()],  // seg/ter/qua/...
   };
+  // exercícios programados do dia · com check de cada um
+  if (logTreinoDayKey && WEEK_WORKOUTS[logTreinoDayKey]) {
+    const dayPlan = WEEK_WORKOUTS[logTreinoDayKey];
+    dados.tipo      = dayPlan.type;              // musculação, descanso ativo, etc.
+    dados.subtitle  = dayPlan.subtitle;          // "peito & tríceps · 60min" · pra extrair grupo muscular
+    dados.exercises = dayPlan.exercises.map((ex, i) => ({
+      name: ex.name,
+      meta: ex.meta,
+      done: !!logTreinoChecks[i],
+    }));
+    const totalEx = dados.exercises.length;
+    const doneEx  = dados.exercises.filter((e) => e.done).length;
+    dados.exerciciosFeitos    = doneEx;
+    dados.exerciciosTotal     = totalEx;
+    dados.exerciciosCompleto  = totalEx > 0 && doneEx === totalEx;
+  }
   document.querySelectorAll('#log-t-campos [data-campo]').forEach((el) => { dados[el.dataset.campo] = el.value; });
   dados.nota = document.getElementById('log-t-nota').value;
   try {

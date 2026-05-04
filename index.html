@@ -23,8 +23,8 @@
   <link rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,400&family=Inter:wght@400;500;600&display=swap" />
   <!-- cache-bust agressivo: muda v sempre que houver mudança visual -->
-  <link rel="stylesheet" href="styles.css?v=20260504-a" />
-  <link rel="stylesheet" href="apple.css?v=20260504-a" />
+  <link rel="stylesheet" href="styles.css?v=20260504-b" />
+  <link rel="stylesheet" href="apple.css?v=20260504-b" />
   <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="pragma" content="no-cache" />
   <meta http-equiv="expires" content="0" />
@@ -2933,6 +2933,15 @@
           <p class="lead lead--sm" id="log-t-data">—</p>
         </div>
 
+        <!-- exercícios programados do dia · só aparece quando hoje tem plano em WEEK_WORKOUTS -->
+        <div class="sheet__section log-t-exwrap" id="log-t-exercicios-wrap" style="display:none;">
+          <div class="log-t-exhead">
+            <span class="eyebrow" id="log-t-exhead-lbl">Exercícios programados</span>
+            <span class="log-t-exprogress" id="log-t-exprogress">0 / 0</span>
+          </div>
+          <ul class="log-t-exlist" id="log-t-exercicios"></ul>
+        </div>
+
         <div class="sheet__section">
           <span class="eyebrow">Métricas</span>
           <div class="log-campos" id="log-t-campos"></div>
@@ -3598,6 +3607,6 @@
     </nav>
   </div>
 
-  <script src="app.js?v=20260504-a"></script>
+  <script src="app.js?v=20260504-b"></script>
 </body>
 </html>
