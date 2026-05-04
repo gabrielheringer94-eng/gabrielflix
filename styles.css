@@ -1191,6 +1191,25 @@ button.hero:active { transform: scale(0.985); }
 }
 
 .sheet__head { margin-bottom: 22px; }
+
+/* sticky footer dos sheets · garante que botões de ação ficam sempre visíveis
+   no scroll · evita user "preso" no meio da tela sem alcançar o save · usado em
+   sheet-log-treino mas pode ser reusado em qualquer sheet com conteúdo longo */
+.sheet__sticky-footer {
+  position: sticky;
+  bottom: calc(-1 * (24px + env(safe-area-inset-bottom)));
+  margin: 16px -22px calc(-1 * (24px + env(safe-area-inset-bottom)));
+  padding: 14px 22px calc(20px + env(safe-area-inset-bottom));
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background:
+    linear-gradient(180deg, transparent 0%, rgba(20,18,17,0.85) 18%, #141211 50%);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 4;
+}
+
 .display--sm {
   font-size: 30px;
   margin: 6px 0 6px;
