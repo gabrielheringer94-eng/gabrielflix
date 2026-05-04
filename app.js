@@ -4470,11 +4470,20 @@ function renderObStep() {
 // fluxo explícito pra permitir branching por gênero
 // step 0 · capa de introdução (expectation setting) · primeiro de todos
 // insere 31 (gênero), 32 (homem), 33 (mulher) entre step 1 e step 2
-// SUBSTITUI o quiz antigo (12-20) pelo flow do temperamento (41-47):
-// 5 cenários (41-45) + espelho (61) + processando (46) + revelação (47)
-// step 51 · nível de atividade · pílula dourada com 3 figs · após gênero, antes do temperamento
-// step 61 · espelho de respostas · revisão consciente entre cenários e reveal
-const OB_FLOW = [0, 1, 31, 32, 33, 51, 41, 42, 43, 44, 45, 61, 46, 47, 21, 22, 23, 24, 25, 26];
+// FLOW v2 · alinhado ao mockup MVP onboarding 15-telas (welcome + 14 onboard)
+// reordenação · sentido (23) movido pra dentro do bloco temperamento como cenário 4
+// (substituindo espírito 44 que sai do flow) · dados básicos (21) movido pra antes do
+// espelho (61) ao invés de depois do reveal · processing (46) sai do flow (mockup
+// integra "compondo o retrato" na própria tela do arquétipo) · steps 22 (comida),
+// 24 (apple health), 25 (suplementos), 44 (espírito) e 46 (processing) ainda EXISTEM
+// no HTML mas não são visitados via OB_FLOW · podem ser reativados em iterações futuras
+//
+// MAPA mockup → step:
+//  01 respira (welcome) | 02 promessa = 0 | 03 foco = 1 | 04 identificação = 31
+//  05 pesa mais = 32/33 (filtra por gênero) | 06 intensidade = 51
+//  07-09 cenários 1-3 = 41/42/43 | 10 cenário 4 sentido = 23 | 11 cenário 5 = 45
+//  12 dados = 21 | 13 espelho = 61 | 14 arquétipo = 47 | 15 score = 26
+const OB_FLOW = [0, 1, 31, 32, 33, 51, 41, 42, 43, 23, 45, 21, 61, 47, 26];
 
 function obCurrentGender() {
   try { return localStorage.getItem('circa_gender') || null; } catch (e) { return null; }
