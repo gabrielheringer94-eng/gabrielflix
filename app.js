@@ -1626,7 +1626,17 @@ document.querySelectorAll('[data-wlc-go]').forEach((b) => {
       return;
     }
     const n = parseInt(b.dataset.wlcGo, 10);
-    if (!isNaN(n)) wlcIrPara(n);
+    const target = !isNaN(n) ? document.querySelector(`.wlc-tela[data-wlc="${n}"]`) : null;
+    if (target) {
+      wlcIrPara(n);
+    } else {
+      // fallback · tela alvo não existe (telas 2 e 3 removidas) · fecha welcome + abre onboarding
+      closeWelcome();
+      setTimeout(() => {
+        if (typeof openOnboard === 'function') openOnboard();
+      }, 250);
+      try { hap(15); } catch (e) {}
+    }
   });
 });
 
@@ -4071,6 +4081,12 @@ function renderObStep() {
 
   // espelho de respostas · step 61 · render dinâmico do localStorage
   if (obStep === 61) renderMirror();
+
+  // temperamento processing/reveal · steps 46/47
+  // dispatch centralizado aqui pra cobrir todas as origens (click no espelho,
+  // auto-advance do timeout do próprio processing, click do próprio reveal)
+  if (obStep === 46 && typeof temprStartProc === 'function') setTimeout(temprStartProc, 100);
+  if (obStep === 47 && typeof temprRender    === 'function') setTimeout(temprRender, 200);
 
   // calibração fisiológica · seletor (step 4)
   if (obStep === 4) {
@@ -7177,17 +7193,8 @@ let temprRevRAF  = null;
   });
 
   // dispatch das telas processing (46) e reveal (47) · roda depois que o std .ob-next
-  // handler chamou nextStep · timeout pequeno pra ordem das ações no event loop
-  document.querySelectorAll('.tempr-slide .ob-next').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      if (btn.disabled) return;
-      setTimeout(() => {
-        if (typeof obStep === 'undefined') return;
-        if (obStep === 46) setTimeout(temprStartProc, 100);
-        if (obStep === 47) setTimeout(temprRender, 200);
-      }, 30);
-    });
-  });
+  // (dispatch de processing/reveal foi movido pro renderObStep · garante cobertura
+  // independente da origem · click no espelho 61, auto-advance do 46, etc.)
 
   // botão final (continuar) na tela de revelação
   const continuar = document.getElementById('tempr-rev-continuar');
@@ -7567,8 +7574,10 @@ function temprDrawElemento(tipo, cor) {
     document.body.classList.add('is-woman');
     const tabbar = document.querySelector('.tabbar');
     if (tabbar) {
-      tabbar.classList.remove('tabbar--5');
-      tabbar.classList.add('tabbar--6');
+      // tabbar default tem 3 colunas (hoje, humor, exames) · ciclo entra entre humor e exames
+      // → cresce pra 4 colunas quando woman
+      tabbar.classList.remove('tabbar--3', 'tabbar--5');
+      tabbar.classList.add('tabbar--4');
     }
 
     loadState();

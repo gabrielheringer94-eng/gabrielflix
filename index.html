@@ -23,8 +23,8 @@
   <link rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,400&family=Inter:wght@400;500;600&display=swap" />
   <!-- cache-bust agressivo: muda v sempre que houver mudança visual -->
-  <link rel="stylesheet" href="styles.css?v=20260503-t" />
-  <link rel="stylesheet" href="apple.css?v=20260503-t" />
+  <link rel="stylesheet" href="styles.css?v=20260504-a" />
+  <link rel="stylesheet" href="apple.css?v=20260504-a" />
   <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="pragma" content="no-cache" />
   <meta http-equiv="expires" content="0" />
@@ -130,72 +130,8 @@
       <button class="btn btn--primary btn--full wlc-cta" data-wlc-go="2">Estou pronto</button>
     </section>
 
-    <!-- TELA 2 · frases -->
-    <section class="wlc-tela" data-wlc="2">
-      <div class="wlc-frases">
-        <p class="wlc-eye">Passo 2 de 3</p>
-        <h1 class="display">Qual dessas frases<br/>te <em>encontra</em> hoje?</h1>
-        <p class="lead">Não existe resposta certa, só a sua.</p>
-
-        <div class="wlc-frase-list">
-          <button class="wlc-frase" data-frase="sinto que perdi o fio." data-dim="energia vital">
-            <p class="wlc-frase__txt">"Sinto que perdi o fio."</p>
-            <div class="wlc-frase__freq">
-              <i class="wlc-bar"><u style="width:68%"></u></i>
-              <span>frequente</span>
-            </div>
-          </button>
-
-          <button class="wlc-frase" data-frase="estou bem, mas poderia estar melhor." data-dim="equilíbrio">
-            <p class="wlc-frase__txt">"Estou bem, mas poderia estar melhor."</p>
-            <div class="wlc-frase__freq">
-              <i class="wlc-bar"><u style="width:82%"></u></i>
-              <span>muito frequente</span>
-            </div>
-          </button>
-
-          <button class="wlc-frase" data-frase="não sei o que está errado, mas algo está." data-dim="mente">
-            <p class="wlc-frase__txt">"Não sei o que está errado, mas algo está."</p>
-            <div class="wlc-frase__freq">
-              <i class="wlc-bar"><u style="width:55%"></u></i>
-              <span>comum</span>
-            </div>
-          </button>
-
-          <button class="wlc-frase" data-frase="quero construir algo que dure." data-dim="longevidade">
-            <p class="wlc-frase__txt">"Quero construir algo que dure."</p>
-            <div class="wlc-frase__freq">
-              <i class="wlc-bar"><u style="width:44%"></u></i>
-              <span>incomum</span>
-            </div>
-          </button>
-
-          <button class="wlc-frase" data-frase="estou pronto pra começar de verdade." data-dim="corpo">
-            <p class="wlc-frase__txt">"Estou pronto pra começar de verdade."</p>
-            <div class="wlc-frase__freq">
-              <i class="wlc-bar"><u style="width:38%"></u></i>
-              <span>incomum</span>
-            </div>
-          </button>
-        </div>
-      </div>
-    </section>
-
-    <!-- TELA 3 · confirmação -->
-    <section class="wlc-tela" data-wlc="3">
-      <div class="wlc-confirm">
-        <div class="wlc-orbe wlc-orbe--check">
-          <span class="wlc-check">◎</span>
-        </div>
-        <h1 class="display">Entendido.<br/>Vamos começar<br/>por <em id="wlc-confirm-dim">aí</em>.</h1>
-        <p class="lead">O circa vai adaptar a sua jornada a partir de hoje.</p>
-        <blockquote class="wlc-eco" id="wlc-confirm-eco"></blockquote>
-      </div>
-      <div class="wlc-confirm-actions">
-        <button class="btn btn--primary btn--full" id="wlc-entrar">Entrar na circa</button>
-        <button class="btn btn--text btn--full" data-wlc-go="2">Voltar</button>
-      </div>
-    </section>
+    <!-- TELA 2 (frases) e TELA 3 (confirmação) removidas · welcome agora é 1 tela só -->
+    <!-- "Estou pronto" pula direto pro onboarding · sem coleta de frase ou confirmação -->
   </div>
 
   <!-- ───────── ONBOARDING OVERLAY ───────── -->
@@ -3626,20 +3562,14 @@
     </div>
 
     <!-- ───────── BOTTOM NAV ───────── -->
-    <nav class="tabbar tabbar--5" role="tablist">
+    <!-- tabbar reduzido · roda + insights removidos · 3 tabs base, 4 quando woman (com cycle) -->
+    <nav class="tabbar tabbar--3" role="tablist">
       <button class="tab is-active" data-target="home" aria-label="home">
         <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5">
           <circle cx="12" cy="12" r="9"/>
           <circle cx="12" cy="12" r="3" fill="currentColor"/>
         </svg>
         <span>hoje</span>
-      </button>
-      <button class="tab" data-target="wheel" aria-label="roda">
-        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5">
-          <circle cx="12" cy="12" r="9"/>
-          <path d="M12 3v18M3 12h18M5.6 5.6l12.8 12.8M18.4 5.6L5.6 18.4"/>
-        </svg>
-        <span>roda</span>
       </button>
       <button class="tab" data-target="mood" aria-label="humor">
         <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -3665,15 +3595,9 @@
         </svg>
         <span>exames</span>
       </button>
-      <button class="tab" data-target="insight" aria-label="insights">
-        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5">
-          <path d="M4 18l5-6 4 4 7-9" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        <span>insights</span>
-      </button>
     </nav>
   </div>
 
-  <script src="app.js?v=20260503-t"></script>
+  <script src="app.js?v=20260504-a"></script>
 </body>
 </html>

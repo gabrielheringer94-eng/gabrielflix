@@ -3974,10 +3974,11 @@ body.fundo-on .onboard .ob-top {
   line-height: 1.6;
 }
 
-/* ───── tab bar 5 colunas ───── */
-.tabbar--5 { grid-template-columns: repeat(5, 1fr); }
-
-.tabbar--6 { grid-template-columns: repeat(6, 1fr); }
+/* ───── tab bar grid colunas dinâmicas ───── */
+.tabbar--3 { grid-template-columns: repeat(3, 1fr); }
+.tabbar--4 { grid-template-columns: repeat(4, 1fr); }
+.tabbar--5 { grid-template-columns: repeat(5, 1fr); } /* legado */
+.tabbar--6 { grid-template-columns: repeat(6, 1fr); } /* legado */
 
 /* ═════════════════════════════════════════
    MEU CICLO · screen gated p/ circa_gender = woman
