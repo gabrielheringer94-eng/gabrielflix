@@ -1976,43 +1976,12 @@ function openLogTreino(sportKey) {
 
   // reset sensação e nota
   sensSel = null;
-  treinoIntensidade = null;
   document.querySelectorAll('#sheet-log-treino .sensacao').forEach((s) => s.classList.remove('is-on'));
-  document.querySelectorAll('#log-t-intensidade .log-dot').forEach((x) => x.classList.remove('is-active'));
   const notaEl = document.getElementById('log-t-nota');
   if (notaEl) notaEl.value = '';
 
-  // auto-captura horário · início = 1h atrás, fim = agora, só sugestão
-  const now = new Date();
-  const past = new Date(now.getTime() - 60 * 60 * 1000);
-  const fmt = (d) => String(d.getHours()).padStart(2,'0') + ':' + String(d.getMinutes()).padStart(2,'0');
-  const inicio = document.getElementById('log-t-inicio');
-  const fim = document.getElementById('log-t-fim');
-  if (inicio) inicio.value = fmt(past);
-  if (fim)    fim.value    = fmt(now);
-
   openSheet('sheet-log-treino');
 }
-
-let treinoIntensidade = null;
-const INTENSIDADE_HINTS = [
-  '',
-  'leve · mal subiu o pulso',
-  'moderado · conseguia conversar',
-  'forte · fala picada',
-  'muito forte · falar travou',
-  'máximo · tudo no limite',
-];
-document.querySelectorAll('#log-t-intensidade .log-dot').forEach((b) => {
-  b.addEventListener('click', () => {
-    document.querySelectorAll('#log-t-intensidade .log-dot').forEach((x) => x.classList.remove('is-active'));
-    b.classList.add('is-active');
-    treinoIntensidade = parseInt(b.dataset.v, 10);
-    const hint = document.getElementById('log-t-intensidade-hint');
-    if (hint) hint.textContent = INTENSIDADE_HINTS[treinoIntensidade] || '';
-    try { hap(6); } catch (e) {}
-  });
-});
 
 // botão "pular, só marcar feito"
 const logPular = document.getElementById('log-t-pular');
@@ -2022,8 +1991,8 @@ if (logPular) logPular.addEventListener('click', () => {
     hist.push({
       esporte: esporteSel || 'musculacao',
       sensacao: null,
-      intensidade: null,
       data: new Date().toISOString(),
+      hora: new Date().getHours(),
       skipped: true,
     });
     localStorage.setItem('circa_workout_log', JSON.stringify(hist));
@@ -2051,27 +2020,11 @@ document.querySelectorAll('.sensacao').forEach((b) => {
 function salvarLogTreino() {
   if (!esporteSel) return;
   const m = MODALIDADES[esporteSel];
-  // captura início/fim + calcula duração
-  const inicioEl = document.getElementById('log-t-inicio');
-  const fimEl = document.getElementById('log-t-fim');
-  let durMin = null;
-  if (inicioEl && fimEl && inicioEl.value && fimEl.value) {
-    const [ih, im] = inicioEl.value.split(':').map(Number);
-    const [fh, fm] = fimEl.value.split(':').map(Number);
-    let iMin = ih * 60 + im;
-    let fMin = fh * 60 + fm;
-    if (fMin < iMin) fMin += 24 * 60; // atravessou meia-noite
-    durMin = fMin - iMin;
-  }
   const dados = {
     esporte: esporteSel,
     sensacao: sensSel,
-    intensidade: treinoIntensidade,
-    inicio: inicioEl ? inicioEl.value : null,
-    fim: fimEl ? fimEl.value : null,
-    duracaoMin: durMin,
     data: new Date().toISOString(),
-    hora: new Date().getHours(),                 // hora do dia · 0-23 · pra correlação melhor horário
+    hora: new Date().getHours(),                 // hora do registro · 0-23 · pra correlação melhor horário
     diaSemana: getTodayKey ? getTodayKey() : DAY_KEYS[new Date().getDay()],  // seg/ter/qua/...
   };
   // exercícios programados do dia · com check de cada um
@@ -2091,6 +2044,11 @@ function salvarLogTreino() {
     dados.exerciciosCompleto  = totalEx > 0 && doneEx === totalEx;
   }
   document.querySelectorAll('#log-t-campos [data-campo]').forEach((el) => { dados[el.dataset.campo] = el.value; });
+  // normaliza duração do form (string) pra duracaoMin numérico · usado pelo histórico
+  if (dados.duracao != null && dados.duracao !== '') {
+    const n = parseFloat(dados.duracao);
+    if (!isNaN(n)) dados.duracaoMin = n;
+  }
   dados.nota = document.getElementById('log-t-nota').value;
   try {
     const hist = JSON.parse(localStorage.getItem('circa_workout_log') || '[]');
@@ -2207,11 +2165,12 @@ function renderTreinoHistorico() {
       const exTxt  = (exDone != null && exTot > 0) ? `${exDone}/${exTot} exercícios` : '';
       const tipo   = w.tipo || w.esporte || '—';
       const sub    = w.subtitle || '';
+      const horaTxt = w.hora != null ? `${String(w.hora).padStart(2, '0')}h` : '—';
       return `
         <li class="th-row">
           <div class="th-row-when">
             <span class="th-row-dia">${dia}</span>
-            <span class="th-row-hora">${w.inicio || '—'}</span>
+            <span class="th-row-hora">${horaTxt}</span>
           </div>
           <div class="th-row-body">
             <span class="th-row-tipo">${tipo}</span>
@@ -2249,6 +2208,20 @@ function renderTreinoHistorico() {
       emoji,
       body: `Sensação média ${best.media.toFixed(1)}/5 em ${best.n} ${best.n === 1 ? 'treino' : 'treinos'}.`,
     });
+    // pior horário · só revela se houver pelo menos 2 buckets distintos com n>=1 e diferença relevante
+    if (bucketScores.length >= 2) {
+      const worst = bucketScores[bucketScores.length - 1];
+      const delta = best.media - worst.media;
+      if (delta >= 0.5) {
+        const wEmoji = (HORA_BUCKETS.find((h) => h.label === worst.bucket) || {}).emoji || '⏱';
+        insights.push({
+          eye: 'Pior horário',
+          title: `De ${worst.bucket} pesa mais`,
+          emoji: wEmoji,
+          body: `Sensação média ${worst.media.toFixed(1)}/5 (vs ${best.media.toFixed(1)} de ${best.bucket}). Quando der pra escolher, treina de ${best.bucket}.`,
+        });
+      }
+    }
   }
 
   // 2) MELHOR GRUPO MUSCULAR / TIPO
@@ -6840,10 +6813,12 @@ function gerarInsightsDinamicos() {
   const treinosHoje = d.treino.filter(t => new Date(t.data).toDateString() === new Date().toDateString());
   if (treinosHoje.length) {
     const t = treinosHoje[treinosHoje.length - 1];
-    if (t.intensidade >= 4) {
-      ins.push({ tag: 'corpo', cor: '#7B8BB8', txt: `treino intenso hoje. Hidrata mais e cuida do sono à noite.` });
-    } else if (t.intensidade) {
-      ins.push({ tag: 'corpo', cor: '#7B8BB8', txt: `treino moderado hoje. Consistência vale mais que intensidade.` });
+    if (t.sensacao >= 4) {
+      ins.push({ tag: 'corpo', cor: '#7B8BB8', txt: `treino com humor alto hoje. Aproveita pra hidratar e dormir bem à noite.` });
+    } else if (t.sensacao && t.sensacao <= 2) {
+      ins.push({ tag: 'corpo', cor: '#7B8BB8', txt: `treino pesou hoje. Recuperação ativa amanhã pode ajudar.` });
+    } else if (t.sensacao) {
+      ins.push({ tag: 'corpo', cor: '#7B8BB8', txt: `treino feito. Consistência vale mais que pico.` });
     }
   } else if (d.treino.length) {
     const last = d.treino[d.treino.length - 1];
@@ -7005,7 +6980,7 @@ function abrirDimDetalhes(dim) {
     const metrics = [
       { lbl: 'sono',    val: lastSono ? lastSono.dur : '—',           desc: lastSono ? `qualidade ${lastSono.qualidade || '—'}/5` : 'não registrado' },
       { lbl: 'água',    val: `${(d.aguaHoje/1000).toFixed(1)}L`,       desc: `Meta ${(d.aguaMeta/1000).toFixed(1)}L · ${Math.round(d.aguaHoje/d.aguaMeta*100)}%` },
-      { lbl: 'treino',  val: treinosHoje.length ? (treinosHoje[0].duracaoMin ? `${treinosHoje[0].duracaoMin}min` : 'feito') : '—', desc: treinosHoje.length ? `intensidade ${treinosHoje[0].intensidade || '—'}/5` : 'sem treino hoje' },
+      { lbl: 'treino',  val: treinosHoje.length ? (treinosHoje[0].duracaoMin ? `${treinosHoje[0].duracaoMin}min` : 'feito') : '—', desc: treinosHoje.length ? `sensação ${treinosHoje[0].sensacao || '—'}/5` : 'sem treino hoje' },
       { lbl: 'suplementos', val: '1/3', desc: 'Creatina · 2 pendentes' },
     ];
     bd.innerHTML = `<div class="j-metrics">${metrics.map(m => `
