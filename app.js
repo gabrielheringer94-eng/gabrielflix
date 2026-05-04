@@ -2128,6 +2128,262 @@ const logSalvar = document.getElementById('log-t-salvar');
 if (logSalvar) logSalvar.addEventListener('click', salvarLogTreino);
 
 // ═════════════════════════════════════════
+// TREINO · histórico D-7 com insights
+// melhor horário · melhor grupo muscular · correlação cross-pillar (sono+comida)
+// ═════════════════════════════════════════
+
+const HORA_BUCKETS = [
+  { lo: 5,  hi: 11, label: 'manhã',     emoji: '☀️' },
+  { lo: 12, hi: 17, label: 'tarde',     emoji: '🌤️' },
+  { lo: 18, hi: 23, label: 'noite',     emoji: '🌙' },
+  { lo: 0,  hi: 4,  label: 'madrugada', emoji: '🌌' },
+];
+function horaToBucket(h) {
+  if (h == null || isNaN(h)) return null;
+  const hh = parseInt(h, 10);
+  for (const b of HORA_BUCKETS) {
+    if (hh >= b.lo && hh <= b.hi) return b.label;
+  }
+  return null;
+}
+// extrai grupo muscular do subtitle ("peito & tríceps · 60min" → "peito & tríceps")
+function extractGrupo(subtitle, tipo) {
+  if (!subtitle) return tipo || 'outro';
+  const part = subtitle.split('·')[0].trim();
+  return part || tipo || 'outro';
+}
+// média segura
+const avg = (arr) => arr.length ? arr.reduce((a, b) => a + b, 0) / arr.length : 0;
+
+function renderTreinoHistorico() {
+  let log = [];
+  try { log = JSON.parse(localStorage.getItem('circa_workout_log') || '[]'); } catch (e) {}
+
+  // filtra últimos 7 dias
+  const cutoff = Date.now() - 7 * 24 * 60 * 60 * 1000;
+  const recent = log.filter((w) => {
+    if (!w.data) return false;
+    const t = new Date(w.data).getTime();
+    return !isNaN(t) && t >= cutoff;
+  }).sort((a, b) => new Date(b.data) - new Date(a.data));
+
+  const summaryEl  = document.getElementById('th-summary');
+  const emptyEl    = document.getElementById('th-empty');
+  const timelineWp = document.getElementById('th-timeline-wrap');
+  const timelineEl = document.getElementById('th-timeline');
+  const insightsWp = document.getElementById('th-insights-wrap');
+  const insightsEl = document.getElementById('th-insights');
+
+  if (!summaryEl) return;
+
+  // resumo
+  const totalTreinos    = recent.length;
+  const sensacoesValidas = recent.filter((w) => w.sensacao != null).map((w) => w.sensacao);
+  const sensMedia       = sensacoesValidas.length ? avg(sensacoesValidas) : 0;
+  summaryEl.textContent = totalTreinos === 0
+    ? 'Nenhum treino registrado ainda.'
+    : `${totalTreinos} ${totalTreinos === 1 ? 'treino registrado' : 'treinos registrados'} · sensação média ${sensMedia.toFixed(1)} / 5`;
+
+  // empty state se < 3 treinos
+  if (totalTreinos < 3) {
+    emptyEl.style.display = '';
+    timelineWp.style.display = totalTreinos > 0 ? '' : 'none';
+    insightsWp.style.display = 'none';
+  } else {
+    emptyEl.style.display = 'none';
+    timelineWp.style.display = '';
+    insightsWp.style.display = '';
+  }
+
+  // ────── TIMELINE ──────
+  if (totalTreinos > 0 && timelineEl) {
+    timelineEl.innerHTML = recent.map((w) => {
+      const d = new Date(w.data);
+      const dia = d.toLocaleDateString('pt-BR', { weekday: 'short', day: 'numeric', month: 'short' });
+      const sens = w.sensacao != null ? w.sensacao : '—';
+      const sensClass = w.sensacao >= 4 ? 'th-sens--up' : (w.sensacao <= 2 ? 'th-sens--down' : 'th-sens--mid');
+      const exDone = w.exerciciosFeitos != null ? w.exerciciosFeitos : null;
+      const exTot  = w.exerciciosTotal  != null ? w.exerciciosTotal  : null;
+      const exTxt  = (exDone != null && exTot > 0) ? `${exDone}/${exTot} exercícios` : '';
+      const tipo   = w.tipo || w.esporte || '—';
+      const sub    = w.subtitle || '';
+      return `
+        <li class="th-row">
+          <div class="th-row-when">
+            <span class="th-row-dia">${dia}</span>
+            <span class="th-row-hora">${w.inicio || '—'}</span>
+          </div>
+          <div class="th-row-body">
+            <span class="th-row-tipo">${tipo}</span>
+            ${sub ? `<span class="th-row-sub">${sub}</span>` : ''}
+            ${exTxt ? `<span class="th-row-ex">${exTxt}</span>` : ''}
+          </div>
+          <div class="th-row-sens ${sensClass}">${sens}<small>/5</small></div>
+        </li>
+      `;
+    }).join('');
+  }
+
+  // ────── INSIGHTS ──────
+  if (totalTreinos < 3 || !insightsEl) return;
+
+  const insights = [];
+
+  // 1) MELHOR HORÁRIO (bucket · sensação média)
+  const byBucket = {};
+  recent.forEach((w) => {
+    const b = horaToBucket(w.hora);
+    if (!b || w.sensacao == null) return;
+    (byBucket[b] = byBucket[b] || []).push(w.sensacao);
+  });
+  const bucketScores = Object.entries(byBucket)
+    .map(([b, arr]) => ({ bucket: b, media: avg(arr), n: arr.length }))
+    .filter((x) => x.n >= 1)
+    .sort((a, b) => b.media - a.media);
+  if (bucketScores.length) {
+    const best = bucketScores[0];
+    const emoji = (HORA_BUCKETS.find((h) => h.label === best.bucket) || {}).emoji || '⏱';
+    insights.push({
+      eye: 'Melhor horário',
+      title: `Você treina melhor de ${best.bucket}`,
+      emoji,
+      body: `Sensação média ${best.media.toFixed(1)}/5 em ${best.n} ${best.n === 1 ? 'treino' : 'treinos'}.`,
+    });
+  }
+
+  // 2) MELHOR GRUPO MUSCULAR / TIPO
+  const byGrupo = {};
+  recent.forEach((w) => {
+    const g = extractGrupo(w.subtitle, w.tipo);
+    if (!g || w.sensacao == null) return;
+    (byGrupo[g] = byGrupo[g] || []).push(w.sensacao);
+  });
+  const grupoScores = Object.entries(byGrupo)
+    .map(([g, arr]) => ({ grupo: g, media: avg(arr), n: arr.length }))
+    .filter((x) => x.n >= 1)
+    .sort((a, b) => b.media - a.media);
+  if (grupoScores.length) {
+    const best = grupoScores[0];
+    insights.push({
+      eye: 'Grupo favorito',
+      title: `Sua melhor sensação vem de ${best.grupo}`,
+      emoji: '💪',
+      body: `${best.media.toFixed(1)}/5 em ${best.n} ${best.n === 1 ? 'sessão' : 'sessões'}.`,
+    });
+  }
+
+  // 3) CORRELAÇÃO CROSS-PILLAR · sono+comida no mesmo dia → sensação
+  let sleepLog = []; let mealLog = [];
+  try { sleepLog = JSON.parse(localStorage.getItem('circa_log_sono')     || '[]'); } catch (e) {}
+  try { mealLog  = JSON.parse(localStorage.getItem('circa_log_refeicao') || '[]'); } catch (e) {}
+
+  const sameDayKey = (iso) => { try { return new Date(iso).toISOString().slice(0, 10); } catch (e) { return null; } };
+  const sleepByDay = {};
+  sleepLog.forEach((s) => { const k = sameDayKey(s.ts || s.data); if (k) sleepByDay[k] = s; });
+  const mealByDay = {};
+  mealLog.forEach((m) => {
+    const k = sameDayKey(m.ts || m.data);
+    if (k) (mealByDay[k] = mealByDay[k] || 0), mealByDay[k]++;
+  });
+
+  // pra cada workout: tinha sono bom (qualidade >=4 OR existe registro) e tinha refeição registrada?
+  const groups = { combo: [], faltou: [] };
+  recent.forEach((w) => {
+    if (w.sensacao == null) return;
+    const k = sameDayKey(w.data);
+    if (!k) return;
+    const slp = sleepByDay[k];
+    const meals = mealByDay[k] || 0;
+    const sleepBom = !!slp && (slp.qualidade == null || slp.qualidade >= 4);
+    const comeuBem = meals >= 2;
+    if (sleepBom && comeuBem) groups.combo.push(w.sensacao);
+    else groups.faltou.push(w.sensacao);
+  });
+  if (groups.combo.length >= 1 && groups.faltou.length >= 1) {
+    const aCombo = avg(groups.combo);
+    const aFalta = avg(groups.faltou);
+    const delta = aCombo - aFalta;
+    if (Math.abs(delta) >= 0.3) {
+      const positivo = delta > 0;
+      insights.push({
+        eye: 'Combinação revelada',
+        title: positivo
+          ? 'Sono + comida = treino melhor'
+          : 'Algo está atravessando o combo',
+        emoji: positivo ? '✨' : '⚠️',
+        body: positivo
+          ? `Quando você dormiu bem e comeu pelo menos 2x, sua sensação foi ${aCombo.toFixed(1)}/5 (vs ${aFalta.toFixed(1)} sem o combo).`
+          : `Mesmo com sono e comida em dia, a sensação caiu pra ${aCombo.toFixed(1)} (vs ${aFalta.toFixed(1)}). Vale revisar carga ou recuperação.`,
+      });
+    } else {
+      insights.push({
+        eye: 'Padrão observado',
+        title: 'Cadência consistente',
+        emoji: '⚖️',
+        body: `Com ou sem o combo sono+comida, sua sensação tá próxima (${aCombo.toFixed(1)} vs ${aFalta.toFixed(1)}). O treino domina o resto.`,
+      });
+    }
+  } else {
+    // sem dados suficientes pra cross-correlate · usa fallback do completion rate
+    const completos = recent.filter((w) => w.exerciciosCompleto === true);
+    if (completos.length >= 1 && recent.length >= 3) {
+      const aCompleto = avg(completos.map((w) => w.sensacao || 0).filter((s) => s > 0));
+      insights.push({
+        eye: 'Disciplina',
+        title: 'Quando você completa, sente mais',
+        emoji: '🎯',
+        body: `Treinos onde você marcou todos os exercícios = ${aCompleto.toFixed(1)}/5. Cumprir o plano paga.`,
+      });
+    } else {
+      insights.push({
+        eye: 'Próximo passo',
+        title: 'Registra sono e refeição também',
+        emoji: '🔗',
+        body: 'O circa correlaciona tudo · com mais dados, mostro como teu sono e tua comida afetam o teu treino.',
+      });
+    }
+  }
+
+  insightsEl.innerHTML = insights.map((i) => `
+    <div class="th-card">
+      <div class="th-card-eye">${i.eye}</div>
+      <div class="th-card-title">${i.emoji} ${i.title}</div>
+      <p class="th-card-body">${i.body}</p>
+    </div>
+  `).join('');
+}
+
+// hook · renderiza ao abrir o sheet
+document.querySelectorAll('[data-sheet="sheet-treino-historico"]').forEach((b) => {
+  b.addEventListener('click', () => {
+    setTimeout(renderTreinoHistorico, 80);
+  });
+});
+
+// no sheet-log-ok (após registrar treino) revela o link "Ver histórico"
+// chamado dentro de salvarLogTreino · vamos garantir aqui via observer pra não duplicar logic
+(function () {
+  const okSheet = document.getElementById('sheet-log-ok');
+  if (!okSheet) return;
+  const obs = new MutationObserver(() => {
+    const isOpen = okSheet.classList.contains('is-open');
+    const titleEl = document.getElementById('log-ok-title');
+    const link = document.getElementById('log-ok-historico');
+    if (!link || !titleEl) return;
+    // só revela quando foi treino (heurística: log-ok-num !== '—' E último log do circa_workout_log é recente)
+    if (isOpen) {
+      try {
+        const log = JSON.parse(localStorage.getItem('circa_workout_log') || '[]');
+        const last = log[log.length - 1];
+        const recente = last && (Date.now() - new Date(last.data).getTime()) < 60 * 1000;
+        link.style.display = recente ? '' : 'none';
+      } catch (e) { link.style.display = 'none'; }
+    }
+  });
+  obs.observe(okSheet, { attributes: true, attributeFilter: ['class'] });
+})();
+
+// ═════════════════════════════════════════
 // HOME · deck de logs swipeable
 // 5 cards: humor · sono · treino · água · refeição
 // Swipe esquerda, próximo, swipe direita, anterior.

@@ -23,8 +23,8 @@
   <link rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,400&family=Inter:wght@400;500;600&display=swap" />
   <!-- cache-bust agressivo: muda v sempre que houver mudança visual -->
-  <link rel="stylesheet" href="styles.css?v=20260504-b" />
-  <link rel="stylesheet" href="apple.css?v=20260504-b" />
+  <link rel="stylesheet" href="styles.css?v=20260504-c" />
+  <link rel="stylesheet" href="apple.css?v=20260504-c" />
   <meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="pragma" content="no-cache" />
   <meta http-equiv="expires" content="0" />
@@ -3020,6 +3020,42 @@
           <p id="log-ok-insight">—</p>
         </div>
 
+        <!-- atalho pro histórico de treinos · só visível se foi treino que acabou de registrar -->
+        <button class="btn btn--ghost btn--full" id="log-ok-historico" data-sheet="sheet-treino-historico" style="display:none;">Ver histórico de treinos</button>
+        <button class="btn btn--ghost btn--full" data-close>Fechar</button>
+      </div>
+    </div>
+
+    <!-- ───────── HISTÓRICO DE TREINOS · D-7 com insights ───────── -->
+    <div class="sheet" id="sheet-treino-historico" aria-hidden="true">
+      <div class="sheet__backdrop" data-close></div>
+      <div class="sheet__panel" role="dialog" aria-label="histórico de treinos">
+        <div class="sheet__grab"></div>
+
+        <div class="sheet__head">
+          <span class="eyebrow">Histórico</span>
+          <h2 class="display display--sm">Últimos 7 dias</h2>
+          <p class="lead lead--sm" id="th-summary">—</p>
+        </div>
+
+        <!-- empty state · pouco data -->
+        <div class="sheet__section th-empty" id="th-empty" style="display:none;">
+          <p class="th-empty-txt">Você precisa registrar pelo menos 3 treinos pra revelar padrões.</p>
+          <p class="th-empty-hint">Continua treinando · o circa aprende contigo.</p>
+        </div>
+
+        <!-- timeline dos últimos 7 treinos -->
+        <div class="sheet__section" id="th-timeline-wrap" style="display:none;">
+          <span class="eyebrow">Linha do tempo</span>
+          <ul class="th-timeline" id="th-timeline"></ul>
+        </div>
+
+        <!-- 3 insight cards -->
+        <div class="sheet__section" id="th-insights-wrap" style="display:none;">
+          <span class="eyebrow">Padrões revelados</span>
+          <div class="th-insights" id="th-insights"></div>
+        </div>
+
         <button class="btn btn--ghost btn--full" data-close>Fechar</button>
       </div>
     </div>
@@ -3607,6 +3643,6 @@
     </nav>
   </div>
 
-  <script src="app.js?v=20260504-b"></script>
+  <script src="app.js?v=20260504-c"></script>
 </body>
 </html>
