@@ -1429,10 +1429,11 @@ let wlcFundoRAF = null;
 let wlcFundoT   = 0;
 
 function fundoFlowAtivo() {
-  // SEMPRE ativo em apple-mode · ribbons como bg ambiente em todo o app
-  // (welcome, onboarding, home, jornada) pra dar continuidade visual
-  if (document.body && document.body.classList.contains('apple-mode')) return true;
-  // fallback (se apple-mode não estiver ativo): mantém comportamento antigo
+  // canvas só anima em welcome ou onboarding · em home/jornada/sheets fica parado
+  // (último frame visível) · trade-off intencional: continuidade visual perde ponto
+  // mas perf de scroll na home/jornada melhora drasticamente
+  // (antes: apple-mode forçava sempre ativo · 60fps de RAF + clearRect + 4 ribbons
+  // com strands paralelas custava CPU mesmo quando nem aparecia na tela)
   const w = welcomeEl && welcomeEl.classList.contains('is-open');
   const o = document.getElementById('onboard');
   const oOpen = o && o.classList.contains('is-open');
@@ -1440,7 +1441,6 @@ function fundoFlowAtivo() {
 }
 
 function maybeStopWlcFundo() {
-  // em apple-mode nunca para · canvas roda enquanto a tab estiver visível
   if (!fundoFlowAtivo() && typeof stopWlcFundo === 'function') {
     stopWlcFundo();
   }
